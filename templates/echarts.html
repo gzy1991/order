@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ECharts</title>
+        <!-- ECharts单文件引入 -->
+    <script src="http://echarts.baidu.com/build/dist/echarts.js"></script>
+    <script type="text/javascript" src="/static/js/echarts.js"></script>
+    <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script type="text/javascript" src="/static/js/jquery/jquery.min.js"></script>
+	<script type="text/javascript" src="/static/js/bootstrap/js/bootstrap.min.js"></script></head>
+</head>
+<body>
+    <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+    <p>Hello</p>
+    <h2>图形处理1</h2>
+    <div id="main" style="height:400px"></div>
+    <form role="form" enctype="multipart/form-data" action="/importDataFromCsv/" method="post" >
+        <div class="form-group"></div>
+        <label>请选择csv文件：</label>
+        <input type="file"  id="inputcsv" name="inputcsv" >
+        <input type="submit" value="upload"/>
+    </form>
+
+</body>
+</html>
