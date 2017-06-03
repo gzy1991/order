@@ -20,4 +20,6 @@ from  map1.views import *
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url('^map1/$',map1),
+    url('^map2/$',map2),
+    url('^map3/$',map3),
 ]

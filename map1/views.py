@@ -14,3 +14,10 @@ def map1(request):
 
     return render(request, 'echarts.html')
 
+def map2(request):
+
+    return render(request, 'echarts2.html')
+
+def map3(request):
+
+    return render(request, 'echarts3.html')
