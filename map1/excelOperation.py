@@ -7,6 +7,7 @@ import map1.nameMap as nameMap
 # 安装命令 ： pip install xlrd
 # 教程 http://www.cnblogs.com/lhj588/archive/2012/01/06/2314181.html
 
+
 #读取excel
 data = xlrd.open_workbook('C:/work/data/country.xlsx')
 
@@ -56,3 +57,41 @@ ret=[
     {},
 ]
 
+# excel中国家个数: 189
+# 以下国家 有问题，没有其坐标或对应中文名
+# Andorra
+# Antigua
+# Aruba
+# Bahamas
+# Bahrain
+# Barbados
+# British Virgin Islands
+# Cape Verde
+# Cayman Islands
+# Congo
+# Cote dIvoire
+# DR Congo
+# Former USSR
+# French Polynesia
+# Gaza Strip
+# Hong Kong
+# Liechtenstein
+# Macao SAR
+# Maldives
+# Malta
+# Mauritius
+# Monaco
+# Netherlands Antilles
+# Samoa
+# San Marino
+# Sao Tome and Principe
+# Serbia
+# Seychelles
+# Singapore
+# Taiwan
+# Tanzania
+# TFYR Macedonia
+# UAE
+# UK
+# USA
+# Viet Nam

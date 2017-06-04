@@ -31,7 +31,7 @@ var geoCoordMap = {
     '保定': [115.0488,39.0948],
     '兰州': [103.5901,36.3043],
     '包头': [110.3467,41.4899],
-    '北京': [116.4551,40.2539],
+    '中国': [116.4551,40.2539],
     '北海': [109.314,21.6211],
     '南京': [118.8062,31.9208],
     '南宁': [108.479,23.1152],
@@ -135,16 +135,16 @@ var geoCoordMap = {
 };
 
 var BJData = [
-    [{name:'北京'}, {name:'上海',value:95}],
-    [{name:'北京'}, {name:'广州',value:90}],
-    [{name:'北京'}, {name:'大连',value:80}],
-    [{name:'北京'}, {name:'南宁',value:70}],
-    [{name:'北京'}, {name:'南昌',value:60}],
-    [{name:'北京'}, {name:'拉萨',value:50}],
-    [{name:'北京'}, {name:'长春',value:40}],
-    [{name:'北京'}, {name:'包头',value:30}],
-    [{name:'北京'}, {name:'重庆',value:20}],
-    [{name:'北京'}, {name:'常州',value:10}]
+    [{name:'中国'}, {name:'上海',value:95}],
+    [{name:'中国'}, {name:'广州',value:90}],
+    [{name:'中国'}, {name:'大连',value:80}],
+    [{name:'中国'}, {name:'南宁',value:70}],
+    [{name:'中国'}, {name:'南昌',value:60}],
+    [{name:'中国'}, {name:'拉萨',value:50}],
+    [{name:'中国'}, {name:'长春',value:40}],
+    [{name:'中国'}, {name:'包头',value:30}],
+    [{name:'中国'}, {name:'重庆',value:20}],
+    [{name:'中国'}, {name:'常州',value:10}]
 ];
 
 var SHData = [
@@ -155,7 +155,7 @@ var SHData = [
     [{name:'上海'},{name:'长春',value:60}],
     [{name:'上海'},{name:'重庆',value:50}],
     [{name:'上海'},{name:'长沙',value:40}],
-    [{name:'上海'},{name:'北京',value:30}],
+    [{name:'上海'},{name:'中国',value:30}],
     [{name:'上海'},{name:'丹东',value:20}],
     [{name:'上海'},{name:'大连',value:10}]
 ];
@@ -168,7 +168,7 @@ var GZData = [
     [{name:'广州'},{name:'西安',value:60}],
     [{name:'广州'},{name:'成都',value:50}],
     [{name:'广州'},{name:'常州',value:40}],
-    [{name:'广州'},{name:'北京',value:30}],
+    [{name:'广州'},{name:'中国',value:30}],
     [{name:'广州'},{name:'北海',value:20}],
     [{name:'广州'},{name:'海口',value:10}]
 ];
@@ -197,7 +197,7 @@ var color = ['#a6c84c',
     '#ffa022',
     '#46bee9'];
 var series = [];
-[['北京', BJData], ['上海', SHData], ['广州', GZData]].forEach(function (item, i) {
+[['中国', BJData], ['上海', SHData], ['广州', GZData]].forEach(function (item, i) {
     series.push({
         //移动的亮点
         name: item[0] + ' Top10',
@@ -293,14 +293,14 @@ option = {
     },
     legend: {       //图例组件。图例组件展现了不同系列的标记(symbol)，颜色和名字。可以通过点击图例控制哪些系列不显示。
         selected:{
-            '北京 Top10':false,
+            '中国 Top10':false,
             '上海 Top10':false,
             '广州 Top10':false
         },
         orient: 'vertical',//horizontal
         top: 'bottom',
         left: 'right',
-        data:['北京 Top10', '上海 Top10', '广州 Top10'],
+        data:['中国 Top10', '上海 Top10', '广州 Top10'],
         textStyle: {
             color: '#fff'
         },
