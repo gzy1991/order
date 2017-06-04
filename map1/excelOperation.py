@@ -37,27 +37,10 @@ for i in range(rowNum):
 
 #出口前10
 #列表有序
-ret=[
-    {
-        "name":"",                    #出口国
-        "chineseName":"",
-        "type":"output",               #input是进口
-        "sum":213,                       #进口或出口总和，不能为负数
-        "sort":1,                       #排序
-        "output":[
-             {"name":"a",   "chineseName":"",   "sort":1,   "value":123},
-             {"name":"b",   "chineseName":"",   "sort":2,   "value":34},
-             {"name":"c",   "chineseName":"",   "sort":3,   "value":55}
-        ]
-    },
 
-    {},
-    {},
-    {},
-    {},
-]
 
-# excel中国家个数: 189
+
+        # excel中国家个数: 189
 # 以下国家 有问题，没有其坐标或对应中文名
 # Andorra
 # Antigua

@@ -1,12 +1,32 @@
-#  国家坐标信息
-#  目前有168个国家
-info={
+<!DOCTYPE html>
+<html style="height: 100%;weight:100%">
+   <head>
+       <meta charset="utf-8">
+</head>
+<body style="height: 100%; margin: 0;weight:100%">
+       <div id="container" style="height: 100%;weight:100%"></div>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts-all-3.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-stat/ecStat.min.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/dataTool.min.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/china.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/world.js"></script>
+       <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=ZUONbpqGBsYGXNIYHicvbAbM"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/bmap.min.js"></script>
+       <script type="text/javascript">
+var dom = document.getElementById("container");
+var myChart = echarts.init(dom);
+var app = {};
+option = null;
+
+/*  169 个 国家 坐标  */
+var countrytInfo={
 'Guyana': {'name': 'Guyana', 'latitude': 4.860416, 'longitude': -58.93018, 'chineseName': '圭亚那', 'code': 'GY'},
 'Greece': {'name': 'Greece', 'latitude': 39.074208, 'longitude': 21.824312, 'chineseName': '希腊', 'code': 'GR'},
 'Azerbaijan': {'name': 'Azerbaijan', 'latitude': 40.143105, 'longitude': 47.576927, 'chineseName': '阿塞拜疆', 'code': 'AZ'},
 'Macedonia, FYR': {'chineseName': '', 'code': 'MK', 'name': 'Macedonia, FYR'},
 'Taiwan': {'chineseName': '台湾', 'code': 'TW', 'name': 'Taiwan'},
-'Benin': {'name': 'Benin', 'latitude': 9.30769, 'longitude': 2.315834, 'chineseName': '贝宁', 'code': 'BJ'}, "Cote d'Ivoire": {'chineseName': '', 'code': 'CI', 'name': "Cote d'Ivoire"},
+'Benin': {'name': 'Benin', 'latitude': 9.30769, 'longitude': 2.315834, 'chineseName': '贝宁', 'code': 'BJ'},
+"Cote d'Ivoire": {'chineseName': '', 'code': 'CI', 'name': "Cote d'Ivoire"},
 'Djibouti': {'name': 'Djibouti', 'latitude': 11.825138, 'longitude': 42.590275, 'chineseName': '吉布提', 'code': 'DJ'},
 'Ecuador': {'name': 'Ecuador', 'latitude': -1.831239, 'longitude': -78.18340599999999, 'chineseName': '厄瓜多尔', 'code': 'EC'},
 'Korea, Dem. Rep.': {'chineseName': '', 'code': 'KP', 'name': 'Korea, Dem. Rep.'},
@@ -126,7 +146,7 @@ info={
 'Lebanon': {'name': 'Lebanon', 'latitude': 33.854721, 'longitude': 35.862285, 'chineseName': '黎巴嫩', 'code': 'LB'},
 'Thailand': {'name': 'Thailand', 'latitude': 15.870032, 'longitude': 100.992541, 'chineseName': '泰国', 'code': 'TH'},
 'Malaysia': {'name': 'Malaysia', 'latitude': 4.210484, 'longitude': 101.975766, 'chineseName': '马来西亚', 'code': 'MY'},
-'USA': {'name': 'USA','chineseName': '美国','latitude':38, 'longitude':-97, 'code': 'US', },
+'USA': {'name': 'USA','chineseName': '美国','latitude':38, 'longitude':-97, 'code': 'US' },
 'Burundi': {'name': 'Burundi', 'latitude': -3.373056, 'longitude': 29.918886, 'chineseName': '布隆迪', 'code': 'BI'},
 'Venezuela': {'name': 'Venezuela', 'latitude': 6.42375, 'longitude': -66.58973, 'chineseName': '委内瑞拉', 'code': 'VE'},
 'Moldova': {'name': 'Moldova', 'latitude': 47.411631, 'longitude': 28.369885, 'chineseName': '摩尔多瓦', 'code': 'MD'},
@@ -169,3 +189,202 @@ info={
 'Romania': {'name': 'Romania', 'latitude': 45.943161, 'longitude': 24.96676, 'chineseName': '罗马尼亚', 'code': 'RO'},
 'West Bank and Gaza': {'chineseName': '', 'code': 'PS', 'name': 'West Bank and Gaza'},
 'Mali': {'name': 'Mali', 'latitude': 17.570692, 'longitude': -3.996166, 'chineseName': '马里', 'code': 'ML'}}
+
+//中国
+var CNData = {
+        "name":"China",                    //出口国
+        "chineseName":"中国",
+        "type":"export",              //import
+        "sum":153.75,                      //进口或出口总和，不能为负数
+        "sort":1,                       //排序
+        "data":[
+             {"name":"USA",   "chineseName":"美国",   "sort":1,   "value":29.19},
+             {"name":"Hong Kong",   "chineseName":"香港",   "sort":2,   "value":23.37},
+             {"name":"Japan",   "chineseName":"日本",   "sort":3,   "value":19.03},
+             {"name":"South Korea",   "chineseName":"韩国",   "sort":4,   "value":9.85},
+             {"name":"Germany",   "chineseName":"德国",   "sort":5,   "value":8.76}
+        ]
+    };
+//美国
+var USAData = {
+    "name": "USA",                    //出口国
+    "chineseName": "美国",
+    "type": "output",              //input是进口
+    "sum": 118.7,                      //进口或出口总和，不能为负数
+    "sort": 2,                       //排序
+    "data": [
+        {"name": "Canada", "chineseName": "加拿大", "sort": 1, "value": 21.45},
+        {"name": "Mexico", "chineseName": "墨西哥", "sort": 2, "value": 15.50},
+        {"name": "Japan", "chineseName": "日本", "sort": 3, "value": 12.33},
+        {"name": "China", "chineseName": "中国", "sort": 4, "value": 10.34},
+        {"name": "South Korea", "chineseName": "韩国", "sort": 5, "value": 576}
+    ]
+};
+//德国
+var DEData = [
+
+];
+
+
+var planePath = 'path://M1705.64,1318.313v-89.254l-319.9-221.799l0.073-208.063c0.521-84.662-26.629-121.796-63.961-121.491c-37.332-0.305-64.482,36.829-63.961,121.491l0.073,208.063l-319.9,221.799v89.254l330.343-157.288l12.238,241.308l-134.449,92.931l0.531,42.034l175.125-42.917l175.125,42.917l0.531-42.034l-134.449-92.931l12.238-241.308L1705.06,1318.313z';
+var planePath2 = '';
+
+var convertData = function (data) {
+    var res = [];
+    for (var i = 0; i < data.length; i++) {
+        var dataItem = data[i];
+        var fromCoord = geoCoordMap[dataItem[0].name];
+        var toCoord = geoCoordMap[dataItem[1].name];
+        if (fromCoord && toCoord) {
+            res.push({
+                fromName: dataItem[0].name,
+                toName: dataItem[1].name,
+                coords: [fromCoord, toCoord]
+            });
+        }
+    }
+    return res;
+};
+
+var color = ['#a6c84c',
+    '#ffa022',
+    '#46bee9'];
+var series = [];
+[['中国', CNData], ['美国', USAData]].forEach(function (item, i) {
+    series.push({
+        //移动的亮点
+        name: item[0] + ' Top10',
+        type: 'lines',
+        zlevel: 1,  //线图所有图形的 zlevel 值。
+        effect: {               //线特效的配置
+            show: true,
+            period: 6,              //特效动画的时间，单位为 s。
+            trailLength: 0.7,       //特效尾迹的长度。取从 0 到 1 的值，数值越大尾迹越长。
+            color: '#fff',
+            symbolSize: 3          //特效标记的大小，可以设置成诸如 10 这样单一的数字，也可以用数组分开表示高和宽，例如 [20, 10] 表示标记宽为20，高为10。
+        },
+        lineStyle: {            //对 线 的各种设置 ：颜色，形状，曲度
+            normal: {
+                color: color[i],
+                width: 0,           //线宽
+                curveness: 0.2  //边的曲度，支持从 0 到 1 的值，值越大曲度越大。0代表直线，1代表圆
+            }
+        },
+        data: convertData(item[1])
+    },
+    {
+        //  线  +  飞机
+        name: item[0] + ' Top10',
+        type: 'lines',
+        zlevel: 2,
+        symbol: ['none', 'arrow'],
+        symbolSize: 10,
+        effect: {
+            show: true,
+            period: 6,
+            trailLength: 0,
+            //symbol: planePath,  //  飞机
+            //symbolSize: 15
+        },
+        lineStyle: {
+            normal: {
+                color: color[i],
+                width: 1,
+                opacity: 0.6,    // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。
+                curveness: 0.2
+            }
+        },
+        data: convertData(item[1])
+    },
+    {
+        //城市名字
+        name: item[0] + ' Top10',
+        type: 'effectScatter',              //带有涟漪特效动画的散点（气泡）图
+        coordinateSystem: 'geo',            //该系列使用的坐标系，可选： cartesian2d二维的直角坐标系   polar极坐标系  geo地理坐标系
+        zlevel: 2,
+        rippleEffect: {                     //涟漪特效相关配置
+            brushType: 'stroke'             //波纹的绘制方式   可选 'stroke' 和 'fill'
+        },
+        label: {                        //图形上的文本标签，可用于说明图形的一些数据信息，
+            normal: {
+                show: true,
+                position: 'right',      //标签的位置。
+                formatter: '{b}'           //标签内容格式器，支持字符串模板和回调函数两种形式，字符串模板与回调函数返回的字符串均支持用 \n 换行。
+                                            //模板变量有 {a}、{b}、{c}，分别表示系列名，数据名，数据值。
+                //formatter: '{a}: {b}: {c}'
+            }
+        },
+        symbolSize: function (val) {            //标记的大小，可以设置成诸如 10 这样单一的数字，也可以用数组分开表示宽和高
+            return val[2] / 4;
+        },
+        itemStyle: {
+            normal: {
+                color: color[i]
+            }
+        },
+        data: item[1].map(function (dataItem) {         //系列中的数据内容数组。数组项通常为具体的数据项。
+            return {
+                name: dataItem[1].name,
+                value: geoCoordMap[dataItem[1].name].concat([dataItem[1].value])
+            };
+        })
+    });
+});
+
+option = {
+    backgroundColor: '#404a59',
+    title : {
+        text: '模拟迁徙',
+        subtext: '数据纯属虚构',
+        left: 'center',
+        textStyle : {
+            color: '#fff'
+        }
+    },
+    tooltip : {  //提示框组件。  数据项图形触发，主要在散点图，饼图等无类目轴的图表中使用。
+        trigger: 'item'
+    },
+    legend: {       //图例组件。图例组件展现了不同系列的标记(symbol)，颜色和名字。可以通过点击图例控制哪些系列不显示。
+        selected:{
+            '北京 Top10':false,
+            '上海 Top10':false,
+            '广州 Top10':false
+        },
+        orient: 'vertical',//horizontal
+        top: 'bottom',
+        left: 'right',
+        data:['北京 Top10', '上海 Top10', '广州 Top10'],
+        textStyle: {
+            color: '#fff'
+        },
+        selectedMode: 'false' //single    false  multiple
+    },
+    geo: {
+        map: 'world',//china
+        label: {
+        //normal: {
+        //        show: true
+         //   },
+            emphasis: {
+                show: true
+            }
+        },
+        roam: true,         //是否开启鼠标缩放和平移漫游
+        itemStyle: {
+            normal: {
+                areaColor: '#323c48',       //地图区域的颜色。
+                borderColor: '#404a59'  //fff  404a59   描边颜色
+            },
+            emphasis: {
+                areaColor: '#2a333d'
+            }
+        }
+    },
+    series: series
+};;
+if (option && typeof option === "object") {
+    myChart.setOption(option, true);
+}
+       </script>
+   </body>
+</html>

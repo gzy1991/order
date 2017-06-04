@@ -1,0 +1,41 @@
+result = {
+        "danwei": "",           # 单位
+        "importCountryNum": 6, # 进口国家个数
+        "exportCountryNum": 6, # 出口国家个数
+        "importData":[],        #进口数据
+        "exportData": [         #出口数据
+            {
+                "name": "China",  # 出口国, 英文，
+                "chineseName": "",
+                "type": "export",  # import
+                "sum": 213,  # 进口或出口总和，不能为负数
+                "sort": 1,  # 排序
+                "countryNum": 5 ,# 显示的国家个数
+                "data":
+                    [
+                    {"name": "a", "chineseName": "", "sort": 1, "value": 123},
+                    {"name": "b", "chineseName": "", "sort": 2, "value": 34},
+                    {"name": "c", "chineseName": "", "sort": 3, "value": 55}
+                ]
+            },
+            {},
+            {},
+            {
+                "name": "China",        # 出口国
+                "chineseName":"中国",
+                "type": "export",       # import是进口
+                "sum": 153.75,          #进口或出口总和，不能为负数
+                "sort": 1,              # 排序
+                "countryNum": 5 , # 显示的国家个数
+                "data": [
+                    {"name": "USA", "chineseName": "美国", "sort": 1, "value": 29.19},
+                    {"name": "Hong Kong", "chineseName": "香港", "sort": 2, "value": 23.37},
+                    {"name": "Japan", "chineseName": "日本", "sort": 3, "value": 19.03},
+                    {"name": "South Korea", "chineseName": "韩国", "sort": 4, "value": 9.85},
+                    {"name": "Germany", "chineseName": "德国", "sort": 5, "value": 8.76}
+                    ]
+            },
+            {},
+            {},
+        ]
+}
