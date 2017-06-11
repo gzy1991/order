@@ -217,7 +217,7 @@ var USAData = {
         {"name": "Mexico", "chineseName": "墨西哥", "sort": 2, "value": 15.50},
         {"name": "Japan", "chineseName": "日本", "sort": 3, "value": 12.33},
         {"name": "China", "chineseName": "中国", "sort": 4, "value": 10.34},
-        {"name": "South Korea", "chineseName": "韩国", "sort": 5, "value": 576}
+        {"name": "South Korea", "chineseName": "韩国", "sort": 5, "value": 5.76}
     ]
 };
 //德国
@@ -225,35 +225,89 @@ var DEData = [
 
 ];
 
-
 var planePath = 'path://M1705.64,1318.313v-89.254l-319.9-221.799l0.073-208.063c0.521-84.662-26.629-121.796-63.961-121.491c-37.332-0.305-64.482,36.829-63.961,121.491l0.073,208.063l-319.9,221.799v89.254l330.343-157.288l12.238,241.308l-134.449,92.931l0.531,42.034l175.125-42.917l175.125,42.917l0.531-42.034l-134.449-92.931l12.238-241.308L1705.06,1318.313z';
 var planePath2 = '';
 
-var convertData = function (data) {
+var convertData = function(item){
     var res = [];
-    for (var i = 0; i < data.length; i++) {
-        var dataItem = data[i];
-        var fromCoord = geoCoordMap[dataItem[0].name];
-        var toCoord = geoCoordMap[dataItem[1].name];
+    for (var i = 0; i < item.data.length; i++) {
+        var dataItem = item.data[i];
+        var fromCoord = [countrytInfo[item["name"]]["longitude"],countrytInfo[item["name"]]["latitude"]];
+        var toCoord = [countrytInfo[dataItem["name"]]["longitude"],countrytInfo[dataItem["name"]]["latitude"]];
         if (fromCoord && toCoord) {
             res.push({
-                fromName: dataItem[0].name,
-                toName: dataItem[1].name,
-                coords: [fromCoord, toCoord]
+                fromName: item["name"],
+                toName: dataItem["name"],
+                coords: [fromCoord, toCoord],
+                value:dataItem.value,
+                label :{
+                    normal:{
+                        show:true,
+                        position :'middle',
+                        formatter:'{c}',
+                        textStyle :{
+                            formatter :dataItem.value/10
+                        }
+
+                    }
+
+                }
+            });
+        }
+    }
+    return res;
+}
+
+//额外设置线宽
+var convertData2 = function (item) {
+    var res = [];
+    for (var i = 0; i < item.data.length; i++) {
+        var dataItem = item.data[i];
+        var fromCoord = [countrytInfo[item["name"]]["longitude"],countrytInfo[item["name"]]["latitude"]];
+        var toCoord = [countrytInfo[dataItem["name"]]["longitude"],countrytInfo[dataItem["name"]]["latitude"]];
+        if (fromCoord && toCoord) {
+            res.push({
+                fromName: item["name"],
+                toName: dataItem["name"],
+                coords: [fromCoord, toCoord],
+                value:dataItem.value,
+                label :{
+                    normal:{
+                        show:true,
+                        position :'middle',
+                        formatter:'{c}',
+                        textStyle :{
+                            formatter :dataItem.value/10
+                        }
+                    }
+                },
+                symbolSize :dataItem.value*1.1, //箭头大小
+                lineStyle:{
+                    normal:{
+                        width: dataItem.value/5,
+                        opacity: 0.6,    // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。
+                        curveness: 0.4
+                    }
+                }
             });
         }
     }
     return res;
 };
 
+function randomValue() {
+    return Math.round(Math.random()*20);
+}
+
+
 var color = ['#a6c84c',
     '#ffa022',
     '#46bee9'];
 var series = [];
-[['中国', CNData], ['美国', USAData]].forEach(function (item, i) {
+[['China', CNData], ['USA', USAData]].forEach(function (item, i) {
     series.push({
         //移动的亮点
-        name: item[0] + ' Top10',
+        name: item[0] + ' Top5',
         type: 'lines',
         zlevel: 1,  //线图所有图形的 zlevel 值。
         effect: {               //线特效的配置
@@ -267,14 +321,14 @@ var series = [];
             normal: {
                 color: color[i],
                 width: 0,           //线宽
-                curveness: 0.2  //边的曲度，支持从 0 到 1 的值，值越大曲度越大。0代表直线，1代表圆
+                curveness: 0.4  //边的曲度，支持从 0 到 1 的值，值越大曲度越大。0代表直线，1代表圆
             }
         },
         data: convertData(item[1])
     },
     {
         //  线  +  飞机
-        name: item[0] + ' Top10',
+        name: item[0] + ' Top5',
         type: 'lines',
         zlevel: 2,
         symbol: ['none', 'arrow'],
@@ -289,16 +343,16 @@ var series = [];
         lineStyle: {
             normal: {
                 color: color[i],
-                width: 1,
+                //width: 1,           //线宽与数值有关
                 opacity: 0.6,    // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。
-                curveness: 0.2
+                curveness: 0.4
             }
         },
-        data: convertData(item[1])
+        data: convertData2(item[1])
     },
     {
-        //城市名字
-        name: item[0] + ' Top10',
+        //国家名字
+        name: item[0] + ' Top5',
         type: 'effectScatter',              //带有涟漪特效动画的散点（气泡）图
         coordinateSystem: 'geo',            //该系列使用的坐标系，可选： cartesian2d二维的直角坐标系   polar极坐标系  geo地理坐标系
         zlevel: 2,
@@ -309,33 +363,56 @@ var series = [];
             normal: {
                 show: true,
                 position: 'right',      //标签的位置。
+
                 formatter: '{b}'           //标签内容格式器，支持字符串模板和回调函数两种形式，字符串模板与回调函数返回的字符串均支持用 \n 换行。
                                             //模板变量有 {a}、{b}、{c}，分别表示系列名，数据名，数据值。
-                //formatter: '{a}: {b}: {c}'
             }
         },
         symbolSize: function (val) {            //标记的大小，可以设置成诸如 10 这样单一的数字，也可以用数组分开表示宽和高
-            return val[2] / 4;
+            return val[2] ;
         },
         itemStyle: {
             normal: {
                 color: color[i]
             }
         },
-        data: item[1].map(function (dataItem) {         //系列中的数据内容数组。数组项通常为具体的数据项。
+
+        data:item[1].data.map(function(dataItem){       //？todo
             return {
-                name: dataItem[1].name,
-                value: geoCoordMap[dataItem[1].name].concat([dataItem[1].value])
-            };
+                name:dataItem.name+":"+dataItem.value,
+                value:[
+                    countrytInfo[dataItem.name].longitude,
+                    countrytInfo[dataItem.name].latitude,
+                    dataItem.value
+                ]
+            }
         })
-    });
+    },
+
+    //
+        {
+            name:  item[0] + ' Top5',
+            type: 'map',
+            mapType: 'world',
+            geoIndex: 0,
+            data:[
+                {name: 'China', selected :true},
+                {name: 'Japan', selected :true},
+                {name: 'Russan', selected :true}
+
+            ]
+
+        }
+
+
+    );
 });
 
 option = {
     backgroundColor: '#404a59',
     title : {
-        text: '模拟迁徙',
-        subtext: '数据纯属虚构',
+        text: '世界各国进出口',
+        subtext: '单位：'+"千亿美元",
         left: 'center',
         textStyle : {
             color: '#fff'
@@ -346,20 +423,20 @@ option = {
     },
     legend: {       //图例组件。图例组件展现了不同系列的标记(symbol)，颜色和名字。可以通过点击图例控制哪些系列不显示。
         selected:{
-            '北京 Top10':false,
-            '上海 Top10':false,
-            '广州 Top10':false
+            'China Top5':false,
+            'USA Top5':false,
         },
         orient: 'vertical',//horizontal
         top: 'bottom',
         left: 'right',
-        data:['北京 Top10', '上海 Top10', '广州 Top10'],
+        data:['China Top5', 'USA Top5'],
         textStyle: {
             color: '#fff'
         },
-        selectedMode: 'false' //single    false  multiple
+
+        selectedMode: 'multiple' //single    false  multiple
     },
-    geo: {
+geo: {
         map: 'world',//china
         label: {
         //normal: {
@@ -378,8 +455,28 @@ option = {
             emphasis: {
                 areaColor: '#2a333d'
             }
-        }
+        },
+        regions:[
+            {
+                name:"USA",
+                itemStyle:{
+                    normal:{
+                        areaColor: 'red'
+                    }
+                }
+            },
+            {
+                name: '广东',
+                itemStyle: {
+                    normal: {
+                        areaColor: 'red',
+                        color: 'red'
+                     }
+                }
+            }
+            ]
     },
+
     series: series
 };;
 if (option && typeof option === "object") {

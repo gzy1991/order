@@ -310,10 +310,10 @@ var countrytInfo={
 var CNData = {
         "name":"China",                    //出口国
         "chineseName":"中国",
-        "type":"output",              //input是进口
+        "type":"export",              //import
         "sum":153.75,                      //进口或出口总和，不能为负数
         "sort":1,                       //排序
-        "output":[
+        "data":[
              {"name":"USA",   "chineseName":"美国",   "sort":1,   "value":29.19},
              {"name":"Hong Kong",   "chineseName":"香港",   "sort":2,   "value":23.37},
              {"name":"Japan",   "chineseName":"日本",   "sort":3,   "value":19.03},
@@ -322,9 +322,20 @@ var CNData = {
         ]
     };
 //美国
-var USData = [
-
-];
+var USAData = {
+    "name": "USA",                    //出口国
+    "chineseName": "美国",
+    "type": "output",              //input是进口
+    "sum": 118.7,                      //进口或出口总和，不能为负数
+    "sort": 2,                       //排序
+    "data": [
+        {"name": "Canada", "chineseName": "加拿大", "sort": 1, "value": 21.45},
+        {"name": "Mexico", "chineseName": "墨西哥", "sort": 2, "value": 15.50},
+        {"name": "Japan", "chineseName": "日本", "sort": 3, "value": 12.33},
+        {"name": "China", "chineseName": "中国", "sort": 4, "value": 10.34},
+        {"name": "South Korea", "chineseName": "韩国", "sort": 5, "value": 5.76}
+    ]
+};
 //德国
 var DEData = [
 
