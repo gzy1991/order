@@ -1,10 +1,124 @@
 /**
- * Created by gzy on 2017/6/12.
+ * Created by  on 2017/6/12.
  */
+
+
+var browserHeight=$(window).height() ; //浏览器高度
+var browserWidth=$(window).width();//浏览器宽度
+$("div.form-group").height(browserHeight+"px");
+$("div.form-group").width(browserWidth+"px");
+
+$("#tableDiv").height(browserHeight+"px");
+
+
+
+$('#tableContainer').bootstrapTable({
+    columns: [{
+        field: 'id',
+        title: '标题'
+    }],
+    data: [
+    {
+        id: "2016年中国数据"
+        
+    }, {
+        id: '2016年全球数据数据'
+    },
+    {
+        id: "2016年中国数据"
+        
+    }, {
+        id: '2016年全球数据数据'
+    },{
+        id: "2016年中国数据"
+        
+    }, 
+    {
+        id: "2016年中国数据"
+        
+    }, {
+        id: '2016年全球数据数据'
+    },
+    {
+        id: "2016年中国数据"
+        
+    }, {
+        id: '2016年全球数据数据'
+    },{
+        id: "2016年中国数据"
+        
+    }, 
+    {
+        id: "2016年中国数据"
+        
+    }, {
+        id: '2016年全球数据数据'
+    },
+    {
+        id: "2016年中国数据"
+        
+    }, {
+        id: '2016年全球数据数据'
+    },{
+        id: "2016年中国数据"
+        
+    }, 
+    {
+        id: "2016年中国数据"
+        
+    }, {
+        id: '2016年全球数据数据'
+    },
+    {
+        id: "2016年中国数据"
+        
+    }, {
+        id: '2016年全球数据数据'
+    },{
+        id: "2016年中国数据"
+        
+    }, 
+    {
+        id: "2016年中国数据"
+        
+    }, {
+        id: '2016年全球数据数据'
+    },
+    {
+        id: "2016年中国数据"
+        
+    }, {
+        id: '2016年全球数据数据'
+    },{
+        id: "2016年中国数据"
+        
+    }, {
+        id: "2016年中国数据"
+        
+    }, {
+        id: '2016年全球数据数据'
+    },
+    {
+        id: "2016年中国数据"
+        
+    }, {
+        id: '2016年全球数据数据'
+    },{
+        id: "2016年中国数据"
+        
+    }, {
+        id: '2016年全球数据数据'
+    }]
+});
+
 var dom = document.getElementById("mapContainer");
 var myChart = echarts.init(dom);
 var app = {};
 option = null;
+
+
+
+
 
 /*  169 个 国家 坐标  */
 var countrytInfo={
@@ -183,7 +297,7 @@ var CNData = {
         "name":"China",                    //出口国
         "chineseName":"中国",
         "type":"export",              //import
-        "sum":153.75,                      //进口或出口总和，不能为负数
+        "sum":153.75,                      //进口或出口总和,不能为负数
         "sort":1,                       //排序
         "data":[
              {"name":"USA",   "chineseName":"美国",   "sort":1,   "value":29.19,"sum":25},
@@ -198,7 +312,7 @@ var USAData = {
     "name": "USA",                    //出口国
     "chineseName": "美国",
     "type": "output",              //input是进口
-    "sum": 118.7,                      //进口或出口总和，不能为负数
+    "sum": 118.7,                      //进口或出口总和,不能为负数
     "sort": 2,                       //排序
     "data": [
         {"name": "Canada", "chineseName": "加拿大", "sort": 1, "value": 21.45,"sum":25},
@@ -274,7 +388,7 @@ var convertData2 = function (item) {
                 lineStyle:{
                     normal:{
                         width: dataItem.value/5,
-                        opacity: 0.6,    // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。
+                        opacity: 0.6,    // 图形透明度。支持从 0 到 1 的数字,为 0 时不绘制该图形。
                         curveness: 0.4
                     }
                 }
@@ -301,16 +415,16 @@ var series = [];
         zlevel: 1,  //线图所有图形的 zlevel 值。
         effect: {               //线特效的配置
             show: true,
-            period: 6,              //特效动画的时间，单位为 s。
-            trailLength: 0.7,       //特效尾迹的长度。取从 0 到 1 的值，数值越大尾迹越长。
+            period: 6,              //特效动画的时间,单位为 s。
+            trailLength: 0.7,       //特效尾迹的长度。取从 0 到 1 的值,数值越大尾迹越长。
             color: '#fff',
-            symbolSize: 3          //特效标记的大小，可以设置成诸如 10 这样单一的数字，也可以用数组分开表示高和宽，例如 [20, 10] 表示标记宽为20，高为10。
+            symbolSize: 3          //特效标记的大小,可以设置成诸如 10 这样单一的数字,也可以用数组分开表示高和宽,例如 [20, 10] 表示标记宽为20,高为10。
         },
-        lineStyle: {            //对 线 的各种设置 ：颜色，形状，曲度
+        lineStyle: {            //对 线 的各种设置 ：颜色,形状,曲度
             normal: {
                 color: color[i],
                 width: 0,           //线宽
-                curveness: 0.4  //边的曲度，支持从 0 到 1 的值，值越大曲度越大。0代表直线，1代表圆
+                curveness: 0.4  //边的曲度,支持从 0 到 1 的值,值越大曲度越大。0代表直线,1代表圆
             }
         },
         data: convertData(item[1])
@@ -331,7 +445,7 @@ var series = [];
             normal: {
                 color: color[i],
                 //width: 1,           //线宽与数值有关
-                opacity: 0.6,    // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。
+                opacity: 0.6,    // 图形透明度。支持从 0 到 1 的数字,为 0 时不绘制该图形。
                 curveness: 0.4
             }
         },
@@ -341,21 +455,21 @@ var series = [];
         //国家名字
         name: item[0] + ' Top5',
         type: 'effectScatter',              //带有涟漪特效动画的散点（气泡）图
-        coordinateSystem: 'geo',            //该系列使用的坐标系，可选： cartesian2d二维的直角坐标系   polar极坐标系  geo地理坐标系
+        coordinateSystem: 'geo',            //该系列使用的坐标系,可选： cartesian2d二维的直角坐标系   polar极坐标系  geo地理坐标系
         zlevel: 2,
         rippleEffect: {                     //涟漪特效相关配置
             brushType: 'stroke'             //波纹的绘制方式   可选 'stroke' 和 'fill'
         },
-        label: {                        //图形上的文本标签，可用于说明图形的一些数据信息，
+        label: {                        //图形上的文本标签,可用于说明图形的一些数据信息,
             normal: {
                 show: true,
                 position: 'right',      //标签的位置。
 
-                formatter: '{b}'           //标签内容格式器，支持字符串模板和回调函数两种形式，字符串模板与回调函数返回的字符串均支持用 \n 换行。
-                                            //模板变量有 {a}、{b}、{c}，分别表示系列名，数据名，数据值。
+                formatter: '{b}'           //标签内容格式器,支持字符串模板和回调函数两种形式,字符串模板与回调函数返回的字符串均支持用 \n 换行。
+                                            //模板变量有 {a}、{b}、{c},分别表示系列名,数据名,数据值。
             }
         },
-        symbolSize: function (val) {            //标记的大小，可以设置成诸如 10 这样单一的数字，也可以用数组分开表示宽和高
+        symbolSize: function (val) {            //标记的大小,可以设置成诸如 10 这样单一的数字,也可以用数组分开表示宽和高
             return val[2] ;
         },
         itemStyle: {
@@ -392,10 +506,10 @@ option = {
             color: '#fff'
         }
     },
-    tooltip : {  //提示框组件。  数据项图形触发，主要在散点图，饼图等无类目轴的图表中使用。
+    tooltip : {  //提示框组件。  数据项图形触发,主要在散点图,饼图等无类目轴的图表中使用。
         trigger: 'item'
     },
-    legend: {       //图例组件。图例组件展现了不同系列的标记(symbol)，颜色和名字。可以通过点击图例控制哪些系列不显示。
+    legend: {       //图例组件。图例组件展现了不同系列的标记(symbol),颜色和名字。可以通过点击图例控制哪些系列不显示。
         selected:{
             'China Top5':false,
             'USA Top5':false,

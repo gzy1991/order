@@ -20,4 +20,4 @@ def map2(request):
 
 def map3(request):
 
-    return render(request, 'echarts3.html')
+    return render(request, 'map1.html')

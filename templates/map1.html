@@ -4,12 +4,33 @@
        <meta charset="utf-8">
 </head>
 <body style="height: 100%; margin: 0;weight:100%">
-        <div id="tableContainer" >
 
 
+<style>
+    .padding0{
+        padding: 0;
+        padding-left: 0;
+        padding-right: 0;
+    }
+</style>
+
+<div class="row" style="height: 1000px;weight:100%">
+    <div class="form-group" style="height: 100%;weight:100%">
+        <div class="col-md-2 col-sm-2 col-xs-2  " id="tableDiv" style=" overflow-y:auto; overflow-x:auto;">
+            <!-- <div id="tableContainer" >
+            </div> -->
+             <table id="tableContainer"></table>
         </div>
+        <div class="col-md-10 col-sm-10 col-xs-10 padding0" style="padding: 0;height: 100%;weight:100%">
+            <div id="mapContainer" style="height: 100%;weight:100%">
+            </div>
+        </div>
+    </div>
+</div>
 
-       <div id="mapContainer" style="height: 100%;weight:100%"></div>
+
+
+
 
 
 
@@ -22,8 +43,11 @@
         <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/bmap.min.js"></script>
         <script type="text/javascript" src="../templates/resource/jquery/jquery.min.js"></script>
         <script type="text/javascript" src="../templates/resource/bootstrap/js/bootstrap.js"></script>
-        <link href="../templates/resource/bootstrap/css/bootstrap.css" rel="stylesheet" />
+        <link href="../templates/resource/bootstrap/css/bootstrap.css" rel="stylesheet" /><script type="text/javascript" src="../templates/resource/bootstrap-table/bootstrap-table.js"></script>
+        <link href="../templates/resource/bootstrap-table/bootstrap-table.css" rel="stylesheet" />
         <script type="text/javascript" src="../templates/map1.js"></script>
+        <script type="text/javascript" src="../templates/resource/bootstrap-table/bootstrap-table-zh-CN.js"></script>
+
 
 
 
