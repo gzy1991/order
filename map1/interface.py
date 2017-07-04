@@ -4,7 +4,10 @@ result = {
         "danwei": "",           # 单位  默认为空字符""
         "importCountryNum": 6, # 进口国家个数
         "exportCountryNum": 6, # 出口国家个数
-        "importData":[],        #进口数据
+        "importData":[
+
+
+        ],        #进口数据
         "exportData": [         #出口数据
             {
                 "name": "China",  # 出口国, 英文，
@@ -15,7 +18,7 @@ result = {
                 "countryNum": 5 ,# 显示的国家个数
                 "data":
                     [
-                    {"name": "a", "chineseName": "", "sort": 1, "value": 123},
+                    {"name": "a", "chineseName": "", "sort": 1, "value": 123,sum:23444},
                     {"name": "b", "chineseName": "", "sort": 2, "value": 34},
                     {"name": "c", "chineseName": "", "sort": 3, "value": 55}
                 ]

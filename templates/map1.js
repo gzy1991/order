@@ -3,12 +3,34 @@
  */
 
 
+/* 侧边栏切换形态 */
+/*$(".navbar-side a").click(function(){
+    $("body").toggleClass("sidebar-collapse");
+    if($("body").hasClass("sidebar-collapse")){
+        $(".sidebar > h4").html("表格");
+    }else{
+        $(".sidebar > h4").html("数据表格");
+    }
+    return false;
+})
+$(".sidenav>li>a").click(function(){
+    $(this).addClass("hover");
+    $(this).next().slideToggle();
+    $(this).parent().siblings().children("a").removeClass("hover").next().slideUp();
+
+})*/
+
 var browserHeight=$(window).height() ; //浏览器高度
 var browserWidth=$(window).width();//浏览器宽度
-$("div.form-group").height(browserHeight+"px");
-$("div.form-group").width(browserWidth+"px");
+/*$("div.form-group").height(browserHeight+"px");
+$("div.form-group").width(browserWidth+"px");*/
 
-$("#tableDiv").height(browserHeight+"px");
+/*$("div.main").height((browserHeight-100)+"px");*/
+
+/*$("#tableDiv").height((browserHeight-100)+"px");*/
+
+
+
 
 
 
@@ -20,92 +42,92 @@ $('#tableContainer').bootstrapTable({
     data: [
     {
         id: "2016年中国数据"
-        
+
     }, {
         id: '2016年全球数据数据'
     },
     {
         id: "2016年中国数据"
-        
+
     }, {
         id: '2016年全球数据数据'
     },{
         id: "2016年中国数据"
-        
-    }, 
+
+    },
     {
         id: "2016年中国数据"
-        
+
     }, {
         id: '2016年全球数据数据'
     },
     {
         id: "2016年中国数据"
-        
+
     }, {
         id: '2016年全球数据数据'
     },{
         id: "2016年中国数据"
-        
-    }, 
+
+    },
     {
         id: "2016年中国数据"
-        
+
     }, {
         id: '2016年全球数据数据'
     },
     {
         id: "2016年中国数据"
-        
+
     }, {
         id: '2016年全球数据数据'
     },{
         id: "2016年中国数据"
-        
-    }, 
+
+    },
     {
         id: "2016年中国数据"
-        
+
     }, {
         id: '2016年全球数据数据'
     },
     {
         id: "2016年中国数据"
-        
+
     }, {
         id: '2016年全球数据数据'
     },{
         id: "2016年中国数据"
-        
-    }, 
+
+    },
     {
         id: "2016年中国数据"
-        
+
     }, {
         id: '2016年全球数据数据'
     },
     {
         id: "2016年中国数据"
-        
+
     }, {
         id: '2016年全球数据数据'
     },{
         id: "2016年中国数据"
-        
+
     }, {
         id: "2016年中国数据"
-        
+
     }, {
         id: '2016年全球数据数据'
     },
     {
         id: "2016年中国数据"
-        
+
     }, {
         id: '2016年全球数据数据'
     },{
         id: "2016年中国数据"
-        
+
     }, {
         id: '2016年全球数据数据'
     }]
@@ -507,7 +529,9 @@ option = {
         }
     },
     tooltip : {  //提示框组件。  数据项图形触发,主要在散点图,饼图等无类目轴的图表中使用。
-        trigger: 'item'
+        trigger: 'item',
+
+
     },
     legend: {       //图例组件。图例组件展现了不同系列的标记(symbol),颜色和名字。可以通过点击图例控制哪些系列不显示。
         selected:{
@@ -515,7 +539,9 @@ option = {
             'USA Top5':false,
         },
         orient: 'vertical',//horizontal
-        top: 'bottom',
+        //top: 'bottom',
+        top: 'middle',
+
         left: 'right',
         data:['China Top5', 'USA Top5'],
         textStyle: {

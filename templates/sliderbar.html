@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+	
+	<head>
+       <meta charset="utf-8">
+       <link href="../templates/sliderbar.css" rel="stylesheet" />
+	</head>
+
+	<body>
+		<div class="container-fluid">
+	    <div class="row">
+	        <!-- 侧边栏 -->
+	        <div class="sidebar">
+	            <h4>数据展示</h4>
+	            <div class="cover">
+	                <h2><img class="img-circle" src="images/icon_face.jpg"/></h2>
+	                <b>Hi~ 小主</b>
+	                <p>超级管理员</p>
+	            </div>
+	            
+
+
+	            <div class="main-title">
+					<ul class="nav navbar-nav navbar-left navbar-side">
+						<li><a href=""><i class="icon  icon-heart"></i></a></li>
+					</ul>		
+				</div>
+
+	        </div>
+	        <!-- 侧边栏 完-->
+	<!-- 主体部分  -->
+	        <div class="main">   
+
+		        主体部分的内容
+			</div>
+</body>
+
+
+
+<script type="text/javascript" src="../templates/resource/jquery/jquery.min.js"></script>
+        <script type="text/javascript" src="../templates/resource/bootstrap/js/bootstrap.js"></script>
+        <link href="../templates/resource/bootstrap/css/bootstrap.css" rel="stylesheet" /><script type="text/javascript" src="../templates/resource/bootstrap-table/bootstrap-table.js"></script>
+        <link href="../templates/resource/bootstrap-table/bootstrap-table.css" rel="stylesheet" />
+<script type="text/javascript">
+	
+/* 侧边栏切换形态 */
+$(".navbar-side a").click(function(){
+    $("body").toggleClass("sidebar-collapse");
+    if($("body").hasClass("sidebar-collapse")){
+        $(".sidebar > h4").html("博客");
+    }else{
+        $(".sidebar > h4").html("博客管理系统(四月)");
+    }
+    return false;
+})
+
+$(".sidenav>li>a").click(function(){
+    $(this).addClass("hover");
+    $(this).next().slideToggle();    
+    $(this).parent().siblings().children("a").removeClass("hover").next().slideUp();
+    
+})
+
+
+</script>
+</html>
