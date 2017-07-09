@@ -1,0 +1,146 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>图形展示</title>
+<style>
+ .tabldTitle{
+    font-size: 20px;
+    font-weight: normal;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+ 	}
+ 	td{  
+    white-space:nowrap;text-overflow:ellipsis;
+  }  
+</style>
+</head>
+<div id="bodyId" class="row">
+    <div>
+        <div class="col-md-2 col-sm-2 col-xs-2" id="tableDiv" style="overflow-y:auto; overflow-x:auto;background:#e8e8e8;">
+             <button id="button" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" style="margin-top:2px;margin-left:5px;float:left;">新增</button>
+             <span id="hideList" style="float:right;cursor: pointer;"><img src="left.png" title="缩进"/></span>
+             <table id="tableContainer"></table>
+        </div>
+        </div>
+        <div class="col-md-10 col-sm-10 col-xs-10" id="mapDiv" style="padding: 0;height: 100%;weight:100%">
+            <div id="mapContainer" style="height: 100%;weight:100%">
+            </div>
+        </div>
+    </div>
+</div>
+  <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts-all-3.js"></script>
+  <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-stat/ecStat.min.js"></script>
+  <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/dataTool.min.js"></script>
+  <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/china.js"></script>
+  <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/world.js"></script>
+  <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=ZUONbpqGBsYGXNIYHicvbAbM"></script>
+  <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/bmap.min.js"></script>
+  <script type="text/javascript" src="../templates/resource/jquery/jquery.min.js"></script>
+  <script type="text/javascript" src="../templates/resource/bootstrap/js/bootstrap.js"></script>
+  <link href="../templates/resource/bootstrap/css/bootstrap.css" rel="stylesheet" /><script type="text/javascript" src="../templates/resource/bootstrap-table/bootstrap-table.js"></script>
+  <link href="../templates/resource/bootstrap-table/bootstrap-table.css" rel="stylesheet" />
+  <link href="../templates/bootstrapValidator.min.css" rel="stylesheet" />
+  <script type="text/javascript" src="../templates/demo.js"></script>
+  <script type="text/javascript" src="../templates/contray.js"></script>
+  <script type="text/javascript" src="../templates/bootstrapValidator.min.js"></script>
+  <script type="text/javascript" src="../templates/resource/bootstrap-table/bootstrap-table-zh-CN.js"></script>
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">  
+    <div class="modal-dialog" role="document">  
+        <div class="modal-content">  
+            <div class="modal-header">  
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">  
+                    <span aria-hidden="true">×</span>  
+                </button>  
+                <h4 class="modal-title" id="myModalLabel">标题--新增</h4>  
+            </div>  
+            <div class="modal-body">  
+              <form class="form-horizontal" id="saveadmin_form"
+                  name="form-horizontal">
+                  <input type="hidden" id="adminid" />
+                  <div class="box-body">
+                      <dl class="dl-horizontal">
+                          <div class="form-group">
+                              <div class="col-sm-10">
+                                  <dt>管理员名</dt>
+                                  <dd>
+                                      <lable id="edit_show_adminname"></lable>
+                                      <input type="text" class="form-control" id="edit_adminName"
+                                          name="edit_adminName" data-bv-notempty="true"
+                                          name="edit_adminName">
+                                  </dd>
+                              </div>
+                          </div>
+                          <div class="form-group">
+                              <div class="col-sm-10">
+                                  <dt>显示名</dt>
+                                  <dd>
+                                    <input type="text" name="edit_displayName"
+                                        class="form-control" id="edit_displayName">
+                                  </dd>
+                              </div>
+                          </div>
+                          <div class="form-group">
+                              <div class="col-sm-10">
+                                  <dt>文件上传1</dt>
+                                  <dd>
+                                  	<input type="file"  id="inputcsv1" name="inputcsv1" >
+                                  </dd>
+                              </div>
+                          </div>
+                          <div class="form-group">
+                              <div class="col-sm-10">
+                                  <dt>文件上传2</dt>
+                                  <dd>
+                                  	<input type="file"  id="inputcsv2" name="inputcsv2" >
+                                  </dd>
+                              </div>
+                          </div>
+                          <div class="form-group">
+                              <div class="col-sm-10">
+                                  <dt>文件上传3</dt>
+                                  <dd>
+                                  	<input type="file"  id="inputcsv3" name="inputcsv3" >
+                                  </dd>
+                              </div>
+                          </div>
+                      </dl>
+                  </div>
+			            <div class="modal-footer">
+			                <button onclick="saveAdmin()" type="button" class="btn btn-success">
+			                    <i class="fa fa-check"></i> 保存
+			                </button>
+			                <button type="button" class="btn btn-danger" data-dismiss="modal">
+			                    <i class="fa fa-times"></i> 关闭
+			                </button>
+			            </div>
+      				</form>
+            </div>   
+        </div>  
+    </div>  
+	</div> 
+	</body>
+	<script type="text/javascript">
+		//该数据为初始化ajax加载进来的，这里用作测试使用
+		var datas = [{id:'中华人名共和国',title:'111111'},{id:'美利坚合众国',title:'hhhhh'},{id:'小日本',title:'ffffff'}
+								,{id:'中华人名共和国',title:'111111'},{id:'美利坚合众国',title:'hhhhh'},{id:'小日本',title:'ffffff'}
+								,{id:'中华人名共和国',title:'111111'},{id:'美利坚合众国',title:'hhhhh'},{id:'小日本',title:'ffffff'}
+								,{id:'中华人名共和国',title:'111111'},{id:'美利坚合众国',title:'hhhhh'},{id:'小日本',title:'ffffff'}
+								,{id:'中华人名共和国',title:'111111'},{id:'美利坚合众国',title:'hhhhh'},{id:'小日本',title:'ffffff'}
+								,{id:'中华人名共和国',title:'111111'},{id:'美利坚合众国',title:'hhhhh'},{id:'小日本',title:'ffffff'}];
+	
+		//初始化加载数据并保存
+		initLoadResultFile();
+		
+		//页面加载完
+		$(function(){
+	    adjustScrollPage();
+			initEvent();
+	    $(".fixed-table-body").css("overflow", "hidden");
+	    $("#tableContainer > tbody > tr > td").css("cursor", "pointer");
+	    $(".th-inner").css("background", "#00bfa5");
+		});
+	</script>
+</html>
