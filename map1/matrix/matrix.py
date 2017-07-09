@@ -30,6 +30,9 @@ with open(filename) as f:
     except csv.Error as e:
         sys.exit('file {}, line {}: {}'.format(filename, reader.line_num, e))
 E = np.array(E)
+if(E.size == 4916):
+    E = E[0:4915]
+    print("E.csv,shape : ", E.shape)
 end =time.time()
 print ("E.csv读取完成：",E.shape)
 print("耗时：",(end - start)//1,"秒 ，时间：",time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),'\n','**********************************')

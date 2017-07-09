@@ -56,8 +56,9 @@ arr=array(range(5))
 print("arr: ",arr)
 print("arr.shape",shape(arr))
 if(arr.size == 5):
-
     print(arr.size)
+    arr=arr[0:4]
+    print("arr.shape", shape(arr))
 
 # arr.reshape(-1,1)
 # print(shape(arr))
