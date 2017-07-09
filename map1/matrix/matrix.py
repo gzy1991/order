@@ -1,16 +1,22 @@
 import numpy as np
 import pandas as pd
 import csv, sys
-
+import time
 # E  :  E.csv
 # matrix :data.csv，，     T
 # matrix_1: matrix的行和
 # FD  :    FD.csv          FD
 
 #
+#  start =time.time()
+# 	time.sleep(2)
+# 	end =time.time()
+# 	print("运行时间",(end - start)//1)
 
 E = []
 filename = 'C:/work/data/E.csv'
+print('**********************************')
+start =time.time()
 with open(filename) as f:
     reader = csv.reader(f)
     try:
@@ -24,21 +30,27 @@ with open(filename) as f:
     except csv.Error as e:
         sys.exit('file {}, line {}: {}'.format(filename, reader.line_num, e))
 E = np.array(E)
+end =time.time()
 print ("E.csv读取完成：",E.shape)
+print("耗时：",(end - start)//1,"秒 ，时间：",time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),'\n','**********************************')
 
 # print E, type(E), E.T, type(E[31]), len(E)
+start =time.time()
 matrix = np.loadtxt('C:/work/data/data.csv', delimiter=',', skiprows=0)
 # matrix = np.mat(matrix)
+end =time.time()
 print ("data.csv读取完成：",matrix.shape)  # 4915*4915
-
+print("耗时：",(end - start)//1,"秒，时间： ",time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),'\n','**********************************')
 matrix_1 = np.zeros((4915, 1))         #matrix的行和
 for i in range(0, 4915):
     matrix_1[i][0] = matrix[i, :].sum()
 # print matrix_1, matrix_1.shape
 
+start =time.time()
 FD = np.loadtxt('C:/work/data/FD.csv', delimiter=',',skiprows=0)    # 4915*1140
+end =time.time()
 print ("FD.csv读取完成 ，shape: %s" % str(FD.shape))
-
+print("耗时：",(end - start)//1,"秒 ，时间：",time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),'\n','**********************************')
 FD_1 = np.zeros((4915, 1))              #FD 的行和
 for i in range(0, 4915):
     FD_1[i][0] = FD[i, :].sum()
@@ -54,7 +66,7 @@ Z = X_1 - matrix                                  # Z=X1-T;
 # print Z
 Z1 = np.linalg.pinv(Z)                              # Z1=pinv(Z); 伪逆矩阵
 # print Z1.shape, (E.T).shape
-it = (E.T).dot(Z1)  # 4915*4915     #  int=E'*Z1;  .T:转置矩阵     ,  .dot :矩阵的乘积
+it = (E.reshape(-1,1).T).dot(Z1)  # 4915*4915     #  int=E'*Z1;  .T:转置矩阵     ,  .dot :矩阵的乘积
 print ("it 的shape:",it.shape," , np 的shape:", np.diag(it))
 T_2 = np.diag(it).dot(matrix)  # 4915*4915          #T2=diag(int)*T;
 print (T_2.shape, np.diag(it).shape)
@@ -105,36 +117,36 @@ for i in range(0, 190):
 Ex_1 = np.diag(Ex[:, 0])                                # Ex1=diag(Ex(:,1));
 Ex_2 = Ex_1 - Tot                                       # Ex2=Ex1-Tot;
 
-Ex_3 = np.diag(Ex[:, 1])
-Ex_4 = Ex_3 - T_4
+Ex_3 = np.diag(Ex[:, 1])                             #Ex3=diag(Ex(:,2));
+Ex_4 = Ex_3 - T_4                                       #Ex4=Ex3-T4;
 
-Ex_5 = np.diag(Ex[:, 2])
-Ex_6 = Ex_5 - FD_4
+Ex_5 = np.diag(Ex[:, 2])                                #Ex5=diag(Ex(:,3));
+Ex_6 = Ex_5 - FD_4                                      #Ex6=Ex5-FD4;
 
-Im_1 = np.diag(Im[:, 0])
-Im_2 = Im_1 - Tot
+Im_1 = np.diag(Im[:, 0])                                #Im1=diag(Im(:,1));
+Im_2 = Im_1 - Tot                                       # Im2=Im1-Tot;
 
-Im_3 = np.diag(Im[:, 1])
-Im_4 = Im_3 - T_4
+Im_3 = np.diag(Im[:, 1])                                #Im3=diag(Im(:,2));
+Im_4 = Im_3 - T_4                                       #Im4=Im3-T4;
 
-Im_5 = np.diag(Im[:, 2])
-Im_6 = Im_5 - FD_4
+Im_5 = np.diag(Im[:, 2])                                # Im5=diag(Im(:,3));
+Im_6 = Im_5 - FD_4                                      #Im6=Im5-FD4;
 
 Tra = np.zeros((190, 6))
 for i in range(0, 190):
-    Tra[i][0] = Ex_2[i][i]
-    Tra[i][1] = Im_2[i][i]
-    Tra[i][2] = Ex_4[i][i]
-    Tra[i][3] = Im_4[i][i]
-    Tra[i][4] = Ex_6[i][i]
-    Tra[i][5] = Im_6[i][i]
+    Tra[i][0] = Ex_2[i][i]                              #Tra(i,1)=Ex2(i,i);
+    Tra[i][1] = Im_2[i][i]                              #Tra(i,2)=Im2(i,i);
+    Tra[i][2] = Ex_4[i][i]                              #Tra(i,3)=Ex4(i,i);
+    Tra[i][3] = Im_4[i][i]                              #Tra(i,4)=Im4(i,i);
+    Tra[i][4] = Ex_6[i][i]                              #Tra(i,5)=Ex6(i,i);
+    Tra[i][5] = Im_6[i][i]                              #Tra(i,6)=Im6(i,i);
 
-a1 = T_2.sum()
-a2 = T_3.sum()
-a3 = T_4.sum()
-b1 = FD_2.sum()
-b2 = FD_3.sum()
-b3 = FD_4.sum()
+a1 = T_2.sum()                                          #a1=sum(sum(T2));;
+a2 = T_3.sum()                                          #a2=sum(sum(T3));;
+a3 = T_4.sum()                                          #a3=sum(sum(T4));;
+b1 = FD_2.sum()                                          #b1=sum(sum(T2));;
+b2 = FD_3.sum()                                          #b2=sum(sum(T3));;
+b3 = FD_4.sum()                                          # b3=sum(sum(T4));;
 
 print( Tra)
 print("END")
