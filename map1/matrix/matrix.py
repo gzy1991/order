@@ -71,9 +71,11 @@ Z1 = np.linalg.pinv(Z)                              # Z1=pinv(Z); 伪逆矩阵
 # print Z1.shape, (E.T).shape
 it = (E.reshape(-1,1).T).dot(Z1)  # 4915*4915     #  int=E'*Z1;  .T:转置矩阵     ,  .dot :矩阵的乘积
 print ("it 的shape:",it.shape," , np 的shape:", np.diag(it))
-T_2 = np.diag(it).dot(matrix)  # 4915*4915          #T2=diag(int)*T;
+#T_2 = np.diag(it).dot(matrix)  # 4915*4915          #T2=diag(int)*T;
+T_2 = np.diag(tuple(it.tolist()[0])).dot(matrix)
 print (T_2.shape, np.diag(it).shape)
-FD_2 = np.diag(it).dot(FD)                          # FD2=diag(int)*FD;
+#FD_2 = np.diag(it).dot(FD)                          # FD2=diag(int)*FD;
+FD_2 = np.diag(tuple(it.tolist()[0])).dot(FD)                          # FD2=diag(int)*FD;
 T_3 = np.zeros((4914, 189))                         # 4914*189的 全0 矩阵
 for i in range(0, 4914):
     for j in range(0, 189):
@@ -106,7 +108,11 @@ for i in range(0, 189):
 for i in range(0, 190):
     FD_4[189][i] = FD_2[4913, i*6:(i+1)*6-1].sum(0)      # FD4(190,i)=sum(FD2(4915,(i-1)*6+1:i*6));
 Tot = FD_4 + T_4                                         # Tot=FD4+T4;
+
+#FD_ = np.diag(FD_4)                                      # FD_=diag(FD4);
 FD_ = np.diag(FD_4)                                      # FD_=diag(FD4);
+#tuple(FD_4.tolist()[0])
+
 Ex = np.zeros((190, 3))
 Im = np.zeros((190, 3))
 for i in range(0, 190):

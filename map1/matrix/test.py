@@ -60,6 +60,11 @@ if(arr.size == 5):
     arr=arr[0:4]
     print("arr.shape", shape(arr))
 
+#
+tup=(1,2,3)
+print("diag函数：\n",np.diag(tup),"\nshape:\n",np.diag((1,2,3)).shape)
+
+
 # arr.reshape(-1,1)
 # print(shape(arr))
 # print(shape(arr.reshape(-1,1).T))
