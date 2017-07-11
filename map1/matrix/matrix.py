@@ -13,6 +13,7 @@ import time
 # 	end =time.time()
 # 	print("运行时间",(end - start)//1)
 
+start_all =time.time()
 E = []
 filename = 'C:/work/data/E.csv'
 print('**********************************')
@@ -63,7 +64,8 @@ print("FD_1 shape:",str(FD_1.shape) )
 
 X = matrix_1 + FD_1                             #  X=T1+FD1;
 
-X_1 = np.diag(X)                                  # X1=diag(X);矩阵的对角线元素
+#X_1 = np.diag(X)                                  # X1=diag(X);矩阵的对角线元素
+X_1=np.diag(np.diag(X))
 # print np.array(X_1).shape
 Z = X_1 - matrix                                  # Z=X1-T;
 # print Z
@@ -110,8 +112,12 @@ for i in range(0, 190):
 Tot = FD_4 + T_4                                         # Tot=FD4+T4;
 
 #FD_ = np.diag(FD_4)                                      # FD_=diag(FD4);
-FD_ = np.diag(FD_4)                                      # FD_=diag(FD4);
+#FD_ = np.diag(FD_4)                                      # FD_=diag(FD4);
+
 #tuple(FD_4.tolist()[0])
+#np.diag(tuple(FD_4.tolist()))
+FD_ =np.diag(tuple(np.diag(FD_4).tolist()))
+
 
 Ex = np.zeros((190, 3))
 Im = np.zeros((190, 3))
@@ -158,4 +164,7 @@ b2 = FD_3.sum()                                          #b2=sum(sum(T3));;
 b3 = FD_4.sum()                                          # b3=sum(sum(T4));;
 
 print( Tra)
+print("END")
+end_all =time.time()
+print("总体耗时：",(end_all-start_all)//1,"秒")
 print("END")

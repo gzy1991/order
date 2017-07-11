@@ -2,7 +2,7 @@ from numpy import *
 import numpy as np
 import pandas as pd
 import csv, sys
-
+import time
 # E  :  E.csv
 #
 #
@@ -72,3 +72,6 @@ print("diag函数：\n",np.diag(tup),"\nshape:\n",np.diag((1,2,3)).shape)
 # arr=array([[1,2,3], [4,5,6]])
 # print(arr)
 # print(shape(arr))
+start =time.time()
+end =time.time()
+print("耗时：",(end - start)//1,"秒 ，时间：",time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),'\n','**********************************')
