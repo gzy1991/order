@@ -75,3 +75,11 @@ print("diag函数：\n",np.diag(tup),"\nshape:\n",np.diag((1,2,3)).shape)
 start =time.time()
 end =time.time()
 print("耗时：",(end - start)//1,"秒 ，时间：",time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),'\n','**********************************')
+
+
+#导出到哦csv
+my_matrix=np.array([[1, 2], [3, 4]])
+print(my_matrix)
+outFile='C:/work/data/'+'outFile1'+'.csv'
+np.savetxt(outFile,my_matrix)
+

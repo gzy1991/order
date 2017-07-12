@@ -116,8 +116,8 @@ Tot = FD_4 + T_4                                         # Tot=FD4+T4;
 
 #tuple(FD_4.tolist()[0])
 #np.diag(tuple(FD_4.tolist()))
-FD_ =np.diag(tuple(np.diag(FD_4).tolist()))
-
+#FD_ =np.diag(tuple(np.diag(FD_4).tolist()))
+FD_ =np.diag(FD_4)  #190*1矩阵
 
 Ex = np.zeros((190, 3))
 Im = np.zeros((190, 3))
@@ -166,5 +166,12 @@ b3 = FD_4.sum()                                          # b3=sum(sum(T4));;
 print( Tra)
 print("END")
 end_all =time.time()
+Tra=np.concatenate((Tra,FD_.reshape(-1,1)),axis=1)          #Tra与FD_拼接 成190*7的矩阵
 print("总体耗时：",(end_all-start_all)//1,"秒")
 print("END")
+
+#导出数据
+outFile='C:/work/data/'+'outFile1'+'.csv'
+
+
+
