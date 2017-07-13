@@ -171,7 +171,17 @@ print("总体耗时：",(end_all-start_all)//1,"秒")
 print("END")
 
 #导出数据
-outFile='C:/work/data/'+'outFile1'+'.csv'
+# outFile='C:/work/data/'+'outFile1'+'.csv'
 
+writer = pd.ExcelWriter('C:/work/data/'+'outFile2.xlsx')
+T4_df   =pd.DataFrame(T_4)
+FD4_df  =pd.DataFrame(FD_4)
+Tra_df  =pd.DataFrame(Tra)
+FD__df  =pd.DataFrame(FD_)
 
+T4_df.to_excel(writer,"T4")
+FD4_df.to_excel(writer,"FD4")
+Tra_df.to_excel(writer,"Tra")
+FD__df.to_excel(writer,"FD_")
 
+writer.save()
