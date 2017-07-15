@@ -17,20 +17,21 @@
   }  
 </style>
 </head>
-<div id="bodyId" class="row">
-    <div>
-        <div class="col-md-2 col-sm-2 col-xs-2" id="tableDiv" style="overflow-y:auto; overflow-x:auto;background:#e8e8e8;">
-             <button id="button" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" style="margin-top:2px;margin-left:5px;float:left;">新增</button>
-             <span id="hideList" style="float:right;cursor: pointer;"><img src="left.png" title="缩进"/></span>
-             <table id="tableContainer"></table>
-        </div>
-        </div>
-        <div class="col-md-10 col-sm-10 col-xs-10" id="mapDiv" style="padding: 0;height: 100%;weight:100%">
-            <div id="mapContainer" style="height: 100%;weight:100%">
-            </div>
-        </div>
-    </div>
-</div>
+  <div id="bodyId" class="row">
+      <div>
+          <div class="col-md-2 col-sm-2 col-xs-2" id="tableDiv" style="overflow:auto;background:#e8e8e8;">
+            <button id="button" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" style="margin-top:2px;margin-left:5px;float:left;">新增</button>
+            <button id="delBtn" type="button" class="btn btn-danger"  style="margin-top:2px;margin-left:5px;float:left;" onclick="delBtnFn()">删除</button>
+            <span id="hideList" style="float:right;cursor: pointer;"><img src="left.png" title="缩进"/></span>
+            <table id="tableContainer"></table>
+          </div>
+          </div>
+          <div class="col-md-10 col-sm-10 col-xs-10" id="mapDiv" style="padding: 0;height: 100%;weight:100%">
+              <div id="mapContainer" style="height: 100%;weight:100%">
+              </div>
+          </div>
+      </div>
+  </div>
   <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts-all-3.js"></script>
   <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-stat/ecStat.min.js"></script>
   <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/dataTool.min.js"></script>
@@ -43,6 +44,8 @@
   <link href="../templates/resource/bootstrap/css/bootstrap.css" rel="stylesheet" /><script type="text/javascript" src="../templates/resource/bootstrap-table/bootstrap-table.js"></script>
   <link href="../templates/resource/bootstrap-table/bootstrap-table.css" rel="stylesheet" />
   <link href="../templates/bootstrapValidator.min.css" rel="stylesheet" />
+  <link href="../templates/popup.css" rel="stylesheet" />
+  <script type="text/javascript" src="../templates/popup.js"></script>
   <script type="text/javascript" src="../templates/demo.js"></script>
   <script type="text/javascript" src="../templates/contray.js"></script>
   <script type="text/javascript" src="../templates/bootstrapValidator.min.js"></script>
@@ -64,7 +67,7 @@
                       <dl class="dl-horizontal">
                           <div class="form-group">
                               <div class="col-sm-10">
-                                  <dt>管理员名</dt>
+                                  <dt>主题：</dt>
                                   <dd>
                                       <lable id="edit_show_adminname"></lable>
                                       <input type="text" class="form-control" id="edit_adminName"
@@ -75,7 +78,7 @@
                           </div>
                           <div class="form-group">
                               <div class="col-sm-10">
-                                  <dt>显示名</dt>
+                                  <dt>单位：</dt>
                                   <dd>
                                     <input type="text" name="edit_displayName"
                                         class="form-control" id="edit_displayName">
@@ -124,12 +127,12 @@
 	</body>
 	<script type="text/javascript">
 		//该数据为初始化ajax加载进来的，这里用作测试使用
-		var datas = [{id:'中华人名共和国',title:'111111'},{id:'美利坚合众国',title:'hhhhh'},{id:'小日本',title:'ffffff'}
-								,{id:'中华人名共和国',title:'111111'},{id:'美利坚合众国',title:'hhhhh'},{id:'小日本',title:'ffffff'}
-								,{id:'中华人名共和国',title:'111111'},{id:'美利坚合众国',title:'hhhhh'},{id:'小日本',title:'ffffff'}
-								,{id:'中华人名共和国',title:'111111'},{id:'美利坚合众国',title:'hhhhh'},{id:'小日本',title:'ffffff'}
-								,{id:'中华人名共和国',title:'111111'},{id:'美利坚合众国',title:'hhhhh'},{id:'小日本',title:'ffffff'}
-								,{id:'中华人名共和国',title:'111111'},{id:'美利坚合众国',title:'hhhhh'},{id:'小日本',title:'ffffff'}];
+		var datas = [{id:'2016年中国数据',title:'111111'},{id:'2016年全球数据',title:'hhhhh'},{id:'2016年美国数据',title:'ffffff'}
+								,{id:'2016年中国数据',title:'111111'},{id:'2016年全球数据',title:'hhhhh'},{id:'2016年美国数据',title:'ffffff'}
+								,{id:'2016年中国数据',title:'111111'},{id:'2016年全球数据',title:'hhhhh'},{id:'2016年美国数据',title:'ffffff'}
+								,{id:'2016年中国数据',title:'111111'},{id:'2016年全球数据',title:'hhhhh'},{id:'2016年美国数据',title:'ffffff'}
+								,{id:'2016年中国数据',title:'111111'},{id:'2016年全球数据',title:'hhhhh'},{id:'2016年美国数据',title:'ffffff'}
+								,{id:'2016年中国数据',title:'111111'},{id:'2016年全球数据',title:'hhhhh'},{id:'2016年美国数据',title:'ffffff'}];
 	
 		//初始化加载数据并保存
 		initLoadResultFile();
@@ -140,7 +143,7 @@
 			initEvent();
 	    $(".fixed-table-body").css("overflow", "hidden");
 	    $("#tableContainer > tbody > tr > td").css("cursor", "pointer");
-	    $(".th-inner").css("background", "#00bfa5");
+	    //$(".th-inner").css("background", "#00bfa5");
 		});
 	</script>
 </html>

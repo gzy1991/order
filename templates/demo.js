@@ -1,5 +1,5 @@
 /**
- * Created by  on 2017/6/12.
+ * Created by  on 2017/7/9.
  */
 
 
@@ -131,18 +131,18 @@ function genSeries(dates) {
 	        //移动的亮点
 	        name: item[0] + ' Top5',
 	        type: 'lines',
-	        zlevel: 1,  													//线图所有图形的 zlevel 值。
-	        effect: {              								//线特效的配置
+	        zlevel: 1,  									//线图所有图形的 zlevel 值。
+	        effect: {              							//线特效的配置
 	            show: true,
-	            period: 6,              					//特效动画的时间,单位为 s。
+	            period: 1,              					//特效动画的时间,单位为 s。
 	            color: '#fff',
 	            symbolSize: 3          						//特效标记的大小,可以设置成诸如 10 这样单一的数字,也可以用数组分开表示高和宽,例如 [20, 10] 表示标记宽为20,高为10。
 	        },
-	        lineStyle: {            							//对 线 的各种设置 ：颜色,形状,曲度
+	        lineStyle: {            						//对线的各种设置 ：颜色,形状,曲度
 	            normal: {
 	                color: color[i],
 	                width: 0,           					//线宽
-	                curveness: 0.4  							//边的曲度,支持从 0 到 1 的值,值越大曲度越大。0代表直线,1代表圆
+	                curveness: 0.4  						//边的曲度,支持从 0 到 1 的值,值越大曲度越大。0代表直线,1代表圆
 	            }
 	        },
 	        data: convertData(item[1])
@@ -163,7 +163,7 @@ function genSeries(dates) {
 	            normal: {
 	                color: color[i],
 	                //width: 1,           					//线宽与数值有关
-	                opacity: 0.6,    								// 图形透明度。支持从 0 到 1 的数字,为 0 时不绘制该图形。
+	                opacity: 0.6,    						//图形透明度。支持从 0 到 1 的数字,为 0 时不绘制该图形。
 	                curveness: 0.4
 	            }
 	        },
@@ -178,16 +178,16 @@ function genSeries(dates) {
 	        rippleEffect: {                     		//涟漪特效相关配置
 	            brushType: 'stroke'             		//波纹的绘制方式   可选 'stroke' 和 'fill'
 	        },
-	        label: {                        				//图形上的文本标签,可用于说明图形的一些数据信息,
+	        label: {                        			//图形上的文本标签,可用于说明图形的一些数据信息,
 	            normal: {
 	                show: true,
-	                position: 'right',      				//标签的位置。
+	                position: 'right',      			//标签的位置。
 	
 	                formatter: '{b}'           			//标签内容格式器,支持字符串模板和回调函数两种形式,字符串模板与回调函数返回的字符串均支持用 \n 换行。
 	                                            		//模板变量有 {a}、{b}、{c},分别表示系列名,数据名,数据值。
 	            }
 	        },
-	        symbolSize: function (val) {            //标记的大小,可以设置成诸如 10 这样单一的数字,也可以用数组分开表示宽和高
+	        symbolSize: function (val) {            	//标记的大小,可以设置成诸如 10 这样单一的数字,也可以用数组分开表示宽和高
 	            return val[2] ;
 	        },
 	        itemStyle: {
@@ -220,7 +220,7 @@ option = {
             color: '#fff'
         }
     },
-    tooltip : {  														//提示框组件。  数据项图形触发,主要在散点图,饼图等无类目轴的图表中使用。
+    tooltip : {  													//提示框组件。  数据项图形触发,主要在散点图,饼图等无类目轴的图表中使用。
         trigger: 'item'
     },
     legend: {       												//图例组件。图例组件展现了不同系列的标记(symbol),颜色和名字。可以通过点击图例控制哪些系列不显示。
@@ -236,7 +236,7 @@ option = {
             color: '#fff'
         },
 
-        selectedMode: 'multiple' 						//single    false  multiple	
+        selectedMode: 'multiple' 									//single    false  multiple	
     },
 geo: {
         map: 'world',//china
@@ -248,11 +248,11 @@ geo: {
                 show: true
             }
         },
-        roam: true,         								//是否开启鼠标缩放和平移漫游
+        roam: true,         										//是否开启鼠标缩放和平移漫游
         itemStyle: {
             normal: {
-                areaColor: '#323c48',       //地图区域的颜色。
-                borderColor: '#404a59'  		//fff  404a59   描边颜色
+                areaColor: '#323c48',       						//地图区域的颜色。
+                borderColor: '#404a59'  							//fff  404a59   描边颜色
             },
             emphasis: {
                 areaColor: '#2a333d'
@@ -338,44 +338,46 @@ function formValidator(){
 }
 
 //页面自适应
-function adjustScrollPage() {
-		var windowEl = $(window);
-		var windowH = windowEl.height();
+var adjustScrollPage = function() {
+	var windowEl = $(window);
+	var windowH = windowEl.height();
     var windowW = windowEl.width();
     $('#bodyId').css('height', windowH).css('width', windowW);
     $("#tableDiv").css("height", windowH);
     setTimeout(function(){
-    	 dom.style.width = (window.innerWidth - $("#tableDiv").width())+'px';
-    	 dom.style.height = (window.innerHeight - 5)+'px';
+		dom.style.width = (window.innerWidth - $("#tableDiv").width())+'px';
+		dom.style.height = (window.innerHeight - 5)+'px';
     	 
-    	 myChart.resize();
-			 if (option && typeof option === "object") {
-				 option.title.text = '123123';
-				 option.title.subtext = '12312312';
-				 genSeries([['China', CNData], ['USA', USAData]]);
-				 option.legend.data = ['China Top5', 'USA Top5'];
-		     myChart.setOption(option, true);
-			 }
+    	myChart.resize();
+		if (option && typeof option === "object") {
+			option.title.text = '世界各国进出口';
+			option.title.subtext = '单位：千亿美元';
+			genSeries([['China', CNData], ['USA', USAData]]);
+			option.legend.data = ['China Top5', 'USA Top5'];
+	    	myChart.setOption(option, true);
+		}
     },100);
 }
 
 //初始化渲染表格数据
-function initTable(datas) {
+var initTable = function(datas) {
 	$("#tableDiv").css("padding-right", 0);
-		$('#tableContainer').bootstrapTable({
-				striped: true,
-				cardView: false,
-				width:30,
-		    columns: [{
-		        field: 'id',
-		        title: '<span class="tabldTitle"">地图的左侧标题</span>'
-		    }],
-		    data: datas
-		});
+	$('#tableContainer').bootstrapTable({
+		striped: true,
+		cardView: false,
+		width:30,
+	    columns: [{  
+            checkbox: true  
+        },{
+	        field: 'id',
+	        title: '<span class="tabldTitle">世界各国进出口</span>'
+	    }],
+	    data: datas
+	});
 }
 
 //初始化事件绑定
-function initEvent() {
+var initEvent = function() {
 	//新增提交
 	$("#commitBtn").bind('click', function(){
 		$("#addForm").submit();
@@ -388,26 +390,27 @@ function initEvent() {
 		if($(".bootstrap-table").css("display") == 'none') {
 			$(".bootstrap-table").show();
 			$("#tableDiv").css("width", "16.66666667%");
-		  $("#mapDiv").css("width", "83.33333333%");
-		  $("#hideList > img").attr("src", "left.png").attr("title", "缩进");
-		  $("#button").show();
+			$("#mapDiv").css("width", "83.33333333%");
+			$("#hideList > img").attr("src", "left.png").attr("title", "缩进");
+			$("#button").show();
+			$("#delBtn").show();
 		}else {
 			$(".bootstrap-table").hide();
-		  $("#tableDiv").css("width", "3%");
-		  $("#tableDiv1").show();
-		  $("#mapDiv").css("width", "97%");
-		  $("#hideList > img").attr("src", "right.png").attr("title", "展开");
-		  $("#button").hide();
+		  	$("#tableDiv").css("width", "3%");
+			$("#mapDiv").css("width", "97%");
+			$("#hideList > img").attr("src", "right.png").attr("title", "展开");
+			$("#button").hide();
+			$("#delBtn").hide();
 		}
-    adjustScrollPage();
+   	 	adjustScrollPage();
 	});
 	
 	//单据左侧列表触发click
 	$("#tableContainer td").bind("click", function(e){
 		var tar = e.target;
 		//在这里设置右侧地图的标题
-		option.title.text = '111111';
-		option.title.subtext = '2222222';
+		option.title.text = $(tar)[0].innerText;
+		option.title.subtext = '单位：' + $(tar).parent().attr("data-index") + '万亿美元';
 		genSeries([['China', CNData], ['USA', USAData]]);
 		option.legend.data = ['China Top5', 'USA Top5'];
 		myChart.setOption(option, true);
@@ -424,7 +427,7 @@ function initEvent() {
 }
 
 //初始化导入csv文件并保存
-function initLoadResultFile() {
+function initLoadResultFile () {
 	//TODO 通过ajax加载返回json格式数据
 	initTable(datas);
 }
@@ -432,4 +435,15 @@ function initLoadResultFile() {
 //窗体改变时触发
 window.onresize = function(){
 	adjustScrollPage();
+}
+
+var delBtnFn = function() {
+	var a= $('#tableContainer').bootstrapTable('getSelections');  
+	if(typeof a != null || a.length == 0) {
+		$.Message.popup("提示", "请选中记录进行删除!");
+		return;
+	}
+	$.each(a, function(i, item) {
+		alert(item.title);
+	});
 }
