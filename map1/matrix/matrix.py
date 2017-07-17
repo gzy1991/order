@@ -58,14 +58,15 @@ print("耗时：",(end - start)//1,"秒 ，时间：",time.strftime("%Y-%m-%d %H
 FD_1 = np.zeros((4915, 1))              #FD 的行和
 for i in range(0, 4915):
     FD_1[i][0] = FD[i, :].sum()
-FD_1 = FD.sum(1)
-print("FD_1 shape:",str(FD_1.shape) )
+#FD_1 = FD.sum(1)
+print("FD_1 shape:",str(FD_1.shape) )  #  FD_1.shape: 4915 * 1140
 # print "FD_1 shape: %s " % str(FD_1.shape)
 
 X = matrix_1 + FD_1                             #  X=T1+FD1;
 
 #X_1 = np.diag(X)                                  # X1=diag(X);矩阵的对角线元素
-X_1=np.diag(np.diag(X))
+#X_1=np.diag(np.diag(X))
+X_1=np.diag(X.T.tolist()[0])
 # print np.array(X_1).shape
 Z = X_1 - matrix                                  # Z=X1-T;
 # print Z
@@ -74,7 +75,7 @@ Z1 = np.linalg.pinv(Z)                              # Z1=pinv(Z); 伪逆矩阵
 it = (E.reshape(-1,1).T).dot(Z1)  # 4915*4915     #  int=E'*Z1;  .T:转置矩阵     ,  .dot :矩阵的乘积
 print ("it 的shape:",it.shape," , np 的shape:", np.diag(it))
 #T_2 = np.diag(it).dot(matrix)  # 4915*4915          #T2=diag(int)*T;
-T_2 = np.diag(tuple(it.tolist()[0])).dot(matrix)
+T_2 = np.diag(tuple(it.tolist()[0])).dot(matrix)    #T2=diag(int)*T;
 print (T_2.shape, np.diag(it).shape)
 #FD_2 = np.diag(it).dot(FD)                          # FD2=diag(int)*FD;
 FD_2 = np.diag(tuple(it.tolist()[0])).dot(FD)                          # FD2=diag(int)*FD;
