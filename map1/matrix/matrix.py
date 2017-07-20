@@ -31,6 +31,7 @@ with open(filename) as f:
     except csv.Error as e:
         sys.exit('file {}, line {}: {}'.format(filename, reader.line_num, e))
 E = np.array(E)
+E[4914]=176000.0
 if(E.size == 4916):
     E = E[0:4915]
     print("E.csv,shape : ", E.shape)
@@ -174,7 +175,7 @@ print("END")
 #导出数据
 # outFile='C:/work/data/'+'outFile1'+'.csv'
 
-writer = pd.ExcelWriter('C:/work/data/'+'outFile2.xlsx')
+writer = pd.ExcelWriter('C:/work/data/'+'outFile_17600.xlsx')
 T4_df   =pd.DataFrame(T_4)
 FD4_df  =pd.DataFrame(FD_4)
 Tra_df  =pd.DataFrame(Tra)
