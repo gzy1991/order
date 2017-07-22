@@ -81,8 +81,8 @@ print (T_2.shape, np.diag(it).shape)
 #FD_2 = np.diag(it).dot(FD)                          # FD2=diag(int)*FD;
 FD_2 = np.diag(tuple(it.tolist()[0])).dot(FD)                          # FD2=diag(int)*FD;
 T_3 = np.zeros((4914, 189))                         # 4914*189的 全0 矩阵
-for i in range(0, 4914):
-    for j in range(0, 189):
+for i in range(0, 4913):
+    for j in range(0, 188):
         # print j
         start = j*26
         end = (j+1)*26 - 1
@@ -90,26 +90,26 @@ for i in range(0, 4914):
         T_3[i][j] = T_2[i, int(start):int(end)].sum(0)        #T3(i,j)=sum(T2(i,(j-1)*26+1:j*26));
 print (T_3, type(T_3))
 FD_3 = np.zeros((4914, 190))
-for i in range(0, 4914):
-    for j in range(0,190):
+for i in range(0, 4913):
+    for j in range(0,189):
         FD_3[i][j] = FD_2[i, j*26:(j+1)*26-1].sum(0)          # FD3(i,j)=sum(FD2(i,(j-1)*6+1:j*6));
 print (FD_3.shape)
 
 T_4 = np.zeros((190, 190))
-for i in range(0, 189):
-    for j in range(0, 189):
+for i in range(0, 188):
+    for j in range(0, 188):
         T_4[j][i] = T_3[j*26:(j+1)*26-1, i].sum(0)        # T4(j,i)=sum(T3((j-1)*26+1:j*26,i));
 
 FD_4 = np.zeros((190, 190))
-for i in range(0, 190):
-    for j in range(0, 189):
+for i in range(0, 189):
+    for j in range(0, 188):
         FD_4[j][i] = FD_3[j*26:(j+1)*26-1, i].sum(0)      # FD4(j,i)=sum(FD3((j-1)*26+1:j*26,i));
 
-for i in range(0, 189):
+for i in range(0, 188):
     T_4[189][i] = T_2[4913,i*26:(i+1)*26-1].sum(0)       #T4(190,i)=sum(T2(4915,(i-1)*26+1:i*26));
-for i in range(0, 189):
+for i in range(0, 188):
     T_4[i][189] = T_2[i*26:(i+1)*26-1, 4913].sum(0)        #T4(i,190)=sum(T2((i-1)*26+1:i*26,4915));
-for i in range(0, 190):
+for i in range(0, 189):
     FD_4[189][i] = FD_2[4913, i*6:(i+1)*6-1].sum(0)      # FD4(190,i)=sum(FD2(4915,(i-1)*6+1:i*6));
 Tot = FD_4 + T_4                                         # Tot=FD4+T4;
 
@@ -123,7 +123,8 @@ FD_ =np.diag(FD_4)  #190*1矩阵
 
 Ex = np.zeros((190, 3))
 Im = np.zeros((190, 3))
-for i in range(0, 190):
+Tra = np.zeros((190, 6))
+for i in range(0, 189):
     Ex[i][0] = Tot[i, :].sum(0)                          # Ex(i,1)=sum(Tot(i,:));
     Ex[i][1] = T_4[i, :].sum(0)                         # Ex(i,2)=sum(T4(i,:));
     Ex[i][2] = FD_4[i, :].sum(0)                        #Ex(i,3)=sum(FD4(i,:));
@@ -134,28 +135,33 @@ for i in range(0, 190):
 Ex_1 = np.diag(Ex[:, 0])                                # Ex1=diag(Ex(:,1));
 Ex_2 = Ex_1 - Tot                                       # Ex2=Ex1-Tot;
 
+for i in range(0,189):
+    Tra[i][0]=Ex_2(i,i)
+
 Ex_3 = np.diag(Ex[:, 1])                             #Ex3=diag(Ex(:,2));
 Ex_4 = Ex_3 - T_4                                       #Ex4=Ex3-T4;
 
+for i in range(0,189):
+    Tra[i][2] = Ex_4(i, i)                               #Tra(i,3)=Ex4(i,i);
+
 Ex_5 = np.diag(Ex[:, 2])                                #Ex5=diag(Ex(:,3));
 Ex_6 = Ex_5 - FD_4                                      #Ex6=Ex5-FD4;
+for i in range(0,189):
+    Tra[i][4] = Ex_6[i][i]                              #Tra(i,5)=Ex6(i,i);
 
 Im_1 = np.diag(Im[:, 0])                                #Im1=diag(Im(:,1));
 Im_2 = Im_1 - Tot                                       # Im2=Im1-Tot;
+for i in range(0,189):
+    Tra[i][1] = Im_2[i][i]                              # Tra(i,2)=Im2(i,i);
 
 Im_3 = np.diag(Im[:, 1])                                #Im3=diag(Im(:,2));
 Im_4 = Im_3 - T_4                                       #Im4=Im3-T4;
+for i in range(0,189):
+    Tra[i][3] = Im_4[i][i]                              # Tra(i,4)=Im4(i,i);
 
 Im_5 = np.diag(Im[:, 2])                                # Im5=diag(Im(:,3));
 Im_6 = Im_5 - FD_4                                      #Im6=Im5-FD4;
-
-Tra = np.zeros((190, 6))
-for i in range(0, 190):
-    Tra[i][0] = Ex_2[i][i]                              #Tra(i,1)=Ex2(i,i);
-    Tra[i][1] = Im_2[i][i]                              #Tra(i,2)=Im2(i,i);
-    Tra[i][2] = Ex_4[i][i]                              #Tra(i,3)=Ex4(i,i);
-    Tra[i][3] = Im_4[i][i]                              #Tra(i,4)=Im4(i,i);
-    Tra[i][4] = Ex_6[i][i]                              #Tra(i,5)=Ex6(i,i);
+for i in range(0,189):
     Tra[i][5] = Im_6[i][i]                              #Tra(i,6)=Im6(i,i);
 
 a1 = T_2.sum()                                          #a1=sum(sum(T2));;
@@ -175,7 +181,7 @@ print("END")
 #导出数据
 # outFile='C:/work/data/'+'outFile1'+'.csv'
 
-writer = pd.ExcelWriter('C:/work/data/'+'outFile_17600.xlsx')
+writer = pd.ExcelWriter('C:/work/data/'+'outFile_17600_2.xlsx')
 T4_df   =pd.DataFrame(T_4)
 FD4_df  =pd.DataFrame(FD_4)
 Tra_df  =pd.DataFrame(Tra)

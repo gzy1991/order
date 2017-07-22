@@ -97,22 +97,28 @@ data = np.arange(1,101).reshape((10,10))
 data_df = pd.DataFrame(data)
 
 # change the index and column name
-#data_df.columns = ['A','B','C','D','E','F','G','H','I','J']
-#data_df.index = ['a','b','c','d','e','f','g','h','i','j']
-
+# data_df.columns = ['A','B','C','D','E','F','G','H','I','J']
+# data_df.index = ['a','b','c','d','e','f','g','h','i','j']
 
 # create and writer pd.DataFrame to excel
-# writer = pd.ExcelWriter('C:/work/data/'+'Save_Excel.xlsx')
-# data_df.to_excel(writer,'page_1')
-# writer.save()
-ii=data.shape[0]
-jj=data.shape[1]
-workbook = xlwt.Workbook()
-sheet=workbook.add_sheet('table_message',cell_overwrite_ok=True)
-for i in range(0,ii):
-    for j in range(0,jj):
-        print(data[i][j])
-        sheet.write(i,j,data[i][j])
+writer = pd.ExcelWriter('C:/work/data/'+'Save_Excel.xlsx')
 
-workbook.save('C:/work/data/'+'Sace_Excel_xlwt.xls')
+
+
+data_df.to_excel(writer,'page_1')
+print("data_df[1][1]:",data_df.to_string)
+writer.save()
+#
+# data.astype(np.float)
+# ii=data.shape[0]
+# jj=data.shape[1]
+
+# workbook = xlwt.Workbook()
+# sheet=workbook.add_sheet('table_message',cell_overwrite_ok=True)
+# for i in range(0,ii):
+#     for j in range(0,jj):
+#         print(data[i][j])
+#         sheet.write(i,j,data[i][j])
+#
+# workbook.save('C:/work/data/'+'Sace_Excel_xlwt.xls')
 
