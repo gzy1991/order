@@ -97,8 +97,8 @@ data = np.arange(1,101).reshape((10,10))
 data_df = pd.DataFrame(data)
 
 # change the index and column name
-# data_df.columns = ['A','B','C','D','E','F','G','H','I','J']
-# data_df.index = ['a','b','c','d','e','f','g','h','i','j']
+data_df.columns = ['A','B','C','D','E','F','G','H','I','J']
+data_df.index = ['a','b','c','d','e','f','g','h','i','j']
 
 # create and writer pd.DataFrame to excel
 writer = pd.ExcelWriter('C:/work/data/'+'Save_Excel.xlsx')
@@ -122,3 +122,35 @@ writer.save()
 #
 # workbook.save('C:/work/data/'+'Sace_Excel_xlwt.xls')
 
+
+# start_all =time.time()
+# E = []
+# filename = 'C:/work/data/E.csv'
+# print('**********************************')
+# start =time.time()
+# with open(filename) as f:
+#     reader = csv.reader(f)
+#     try:
+#         for row in reader:
+#             if len(row) == 0:
+#                 E.append(0)
+#             else:
+#                 E.append(float(row[0]))
+#             # print(row)
+#         E.append(0)
+#     except csv.Error as e:
+#         sys.exit('file {}, line {}: {}'.format(filename, reader.line_num, e))
+# E = np.array(E)
+# E[4914]=176000.0
+# if(E.size == 4916):
+#     E = E[0:4915]
+#     print("E.csv,shape : ", E.shape)
+# end =time.time()
+# print ("E.csv读取完成：",E.shape)
+# print("耗时：",(end - start)//1,"秒 ，时间：",time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),'\n','**********************************')
+# print ("E.csv导出开始：")
+# E[4914]=176000
+# start =time.time()
+# pd.DataFrame(E).to_csv("C:/work/data/E_1.csv")
+# end =time.time()
+# print ("E.csv导出耗时：",(end - start)//1,"秒")
