@@ -1,20 +1,20 @@
-clear;
-clc;
+function matlab_3(FD_address,E_address,T_address, result_name)
+
 format long
 
-msgbox( strcat('matlab程序开始!时间：',datestr(now,31)))
+msgbox( strcat('matlab process Start!Time：',datestr(now,31)))
 
-FD= csvread('G:\work\matlab\FD.csv');
-E= csvread('G:\work\matlab\E_1.csv');
+FD= csvread(FD_address);
+E= csvread(E_address);
 E(4915,1)=176000;
 %  E(4915,1)=176000;
 %  E(4915,1)=-17600;
 % 1060  176000  -17600
 
-% msgbox( strcat('E(4915,1):',num2str(E(4915,1)))  )
-T= csvread('G:\work\matlab\data.csv');
+msgbox( strcat('E(4915,1):',num2str(E(4915,1)))  )
+T= csvread(T_address);
 
-%msgbox( strcat ('read csv file success!time:',datestr(now,31)))
+msgbox( strcat ('read csv file success!time:',datestr(now,31)))
 
 % % E= textread('E.csv')
 
@@ -35,7 +35,7 @@ X=T1+FD1;
 
 X1=diag(X);
 Z=X1-T;
-% msgbox(strcat('T1、FD1、X1、Z compute success!time：',datestr(now,31)))
+msgbox(strcat('T1、FD1、X1、Z compute success!time：',datestr(now,31)))
 
 Z1=pinv(Z);
 
@@ -154,11 +154,13 @@ b3=sum(sum(T4));;
 b2=sum(sum(T3));;
 b1=sum(sum(T2));;
 msgbox(strcat('ALl computer sucess!time：',datestr(now,31)))
-xlswrite('tempdata_176000.xls', T4, 'T4')
-xlswrite('tempdata_176000.xls', FD4, 'FD4')
-xlswrite('tempdata_176000.xls', Tra, 'Tra')
-xlswrite('tempdata_176000.xls', FD_, 'FD_')
-xlswrite('tempdata_176000.xls',Tot,'Tot')
+xlswrite(result_name, T4, 'T4')
+xlswrite(result_name, FD4, 'FD4')
+xlswrite(result_name, Tra, 'Tra')
+xlswrite(result_name, FD_, 'FD_')
+xlswrite(result_name, Tot,'Tot')
+
+msgbox(strcat('export Success! address is : ',result_name))
 
 
 
@@ -169,8 +171,6 @@ xlswrite('tempdata_176000.xls',Tot,'Tot')
 
 
 
-
-
-
+end
 
 
