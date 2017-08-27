@@ -22,4 +22,5 @@ urlpatterns = [
     url('^map1/$',map1),
     url('^map2/$',map2),
     url('^map3/$',map3),
+    url('^calculate/$',calculate),
 ]
