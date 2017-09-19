@@ -6,7 +6,7 @@ msgbox( strcat('matlab process Start!Time：',datestr(now,31)))
 
 FD= csvread(FD_address);
 E= csvread(E_address);
-E(4915,1)=176000;
+%  E(4915,1)=176000;
 %  E(4915,1)=176000;
 %  E(4915,1)=-17600;
 % 1060  176000  -17600

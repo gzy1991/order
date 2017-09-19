@@ -23,4 +23,10 @@ urlpatterns = [
     url('^map2/$',map2),
     url('^map3/$',map3),
     url('^calculate/$',calculate),
+    url('^my_image/$',my_image),
+    url('^hi/$',hi),
+    url('^rank/$',rank),
+
+
+    url('^index/$',index)
 ]

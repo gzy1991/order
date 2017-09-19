@@ -2,6 +2,7 @@ result = {
         "danwei": "",           # 单位
         "importCountryNum": 6, # 进口国家个数
         "exportCountryNum": 6, # 出口国家个数
+        "fileName":,          # 文件名称，列表中需要显示的名称
         "importData":[],        #进口数据
         "exportData": [         #出口数据
             {

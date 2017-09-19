@@ -6,24 +6,22 @@
 # 执行结果：
 
 
-
-import matlab
-import matlab.engine
 import time
 
-
-from mlab.releases import latest_release as matlab
+from mlab.releases import latest_release
 from matlab import matlabroot
-import win32com.client
+# import win32com.client
+#
+# from win32com.client import Dispatch
 import os
-from win32com.client import Dispatch
-from mlab.releases import latest_release as matlab
 import xlwt
+import pythoncom
 
 #
 def calculate(FD_add,E_add,T_add,result_name):
     # print FD_add,E_add,T_add,result_name
-    print "matlab运行路径", matlabroot()
+    pythoncom.CoInitialize()
+    print matlabroot()
     pwd = os.getcwd()
 
     T_addList=T_add.split('\\')
@@ -32,7 +30,15 @@ def calculate(FD_add,E_add,T_add,result_name):
 
     print '调用开始！',time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()))
     matlab.path(matlab.path(), pwd)  # 设置路径
-    matlab.matlab_3(FD_add,E_add,T_add, result_name)
+    # matlab.matlab_3(FD_add,E_add,T_add, result_name)
+
+    # matlab.test66(FD_add, E_add, T_add, result_name)
+
+    h = Dispatch("Matlab.application")
+    # h.execute("test(0.0,512.0)")  # 执行matlab_1 函数，给定两个量
+    h.execute("test66(FD_add, E_add, T_add, result_name)")  # 执行matlab_1 函数，给定两个量
+    # h.execute("matlab_2()")  # 执行matlab_1 函数，给定两个量
+
     print '调用结束！',time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()))
 
     time.sleep(5) #延迟5秒

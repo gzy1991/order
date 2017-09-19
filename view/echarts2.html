@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ECharts</title>
+        <!-- ECharts单文件引入 -->
+<!-- ECharts单文件引入 -->
+    {% comment %}<script src="http://echarts.baidu.com/build/dist/echarts-all.js"></script>{% endcomment %}
+    {% comment %}<script type="text/javascript" src="/static/js/echarts.js"></script>{% endcomment %}
+
+    <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script type="text/javascript" src="/static/js/jquery/jquery.min.js"></script>
+	<script type="text/javascript" src="/static/js/bootstrap/js/bootstrap.min.js"></script>
+
+</head>
+<body>
+    <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+    <p>Hello</p>
+    <h2>图形处理1</h2>
+    <script src="http://echarts.baidu.com/build/dist/echarts.js"></script>
+    <div id="main" style="height:400px"></div>
+
+
+<script type="text/javascript">
+    var mychart = echarts.init(document.getElementById('main'));
+
+
+    // 基于准备好的dom，初始化echarts图表
+   //var myChart = echarts.init(document.getElementById('main'));
+    option = {
+    backgroundColor: '#2c343c',
+    visualMap: {
+        show: false,
+        min: 80,
+        max: 600,
+        inRange: {
+            colorLightness: [0, 1]
+        }
+    },
+    series : [
+        {
+            name: '访问来源',
+            type: 'pie',
+            radius: '55%',
+            data:[
+                {value:235, name:'视频广告'},
+                {value:274, name:'联盟广告'},
+                {value:310, name:'邮件营销'},
+                {value:335, name:'直接访问'},
+                {value:400, name:'搜索引擎'}
+            ],
+            roseType: 'angle',
+            label: {
+                normal: {
+                    textStyle: {
+                        color: 'rgba(255, 255, 255, 0.3)'
+                    }
+                }
+            },
+            labelLine: {
+                normal: {
+                    lineStyle: {
+                        color: 'rgba(255, 255, 255, 0.3)'
+                    }
+                }
+            },
+            itemStyle: {
+                normal: {
+                    color: '#c23531',
+                    shadowBlur: 200,
+                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                }
+            }
+        }
+    ]
+};
+
+
+    // 为echarts对象加载数据
+    myChart.setOption(option);
+
+</script>
+ <form role="form" enctype="multipart/form-data" action="/importDataFromCsv/" method="post" >
+        <div class="form-group"></div>
+        <label>请选择csv文件：</label>
+        <input type="file"  id="inputcsv" name="inputcsv" >
+        <input type="submit" value="upload"/>
+    </form>
+</body>
+</html>
