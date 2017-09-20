@@ -49,6 +49,9 @@ def rank_result():
     result_list=[]
 
     for file in files:  #批量读取
+
+        if(file.find("1060") == -1):
+            continue
         result={}  #单个excel文件处理后的结果
         file_name = file.split("\\")[len(file.split("\\")) - 1].split(".")[0]
         result['danwei'] = "  "  #单位
@@ -142,7 +145,7 @@ def getExportData(country_name,Tra,Tot,index_ex,country_num):
         name=country_name[index_ex[i]][0].encode("utf-8")
         sum=Tra[index_ex[i], 1]
         exportData["name"]=name
-        exportData["sum"] = sum
+        exportData["sum"] = round(sum,2)
         exportData["type"]="export"
         exportData["sort"]=i+1
         exportData["countryNum"]=country_num
@@ -155,7 +158,7 @@ def getExportData(country_name,Tra,Tot,index_ex,country_num):
             _name=country_name[_index[j]][0].encode("utf-8")
             _data["name"]= _name
             _data["sort"]= j+1
-            _data["value"]= Tot[index_ex[i],_index[j]]
+            _data["value"]= round(Tot[index_ex[i],_index[j]],2)
             _list.append(_data)
         exportData["data"]=_list
         exportData_list.append(exportData)

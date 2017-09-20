@@ -21,6 +21,18 @@ print y
 print y[:,0]
 print y[1,:]
 
+a=2.33333
+b=4.44444
+c=5.55555
+d=6.66666
+e=7.7777
+
+print round(a,2)
+print round(b,2)
+print round(c,2)
+print round(d,2)
+print round(e,2)
+
 
 # def getArrayFromSheet(excelData,sheetName ):
 #     sheet=excelData.sheet_by_name(sheetName)
