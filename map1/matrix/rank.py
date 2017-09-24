@@ -60,11 +60,11 @@ def rank_result():
         result["fileName"]=file_name
         print file+" start"
         excelData = xlrd.open_workbook(file,"rb")
-        Tot  = getArrayFromSheet(excelData,u'T4')
+        Tot  = getArrayFromSheet(excelData,u'Tot')
         FD_  = getArrayFromSheet(excelData,u'FD_')
         Tra  = getArrayFromSheet(excelData,u'Tra')
         FD4  = getArrayFromSheet(excelData,u'FD4')
-        T4  = getArrayFromSheet(excelData,u'Tot')
+        T4  = getArrayFromSheet(excelData,u'T4')
 
 
         for i in range(0,len(Tot[0])-1):# 对Tot做处理，把对角线数据设为
@@ -77,8 +77,8 @@ def rank_result():
 
         Tra_sort=np.argsort(-Tra , axis=0)# 按列排序
 
-        index_im = Tra_sort[:, 0]  # 第1列排序的索引值   第一列如进口排序
-        index_ex=Tra_sort[:, 1]   #第2列排序的索引值  第二列是出口总排行
+        index_im = Tra_sort[:, 1]  # 第2列排序的索引值   第2列如进口排序
+        index_ex=Tra_sort[:, 0]   #第1列排序的索引值  第1列是出口总排行
         import_data = getImportData(country_name, Tra, Tot, index_im, country_num)
         export_data=getExportData(country_name,Tra,Tot,index_ex,country_num)
         result["exportData"]=export_data
@@ -118,7 +118,7 @@ def getImportData(country_name,Tra,Tot,index_im,country_num):
         name = country_name[index_im[i]][0].encode("utf-8")
         sum = Tra[index_im[i], 0]
         importData["name"] = name
-        importData["sum"] = sum
+        importData["sum"] = round(sum,2)
         importData["type"] = "import"
         importData["sort"] = i+1
         importData["countryNum"] = country_num
@@ -131,7 +131,7 @@ def getImportData(country_name,Tra,Tot,index_im,country_num):
             _name = country_name[_index[j]][0].encode("utf-8")
             _data["name"] = _name
             _data["sort"] = j + 1
-            _data["value"] = Tot[_index[j] ,index_im[i]]
+            _data["value"] = round(Tot[_index[j] ,index_im[i]],2)
             _list.append(_data)
         importData["data"] = _list
         importData_list.append(importData)
