@@ -116,7 +116,7 @@ def getImportData(country_name,Tra,Tot,index_im,country_num):
     for i in range(0,country_num):
         importData={}
         name = country_name[index_im[i]][0].encode("utf-8")
-        sum = Tra[index_im[i], 0]
+        sum = Tra[index_im[i], 1]
         importData["name"] = name
         importData["sum"] = round(sum,2)
         importData["type"] = "import"
@@ -143,7 +143,7 @@ def getExportData(country_name,Tra,Tot,index_ex,country_num):
     for i in  range (0,country_num):
         exportData={}
         name=country_name[index_ex[i]][0].encode("utf-8")
-        sum=Tra[index_ex[i], 1]
+        sum=Tra[index_ex[i], 0]
         exportData["name"]=name
         exportData["sum"] = round(sum,2)
         exportData["type"]="export"
