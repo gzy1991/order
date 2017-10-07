@@ -50,8 +50,7 @@ def rank_result():
 
     for file in files:  #批量读取
 
-        if(file.find("1060") == -1):
-            continue
+
         result={}  #单个excel文件处理后的结果
         file_name = file.split("\\")[len(file.split("\\")) - 1].split(".")[0]
         result['danwei'] = "  "  #单位
