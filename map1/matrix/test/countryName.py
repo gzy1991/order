@@ -1,14 +1,21 @@
 #coding:utf-8
 #!/usr/bin/python
 
+import os
+import  sys
 
+import xlrd
+import xlwt
+import numpy as np
+import pandas as pd
+import json
 
 
 countrytInfo={
 'Guyana': {'name': 'Guyana', 'latitude': 4.860416, 'longitude': -58.93018, 'chineseName': '圭亚那', 'code': 'GY'},
 'Greece': {'name': 'Greece', 'latitude': 39.074208, 'longitude': 21.824312, 'chineseName': '希腊', 'code': 'GR'},
 'Azerbaijan': {'name': 'Azerbaijan', 'latitude': 40.143105, 'longitude': 47.576927, 'chineseName': '阿塞拜疆', 'code': 'AZ'},
-'Macedonia, FYR': {'chineseName': '', 'code': 'MK', 'name': 'Macedonia, FYR'},
+'Macedonia, FYR': {'chineseName': '马其顿', 'code': 'MK', 'name': 'Macedonia, FYR'},
 'Taiwan': {'chineseName': '台湾', 'code': 'TW', 'name': 'Taiwan'},
 'Benin': {'name': 'Benin', 'latitude': 9.30769, 'longitude': 2.315834, 'chineseName': '贝宁', 'code': 'BJ'},
 "Cote dIvoire": {'chineseName': '', 'code': 'CI', 'name': "Cote dIvoire"},
@@ -173,7 +180,79 @@ countrytInfo={
 'Nepal': {'name': 'Nepal', 'latitude': 28.394857, 'longitude': 84.12400799999999, 'chineseName': '尼泊尔', 'code': 'NP'},
 'Romania': {'name': 'Romania', 'latitude': 45.943161, 'longitude': 24.96676, 'chineseName': '罗马尼亚', 'code': 'RO'},
 'West Bank and Gaza': {'chineseName': '', 'code': 'PS', 'name': 'West Bank and Gaza'},
+
+'Belize': {'chineseName': '伯利兹','latitude': 17, 'longitude': -88, 'code': 'Be', 'name': 'Belize'},
+'Barbados': {'chineseName': '巴巴多斯','latitude': 13, 'longitude': -59, 'code': 'Bar', 'name': 'Barbados'},
+'Bahamas': {'chineseName': '巴哈马','latitude': 25, 'longitude': -77, 'code': 'Bah', 'name': 'Bahamas'},
+'Aruba': {'chineseName': '阿鲁巴','latitude': 12, 'longitude': -70, 'code': 'Ar', 'name': 'Aruba'},
+'Antigua': {'chineseName': '安提瓜和巴布达','latitude': 17, 'longitude': -61, 'code': 'An', 'name': 'Antigua'},
+'Andorra': {'chineseName': '安道尔','latitude': 42, 'longitude': 1, 'code': 'An', 'name': 'Andorra'},
+'Bermuda': {'chineseName': '百慕大','latitude': 32, 'longitude': -64, 'code': 'Be', 'name': 'Bermuda'},
+'British Virgin Islands': {'chineseName': '英属维尔京群岛','latitude': 18, 'longitude': -64, 'code': 'Bvi', 'name': 'British Virgin Islands'},
+
+'Cayman Islands': {'chineseName': '开曼群岛','latitude': 19, 'longitude': -81, 'code': 'CI', 'name': 'Cayman Islands'},
+'Central African Republic': {'chineseName': '中非共和国','latitude': 4, 'longitude': 18, 'code': 'CAR', 'name': 'Central African Republic'},
+'Congo': {'chineseName': '刚果','latitude': -4, 'longitude': 15, 'code': 'CAR', 'name': 'Congo'},
+'Czech Republic': {'chineseName': '捷克共和国','latitude': 50, 'longitude': 14, 'code': 'Cre', 'name': 'Czech Republic'},
+'DR Congo': {'chineseName': '刚果(金)','latitude': -4, 'longitude': 15, 'code': 'Cre', 'name': 'DR Congo'},
+'Dominican Republic': {'chineseName': '多米尼加共和国','latitude': 18, 'longitude': -69, 'code': 'Cre', 'name': 'Dominican Republic'},
+'French Polynesia': {'chineseName': '法属波利尼西亚','latitude': -17, 'longitude': -149, 'code': 'Cre', 'name': 'French Polynesia'},
+'Greenland': {'chineseName': '格陵兰','latitude': 64, 'longitude': -51, 'code': 'Cre', 'name': 'Greenland'},
+'Liechtenstein': {'chineseName': '列支敦士登','latitude': 47, 'longitude': 9, 'code': 'Cre', 'name': 'Liechtenstein'},
+'Macao SAR': {'chineseName': '澳门','latitude': 22, 'longitude': 113, 'code': 'Cre', 'name': 'Macao SAR'},
+'Maldives': {'chineseName': '马尔代','latitude': 4, 'longitude': 73, 'code': 'Cre', 'name': 'Maldives'},
+'Malta': {'chineseName': '马耳他','latitude': 35, 'longitude': 14, 'code': 'Cre', 'name': 'Malta'},
+'Monaco': {'chineseName': '摩纳哥','latitude': 43, 'longitude': 7, 'code': 'Cre', 'name': 'Monaco'},
+'Netherlands Antilles': {'chineseName': '荷属安的列斯','latitude': 12, 'longitude': -69, 'code': 'Cre', 'name': 'Netherlands Antilles'},
+'New Caledonia': {'chineseName': '新喀里多尼亚','latitude': -22, 'longitude': 166, 'code': 'Cre', 'name': 'New Caledonia'},
+'Gaza Strip': {'chineseName': '加沙地带','latitude': 31, 'longitude': 34, 'code': 'Cre', 'name': 'Gaza Strip'},
+'Samoa': {'chineseName': '萨摩亚','latitude': -13, 'longitude': -171, 'code': 'Cre', 'name': 'Samoa'},
+'San Marino': {'chineseName': '圣马力诺','latitude': 43, 'longitude': 12, 'code': 'Cre', 'name': 'San Marino'},
+'Sao Tome and Principe': {'chineseName': '圣多美和普林西比','latitude': 0, 'longitude': 6, 'code': 'Cre', 'name': 'Sao Tome and Principe'},
+'Seychelles': {'chineseName': '塞舌尔','latitude': 4, 'longitude': 55, 'code': 'Cre', 'name': 'Seychelles'},
+'Slovakia': {'chineseName': '斯洛伐克','latitude': 45, 'longitude': 17, 'code': 'Cre', 'name': 'Slovakia'},
+'South Sudan': {'chineseName': '南苏丹','latitude': 12, 'longitude': 30, 'code': 'Cre', 'name': 'South Sudan'},
+'TFYR Macedonia': {'chineseName': '马其顿','latitude': 42, 'longitude': 21, 'code': 'Cre', 'name': 'TFYR Macedonia'},
+'Former USSR': {'chineseName': '前苏联','latitude': 53, 'longitude': 27, 'code': 'Cre', 'name': 'Former USSR'},
+'UAE': {'chineseName': '阿联酋','latitude': 24, 'longitude': 54, 'code': 'Cre', 'name': 'UAE'},
+'UK': {'chineseName': '英国','latitude': 51, 'longitude': 0, 'code': 'Cre', 'name': 'UK'},
+'Vanuatu': {'chineseName': '瓦努阿图','latitude': -17, 'longitude': 168, 'code': 'Cre', 'name': 'Vanuatu'},
+'Viet Nam': {'chineseName': '越南','latitude': 21, 'longitude': 105, 'code': 'Cre', 'name': 'Viet Nam'},
+'Yemen': {'chineseName': '也门','latitude': 15, 'longitude': 50, 'code': 'Cre', 'name': 'Yemen'},
+
 'Mali': {'name': 'Mali', 'latitude': 17.570692, 'longitude': -3.996166, 'chineseName': '马里', 'code': 'ML'}}
 
-print countrytInfo["Mali"]["chineseName"]
-print countrytInfo["Mali"]
+
+# 从excel获取sheet， 转化成 numpy.array
+def getArrayFromSheet(excelData,sheetName ):
+    sheet=excelData.sheet_by_name(sheetName)
+    row=sheet.nrows
+    column = sheet.ncols  # 列
+    _array=[]
+    for i in range(0,row):
+        _row=[]
+        for j in range(0, column):
+            _row.append(sheet.cell_value(i,j))
+        _array.append(_row)
+    np_array=np.array(_array)
+    return np_array
+
+root_add = os.getcwd()
+country_dir = root_add + "\\country_excel\\Countries.xlsx"  # 结果excel所在目
+country_dir='G:\\work\\github\\order\\country_excel\\Countries.xlsx'# 录
+excelData = xlrd.open_workbook(country_dir, "rb")
+Country_array = getArrayFromSheet(excelData,u'country')
+
+size=Country_array.shape[0]
+for i in range( 0,size):
+    country_name=Country_array[i][0].encode("utf-8")
+    flag=False
+    # for j in range(0,len(countrytInfo)):
+
+    if country_name in countrytInfo:
+        del countrytInfo[country_name]
+    else:
+        print country_name
+
+print "*************************"
+print countrytInfo.keys()

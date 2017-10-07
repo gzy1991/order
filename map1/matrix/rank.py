@@ -4,8 +4,6 @@
 # 批量读取结果文件，排序，
 import os
 import  sys
-import numpy as np
-import pandas as pd
 import xlrd
 import xlwt
 import numpy as np
