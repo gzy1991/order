@@ -1,3 +1,4 @@
+#coding:utf-8
 """order URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
@@ -19,12 +20,12 @@ from  map1.views import *
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url('^map1/$',map1),
-    url('^map2/$',map2),
-    url('^map3/$',map3),
-    url('^calculate/$',calculate),
-    url('^my_image/$',my_image),
-    url('^hi/$',hi),
+    # url(r'^map1/$',map1),  #测试
+    # url(r'^map2/$',map2),  #dialog
+    url(r'^map3/$',map3),  #主页面
+    url(r'^calculate/$',calculate),
+    # url('^my_image/$',my_image),
+    # url('^hi/$',hi),
     url('^rank/$',rank),
 
 
