@@ -24,7 +24,7 @@ from matrix.rank import rank_result as rank_result
 
 def map3(request):
 
-    return render(request, 'views/map1.html')
+    return render(request, 'demo.html')
 def calculate(request):
     # res=cal('1','2','3','4')
     result_name=cal("G:\work\matlab_test\FD.csv", "G:\work\matlab_test\E_1.csv" , "G:\work\matlab_test\data.csv", "temp_-176000")

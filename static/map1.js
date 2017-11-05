@@ -25,7 +25,7 @@ var browserWidth=$(window).width();//浏览器宽度
 /*$("div.form-group").height(browserHeight+"px");
 $("div.form-group").width(browserWidth+"px");*/
 
-/*$("div.main").height((browserHeight-100)+"px");*/
+$("div.main").height((browserHeight-100)+"px");
 
 /*$("#tableDiv").height((browserHeight-100)+"px");*/
 

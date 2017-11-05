@@ -391,14 +391,14 @@ var initEvent = function() {
 			$(".bootstrap-table").show();
 			$("#tableDiv").css("width", "16.66666667%");
 			$("#mapDiv").css("width", "83.33333333%");
-			$("#hideList > img").attr("src", "left.png").attr("title", "缩进");
+			$("#hideList > img").attr("src", "/static/img/left.png").attr("title", "缩进");
 			$("#button").show();
 			$("#delBtn").show();
 		}else {
 			$(".bootstrap-table").hide();
 		  	$("#tableDiv").css("width", "3%");
 			$("#mapDiv").css("width", "97%");
-			$("#hideList > img").attr("src", "right.png").attr("title", "展开");
+			$("#hideList > img").attr("src", "/static/img/right.png").attr("title", "展开");
 			$("#button").hide();
 			$("#delBtn").hide();
 		}
