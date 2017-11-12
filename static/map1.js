@@ -312,6 +312,7 @@ var countrytInfo={
 'Nepal': {'name': 'Nepal', 'latitude': 28.394857, 'longitude': 84.12400799999999, 'chineseName': '尼泊尔', 'code': 'NP'},
 'Romania': {'name': 'Romania', 'latitude': 45.943161, 'longitude': 24.96676, 'chineseName': '罗马尼亚', 'code': 'RO'},
 'West Bank and Gaza': {'chineseName': '', 'code': 'PS', 'name': 'West Bank and Gaza'},
+
 'Mali': {'name': 'Mali', 'latitude': 17.570692, 'longitude': -3.996166, 'chineseName': '马里', 'code': 'ML'}}
 
 //中国
@@ -502,7 +503,7 @@ var series = [];
 
         data:item[1].data.map(function(dataItem){       //？todo
             return {
-                name:dataItem.name+":"+dataItem.chineseName+" "+dataItem.sum,
+                name:dataItem.name+":"+""+" "+dataItem.sum,
                 value:[
                     countrytInfo[dataItem.name].longitude,
                     countrytInfo[dataItem.name].latitude,

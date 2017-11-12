@@ -74,10 +74,10 @@ def rank_result():
 
         Tra_sort=np.argsort(-Tra , axis=0)# 按列排序
 
-        index_im = Tra_sort[:, 1]  # 第2列排序的索引值   第2列如进口排序
-        index_ex=Tra_sort[:, 0]   #第1列排序的索引值  第1列是出口总排行
-        import_data = getImportData(country_name, Tra, Tot, index_im, country_num)
-        export_data=getExportData(country_name,Tra,Tot,index_ex,country_num)
+        index_im = Tra_sort[:, 1]  # 第2列排序的索引值   第2列是进口总排序
+        index_ex=Tra_sort[:, 0]    # 第1列排序的索引值  第1列是出口总排行
+        import_data = getImportData(country_name, Tra, Tot, index_im, country_num,index_ex)
+        export_data = getExportData(country_name,Tra,Tot,index_ex,country_num,index_im)
         result["exportData"]=export_data
         result["importData"]=import_data
 
@@ -108,7 +108,7 @@ def getArrayFromSheet(excelData,sheetName ):
 
 
 #  ， 获取某个国家的进口 排序数据
-def getImportData(country_name,Tra,Tot,index_im,country_num):
+def getImportData(country_name,Tra,Tot,index_im,country_num,index_ex):
     importData_list=[]
     for i in range(0,country_num):
         importData={}
@@ -129,13 +129,14 @@ def getImportData(country_name,Tra,Tot,index_im,country_num):
             _data["name"] = _name
             _data["sort"] = j + 1
             _data["value"] = round(Tot[_index[j] ,index_im[i]],2)
+            _data["sum"] =  round(Tra[_index[j],0],2)
             _list.append(_data)
         importData["data"] = _list
         importData_list.append(importData)
     return importData_list
 
 #  ， 获取某个国家的出口 排序数据
-def getExportData(country_name,Tra,Tot,index_ex,country_num):
+def getExportData(country_name,Tra,Tot,index_ex,country_num,index_im):
     exportData_list=[]
     for i in  range (0,country_num):
         exportData={}
@@ -156,6 +157,7 @@ def getExportData(country_name,Tra,Tot,index_ex,country_num):
             _data["name"]= _name
             _data["sort"]= j+1
             _data["value"]= round(Tot[index_ex[i],_index[j]],2)
+            _data["sum"]=  round(Tra[_index[j],1],2)
             _list.append(_data)
         exportData["data"]=_list
         exportData_list.append(exportData)
