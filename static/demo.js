@@ -2,20 +2,21 @@
  * Created by  on 2017/7/9.
  */
 
-
+var datas ;
+        // datas=[{"danwei": "  ", "exportCountryNum": 5, "fileName": "temp_-176000", "importData": [{"sort": 1, "name": "Brazil", "data": [{"sort": 1, "name": "Algeria", "value": 550.16}, {"sort": 2, "name": "Saudi Arabia", "value": 263.04}, {"sort": 3, "name": "Nigeria", "value": 195.36}, {"sort": 4, "name": "Argentina", "value": 178.44}, {"sort": 5, "name": "USA", "value": 173.49}], "sum": 822.56, "countryNum": 5, "type": "import"}, {"sort": 2, "name": "Kazakhstan", "data": [{"sort": 1, "name": "Russia", "value": 435.73}, {"sort": 2, "name": "UAE", "value": 15.38}, {"sort": 3, "name": "Azerbaijan", "value": 9.77}, {"sort": 4, "name": "Iran", "value": 5.11}, {"sort": 5, "name": "Turkmenistan", "value": 3.63}], "sum": 298.91, "countryNum": 5, "type": "import"}, {"sort": 3, "name": "Ukraine", "data": [{"sort": 1, "name": "Russia", "value": 565.66}, {"sort": 2, "name": "Turkmenistan", "value": 45.93}, {"sort": 3, "name": "Kazakhstan", "value": 20.62}, {"sort": 4, "name": "Azerbaijan", "value": 14.5}, {"sort": 5, "name": "Iran", "value": 6.75}], "sum": 254.02, "countryNum": 5, "type": "import"}, {"sort": 4, "name": "Georgia", "data": [{"sort": 1, "name": "Azerbaijan", "value": 276.61}, {"sort": 2, "name": "Russia", "value": 18.99}, {"sort": 3, "name": "Turkmenistan", "value": 15.31}, {"sort": 4, "name": "Iran", "value": 4.82}, {"sort": 5, "name": "UAE", "value": 2.78}], "sum": 231.98, "countryNum": 5, "type": "import"}, {"sort": 5, "name": "Oman", "data": [{"sort": 1, "name": "UAE", "value": 154.64}, {"sort": 2, "name": "Saudi Arabia", "value": 123.76}, {"sort": 3, "name": "Qatar", "value": 2.91}, {"sort": 4, "name": "Norway", "value": 2.9}, {"sort": 5, "name": "Kuwait", "value": 2.6}], "sum": 200.22, "countryNum": 5, "type": "import"}], "exportData": [{"sort": 1, "name": "Saudi Arabia", "data": [{"sort": 1, "name": "India", "value": 3794.33}, {"sort": 2, "name": "Japan", "value": 1648.28}, {"sort": 3, "name": "South Korea", "value": 1607.56}, {"sort": 4, "name": "China", "value": 1145.7}, {"sort": 5, "name": "UK", "value": 537.82}], "sum": 13004.6, "countryNum": 5, "type": "export"}, {"sort": 2, "name": "Russia", "data": [{"sort": 1, "name": "China", "value": 1242.62}, {"sort": 2, "name": "Germany", "value": 629.28}, {"sort": 3, "name": "Ukraine", "value": 565.66}, {"sort": 4, "name": "UK", "value": 448.72}, {"sort": 5, "name": "Kazakhstan", "value": 435.73}], "sum": 6522.1, "countryNum": 5, "type": "export"}, {"sort": 3, "name": "Canada", "data": [{"sort": 1, "name": "USA", "value": 2889.5}, {"sort": 2, "name": "China", "value": 195.54}, {"sort": 3, "name": "Mexico", "value": 79.69}, {"sort": 4, "name": "Germany", "value": 64.61}, {"sort": 5, "name": "Japan", "value": 51.45}], "sum": 3701.18, "countryNum": 5, "type": "export"}, {"sort": 4, "name": "UAE", "data": [{"sort": 1, "name": "Japan", "value": 859.45}, {"sort": 2, "name": "South Korea", "value": 387.1}, {"sort": 3, "name": "China", "value": 327.54}, {"sort": 4, "name": "Iran", "value": 324.76}, {"sort": 5, "name": "India", "value": 251.79}], "sum": 3368.48, "countryNum": 5, "type": "export"}, {"sort": 5, "name": "USA", "data": [{"sort": 1, "name": "Mexico", "value": 428.16}, {"sort": 2, "name": "Canada", "value": 368.75}, {"sort": 3, "name": "China", "value": 328.14}, {"sort": 4, "name": "Singapore", "value": 211.76}, {"sort": 5, "name": "Japan", "value": 199.79}], "sum": 3289.3, "countryNum": 5, "type": "export"}], "importCountryNum": 5}, {"danwei": "  ", "exportCountryNum": 5, "fileName": "temp_1060", "importData": [{"sort": 1, "name": "USA", "data": [{"sort": 1, "name": "Canada", "value": 3924.23}, {"sort": 2, "name": "Mexico", "value": 1822.66}, {"sort": 3, "name": "Venezuela", "value": 1026.47}, {"sort": 4, "name": "China", "value": 796.36}, {"sort": 5, "name": "Nigeria", "value": 570.69}], "sum": 14024.71, "countryNum": 5, "type": "import"}, {"sort": 2, "name": "China", "data": [{"sort": 1, "name": "Russia", "value": 1507.45}, {"sort": 2, "name": "Saudi Arabia", "value": 1155.24}, {"sort": 3, "name": "South Korea", "value": 757.3}, {"sort": 4, "name": "USA", "value": 586.67}, {"sort": 5, "name": "Angola", "value": 492.3}], "sum": 9397.66, "countryNum": 5, "type": "import"}, {"sort": 3, "name": "Japan", "data": [{"sort": 1, "name": "Saudi Arabia", "value": 1669.62}, {"sort": 2, "name": "Kuwait", "value": 1087.16}, {"sort": 3, "name": "UAE", "value": 938.07}, {"sort": 4, "name": "Qatar", "value": 455.48}, {"sort": 5, "name": "China", "value": 420.86}], "sum": 7237.5, "countryNum": 5, "type": "import"}, {"sort": 4, "name": "India", "data": [{"sort": 1, "name": "Saudi Arabia", "value": 3814.92}, {"sort": 2, "name": "UAE", "value": 281.81}, {"sort": 3, "name": "Kuwait", "value": 216.87}, {"sort": 4, "name": "Russia", "value": 208.97}, {"sort": 5, "name": "Iran", "value": 157.44}], "sum": 5939.5, "countryNum": 5, "type": "import"}, {"sort": 5, "name": "Germany", "data": [{"sort": 1, "name": "Russia", "value": 868.67}, {"sort": 2, "name": "Norway", "value": 343.9}, {"sort": 3, "name": "USA", "value": 336.84}, {"sort": 4, "name": "Netherlands", "value": 330.41}, {"sort": 5, "name": "China", "value": 274.78}], "sum": 5329.95, "countryNum": 5, "type": "import"}], "exportData": [{"sort": 1, "name": "Saudi Arabia", "data": [{"sort": 1, "name": "India", "value": 3814.92}, {"sort": 2, "name": "Japan", "value": 1669.62}, {"sort": 3, "name": "South Korea", "value": 1629.53}, {"sort": 4, "name": "China", "value": 1155.24}, {"sort": 5, "name": "UK", "value": 543.69}], "sum": 13188.56, "countryNum": 5, "type": "export"}, {"sort": 2, "name": "Russia", "data": [{"sort": 1, "name": "China", "value": 1507.45}, {"sort": 2, "name": "Germany", "value": 868.67}, {"sort": 3, "name": "Ukraine", "value": 721.8}, {"sort": 4, "name": "Kazakhstan", "value": 567.68}, {"sort": 5, "name": "UK", "value": 513.33}], "sum": 8772.1, "countryNum": 5, "type": "export"}, {"sort": 3, "name": "USA", "data": [{"sort": 1, "name": "Canada", "value": 952.17}, {"sort": 2, "name": "Mexico", "value": 742.64}, {"sort": 3, "name": "China", "value": 586.67}, {"sort": 4, "name": "Japan", "value": 400.58}, {"sort": 5, "name": "Germany", "value": 336.84}], "sum": 6385.25, "countryNum": 5, "type": "export"}, {"sort": 4, "name": "Canada", "data": [{"sort": 1, "name": "USA", "value": 3924.23}, {"sort": 2, "name": "China", "value": 260.6}, {"sort": 3, "name": "Mexico", "value": 103.96}, {"sort": 4, "name": "Japan", "value": 97.49}, {"sort": 5, "name": "Germany", "value": 87.69}], "sum": 5093.73, "countryNum": 5, "type": "export"}, {"sort": 5, "name": "China", "data": [{"sort": 1, "name": "USA", "value": 796.36}, {"sort": 2, "name": "Hong Kong", "value": 528.65}, {"sort": 3, "name": "Japan", "value": 420.86}, {"sort": 4, "name": "Germany", "value": 274.78}, {"sort": 5, "name": "South Korea", "value": 258.56}], "sum": 4312.0, "countryNum": 5, "type": "export"}], "importCountryNum": 5}, {"danwei": "  ", "exportCountryNum": 5, "fileName": "temp_176000", "importData": [{"sort": 1, "name": "USA", "data": [{"sort": 1, "name": "Canada", "value": 4946.57}, {"sort": 2, "name": "Mexico", "value": 2446.56}, {"sort": 3, "name": "Venezuela", "value": 1599.37}, {"sort": 4, "name": "Japan", "value": 1368.33}, {"sort": 5, "name": "China", "value": 1339.43}], "sum": 38414.32, "countryNum": 5, "type": "import"}, {"sort": 2, "name": "Japan", "data": [{"sort": 1, "name": "Saudi Arabia", "value": 1690.71}, {"sort": 2, "name": "Kuwait", "value": 1108.79}, {"sort": 3, "name": "UAE", "value": 1015.75}, {"sort": 4, "name": "South Korea", "value": 669.38}, {"sort": 5, "name": "China", "value": 669.21}], "sum": 31516.42, "countryNum": 5, "type": "import"}, {"sort": 3, "name": "Germany", "data": [{"sort": 1, "name": "Netherlands", "value": 1196.43}, {"sort": 2, "name": "Russia", "value": 1105.19}, {"sort": 3, "name": "UK", "value": 774.1}, {"sort": 4, "name": "Italy", "value": 750.89}, {"sort": 5, "name": "Belgium", "value": 681.8}], "sum": 23995.99, "countryNum": 5, "type": "import"}, {"sort": 4, "name": "China", "data": [{"sort": 1, "name": "South Korea", "value": 2823.22}, {"sort": 2, "name": "Russia", "value": 1769.11}, {"sort": 3, "name": "Japan", "value": 1719.89}, {"sort": 4, "name": "Saudi Arabia", "value": 1164.67}, {"sort": 5, "name": "Germany", "value": 1074.35}], "sum": 23905.09, "countryNum": 5, "type": "import"}, {"sort": 5, "name": "UK", "data": [{"sort": 1, "name": "Germany", "value": 886.58}, {"sort": 2, "name": "Netherlands", "value": 778.51}, {"sort": 3, "name": "Kuwait", "value": 585.25}, {"sort": 4, "name": "Russia", "value": 577.16}, {"sort": 5, "name": "Saudi Arabia", "value": 549.49}], "sum": 19805.4, "countryNum": 5, "type": "import"}], "exportData": [{"sort": 1, "name": "Germany", "data": [{"sort": 1, "name": "USA", "value": 1176.22}, {"sort": 2, "name": "China", "value": 1074.35}, {"sort": 3, "name": "France", "value": 976.7}, {"sort": 4, "name": "UK", "value": 886.58}, {"sort": 5, "name": "Italy", "value": 869.76}], "sum": 13786.73, "countryNum": 5, "type": "export"}, {"sort": 2, "name": "Saudi Arabia", "data": [{"sort": 1, "name": "India", "value": 3835.26}, {"sort": 2, "name": "Japan", "value": 1690.71}, {"sort": 3, "name": "South Korea", "value": 1651.24}, {"sort": 4, "name": "China", "value": 1164.67}, {"sort": 5, "name": "UK", "value": 549.49}], "sum": 13370.32, "countryNum": 5, "type": "export"}, {"sort": 3, "name": "Russia", "data": [{"sort": 1, "name": "China", "value": 1769.11}, {"sort": 2, "name": "Germany", "value": 1105.19}, {"sort": 3, "name": "Ukraine", "value": 876.08}, {"sort": 4, "name": "Kazakhstan", "value": 698.04}, {"sort": 5, "name": "UK", "value": 577.16}], "sum": 10995.16, "countryNum": 5, "type": "export"}, {"sort": 4, "name": "USA", "data": [{"sort": 1, "name": "Canada", "value": 1528.6}, {"sort": 2, "name": "Mexico", "value": 1053.36}, {"sort": 3, "name": "China", "value": 842.11}, {"sort": 4, "name": "Japan", "value": 598.96}, {"sort": 5, "name": "Germany", "value": 492.22}], "sum": 9444.13, "countryNum": 5, "type": "export"}, {"sort": 5, "name": "UK", "data": [{"sort": 1, "name": "Germany", "value": 774.1}, {"sort": 2, "name": "USA", "value": 765.16}, {"sort": 3, "name": "Ireland", "value": 543.09}, {"sort": 4, "name": "France", "value": 494.36}, {"sort": 5, "name": "China", "value": 409.44}], "sum": 7335.65, "countryNum": 5, "type": "export"}], "importCountryNum": 5}]
+        //
+        // ;
 
 var browserHeight=$(window).height() ; //浏览器高度
-var browserWidth=$(window).width();//浏览器宽度
+var browserWidth=$(window).width();		//浏览器宽度
 $("div.form-group").height(browserHeight+"px");
 $("div.form-group").width(browserWidth+"px");
 
 $("#tableDiv").height(browserHeight+"px");
-var planePath = 'path://M1705.64,1318.313v-89.254l-319.9-221.799l0.073-208.063c0.521-84.662-26.629-121.796-63.961-121.491c-37.332-0.305-64.482,36.829-63.961,121.491l0.073,208.063l-319.9,221.799v89.254l330.343-157.288l12.238,241.308l-134.449,92.931l0.531,42.034l175.125-42.917l175.125,42.917l0.531-42.034l-134.449-92.931l12.238-241.308L1705.06,1318.313z';
-	var planePath2 = '';
+//var planePath = 'path://M1705.64,1318.313v-89.254l-319.9-221.799l0.073-208.063c0.521-84.662-26.629-121.796-63.961-121.491c-37.332-0.305-64.482,36.829-63.961,121.491l0.073,208.063l-319.9,221.799v89.254l330.343-157.288l12.238,241.308l-134.449,92.931l0.531,42.034l175.125-42.917l175.125,42.917l0.531-42.034l-134.449-92.931l12.238-241.308L1705.06,1318.313z';
+//	var planePath2 = '';
 
-// var dom = document.getElementById("mapContainer");
-// var myChart = echarts.init(dom);
-// option = null;
+
 /*颜色*/
 var color = [
 		'#a6c84c',
@@ -29,12 +30,12 @@ var color = [
 		'#0000CD',
  		'#46bee9'];
 
-function randomValue() {
-   	 	return Math.round(Math.random()*20);
-	}
+// function randomValue() {
+//    	 	return Math.round(Math.random()*20);
+// 	}
 /* 初始化echart  ,第一次打开页面时、点击表格行事件时，调用本函数
 *  入参：行数据  */
-var dom;
+var dom = document.getElementById("mapContainer");;
 var myChart;
 var option;
 var series ;
@@ -42,45 +43,7 @@ var initEchart=function(row){
 	if(myChart&&myChart.dispose){
 		myChart.dispose();
 	}
-	// 参考数据
-	/*row={"danwei": "  ",
-		"exportCountryNum": 5,
-		"fileName": "temp_-176000",
-		"importData": [
-			{
-				"sort": 1,
-				"name": "Brazil",
-				"data": [
-					{"sort": 1, "name": "Algeria", "value": 550.16},
-					{"sort": 2, "name": "Saudi Arabia", "value": 263.04},
-					{"sort": 3, "name": "Nigeria", "value": 195.36},
-					{"sort": 4, "name": "Argentina", "value": 178.44},
-					{"sort": 5, "name": "USA", "value": 173.49}],
-				"sum": 822.56,
-				"countryNum": 5,
-				"type": "import"},
-			{
-				"sort": 2,
-				"name": "Kazakhstan",
-				"data": [{"sort": 1,
-					"name": "Russia",
-					"value": 435.73}, {"sort": 2, "name": "UAE", "value": 15.38}, {"sort": 3, "name": "Azerbaijan", "value": 9.77}, {"sort": 4, "name": "Iran", "value": 5.11}, {"sort": 5, "name": "Turkmenistan", "value": 3.63}], "sum": 298.91, "countryNum": 5, "type": "import"}, {"sort": 3, "name": "Ukraine", "data": [{"sort": 1, "name": "Russia", "value": 565.66}, {"sort": 2, "name": "Turkmenistan", "value": 45.93}, {"sort": 3, "name": "Kazakhstan", "value": 20.62}, {"sort": 4, "name": "Azerbaijan", "value": 14.5}, {"sort": 5, "name": "Iran", "value": 6.75}], "sum": 254.02, "countryNum": 5, "type": "import"}, {"sort": 4, "name": "Georgia", "data": [{"sort": 1, "name": "Azerbaijan", "value": 276.61}, {"sort": 2, "name": "Russia", "value": 18.99}, {"sort": 3, "name": "Turkmenistan", "value": 15.31}, {"sort": 4, "name": "Iran", "value": 4.82}, {"sort": 5, "name": "UAE", "value": 2.78}], "sum": 231.98, "countryNum": 5, "type": "import"}, {"sort": 5, "name": "Oman", "data": [{"sort": 1, "name": "UAE", "value": 154.64}, {"sort": 2, "name": "Saudi Arabia", "value": 123.76}, {"sort": 3, "name": "Qatar", "value": 2.91}, {"sort": 4, "name": "Norway", "value": 2.9}, {"sort": 5, "name": "Kuwait", "value": 2.6}], "sum": 200.22, "countryNum": 5, "type": "import"}],
-		"exportData": [
-			{
-				"sort": 1,
-				"name": "Saudi Arabia",
-				"data": [
-					{"sort": 1, "name": "India", "value": 3794.33},
-					{"sort": 2, "name": "Japan", "value": 1648.28},
-					{"sort": 3, "name": "South Korea", "value": 1607.56},
-					{"sort": 4, "name": "China", "value": 1145.7},
-					{"sort": 5, "name": "UK", "value": 537.82}],
-				"sum": 13004.6,
-				"countryNum": 5,
-				"type": "export"},
-			{
-				"sort": 2, "name": "Russia", "data": [{"sort": 1, "name": "China", "value": 1242.62}, {"sort": 2, "name": "Germany", "value": 629.28}, {"sort": 3, "name": "Ukraine", "value": 565.66}, {"sort": 4, "name": "UK", "value": 448.72}, {"sort": 5, "name": "Kazakhstan", "value": 435.73}], "sum": 6522.1, "countryNum": 5, "type": "export"}, {"sort": 3, "name": "Canada", "data": [{"sort": 1, "name": "USA", "value": 2889.5}, {"sort": 2, "name": "China", "value": 195.54}, {"sort": 3, "name": "Mexico", "value": 79.69}, {"sort": 4, "name": "Germany", "value": 64.61}, {"sort": 5, "name": "Japan", "value": 51.45}], "sum": 3701.18, "countryNum": 5, "type": "export"}, {"sort": 4, "name": "UAE", "data": [{"sort": 1, "name": "Japan", "value": 859.45}, {"sort": 2, "name": "South Korea", "value": 387.1}, {"sort": 3, "name": "China", "value": 327.54}, {"sort": 4, "name": "Iran", "value": 324.76}, {"sort": 5, "name": "India", "value": 251.79}], "sum": 3368.48, "countryNum": 5, "type": "export"}, {"sort": 5, "name": "USA", "data": [{"sort": 1, "name": "Mexico", "value": 428.16}, {"sort": 2, "name": "Canada", "value": 368.75}, {"sort": 3, "name": "China", "value": 328.14}, {"sort": 4, "name": "Singapore", "value": 211.76}, {"sort": 5, "name": "Japan", "value": 199.79}], "sum": 3289.3, "countryNum": 5, "type": "export"}], "importCountryNum": 5}	/!**!/
-*/
+
 	dom = document.getElementById("mapContainer");
 	myChart = echarts.init(dom);
 	option = null;
@@ -90,7 +53,6 @@ var initEchart=function(row){
 	row.exportData.forEach(function(item,i){legendNameList.push("export"+item.sort+":"+item.name)  ;});
 	row.importData.forEach(function(item,i){legendNameList.push("import"+item.sort+":"+item.name)  ;});
 	legendNameList.forEach(function(item,i){ legendSelected[item]=false    ;});  //初始化时，图例不选中
-
 	generateSeries(row.exportData,"export");
 	generateSeries(row.importData,"import");
 
@@ -242,7 +204,7 @@ var initEchart=function(row){
 			if("import"===item.type){  //如果是进口  ,转换箭头方向
 					var temp =fromCoord;
 					fromCoord=toCoord;
-					toCoord=fromCoord;
+					toCoord=temp;
 				}
 			if (fromCoord && toCoord) {
 				res.push({
@@ -284,7 +246,7 @@ var convertData = function(item){
 			if("import"===item.type){  //如果是进口  ,转换箭头方向
 				var temp =fromCoord;
 				fromCoord=toCoord;
-				toCoord=fromCoord;
+				toCoord=temp;
 			}
 
 			if (fromCoord && toCoord) {
@@ -330,7 +292,7 @@ function formValidator(){
 	    message: 'This value is not valid',
 	   
 	    fields: {//标题
-	        edit_adminName: {
+	        title: {
 	            message: '标题验证失败',
 	            validators: {
 	                notEmpty: {
@@ -343,7 +305,7 @@ function formValidator(){
 	                }
 	            }
 	        },//单位
-	        edit_displayName: {
+	        unit: {
 	            message: '单位验证失败',
 	            validators: {
 	                notEmpty: {
@@ -356,7 +318,7 @@ function formValidator(){
 	                }
 	            }
 	        },//文件上传
-	        inputcsv1: {
+	        FD: {
 	            message: '文件上传验证失败',
 	            validators: {
 	                notEmpty: {
@@ -364,7 +326,7 @@ function formValidator(){
 	                }
 	            }
 	        },//文件上传
-	        inputcsv2: {
+	        E: {
 	            message: '文件上传验证失败',
 	            validators: {
 	                notEmpty: {
@@ -372,7 +334,7 @@ function formValidator(){
 	                }
 	            }
 	        },//文件上传
-	        inputcsv3: {
+	        T: {
 	            message: '文件上传验证失败',
 	            validators: {
 	                notEmpty: {
@@ -394,20 +356,9 @@ var adjustScrollPage = function() {
     setTimeout(function(){
 		dom.style.width = (window.innerWidth - $("#tableDiv").width())+'px';
 		dom.style.height = (window.innerHeight - 5)+'px';
-    	 
     	myChart.resize();
-		// if (option && typeof option === "object") {
-		// 	option.title.text = '世界各国进出口';
-		// 	option.title.subtext = '单位：千亿美元';
-		// 	genSeries([['China', CNData], ['USA', USAData]]);
-		// 	option.legend.data = ['China Top5', 'USA Top5'];
-	    	// myChart.setOption(option, true);
-		// }
     },100);
 }
-
-
-
 
 //初始化渲染表格数据
 var initTable = function(datas) {
@@ -424,7 +375,6 @@ var initTable = function(datas) {
 	    columns: [{  
             checkbox: true  
         },{
-	        //field: 'id',
 	        field: 'fileName',
 	        title: '<span class="tabldTitle">数据列表</span>'
 	    }],
@@ -465,18 +415,6 @@ var initEvent = function() {
    	 	adjustScrollPage();
 	});
 	
-	//单据左侧列表触发click
-	// $("#tableContainer td").bind("click", function(e){
-	// 	var tar = e.target;
-	// 	//在这里设置右侧地图的标题
-	// 	option.title.text = $(tar)[0].innerText;
-	// 	option.title.subtext = '单位：' + $(tar).parent().attr("data-index") + '万亿美元';
-	// 	genSeries([['China', CNData], ['USA', USAData]]);
-	// 	option.legend.data = ['China Top5', 'USA Top5'];
-	// 	myChart.setOption(option, true);
-	// 	//alert($(tar).parent().attr("data-index"));
-	// });
-	
 	//Modal验证销毁重构
 	$('#myModal').on('hidden.bs.modal', function() {
     $("#saveadmin_form").data('bootstrapValidator').destroy();
@@ -509,3 +447,26 @@ var delBtnFn = function() {
 		alert(item.title);
 	});
 }
+
+$.ajax({
+         type:"GET",
+         async:false,
+         url:"/rank",
+         success:function (data) {
+             console.log("扫描成功");
+             datas=JSON.parse(data);
+             //实例数据
+             //datas=[{"danwei": "  ", "exportCountryNum": 5, "fileName": "temp_-176000", "importData": [{"sort": 1, "name": "Brazil", "data": [{"sort": 1, "name": "Algeria", "value": 550.16}, {"sort": 2, "name": "Saudi Arabia", "value": 263.04}, {"sort": 3, "name": "Nigeria", "value": 195.36}, {"sort": 4, "name": "Argentina", "value": 178.44}, {"sort": 5, "name": "USA", "value": 173.49}], "sum": 822.56, "countryNum": 5, "type": "import"}, {"sort": 2, "name": "Kazakhstan", "data": [{"sort": 1, "name": "Russia", "value": 435.73}, {"sort": 2, "name": "UAE", "value": 15.38}, {"sort": 3, "name": "Azerbaijan", "value": 9.77}, {"sort": 4, "name": "Iran", "value": 5.11}, {"sort": 5, "name": "Turkmenistan", "value": 3.63}], "sum": 298.91, "countryNum": 5, "type": "import"}, {"sort": 3, "name": "Ukraine", "data": [{"sort": 1, "name": "Russia", "value": 565.66}, {"sort": 2, "name": "Turkmenistan", "value": 45.93}, {"sort": 3, "name": "Kazakhstan", "value": 20.62}, {"sort": 4, "name": "Azerbaijan", "value": 14.5}, {"sort": 5, "name": "Iran", "value": 6.75}], "sum": 254.02, "countryNum": 5, "type": "import"}, {"sort": 4, "name": "Georgia", "data": [{"sort": 1, "name": "Azerbaijan", "value": 276.61}, {"sort": 2, "name": "Russia", "value": 18.99}, {"sort": 3, "name": "Turkmenistan", "value": 15.31}, {"sort": 4, "name": "Iran", "value": 4.82}, {"sort": 5, "name": "UAE", "value": 2.78}], "sum": 231.98, "countryNum": 5, "type": "import"}, {"sort": 5, "name": "Oman", "data": [{"sort": 1, "name": "UAE", "value": 154.64}, {"sort": 2, "name": "Saudi Arabia", "value": 123.76}, {"sort": 3, "name": "Qatar", "value": 2.91}, {"sort": 4, "name": "Norway", "value": 2.9}, {"sort": 5, "name": "Kuwait", "value": 2.6}], "sum": 200.22, "countryNum": 5, "type": "import"}], "exportData": [{"sort": 1, "name": "Saudi Arabia", "data": [{"sort": 1, "name": "India", "value": 3794.33}, {"sort": 2, "name": "Japan", "value": 1648.28}, {"sort": 3, "name": "South Korea", "value": 1607.56}, {"sort": 4, "name": "China", "value": 1145.7}, {"sort": 5, "name": "UK", "value": 537.82}], "sum": 13004.6, "countryNum": 5, "type": "export"}, {"sort": 2, "name": "Russia", "data": [{"sort": 1, "name": "China", "value": 1242.62}, {"sort": 2, "name": "Germany", "value": 629.28}, {"sort": 3, "name": "Ukraine", "value": 565.66}, {"sort": 4, "name": "UK", "value": 448.72}, {"sort": 5, "name": "Kazakhstan", "value": 435.73}], "sum": 6522.1, "countryNum": 5, "type": "export"}, {"sort": 3, "name": "Canada", "data": [{"sort": 1, "name": "USA", "value": 2889.5}, {"sort": 2, "name": "China", "value": 195.54}, {"sort": 3, "name": "Mexico", "value": 79.69}, {"sort": 4, "name": "Germany", "value": 64.61}, {"sort": 5, "name": "Japan", "value": 51.45}], "sum": 3701.18, "countryNum": 5, "type": "export"}, {"sort": 4, "name": "UAE", "data": [{"sort": 1, "name": "Japan", "value": 859.45}, {"sort": 2, "name": "South Korea", "value": 387.1}, {"sort": 3, "name": "China", "value": 327.54}, {"sort": 4, "name": "Iran", "value": 324.76}, {"sort": 5, "name": "India", "value": 251.79}], "sum": 3368.48, "countryNum": 5, "type": "export"}, {"sort": 5, "name": "USA", "data": [{"sort": 1, "name": "Mexico", "value": 428.16}, {"sort": 2, "name": "Canada", "value": 368.75}, {"sort": 3, "name": "China", "value": 328.14}, {"sort": 4, "name": "Singapore", "value": 211.76}, {"sort": 5, "name": "Japan", "value": 199.79}], "sum": 3289.3, "countryNum": 5, "type": "export"}], "importCountryNum": 5}, {"danwei": "  ", "exportCountryNum": 5, "fileName": "temp_1060", "importData": [{"sort": 1, "name": "USA", "data": [{"sort": 1, "name": "Canada", "value": 3924.23}, {"sort": 2, "name": "Mexico", "value": 1822.66}, {"sort": 3, "name": "Venezuela", "value": 1026.47}, {"sort": 4, "name": "China", "value": 796.36}, {"sort": 5, "name": "Nigeria", "value": 570.69}], "sum": 14024.71, "countryNum": 5, "type": "import"}, {"sort": 2, "name": "China", "data": [{"sort": 1, "name": "Russia", "value": 1507.45}, {"sort": 2, "name": "Saudi Arabia", "value": 1155.24}, {"sort": 3, "name": "South Korea", "value": 757.3}, {"sort": 4, "name": "USA", "value": 586.67}, {"sort": 5, "name": "Angola", "value": 492.3}], "sum": 9397.66, "countryNum": 5, "type": "import"}, {"sort": 3, "name": "Japan", "data": [{"sort": 1, "name": "Saudi Arabia", "value": 1669.62}, {"sort": 2, "name": "Kuwait", "value": 1087.16}, {"sort": 3, "name": "UAE", "value": 938.07}, {"sort": 4, "name": "Qatar", "value": 455.48}, {"sort": 5, "name": "China", "value": 420.86}], "sum": 7237.5, "countryNum": 5, "type": "import"}, {"sort": 4, "name": "India", "data": [{"sort": 1, "name": "Saudi Arabia", "value": 3814.92}, {"sort": 2, "name": "UAE", "value": 281.81}, {"sort": 3, "name": "Kuwait", "value": 216.87}, {"sort": 4, "name": "Russia", "value": 208.97}, {"sort": 5, "name": "Iran", "value": 157.44}], "sum": 5939.5, "countryNum": 5, "type": "import"}, {"sort": 5, "name": "Germany", "data": [{"sort": 1, "name": "Russia", "value": 868.67}, {"sort": 2, "name": "Norway", "value": 343.9}, {"sort": 3, "name": "USA", "value": 336.84}, {"sort": 4, "name": "Netherlands", "value": 330.41}, {"sort": 5, "name": "China", "value": 274.78}], "sum": 5329.95, "countryNum": 5, "type": "import"}], "exportData": [{"sort": 1, "name": "Saudi Arabia", "data": [{"sort": 1, "name": "India", "value": 3814.92}, {"sort": 2, "name": "Japan", "value": 1669.62}, {"sort": 3, "name": "South Korea", "value": 1629.53}, {"sort": 4, "name": "China", "value": 1155.24}, {"sort": 5, "name": "UK", "value": 543.69}], "sum": 13188.56, "countryNum": 5, "type": "export"}, {"sort": 2, "name": "Russia", "data": [{"sort": 1, "name": "China", "value": 1507.45}, {"sort": 2, "name": "Germany", "value": 868.67}, {"sort": 3, "name": "Ukraine", "value": 721.8}, {"sort": 4, "name": "Kazakhstan", "value": 567.68}, {"sort": 5, "name": "UK", "value": 513.33}], "sum": 8772.1, "countryNum": 5, "type": "export"}, {"sort": 3, "name": "USA", "data": [{"sort": 1, "name": "Canada", "value": 952.17}, {"sort": 2, "name": "Mexico", "value": 742.64}, {"sort": 3, "name": "China", "value": 586.67}, {"sort": 4, "name": "Japan", "value": 400.58}, {"sort": 5, "name": "Germany", "value": 336.84}], "sum": 6385.25, "countryNum": 5, "type": "export"}, {"sort": 4, "name": "Canada", "data": [{"sort": 1, "name": "USA", "value": 3924.23}, {"sort": 2, "name": "China", "value": 260.6}, {"sort": 3, "name": "Mexico", "value": 103.96}, {"sort": 4, "name": "Japan", "value": 97.49}, {"sort": 5, "name": "Germany", "value": 87.69}], "sum": 5093.73, "countryNum": 5, "type": "export"}, {"sort": 5, "name": "China", "data": [{"sort": 1, "name": "USA", "value": 796.36}, {"sort": 2, "name": "Hong Kong", "value": 528.65}, {"sort": 3, "name": "Japan", "value": 420.86}, {"sort": 4, "name": "Germany", "value": 274.78}, {"sort": 5, "name": "South Korea", "value": 258.56}], "sum": 4312.0, "countryNum": 5, "type": "export"}], "importCountryNum": 5}, {"danwei": "  ", "exportCountryNum": 5, "fileName": "temp_176000", "importData": [{"sort": 1, "name": "USA", "data": [{"sort": 1, "name": "Canada", "value": 4946.57}, {"sort": 2, "name": "Mexico", "value": 2446.56}, {"sort": 3, "name": "Venezuela", "value": 1599.37}, {"sort": 4, "name": "Japan", "value": 1368.33}, {"sort": 5, "name": "China", "value": 1339.43}], "sum": 38414.32, "countryNum": 5, "type": "import"}, {"sort": 2, "name": "Japan", "data": [{"sort": 1, "name": "Saudi Arabia", "value": 1690.71}, {"sort": 2, "name": "Kuwait", "value": 1108.79}, {"sort": 3, "name": "UAE", "value": 1015.75}, {"sort": 4, "name": "South Korea", "value": 669.38}, {"sort": 5, "name": "China", "value": 669.21}], "sum": 31516.42, "countryNum": 5, "type": "import"}, {"sort": 3, "name": "Germany", "data": [{"sort": 1, "name": "Netherlands", "value": 1196.43}, {"sort": 2, "name": "Russia", "value": 1105.19}, {"sort": 3, "name": "UK", "value": 774.1}, {"sort": 4, "name": "Italy", "value": 750.89}, {"sort": 5, "name": "Belgium", "value": 681.8}], "sum": 23995.99, "countryNum": 5, "type": "import"}, {"sort": 4, "name": "China", "data": [{"sort": 1, "name": "South Korea", "value": 2823.22}, {"sort": 2, "name": "Russia", "value": 1769.11}, {"sort": 3, "name": "Japan", "value": 1719.89}, {"sort": 4, "name": "Saudi Arabia", "value": 1164.67}, {"sort": 5, "name": "Germany", "value": 1074.35}], "sum": 23905.09, "countryNum": 5, "type": "import"}, {"sort": 5, "name": "UK", "data": [{"sort": 1, "name": "Germany", "value": 886.58}, {"sort": 2, "name": "Netherlands", "value": 778.51}, {"sort": 3, "name": "Kuwait", "value": 585.25}, {"sort": 4, "name": "Russia", "value": 577.16}, {"sort": 5, "name": "Saudi Arabia", "value": 549.49}], "sum": 19805.4, "countryNum": 5, "type": "import"}], "exportData": [{"sort": 1, "name": "Germany", "data": [{"sort": 1, "name": "USA", "value": 1176.22}, {"sort": 2, "name": "China", "value": 1074.35}, {"sort": 3, "name": "France", "value": 976.7}, {"sort": 4, "name": "UK", "value": 886.58}, {"sort": 5, "name": "Italy", "value": 869.76}], "sum": 13786.73, "countryNum": 5, "type": "export"}, {"sort": 2, "name": "Saudi Arabia", "data": [{"sort": 1, "name": "India", "value": 3835.26}, {"sort": 2, "name": "Japan", "value": 1690.71}, {"sort": 3, "name": "South Korea", "value": 1651.24}, {"sort": 4, "name": "China", "value": 1164.67}, {"sort": 5, "name": "UK", "value": 549.49}], "sum": 13370.32, "countryNum": 5, "type": "export"}, {"sort": 3, "name": "Russia", "data": [{"sort": 1, "name": "China", "value": 1769.11}, {"sort": 2, "name": "Germany", "value": 1105.19}, {"sort": 3, "name": "Ukraine", "value": 876.08}, {"sort": 4, "name": "Kazakhstan", "value": 698.04}, {"sort": 5, "name": "UK", "value": 577.16}], "sum": 10995.16, "countryNum": 5, "type": "export"}, {"sort": 4, "name": "USA", "data": [{"sort": 1, "name": "Canada", "value": 1528.6}, {"sort": 2, "name": "Mexico", "value": 1053.36}, {"sort": 3, "name": "China", "value": 842.11}, {"sort": 4, "name": "Japan", "value": 598.96}, {"sort": 5, "name": "Germany", "value": 492.22}], "sum": 9444.13, "countryNum": 5, "type": "export"}, {"sort": 5, "name": "UK", "data": [{"sort": 1, "name": "Germany", "value": 774.1}, {"sort": 2, "name": "USA", "value": 765.16}, {"sort": 3, "name": "Ireland", "value": 543.09}, {"sort": 4, "name": "France", "value": 494.36}, {"sort": 5, "name": "China", "value": 409.44}], "sum": 7335.65, "countryNum": 5, "type": "export"}], "importCountryNum": 5}];
+
+             initLoadResultFile();//初始化加载数据并保存
+             adjustScrollPage();
+             //页面加载完
+            $(function(){
+
+                initEvent();
+            $(".fixed-table-body").css("overflow", "hidden");
+            $("#tableContainer > tbody > tr > td").css("cursor", "pointer");
+            //$(".th-inner").css("background", "#00bfa5");
+            });
+         }
+})
