@@ -161,10 +161,13 @@ xlswrite(result_name, FD_, 'FD_')
 xlswrite(result_name, Tot,'Tot')
 
 msgbox(strcat('export Success! address is : ',result_name))
-pause(5)
 
-
-
+load chirp
+sound(y,Fs)
+pause(2)
+sound(y,Fs)
+pause(2)
+sound(y,Fs)
 
 
 

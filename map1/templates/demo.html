@@ -22,6 +22,7 @@
           <div class="col-md-2 col-sm-2 col-xs-2" id="tableDiv" style="overflow:auto;background:#e8e8e8;">
             <button id="button" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" style="margin-top:2px;margin-left:5px;float:left;">新增</button>
             <button id="delBtn" type="button" class="btn btn-danger"  style="margin-top:2px;margin-left:5px;float:left;" onclick="delBtnFn()">删除</button>
+            <button id="refBtn" type="button" class="btn btn-success"  style="margin-top:2px;margin-left:5px;float:left;" onclick="refBtnFn()">刷新</button>
             <span id="hideList" style="float:right;cursor: pointer;"><img src="/static/img/left.png" title="缩进"/></span>
             <table id="tableContainer"></table>
           </div>
@@ -59,7 +60,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">  
                     <span aria-hidden="true">×</span>  
                 </button>  
-                <h4 class="modal-title" id="myModalLabel">标题--新增</h4>  
+                <h4 class="modal-title" id="myModalLabel">新增</h4>
             </div>  
             <div class="modal-body">  
               <form class="form-horizontal" id="saveadmin_form"
@@ -86,30 +87,38 @@
                                   </dd>
                               </div>
                           </div>
+
                           <div class="form-group">
                               <div class="col-sm-10">
-                                  <dt>FD.csv</dt>
+                                  <dt>FD：</dt>
                                   <dd>
-                                  	<input type="file"  id="FD" name="FD" >
+                                    <input type="text" name="fd_address"
+                                        class="form-control" id="fd_address" placeholder="例: D:\FD.csv">
                                   </dd>
                               </div>
                           </div>
+
                           <div class="form-group">
                               <div class="col-sm-10">
-                                  <dt>E.csv</dt>
+                                  <dt>E：</dt>
                                   <dd>
-                                  	<input type="file"  id="E" name="E" >
+                                    <input type="text" name="e_address"
+                                        class="form-control" id="e_address" placeholder="例: D:\E.csv">
                                   </dd>
                               </div>
                           </div>
+
                           <div class="form-group">
                               <div class="col-sm-10">
-                                  <dt>T.csv</dt>
+                                  <dt>T：</dt>
                                   <dd>
-                                  	<input type="file"  id="T" name="T" >
+                                    <input type="text" name="t_address"
+                                        class="form-control" id="t_address" placeholder="例: D:\T.csv">
                                   </dd>
                               </div>
                           </div>
+
+
                       </dl>
                   </div>
 			            <div class="modal-footer">
@@ -121,6 +130,8 @@
 			                </button>
 			            </div>
       				</form>
+
+                <div id ="result"></div>
             </div>   
         </div>  
     </div>  

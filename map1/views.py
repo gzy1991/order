@@ -28,8 +28,18 @@ def map3(request):
 def calculate(request):
     # res=cal('1','2','3','4')
 
-    result_name=cal("G:\work\matlab_test\FD.csv", "G:\work\matlab_test\E_1.csv" , "G:\work\matlab_test\data.csv", "temp_-176000")
-    return  HttpResponse("<h1>  "+result_name+"+ </h1>")
+    #result_name=cal("G:\work\matlab_test\FD.csv", "G:\work\matlab_test\E_1.csv" , "G:\work\matlab_test\data.csv", "temp_-176000")
+    #return  HttpResponse("<h1>  "+result_name+"+ </h1>")
+    title=request.GET.get("title").encode("utf-8")
+    fd_address=request.GET.get("fd_address").encode("utf-8")
+    e_address=request.GET.get("e_address").encode("utf-8")
+    t_address=request.GET.get("t_address").encode("utf-8")
+    unit=request.GET.get("unit").encode("utf-8")
+
+    resultString = cal("G:\work\matlab\FD.csv", "G:\work\matlab\E_1.csv", "G:\work\matlab\data.csv",
+                             title, "")
+    print "resultString:"+resultString
+    return  HttpResponse("<p> 计算成功，导出文件路径为： "+resultString+"</p>")
 
 def rank(request):
     result_list_json=rank_result()
