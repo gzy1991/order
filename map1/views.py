@@ -12,6 +12,7 @@ import os
 from django.http import HttpResponse
 from matrix.python_matlab import calculate as cal
 from matrix.rank import rank_result as rank_result
+from matrix.deleteData import deleteData as deletefile
 
 
 # def map1(request):
@@ -57,3 +58,10 @@ def index(request):
 # def my_image(request):
 #     image_data = open("view/static/picture/247193-106.jpg", "rb").read()
 #     return HttpResponse(image_data, content_type="image/jpg")       #  mimetype  content_type
+
+
+#删除数据
+def deleteData(request):
+    fileNameList = request.GET.get("fileNameList").encode("utf-8")
+    res=deletefile(fileNameList)
+    return HttpResponse("<p>"+res+"</p>")

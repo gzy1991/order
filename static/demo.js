@@ -282,6 +282,7 @@ function saveAdmin(){
 			data:$("#saveadmin_form").serialize(),
 			success:function(data){
 				$("#result").html(data);
+
 				initData();
 				//$('#tableContainer').bootstrapTable('refresh');
 			}
@@ -454,11 +455,13 @@ var adjustScrollPage = function() {
 //初始化渲染表格数据
 var initTable = function(datas) {
 	$("#tableDiv").css("padding-right", 0);
+	//先销毁表格
+	$('#tableContainer').bootstrapTable('destroy');
 	$('#tableContainer').bootstrapTable({
 		striped: true,
 		cardView: false,
 		width:30,
-		showRefresh:true,
+		//showRefresh:true,
 		onClickRow:function (row, $element, field) {/*表格的行点击事件*/
 			console.log("你点击了行："+row.fileName);
 			initEchart(row);
@@ -476,6 +479,7 @@ var initTable = function(datas) {
 		console.log("第一次初始化echart: "+datas[0].fileName);
 		initEchart(datas[0]);
 	}
+	$('#loading').modal('hide');
 }
 
 //初始化事件绑定
@@ -484,8 +488,10 @@ var initEvent = function() {
 	$("#commitBtn").bind('click', function(){
 		$("#addForm").submit();
 		//TODO 新增提交成功之后，进行修改datas参数，然后对table进行refresh
+
+
 		initData();
-		$('#tableContainer').bootstrapTable('refresh');
+		//$('#tableContainer').bootstrapTable('refresh');
 	});
 	
 	//增加缩进/展开功能
@@ -497,6 +503,7 @@ var initEvent = function() {
 			$("#hideList > img").attr("src", "/static/img/left.png").attr("title", "缩进");
 			$("#button").show();
 			$("#delBtn").show();
+			$("#refBtn").show();
 		}else {
 			$(".bootstrap-table").hide();
 		  	$("#tableDiv").css("width", "3%");
@@ -504,6 +511,7 @@ var initEvent = function() {
 			$("#hideList > img").attr("src", "/static/img/right.png").attr("title", "展开");
 			$("#button").hide();
 			$("#delBtn").hide();
+			$("#refBtn").hide();
 		}
    	 	adjustScrollPage();
 	});
@@ -531,20 +539,45 @@ window.onresize = function(){
 
 //删除表格行
 var delBtnFn = function() {
-	var a= $('#tableContainer').bootstrapTable('getSelections');  
-	if(typeof a != null || a.length == 0) {
-		$.Message.popup("提示", "请选中记录进行删除!");
+	$("#deleteResult").html("正在删除数据，请稍候...");
+	var selectedData= $('#tableContainer').bootstrapTable('getSelections');
+	if(typeof selectedData === null || selectedData.length == 0) {
+		$.Message.popup("提示", "请选中要删除的数据!");
+		//$("#deleteResult").html("请选中要删除的数据");
 		return;
 	}
-	$.each(a, function(i, item) {
-		alert(item.title);
-	});
-	initData();
-	//$('#tableContainer').bootstrapTable('refresh');
+	$('#deleteModel').modal('show');
+	$('#deleteModel').on('shown.bs.modal', function () {
+		var data='';
+		$.each(selectedData, function(i, item) {
+			data=data+','+item.fileName;
+		});
+		data=data.substring(1,data.length)
+		$.ajax({
+			type:"GET",
+			async:false,
+			url:"/deleteData",
+			data:{fileNameList:data},
+			success:function(data){
+				initData();
+				$("#deleteResult").html(data);
+				//$('#deleteModel').modal('hide');
+				//$.Message.popup("提示", data);
+				console.log(data);
+
+			}
+		});
+    });
+}
+var closeDelModel=function(){
+	$('#deleteModel').modal('hide');
 }
 //刷新左侧表格
 var refBtnFn =function(){
-	initData();
+	$('#loading').modal('show');
+	$('#loading').on('shown.bs.modal', function () {
+		initData();
+	})
 }
 //初始化页面数据  包括表格数据
 var initData=function(){
