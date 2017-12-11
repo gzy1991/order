@@ -37,10 +37,17 @@ def calculate(request):
     t_address=request.GET.get("t_address").encode("utf-8")
     unit=request.GET.get("unit").encode("utf-8")
 
-    resultString = cal("G:\work\matlab\FD.csv", "G:\work\matlab\E_1.csv", "G:\work\matlab\data.csv",
-                             title, "")
-    print "resultString:"+resultString
-    return  HttpResponse("<p> 计算成功，导出文件路径为： "+resultString+"</p>")
+    # resultString = cal("G:\work\matlab\FD.csv", "G:\work\matlab\E_1.csv", "G:\work\matlab\data.csv",
+    #                          title, unit)
+
+    resultString= cal(fd_address, e_address, t_address,
+                              title, unit)
+    print "resultString:" + resultString
+    if resultString.find("失败") !=-1:
+        resultString="<p>  "+resultString+"</p>"
+    else:
+        resultString="<p> 计算成功，导出文件路径为： "+resultString+"</p>"
+    return  HttpResponse(resultString)
 
 def rank(request):
     result_list_json=rank_result()

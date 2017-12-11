@@ -16,23 +16,6 @@
     white-space:nowrap;text-overflow:ellipsis;
   }  
 </style>
-</head>
-  <div id="bodyId" class="row">
-      <div>
-          <div class="col-md-2 col-sm-2 col-xs-2" id="tableDiv" style="overflow:auto;background:#e8e8e8;">
-            <button id="button" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" style="margin-top:2px;margin-left:5px;float:left;">新增</button>
-            <button id="delBtn" type="button" class="btn btn-danger"     style="margin-top:2px;margin-left:5px;float:left;" onclick="delBtnFn()">删除</button>
-            <button id="refBtn" type="button" class="btn btn-success"  style="margin-top:2px;margin-left:5px;float:left;" onclick="refBtnFn()">刷新</button>
-            <span id="hideList" style="float:right;cursor: pointer;"><img src="/static/img/left.png" title="缩进"/></span>
-            <table id="tableContainer"></table>
-          </div>
-          </div>
-          <div class="col-md-10 col-sm-10 col-xs-10" id="mapDiv" style="padding: 0;height: 100%;weight:100%">
-              <div id="mapContainer" style="height: 100%;weight:100%">
-              </div>
-          </div>
-      </div>
-  </div>
 
  <script type="text/javascript" src="/static/resource/echart/echarts-all-3.js"></script>
   <script type="text/javascript" src="/static/resource/echart/ecStat.min.js"></script>
@@ -44,16 +27,39 @@
 
   <script type="text/javascript" src="/static/resource/jquery/jquery.min.js"></script>
   <script type="text/javascript" src="/static/resource/bootstrap/js/bootstrap.js"></script>
-  <link href="/static/resource/bootstrap/css/bootstrap.css" rel="stylesheet" /><script type="text/javascript" src="/static/resource/bootstrap-table/bootstrap-table.js"></script>
+  <link href="/static/resource/bootstrap/css/bootstrap.css" rel="stylesheet" />
+    <script type="text/javascript" src="/static/resource/bootstrap-table/bootstrap-table.js"></script>
   <link href="/static/resource/bootstrap-table/bootstrap-table.css" rel="stylesheet" />
   <link href="/static/js/bootstrapValidator.min.css" rel="stylesheet" />
   <link href="/static/js/popup.css" rel="stylesheet" />
   <script type="text/javascript" src="/static/js/popup.js"></script>
 <script type="text/javascript" src="/static/js/contray.js"></script>
-  <script type="text/javascript" src="/static/demo.js"></script>
+
   <script type="text/javascript" src="/static/js/bootstrapValidator.min.js"></script>
   <script type="text/javascript" src="/static/resource/bootstrap-table/bootstrap-table-zh-CN.js"></script>
-	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">  
+</head>
+<body>
+  <div id="bodyId" class="row">
+      <div>
+          <div class="col-md-2 col-sm-2 col-xs-2" id="tableDiv" style="overflow:auto;background:#e8e8e8;">
+            <button id="button" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" style="margin-top:2px;margin-left:5px;float:left;">新增</button>
+            <button id="delBtn" type="button" class="btn btn-danger"     style="margin-top:2px;margin-left:5px;float:left;" onclick="delBtnFn()">删除</button>
+            <button id="refBtn" type="button" class="btn btn-success"  style="margin-top:2px;margin-left:5px;float:left;" onclick="refBtnFn()">刷新</button>
+            <button id="switchBtn" type="button" class="btn btn-info "
+                    style="margin-top:2px;margin-left:5px;float:left;" onclick="switchBtn()">切换背景</button>
+
+            <span id="hideList" style="float:right;cursor: pointer;"><img src="/static/img/left.png" title="缩进"/></span>
+            <table id="tableContainer"></table>
+          </div>
+          </div>
+          <div class="col-md-10 col-sm-10 col-xs-10" id="mapDiv" style="padding: 0;height: 100%;weight:100%">
+              <div id="mapContainer" style="height: 100%;weight:100%">
+              </div>
+          </div>
+      </div>
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
     <div class="modal-dialog" role="document">  
         <div class="modal-content">  
             <div class="modal-header">  
@@ -123,7 +129,7 @@
                   </div>
 			            <div class="modal-footer">
 			                <button onclick="saveAdmin()" type="button" class="btn btn-success">
-			                    <i class="fa fa-check"></i> 保存
+			                    <i class="fa fa-check"></i> 计算
 			                </button>
 			                <button type="button" class="btn btn-danger" data-dismiss="modal">
 			                    <i class="fa fa-times"></i> 关闭
@@ -136,7 +142,8 @@
         </div>  
     </div>  
 	</div>
-    <div class="modal fade" id="loading" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop='static'>
+
+  <div class="modal fade" id="loading" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop='static'>
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -160,8 +167,9 @@
           </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-dismiss="modal">
-			                    <i class="fa fa-times"></i> 关闭
+                    <i class="fa fa-times"></i> 关闭
 			                </button>
+
             </div>
 
 
@@ -171,6 +179,6 @@
 
 
 	</body>
-
+    <script type="text/javascript" src="/static/demo.js"></script>
 </html>
 

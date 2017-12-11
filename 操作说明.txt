@@ -1,11 +1,25 @@
-Python2.7 django1.11
+1 环境
+Python2.7
+
+django1.11
+
+mlab
+
+xlrd
+Xlwt
+Win32com
+2
+
+3
 
 
 
 
-echart3
 
 
 
+4 .m文件说明
+matlab_3.m   : 带提示的.m文件
+matlab_33.m  : 不带提示信息的.m文件
 
-
+5 本工程使用了echart3

@@ -2,19 +2,8 @@
  * Created by  on 2017/7/9.
  */
 
-var datas ;
-
-var browserHeight=$(window).height() ; //浏览器高度
-var browserWidth=$(window).width();		//浏览器宽度
-$("div.form-group").height(browserHeight+"px");
-$("div.form-group").width(browserWidth+"px");
-
-$("#tableDiv").height(browserHeight+"px");
-//var planePath = 'path://M1705.64,1318.313v-89.254l-319.9-221.799l0.073-208.063c0.521-84.662-26.629-121.796-63.961-121.491c-37.332-0.305-64.482,36.829-63.961,121.491l0.073,208.063l-319.9,221.799v89.254l330.343-157.288l12.238,241.308l-134.449,92.931l0.531,42.034l175.125-42.917l175.125,42.917l0.531-42.034l-134.449-92.931l12.238-241.308L1705.06,1318.313z';
-//	var planePath2 = '';
-
-
-/*颜色*/
+var backgroundColor ='#404a59';  //echart背景色
+/*划线的颜色*/
 var color = [
 		'#a6c84c',
 		'#ffa022',
@@ -26,6 +15,19 @@ var color = [
 		'#43CD80',
 		'#0000CD',
  		'#46bee9'];
+var areaColor ='#323c48'; //地图区域的颜色
+var emphasisAreaColor='#2a333dfff';
+var textColor='#fff';
+var legendColor='#fff';
+var datas ;
+var browserHeight=$(window).height() ; //浏览器高度
+var browserWidth=$(window).width();		//浏览器宽度
+// $("div.form-group").height(browserHeight+"px");
+// $("div.form-group").width(browserWidth+"px");
+
+$("#tableDiv").height(browserHeight+"px");
+//var planePath = 'path://M1705.64,1318.313v-89.254l-319.9-221.799l0.073-208.063c0.521-84.662-26.629-121.796-63.961-121.491c-37.332-0.305-64.482,36.829-63.961,121.491l0.073,208.063l-319.9,221.799v89.254l330.343-157.288l12.238,241.308l-134.449,92.931l0.531,42.034l175.125-42.917l175.125,42.917l0.531-42.034l-134.449-92.931l12.238-241.308L1705.06,1318.313z';
+//	var planePath2 = '';
 
 /* 初始化echart  ,第一次打开页面时、点击表格行事件时，调用本函数
 *  入参：行数据  */
@@ -33,11 +35,17 @@ var dom = document.getElementById("mapContainer");;
 var myChart;
 var option;
 var series ;
+var unit='';
 var initEchart=function(row){
 	if(myChart&&myChart.dispose){
 		myChart.dispose();
 	}
-
+	unit='';
+	if(row.unit && row.unit!==''){
+		unit=row.unit;
+	}else{
+		unit='undefined'
+	}
 	dom = document.getElementById("mapContainer");
 	myChart = echarts.init(dom);
 	option = null;
@@ -51,14 +59,13 @@ var initEchart=function(row){
 	generateSeries(row.importData,"import");
 
 	option = {
-		backgroundColor: '#404a59',
-		//backgroundColor: '#FFFAF0',
+		backgroundColor: backgroundColor,
 		title : {
-			text: '',
-			subtext: '',
+			text: row.fileName,
+			subtext: '单位：'+unit,
 			left: 'center',
 			textStyle : {
-				color: '#fff'
+				color: textColor
 			}
 		},
 		tooltip : {  													//提示框组件。  数据项图形触发,主要在散点图,饼图等无类目轴的图表中使用。
@@ -71,17 +78,15 @@ var initEchart=function(row){
 			top: 'bottom',
 			left: 'right',
 			data:legendNameList,
+			inactiveColor :'#6E8B3D',
 			textStyle: {
-				color: '#fff'
+				color: legendColor
 			},
 			selectedMode: 'false' 									//single    false  multiple
 		},
 	geo: {
 			map: 'world',//china
 			label: {
-			//normal: {
-			//        show: true
-			 //   },
 				emphasis: {
 					show: true
 				}
@@ -89,11 +94,12 @@ var initEchart=function(row){
 			roam: true,         										//是否开启鼠标缩放和平移漫游
 			itemStyle: {
 				normal: {
-					areaColor: '#323c48',       						//地图区域的颜色。
+					areaColor: areaColor,       						//地图区域的颜色。
+					//areaColor: '#FFFAF0',       						//地图区域的颜色。
 					borderColor: '#404a59'  							//fff  404a59   描边颜色
 				},
 				emphasis: {
-					areaColor: '#2a333d'
+					areaColor:emphasisAreaColor
 				}
 			}
 		},
@@ -147,8 +153,42 @@ var initEchart=function(row){
 				},
 				data: convertData2(item)
 			},
+			{  //国家名字  目标国家
+				name: type+""+item.sort+":"+item.name,
+				type: 'effectScatter',
+				coordinateSystem: 'geo',
+				zlevel: 2,
+				rippleEffect: {                     		//涟漪特效相关配置
+					brushType: 'stroke'             		//波纹的绘制方式   可选 'stroke' 和 'fill'
+				},
+				label: {                        			//图形上的文本标签,可用于说明图形的一些数据信息,
+					normal: {
+						show: true,
+						position: 'right',      			//标签的位置。
+
+						formatter: '{b}'           			//标签内容格式器,支持字符串模板和回调函数两种形式,字符串模板与回调函数返回的字符串均支持用 \n 换行。
+															//模板变量有 {a}、{b}、{c},分别表示系列名,数据名,数据值。
+					}
+				},
+				symbolSize: function (val) {            	//标记的大小,可以设置成诸如 10 这样单一的数字,也可以用数组分开表示宽和高
+					return 2 ;
+				},
+				itemStyle: {
+					normal: {
+						color: color[i]
+					}
+				},
+				data:[{
+					name:item.name+":"+""+" "+item.sum,
+					value:[
+							countrytInfo[item.name].longitude,
+							countrytInfo[item.name].latitude,
+							item.value
+					]
+				}]
+			},
 			{
-				// 国家名字
+				// 国家名字  好几个国家
 				name: type+""+item.sort+":"+item.name  ,
 				type: 'effectScatter',              		//带有涟漪特效动画的散点（气泡）图
 				coordinateSystem: 'geo',            		//该系列使用的坐标系,可选： cartesian2d二维的直角坐标系   polar极坐标系  geo地理坐标系
@@ -195,7 +235,7 @@ var initEchart=function(row){
 			var dataItem = item.data[i];
 			var fromCoord = [countrytInfo[item["name"]]["longitude"],countrytInfo[item["name"]]["latitude"]];
 			var toCoord = [countrytInfo[dataItem["name"]]["longitude"],countrytInfo[dataItem["name"]]["latitude"]];
-			if("import"===item.type){  //如果是进口  ,转换箭头方向
+			if("import"===item.type){  //如果是进 口  ,转换箭头方向
 					var temp =fromCoord;
 					fromCoord=toCoord;
 					toCoord=temp;
@@ -206,13 +246,13 @@ var initEchart=function(row){
 					toName: dataItem["name"],
 					coords: [fromCoord, toCoord],
 					value:dataItem.value,
-					label :{
+					label :{  // 单个数据（单条线）的标签设置
 						normal:{
 							show:true,
 							position :'middle',
 							formatter:'{c}',
 							textStyle :{
-								formatter :(dataItem.value/item.sum)*10
+								formatter :(dataItem.value/item.sum)*10    //线宽。。 无效
 							}
 						}
 					},
@@ -220,7 +260,7 @@ var initEchart=function(row){
 					symbolSize :15, //箭头大小
 					lineStyle:{
 						normal:{
-							width: (dataItem.value/item.sum)*10,
+							width: (dataItem.value/item.sum)*10,   //线宽
 							opacity: 0.6,    // 图形透明度。支持从 0 到 1 的数字,为 0 时不绘制该图形。
 							curveness: 0.4
 						}
@@ -504,6 +544,7 @@ var initEvent = function() {
 			$("#button").show();
 			$("#delBtn").show();
 			$("#refBtn").show();
+			$("#switchBtn").show();
 		}else {
 			$(".bootstrap-table").hide();
 		  	$("#tableDiv").css("width", "3%");
@@ -512,6 +553,7 @@ var initEvent = function() {
 			$("#button").hide();
 			$("#delBtn").hide();
 			$("#refBtn").hide();
+			$("#switchBtn").hide();
 		}
    	 	adjustScrollPage();
 	});
@@ -579,6 +621,46 @@ var refBtnFn =function(){
 		initData();
 	})
 }
+//切换背景色
+var switchBtn=function(){
+	if(backgroundColor =='#404a59'){
+		backgroundColor='#FFFAF0';
+		color=[
+			'#FF3030',
+			'#0000CD',
+			'#8A2BE2',
+			'#000080',
+			'#4B0082',
+			'#36648B',
+			'#CD2626',
+			'#7A378B',
+			'#00868B',
+			'#6E8B3D'
+		];
+		areaColor='#DCDCDC';
+		emphasisAreaColor='#FF69B4';
+		textColor='#2a333d';
+		legendColor='#8A2BE2';
+	}else{
+		backgroundColor='#404a59';
+		color=['#a6c84c',
+				'#ffa022',
+				'#FF3030',
+				'#EE82EE',
+				'#CDCD00',
+				'#AEEEEE',
+				'#8A2BE2',
+				'#43CD80',
+				'#00CED1',
+				'#46bee9'];
+		areaColor='#323c48';
+		emphasisAreaColor='#2a333d';
+		textColor='#fff';
+		legendColor='#fff';
+	}
+	initTable(datas);
+}
+
 //初始化页面数据  包括表格数据
 var initData=function(){
 	$.ajax({
@@ -589,10 +671,10 @@ var initData=function(){
              console.log("扫描成功");
              datas=JSON.parse(data);
              initLoadResultFile();//初始化加载数据并保存
-             adjustScrollPage();
+             adjustScrollPage(); //页面自适应
              //页面加载完
             $(function(){
-                initEvent();
+
 				$(".fixed-table-body").css("overflow", "hidden");
 				$("#tableContainer > tbody > tr > td").css("cursor", "pointer");
 				//$(".th-inner").css("background", "#00bfa5");
@@ -601,3 +683,4 @@ var initData=function(){
 })
 }
 initData();
+initEvent();

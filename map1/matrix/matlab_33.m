@@ -2,7 +2,6 @@ function matlab_3(FD_address,E_address,T_address, result_name,unit)
 
 format long
 
-msgbox( strcat('matlab process Start!Time：',datestr(now,31)))
 
 FD= csvread(FD_address);
 E= csvread(E_address);
@@ -11,10 +10,8 @@ E= csvread(E_address);
 %  E(4915,1)=-17600;
 % 1060  176000  -17600
 
-msgbox( strcat('E(4915,1):',num2str(E(4915,1)))  )
 T= csvread(T_address);
 
-msgbox( strcat ('read csv file success!time:',datestr(now,31)))
 
 % % E= textread('E.csv')
 
@@ -35,7 +32,6 @@ X=T1+FD1;
 
 X1=diag(X);
 Z=X1-T;
-msgbox(strcat('T1、FD1、X1、Z compute success!time：',datestr(now,31)))
 
 Z1=pinv(Z);
 
@@ -44,7 +40,6 @@ int=E'*Z1;
 T2=diag(int)*T;
 
 FD2=diag(int)*FD;
-% msgbox(strcat('Z1、int、T2、FD2 compute success!time：',datestr(now,31)))
 
 
 for i=1:4914;
@@ -153,7 +148,6 @@ a3=sum(sum(T4));;
 b3=sum(sum(T4));;
 b2=sum(sum(T3));;
 b1=sum(sum(T2));;
-msgbox(strcat('ALl computer sucess!time：',datestr(now,31)))
 xlswrite(result_name, T4, 'T4')
 xlswrite(result_name, FD4, 'FD4')
 xlswrite(result_name, Tra, 'Tra')
@@ -163,7 +157,6 @@ xlswrite(result_name, {unit},'unit')
 
 
 
-msgbox(strcat('export Success! address is : ',result_name))
 
 load chirp
 sound(y,Fs)
