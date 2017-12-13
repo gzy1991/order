@@ -1,14 +1,25 @@
-1 环境
-Python2.7
+1 安装Python2.7
+pip
+1.1 安装django1.11
+    pip install django==1.11
 
-django1.11
+1.2 安装mlab
 
-mlab
+1.3 安装xlrd 和 Xlwt
+    pip install xlrd
+    pip install xlwt
 
-xlrd
-Xlwt
-Win32com
-2
+1.4 安装Win32com
+    下载包后安装
+    https://sourceforge.net/projects/pywin32/files/pywin32/Build%20221/
+    http://jingyan.baidu.com/article/22fe7ced1ca36b3003617f7a.html
+
+1.5 pypymysql
+    pip install pymysql
+1.6 安装pandas
+    pip install pandas
+
+2  github 共享代码
 
 3
 

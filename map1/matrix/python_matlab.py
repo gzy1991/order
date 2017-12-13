@@ -36,7 +36,6 @@ def calculate(FD_add,E_add,T_add,result_name,unit):
     T_add_index = T_add.replace(T_addList[len(T_addList) - 1], '')
 
 
-
     h = Dispatch("Matlab.application")
     h.execute("matlab_3('" + FD_add + "','" + E_add + "','" + T_add + "','" + result_name + "','"+ unit+"')")
     print '调用结束！', time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
