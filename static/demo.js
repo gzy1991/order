@@ -322,9 +322,7 @@ function saveAdmin(){
 			data:$("#saveadmin_form").serialize(),
 			success:function(data){
 				$("#result").html(data);
-
 				initData();
-				//$('#tableContainer').bootstrapTable('refresh');
 			}
 		}
 

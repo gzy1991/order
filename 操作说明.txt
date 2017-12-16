@@ -21,7 +21,10 @@
 1.6 安装pandas
     pip install pandas
 
-2  github 共享代码
+2  通过github 更新代码
+ 2.1 提交代码
+ 2.2 更新本地代码
+     https://www.cnblogs.com/mff520mff/archive/2017/08/13/7355118.html
 
 3 打开页面
 http://127.0.0.1:8000/map3/

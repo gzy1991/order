@@ -1,13 +1,22 @@
 
+/*
+latitude  纬度
+longitude 经度
+
+'latitude': , 'longitude':
+
+*
+* */
 /*国家坐标信息、中文名、英文名*/
 var countrytInfo={
 'Guyana': {'name': 'Guyana', 'latitude': 4.860416, 'longitude': -58.93018, 'chineseName': '圭亚那', 'code': 'GY'},
 'Greece': {'name': 'Greece', 'latitude': 39.074208, 'longitude': 21.824312, 'chineseName': '希腊', 'code': 'GR'},
 'Azerbaijan': {'name': 'Azerbaijan', 'latitude': 40.143105, 'longitude': 47.576927, 'chineseName': '阿塞拜疆', 'code': 'AZ'},
-'Macedonia, FYR': {'chineseName': '', 'code': 'MK', 'name': 'Macedonia, FYR'},
-'Taiwan': {'chineseName': '台湾', 'code': 'TW', 'name': 'Taiwan'},
+'Macedonia, FYR': {'chineseName': '马其顿共和国', 'code': 'MK', 'name': 'Macedonia, FYR'},
+'Taiwan': {'chineseName': '台湾', 'code': 'TW', 'name': 'Taiwan','latitude':25 , 'longitude':121 },
 'Benin': {'name': 'Benin', 'latitude': 9.30769, 'longitude': 2.315834, 'chineseName': '贝宁', 'code': 'BJ'},
-"Cote d'Ivoire": {'chineseName': '', 'code': 'CI', 'name': "Cote d'Ivoire"},
+"Cote d'Ivoire": {'chineseName': '科特迪瓦', 'code': 'CI', 'name': "Cote d'Ivoire",'latitude': 6.49, 'longitude': -5.17},
+"Cote dIvoire": {'chineseName': '科特迪瓦', 'code': 'CI', 'name': "Cote d'Ivoire",'latitude': 6.49, 'longitude': -5.17},
 'Djibouti': {'name': 'Djibouti', 'latitude': 11.825138, 'longitude': 42.590275, 'chineseName': '吉布提', 'code': 'DJ'},
 'Ecuador': {'name': 'Ecuador', 'latitude': -1.831239, 'longitude': -78.18340599999999, 'chineseName': '厄瓜多尔', 'code': 'EC'},
 'Korea, Dem. Rep.': {'chineseName': '', 'code': 'KP', 'name': 'Korea, Dem. Rep.'},
