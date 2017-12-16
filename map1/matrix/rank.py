@@ -21,7 +21,7 @@ def get_country_name_array():
     Country_array = getArrayFromSheet(excelData,u'country')
     return Country_array
 
-#获取结果excel 地址列表
+#获取结果excel 地址列表  ，只获取xls和xlsx文件
 def get_file_name_list( ):
     L=[]
     root_add=os.getcwd()
@@ -44,54 +44,59 @@ def rank_result():
     files = get_file_name_list()
     print files  # .xlsx结果文件列表
     result_list=[]
+    errMsg="";
 
     for file in files:  #批量读取
 
-
-        result={}  #单个excel文件处理后的结果
-        file_name = file.split("\\")[len(file.split("\\")) - 1].split(".")[0]
-        result['importCountryNum'] = country_num
-        result['exportCountryNum'] = country_num
-        result["fileName"]=file_name
-        print file+" start"
-        excelData = xlrd.open_workbook(file,"rb")
-        Tot  = getArrayFromSheet(excelData,u'Tot')
-        FD_  = getArrayFromSheet(excelData,u'FD_')
-        Tra  = getArrayFromSheet(excelData,u'Tra')
-        FD4  = getArrayFromSheet(excelData,u'FD4')
-        T4  = getArrayFromSheet(excelData,u'T4')
-        unit=''  #单位
         try:
-            unit = excelData.sheet_by_name("unit").cell_value(0, 0)
-        except Exception, e:
-            if (e.message.find("No sheet named") ==-1 ):
-                unit='未定义'           #单位未定义
-        result['unit'] = unit  # 单位
-        for i in range(0,len(Tot[0])-1):# 对Tot做处理，把对角线数据设为
-            Tot[i,i]=0
-            Tot[i,len(Tot[0])-1]=0
-            Tot[len(Tot[0])-1,i]=0
+            result={}  #单个excel文件处理后的结果
+            file_name = file.split("\\")[len(file.split("\\")) - 1].split(".")[0]
+            result['importCountryNum'] = country_num
+            result['exportCountryNum'] = country_num
+            result["fileName"]=file_name
+            print file+" start"
+            excelData = xlrd.open_workbook(file,"rb")
+            Tot  = getArrayFromSheet(excelData,u'Tot')
+            FD_  = getArrayFromSheet(excelData,u'FD_')
+            Tra  = getArrayFromSheet(excelData,u'Tra')
+            FD4  = getArrayFromSheet(excelData,u'FD4')
+            T4  = getArrayFromSheet(excelData,u'T4')
+            unit=''  #单位
+            try:
+                unit = excelData.sheet_by_name("unit").cell_value(0, 0)
+            except Exception, e:
+                if (e.message.find("No sheet named") ==-1 ):
+                    unit='未定义'           #单位未定义
+            result['unit'] = unit  # 单位
+            for i in range(0,len(Tot[0])-1):# 对Tot做处理，把对角线数据设为
+                Tot[i,i]=0
+                Tot[i,len(Tot[0])-1]=0
+                Tot[len(Tot[0])-1,i]=0
 
-        for i in range(0,Tra.shape[1]-1):# Tra最后一行赋值为0
-          Tra [189,i]=0
+            for i in range(0,Tra.shape[1]-1):# Tra最后一行赋值为0
+              Tra [189,i]=0
 
-        Tra_sort=np.argsort(-Tra , axis=0)# 按列排序
+            Tra_sort=np.argsort(-Tra , axis=0)# 按列排序
 
-        index_im = Tra_sort[:, 1]  # 第2列排序的索引值   第2列是进口总排序
-        index_ex=Tra_sort[:, 0]    # 第1列排序的索引值  第1列是出口总排行
-        import_data = getImportData(country_name, Tra, Tot, index_im, country_num,index_ex)
-        export_data = getExportData(country_name,Tra,Tot,index_ex,country_num,index_im)
-        result["exportData"]=export_data
-        result["importData"]=import_data
+            index_im = Tra_sort[:, 1]  # 第2列排序的索引值   第2列是进口总排序
+            index_ex=Tra_sort[:, 0]    # 第1列排序的索引值  第1列是出口总排行
+            import_data = getImportData(country_name, Tra, Tot, index_im, country_num,index_ex)
+            export_data = getExportData(country_name,Tra,Tot,index_ex,country_num,index_im)
+            result["exportData"]=export_data
+            result["importData"]=import_data
 
-        # for i in range (0,country_num):    #针对每个国家，获取国家名，以及贸易对象的排名
-        #     print country_name[index_ex[189 - i]][0].encode("utf-8")  ,Tra[index_ex[189 - i], 0]
-        print file + " end"
-        result_list.append(result)
-        #一个文件计算完毕
-
+            # for i in range (0,country_num):    #针对每个国家，获取国家名，以及贸易对象的排名
+            #     print country_name[index_ex[189 - i]][0].encode("utf-8")  ,Tra[index_ex[189 - i], 0]
+            print file + " end"
+            result_list.append(result)
+            #一个文件计算完毕
+        except BaseException:
+            print "Error: 文件有问题,"+file
+            errMsg+=file+"<br/>"
+    # if len(errMsg)!= 0:
+    #     result_list
     result_list_json=json.dumps(result_list)
-    print "返回值 result_list_json:"
+    print "返回值 result_list_json :"
     print   result_list_json
     return  result_list_json
 
