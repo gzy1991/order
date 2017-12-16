@@ -27,6 +27,8 @@ urlpatterns = [
     # url('^my_image/$',my_image),
     # url('^hi/$',hi),
     url('^rank/$',rank),
+    url('^deleteData/$',deleteData),
+
 
 
     url('^index/$',index)

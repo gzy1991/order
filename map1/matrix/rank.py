@@ -7,7 +7,6 @@ import  sys
 import xlrd
 import xlwt
 import numpy as np
-import pandas as pd
 import json
 
 
@@ -51,7 +50,6 @@ def rank_result():
 
         result={}  #单个excel文件处理后的结果
         file_name = file.split("\\")[len(file.split("\\")) - 1].split(".")[0]
-        result['danwei'] = "  "  #单位
         result['importCountryNum'] = country_num
         result['exportCountryNum'] = country_num
         result["fileName"]=file_name
@@ -62,8 +60,13 @@ def rank_result():
         Tra  = getArrayFromSheet(excelData,u'Tra')
         FD4  = getArrayFromSheet(excelData,u'FD4')
         T4  = getArrayFromSheet(excelData,u'T4')
-
-
+        unit=''  #单位
+        try:
+            unit = excelData.sheet_by_name("unit").cell_value(0, 0)
+        except Exception, e:
+            if (e.message.find("No sheet named") ==-1 ):
+                unit='未定义'           #单位未定义
+        result['unit'] = unit  # 单位
         for i in range(0,len(Tot[0])-1):# 对Tot做处理，把对角线数据设为
             Tot[i,i]=0
             Tot[i,len(Tot[0])-1]=0
