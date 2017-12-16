@@ -1,10 +1,12 @@
 1 安装Python2.7
-pip
+
+    安装pip  ：https://www.cnblogs.com/rain124/p/6196053.html
+
 1.1 安装django1.11
     pip install django==1.11
 
 1.2 安装mlab
-
+    http://blog.csdn.net/sunny_xsc1994/article/details/70197168
 1.3 安装xlrd 和 Xlwt
     pip install xlrd
     pip install xlwt
@@ -19,9 +21,13 @@ pip
 1.6 安装pandas
     pip install pandas
 
-2  github 共享代码
+2  通过github 更新代码
+ 2.1 提交代码
+ 2.2 更新本地代码
+     https://www.cnblogs.com/mff520mff/archive/2017/08/13/7355118.html
 
-3
+3 打开页面
+http://127.0.0.1:8000/map3/
 
 
 

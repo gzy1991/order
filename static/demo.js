@@ -16,7 +16,7 @@ var color = [
 		'#0000CD',
  		'#46bee9'];
 var areaColor ='#323c48'; //地图区域的颜色
-var emphasisAreaColor='#2a333dfff';
+var emphasisAreaColor='#2a333dfff';   //选中国家时，背景色
 var textColor='#fff';
 var legendColor='#fff';
 var datas ;
@@ -52,17 +52,17 @@ var initEchart=function(row){
 	series =[];  //初始化 series数据
 	var legendNameList=[];
 	var legendSelected={};
-	row.exportData.forEach(function(item,i){legendNameList.push("export"+item.sort+":"+item.name)  ;});
-	row.importData.forEach(function(item,i){legendNameList.push("import"+item.sort+":"+item.name)  ;});
+	row.exportData.forEach(function(item,i){legendNameList.push("Export"+item.sort+": "+item.name)  ;});
+	row.importData.forEach(function(item,i){legendNameList.push("Import"+item.sort+": "+item.name)  ;});
 	legendNameList.forEach(function(item,i){ legendSelected[item]=false    ;});  //初始化时，图例不选中
-	generateSeries(row.exportData,"export");
-	generateSeries(row.importData,"import");
+	generateSeries(row.exportData,"Export");
+	generateSeries(row.importData,"Import");
 
 	option = {
 		backgroundColor: backgroundColor,
 		title : {
 			text: row.fileName,
-			subtext: '单位：'+unit,
+			subtext: 'Unit：'+unit,
 			left: 'center',
 			textStyle : {
 				color: textColor
@@ -113,7 +113,7 @@ var initEchart=function(row){
 		datas.forEach(function (item, i) {
 			series.push({
 				//移动的亮点
-				name: type+""+item.sort+":"+item.name  ,
+				name: type+""+item.sort+": "+item.name  ,
 				type: 'lines',
 				zlevel: 1,  									//线图所有图形的 zlevel 值。
 				effect: {              							//线特效的配置
@@ -133,7 +133,7 @@ var initEchart=function(row){
 			},
 			{
 				//  线  +  飞机
-				name: type+""+item.sort+":"+item.name  ,
+				name: type+""+item.sort+": "+item.name  ,
 				type: 'lines',
 				zlevel: 2,
 				symbol: ['none', 'arrow'],
@@ -154,7 +154,7 @@ var initEchart=function(row){
 				data: convertData2(item)
 			},
 			{  //国家名字  目标国家
-				name: type+""+item.sort+":"+item.name,
+				name: type+""+item.sort+": "+item.name,
 				type: 'effectScatter',
 				coordinateSystem: 'geo',
 				zlevel: 2,
@@ -189,7 +189,7 @@ var initEchart=function(row){
 			},
 			{
 				// 国家名字  好几个国家
-				name: type+""+item.sort+":"+item.name  ,
+				name: type+""+item.sort+": "+item.name  ,
 				type: 'effectScatter',              		//带有涟漪特效动画的散点（气泡）图
 				coordinateSystem: 'geo',            		//该系列使用的坐标系,可选： cartesian2d二维的直角坐标系   polar极坐标系  geo地理坐标系
 				zlevel: 2,
@@ -322,9 +322,7 @@ function saveAdmin(){
 			data:$("#saveadmin_form").serialize(),
 			success:function(data){
 				$("#result").html(data);
-
 				initData();
-				//$('#tableContainer').bootstrapTable('refresh');
 			}
 		}
 
@@ -629,16 +627,16 @@ var switchBtn=function(){
 			'#FF3030',
 			'#0000CD',
 			'#8A2BE2',
-			'#000080',
-			'#4B0082',
+			'#7CFC00',
+			'#838B8B',
 			'#36648B',
-			'#CD2626',
+			'#FFFF00',
 			'#7A378B',
 			'#00868B',
 			'#6E8B3D'
 		];
 		areaColor='#DCDCDC';
-		emphasisAreaColor='#FF69B4';
+		emphasisAreaColor='#808080';
 		textColor='#2a333d';
 		legendColor='#8A2BE2';
 	}else{
@@ -648,7 +646,7 @@ var switchBtn=function(){
 				'#FF3030',
 				'#EE82EE',
 				'#CDCD00',
-				'#AEEEEE',
+				'#FFFF00',
 				'#8A2BE2',
 				'#43CD80',
 				'#00CED1',
