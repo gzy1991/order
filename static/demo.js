@@ -2,6 +2,7 @@
  * Created by  on 2017/7/9.
  */
 
+//背景切换所需的数据
 var backgroundColor ='#404a59';  //echart背景色
 /*划线的颜色*/
 var color = [
@@ -16,12 +17,17 @@ var color = [
 		'#0000CD',
  		'#46bee9'];
 var areaColor ='#323c48'; //地图区域的颜色
-var emphasisAreaColor='#2a333dfff';   //选中国家时，背景色
+var emphasisAreaColor='#2a333d';   //选中国家时，背景色
 var textColor='#fff';
 var legendColor='#fff';
 var datas ;
 var browserHeight=$(window).height() ; //浏览器高度
 var browserWidth=$(window).width();		//浏览器宽度
+var geoTextColor="#fff"; //地图上，选中国家时，国家名的颜色
+//标签切换所需的数据
+var isShowSign=true;  //是否显示标签 ，初始化的时候显示
+
+
 // $("div.form-group").height(browserHeight+"px");
 // $("div.form-group").width(browserWidth+"px");
 
@@ -88,18 +94,19 @@ var initEchart=function(row){
 			map: 'world',//china
 			label: {
 				emphasis: {
+					color :geoTextColor,
 					show: true
 				}
 			},
 			roam: true,         										//是否开启鼠标缩放和平移漫游
-			itemStyle: {
+			itemStyle: {   											//地图区域的多边形 图形样式
 				normal: {
 					areaColor: areaColor,       						//地图区域的颜色。
 					//areaColor: '#FFFAF0',       						//地图区域的颜色。
 					borderColor: '#404a59'  							//fff  404a59   描边颜色
 				},
 				emphasis: {
-					areaColor:emphasisAreaColor
+					areaColor:emphasisAreaColor    					//选中国家时，国家背景色
 				}
 			}
 		},
@@ -117,7 +124,7 @@ var initEchart=function(row){
 				type: 'lines',
 				zlevel: 1,  									//线图所有图形的 zlevel 值。
 				effect: {              							//线特效的配置
-					show: true,
+					show: isShowSign,
 					period: 1,              					//特效动画的时间,单位为 s。
 					color: '#fff',
 					symbolSize: 3          						//特效标记的大小,可以设置成诸如 10 这样单一的数字,也可以用数组分开表示高和宽,例如 [20, 10] 表示标记宽为20,高为10。
@@ -163,7 +170,7 @@ var initEchart=function(row){
 				},
 				label: {                        			//图形上的文本标签,可用于说明图形的一些数据信息,
 					normal: {
-						show: true,
+						show: isShowSign,
 						position: 'right',      			//标签的位置。
 
 						formatter: '{b}'           			//标签内容格式器,支持字符串模板和回调函数两种形式,字符串模板与回调函数返回的字符串均支持用 \n 换行。
@@ -198,7 +205,7 @@ var initEchart=function(row){
 				},
 				label: {                        			//图形上的文本标签,可用于说明图形的一些数据信息,
 					normal: {
-						show: true,
+						show: isShowSign,
 						position: 'right',      			//标签的位置。
 
 						formatter: '{b}'           			//标签内容格式器,支持字符串模板和回调函数两种形式,字符串模板与回调函数返回的字符串均支持用 \n 换行。
@@ -248,11 +255,13 @@ var initEchart=function(row){
 					value:dataItem.value,
 					label :{  // 单个数据（单条线）的标签设置
 						normal:{
-							show:true,
+							show:isShowSign,
 							position :'middle',
 							formatter:'{c}',
+							fontWeight:'lighter',// 文字字体的粗细
+							fontSize:4,  //标签字体的大小
 							textStyle :{
-								formatter :(dataItem.value/item.sum)*10    //线宽。。 无效
+								formatter :(dataItem.value/item.sum)*10    //线宽。。这个配置 无效
 							}
 						}
 					},
@@ -291,7 +300,7 @@ var convertData = function(item){
 					value:dataItem.value,
 					label :{
 						normal:{
-							show:true,
+							show:isShowSign,
 							position :'middle',
 							formatter:'{c}',
 							textStyle :{
@@ -536,13 +545,15 @@ var initEvent = function() {
 	$("#hideList").bind("click", function(){
 		if($(".bootstrap-table").css("display") == 'none') {
 			$(".bootstrap-table").show();
-			$("#tableDiv").css("width", "16.66666667%");
-			$("#mapDiv").css("width", "83.33333333%");
+			$("#tableDiv").css("width", "25.0%");
+			$("#mapDiv").css("width", "75.0%");
+
 			$("#hideList > img").attr("src", "/static/img/left.png").attr("title", "缩进");
 			$("#button").show();
 			$("#delBtn").show();
 			$("#refBtn").show();
 			$("#switchBtn").show();
+			$("#switchSignBtn").show();
 		}else {
 			$(".bootstrap-table").hide();
 		  	$("#tableDiv").css("width", "3%");
@@ -552,6 +563,7 @@ var initEvent = function() {
 			$("#delBtn").hide();
 			$("#refBtn").hide();
 			$("#switchBtn").hide();
+			$("#switchSignBtn").hide();
 		}
    	 	adjustScrollPage();
 	});
@@ -639,6 +651,8 @@ var switchBtn=function(){
 		emphasisAreaColor='#808080';
 		textColor='#2a333d';
 		legendColor='#8A2BE2';
+		geoTextColor="#FFFF00"
+
 	}else{
 		backgroundColor='#404a59';
 		color=['#a6c84c',
@@ -655,6 +669,17 @@ var switchBtn=function(){
 		emphasisAreaColor='#2a333d';
 		textColor='#fff';
 		legendColor='#fff';
+		geoTextColor="#fff"
+	}
+	initTable(datas);
+}
+
+//切换标签
+var switchSignBtn =function(){
+	if(isShowSign){   //r如果已经显示标签，那么切换为不显示
+		isShowSign=false;
+	}else{
+		isShowSign=true;
 	}
 	initTable(datas);
 }

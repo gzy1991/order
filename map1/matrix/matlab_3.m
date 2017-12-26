@@ -157,9 +157,9 @@ msgbox(strcat('ALl computer sucess!time：',datestr(now,31)))
 xlswrite(result_name, T4, 'T4')
 xlswrite(result_name, FD4, 'FD4')
 xlswrite(result_name, Tra, 'Tra')
-xlswrite(result_name, FD_, 'FD_')
+xlswrite(result_name, FD_, 'FD_S')
 xlswrite(result_name, Tot,'Tot')
-xlswrite(result_name, {unit},'unit')
+xlswrite(result_name, {unit},'Unit')
 
 
 

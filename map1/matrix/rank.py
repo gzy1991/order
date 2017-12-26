@@ -57,13 +57,13 @@ def rank_result():
             print file+" start"
             excelData = xlrd.open_workbook(file,"rb")
             Tot  = getArrayFromSheet(excelData,u'Tot')
-            FD_  = getArrayFromSheet(excelData,u'FD_')
+            FD_  = getArrayFromSheet(excelData,u'FD_S')
             Tra  = getArrayFromSheet(excelData,u'Tra')
             FD4  = getArrayFromSheet(excelData,u'FD4')
             T4  = getArrayFromSheet(excelData,u'T4')
             unit=''  #单位
             try:
-                unit = excelData.sheet_by_name("unit").cell_value(0, 0)
+                unit = excelData.sheet_by_name("Unit").cell_value(0, 0)
             except Exception, e:
                 if (e.message.find("No sheet named") ==-1 ):
                     unit='未定义'           #单位未定义
