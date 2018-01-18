@@ -20,12 +20,9 @@ from  map1.views import *
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    # url(r'^map1/$',map1),  #测试
-    # url(r'^map2/$',map2),  #dialog
     url(r'^matrix/$',map3),  #主页面
+    url(r'^map2/$',map2),  #主页面
     url(r'^calculate/$',calculate),
-    # url('^my_image/$',my_image),
-    # url('^hi/$',hi),
     url('^rank/$',rank),
     url('^deleteData/$',deleteData),
 

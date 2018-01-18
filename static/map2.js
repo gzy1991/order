@@ -1,5 +1,5 @@
 /**
- * Created by  on 2017/7/9.
+ * Created by  on 2018/1/19
  */
 
 //背景切换所需的数据
@@ -577,11 +577,7 @@ var initEvent = function() {
 	});
 }
 
-//初始化导入csv文件并保存
-function initLoadResultFile () {
-	//TODO 通过ajax加载返回json格式数据
-	initTable(datas);
-}
+
 
 //窗体改变时触发
 window.onresize = function(){
@@ -681,6 +677,12 @@ var switchSignBtn =function(){
 	}else{
 		isShowSign=true;
 	}
+	initTable(datas);
+}
+
+//初始化导入csv文件并保存
+function initLoadResultFile () {
+	//TODO 通过ajax加载返回json格式数据
 	initTable(datas);
 }
 
