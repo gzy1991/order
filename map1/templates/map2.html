@@ -1,185 +1,84 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>中国</title>
-<style>
- .tabldTitle{
-    font-size: 20px;
-    font-weight: normal;
-    line-height: 1.42857143;
-    text-align: center;
-    white-space: nowrap;
-    vertical-align: middle;
- 	}
- 	td{
-    white-space:nowrap;text-overflow:ellipsis;
-  }
-</style>
+<!DOCTYPE html>
+<html style="height: 100%">
+   <head>
+       <meta charset="utf-8">
+       <script type="text/javascript" src="http://echarts.baidu.com/dist/echarts.min.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/dist/echarts-gl.min.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-stat/ecStat.min.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/dataTool.min.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/china.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/world.js"></script>
+       <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=ZUONbpqGBsYGXNIYHicvbAbM"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/bmap.min.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/simplex.js"></script>
+       
+   </head>
+   <body style="height: 100%; margin: 0">
+        <div id="container" style="height: 100%"></div>
+        <script type="text/javascript">
+          var geoData=[
+                          {name:'广东', selected:true},
+                          {name:'河南', selected:true},
+                          {name:'福建', selected:true}
 
- <script type="text/javascript" src="/static/resource/echart/echarts-all-3.js"></script>
-  <script type="text/javascript" src="/static/resource/echart/ecStat.min.js"></script>
-  <script type="text/javascript" src="/static/resource/echart/dataTool.min.js"></script>
-  <script type="text/javascript" src="/static/resource/echart/china.js"></script>
-  <script type="text/javascript" src="/static/resource/echart/world.js"></script>
-  <script type="text/javascript" src="/static/resource/echart/bmap.min.js"></script>
+                      ];
+          var lineData=[];
+          var dom = document.getElementById("container");
+          var myChart = echarts.init(dom);
+          var app = {};
+          option = null;
+          option = {
+              tooltip: {
+                  trigger: 'item',
+                  formatter: '{b}'
+              },
+              geo: {
+                show:true,
+                map: 'china',
+                label: {
+                    emphasis: {
+                        show: false
+                    }
+                },
+                selectedMode : 'multiple',
+                roam: true,
+                selected:true,
+                itemStyle: {
+                    normal: {
+                       /* areaColor: '#323c48',
+                        borderColor: '#404a59'*/
+                    },
+                    emphasis: {
+                        /*areaColor: '#2a333d'*/
+                    }
+                },
+                label: {
+                  position:'left',
+                  show:true,
+                  normal: {
+                      show: true
+                  },
+                  emphasis: {
+                      show: true
+                  }
+                },
+                regions:geoData
+                
+            },
+            series:[
+              {
+                
+              },
+              {
 
-  <script type="text/javascript" src="/static/resource/jquery/jquery.min.js"></script>
-  <script type="text/javascript" src="/static/resource/bootstrap/js/bootstrap.js"></script>
-  <link href="/static/resource/bootstrap/css/bootstrap.css" rel="stylesheet" />
-    <script type="text/javascript" src="/static/resource/bootstrap-table/bootstrap-table.js"></script>
-  <link href="/static/resource/bootstrap-table/bootstrap-table.css" rel="stylesheet" />
-  <link href="/static/js/bootstrapValidator.min.css" rel="stylesheet" />
-  <link href="/static/js/popup.css" rel="stylesheet" />
-  <script type="text/javascript" src="/static/js/popup.js"></script>
-<script type="text/javascript" src="/static/js/contray.js"></script>
+              }
 
-  <script type="text/javascript" src="/static/js/bootstrapValidator.min.js"></script>
-  <script type="text/javascript" src="/static/resource/bootstrap-table/bootstrap-table-zh-CN.js"></script>
-</head>
-<body>
-  <div id="bodyId" class="row">
-      <div>
-          <div class="col-md-3 col-sm-3 col-xs-3" id="tableDiv" style="overflow:auto;background:#e8e8e8;">
-            <button id="button" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" style="margin-top:2px;margin-left:5px;float:left;">新增</button>
-            <button id="delBtn" type="button" class="btn btn-danger"     style="margin-top:2px;margin-left:5px;float:left;" onclick="delBtnFn()">删除</button>
-            <button id="refBtn" type="button" class="btn btn-success"  style="margin-top:2px;margin-left:5px;float:left;" onclick="refBtnFn()">刷新</button>
-            <button id="switchBtn" type="button" class="btn btn-info "
-                    style="margin-top:2px;margin-left:5px;float:left;" onclick="switchBtn()">切换背景</button>
-            <button id="switchSignBtn" type="button" class="btn btn-warning "
-                    style="margin-top:2px;margin-left:5px;float:left;" onclick="switchSignBtn()">切换标签</button>
-
-            <span id="hideList" style="float:right;cursor: pointer;"><img src="/static/img/left.png" title="缩进"/></span>
-            <table id="tableContainer"></table>
-          </div>
-          </div>
-          <div class="col-md-9 col-sm-9 col-xs-9" id="mapDiv" style="padding: 0;height: 100%;weight:100%">
-              <div id="mapContainer" style="height: 100%;weight:100%">
-              </div>
-          </div>
-      </div>
-  </div>
-
-  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-                <h4 class="modal-title" id="myModalLabel">新增</h4>
-            </div>
-            <div class="modal-body">
-              <form class="form-horizontal" id="saveadmin_form"
-                  name="form-horizontal">
-                  <input type="hidden" id="adminid" />
-                  <div class="box-body">
-                      <dl class="dl-horizontal">
-                          <div class="form-group">
-                              <div class="col-sm-10">
-                                  <dt>主题：</dt>
-                                  <dd>
-                                      <lable id="edit_show_adminname"></lable>
-                                      <input type="text" class="form-control" id="title"
-                                          name="title" data-bv-notempty="true" >
-                                  </dd>
-                              </div>
-                          </div>
-                          <div class="form-group">
-                              <div class="col-sm-10">
-                                  <dt>单位：</dt>
-                                  <dd>
-                                    <input type="text" name="unit"
-                                        class="form-control" id="unit">
-                                  </dd>
-                              </div>
-                          </div>
-
-                          <div class="form-group">
-                              <div class="col-sm-10">
-                                  <dt>FD：</dt>
-                                  <dd>
-                                    <input type="text" name="fd_address"
-                                        class="form-control" id="fd_address" placeholder="例: D:\FD.csv">
-                                  </dd>
-                              </div>
-                          </div>
-
-                          <div class="form-group">
-                              <div class="col-sm-10">
-                                  <dt>E：</dt>
-                                  <dd>
-                                    <input type="text" name="e_address"
-                                        class="form-control" id="e_address" placeholder="例: D:\E.csv">
-                                  </dd>
-                              </div>
-                          </div>
-
-                          <div class="form-group">
-                              <div class="col-sm-10">
-                                  <dt>T：</dt>
-                                  <dd>
-                                    <input type="text" name="t_address"
-                                        class="form-control" id="t_address" placeholder="例: D:\T.csv">
-                                  </dd>
-                              </div>
-                          </div>
-
-
-                      </dl>
-                  </div>
-			            <div class="modal-footer">
-			                <button onclick="saveAdmin()" type="button" class="btn btn-success">
-			                    <i class="fa fa-check"></i> 计算
-			                </button>
-			                <button type="button" class="btn btn-danger" data-dismiss="modal">
-			                    <i class="fa fa-times"></i> 关闭
-			                </button>
-			            </div>
-      				</form>
-
-                <div id ="result"></div>
-            </div>
-        </div>
-    </div>
-	</div>
-
-  <div class="modal fade" id="loading" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop='static'>
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h4 class="modal-title" id="myModalLabel">提示</h4>
-          </div>
-          <div class="modal-body">
-            正在刷新数据，请稍候。。。
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="modal fade" id="deleteModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop='static'>
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h4 class="modal-title" id="deleteModalLabel">删除</h4>
-          </div>
-          <div class="modal-body" id ="deleteResult">
-            正在删除数据，请稍候...
-          </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-dismiss="modal">
-                    <i class="fa fa-times"></i> 关闭
-			                </button>
-
-            </div>
-
-
-        </div>
-      </div>
-    </div>
-
-
-	</body>
-    <script type="text/javascript" src="/static/map2.js"></script>
+            ]
+              
+          };;
+          if (option && typeof option === "object") {
+              myChart.setOption(option, true);
+          }
+        </script>
+    </body>
 </html>
-
