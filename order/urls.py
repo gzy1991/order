@@ -17,10 +17,11 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from  map1.views import *
+from  map2.views import *
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^matrix/$',map3),  #主页面
+    url(r'^matrix/$',map1),  #主页面
     url(r'^map2/$',map2),  #主页面
     url(r'^calculate/$',calculate),
     url('^rank/$',rank),

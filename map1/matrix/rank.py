@@ -8,40 +8,21 @@ import xlrd
 import xlwt
 import numpy as np
 import json
+import Tool.ExcelTool as ExcelTool
 
 
-
-
-#获取国家名 地址列表
-def get_country_name_array():
-    L = []
-    root_add = os.getcwd()
-    country_dir = root_add + "\\country_excel\\Countries.xlsx"  # 结果excel所在目录
-    excelData = xlrd.open_workbook(country_dir, "rb")
-    Country_array = getArrayFromSheet(excelData,u'country')
-    return Country_array
-
-#获取结果excel 地址列表  ，只获取xls和xlsx文件
-def get_file_name_list( ):
-    L=[]
-    root_add=os.getcwd()
-    print(os.getcwd())                       # 获取工程根目录
-    file_dir=root_add+"\\result_excel"     #  结果excel所在目录
-
-    for root, dirs, files in os.walk(file_dir):
-        for file in files:
-            if os.path.splitext(file)[1] == '.xlsx' or  os.path.splitext(file)[1] == '.xls':
-                L.append(os.path.join(root, file))
-    return L
 
 #排序
 def rank_result():
 
     country_num = 5  # 前10个国家,这个参数可以从页面上传进来
 
-    country_name =get_country_name_array()
+    #country_name =get_country_name_array()
+    # #获取国家名 地址列表
+    country_name =ExcelTool.getArrayBySheetName("\\country_excel\\Countries.xlsx","country")
     print(os.getcwd())
-    files = get_file_name_list()
+    #获取结果excel 地址列表  ，只获取xls和xlsx文件
+    files = ExcelTool.listExcelFile("\\result_excel")
     print files  # .xlsx结果文件列表
     result_list=[]
     errMsg="";
@@ -56,11 +37,14 @@ def rank_result():
             result["fileName"]=file_name
             print file+" start"
             excelData = xlrd.open_workbook(file,"rb")
-            Tot  = getArrayFromSheet(excelData,u'Tot')
-            FD_  = getArrayFromSheet(excelData,u'FD_S')
-            Tra  = getArrayFromSheet(excelData,u'Tra')
-            FD4  = getArrayFromSheet(excelData,u'FD4')
-            T4  = getArrayFromSheet(excelData,u'T4')
+
+            #从excel获取sheet， 转化成numpy.array
+            Tot = ExcelTool.getArrayFromSheet(excelData, u'Tot','name')
+            FD_ = ExcelTool.getArrayFromSheet(excelData, u'FD_S','name')
+            Tra = ExcelTool.getArrayFromSheet(excelData, u'Tra','name')
+            FD4 = ExcelTool.getArrayFromSheet(excelData, u'FD4','name')
+            T4 = ExcelTool.getArrayFromSheet(excelData, u'T4','name')
+
             unit=''  #单位
             try:
                 unit = excelData.sheet_by_name("Unit").cell_value(0, 0)
@@ -68,7 +52,7 @@ def rank_result():
                 if (e.message.find("No sheet named") ==-1 ):
                     unit='未定义'           #单位未定义
             result['unit'] = unit  # 单位
-            for i in range(0,len(Tot[0])-1):# 对Tot做处理，把对角线数据设为
+            for i in range(0,len(Tot[0])-1):# 对Tot做处理，把对角线数据设为0
                 Tot[i,i]=0
                 Tot[i,len(Tot[0])-1]=0
                 Tot[len(Tot[0])-1,i]=0
@@ -99,20 +83,6 @@ def rank_result():
     print "返回值 result_list_json :"
     print   result_list_json
     return  result_list_json
-
-# 从excel获取sheet， 转化成 numpy.array
-def getArrayFromSheet(excelData,sheetName ):
-    sheet=excelData.sheet_by_name(sheetName)
-    row=sheet.nrows
-    column = sheet.ncols  # 列
-    _array=[]
-    for i in range(0,row):
-        _row=[]
-        for j in range(0, column):
-            _row.append(sheet.cell_value(i,j))
-        _array.append(_row)
-    np_array=np.array(_array)
-    return np_array
 
 
 #  ， 获取某个国家的进口 排序数据
