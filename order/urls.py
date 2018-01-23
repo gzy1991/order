@@ -17,12 +17,13 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from  map1.views import *
-from  map2.views import *
+import  map2.views  as map2
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^matrix/$',map1),  #主页面
-    url(r'^map2/$',map2),  #主页面
+    url(r'^map2/$',map2.getPage),  # 图2页面
+    url(r'^initMap2/$',map2.getTableData),  # 图2数据
     url(r'^calculate/$',calculate),
     url('^rank/$',rank),
     url('^deleteData/$',deleteData),

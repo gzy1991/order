@@ -2,6 +2,17 @@
 <html style="height: 100%">
    <head>
        <meta charset="utf-8">
+       <script type="text/javascript" src="/static/resource/jquery/jquery.min.js"></script>
+       <script type="text/javascript" src="/static/resource/bootstrap/js/bootstrap.js"></script>
+        <link href="/static/resource/bootstrap/css/bootstrap.css" rel="stylesheet" />
+        <script type="text/javascript" src="/static/resource/bootstrap-table/bootstrap-table.js"></script>
+        <link href="/static/resource/bootstrap-table/bootstrap-table.css" rel="stylesheet" />
+        <link href="/static/js/bootstrapValidator.min.css" rel="stylesheet" />
+        <link href="/static/js/popup.css" rel="stylesheet" />
+        <script type="text/javascript" src="/static/js/popup.js"></script>
+       <script type="text/javascript" src="/static/js/bootstrapValidator.min.js"></script>
+  <script type="text/javascript" src="/static/resource/bootstrap-table/bootstrap-table-zh-CN.js"></script>
+
        <script type="text/javascript" src="http://echarts.baidu.com/dist/echarts.min.js"></script>
        <script type="text/javascript" src="http://echarts.baidu.com/dist/echarts-gl.min.js"></script>
        <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-stat/ecStat.min.js"></script>
@@ -109,6 +120,15 @@
           if (option && typeof option === "object") {
               myChart.setOption(option, true);
           }
+
+          $.ajax({
+              type:"GET",
+			  async:false,
+              url:"/initMap2",
+              success:function(){
+                  Console.log("initMap2")
+              }
+          })
         </script>
     </body>
 </html>

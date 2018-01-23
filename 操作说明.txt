@@ -1,4 +1,4 @@
-1 安装Python2.7
+1 安装Python2.7  64位
 
     安装pip  ：https://www.cnblogs.com/rain124/p/6196053.html
 
@@ -27,7 +27,7 @@
      https://www.cnblogs.com/mff520mff/archive/2017/08/13/7355118.html
 
 3 打开页面
-图1: http://127.0.0.1:8000/matrix/
+图1: http://127.0.0.1:8000/matrix/得
 图2：http://127.0.0.1:8000/map2/
 
 

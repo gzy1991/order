@@ -53,25 +53,25 @@ def getTableData():
             Tot_exportSort = np.argsort(-Tot,axis=1)  #按行排序，出口排序，降序
             #对31个省份循环处理
             for i in range(provinceNum):
-                provinceResult=[]            #该省份数据
-                proInfo = provincesInfo[i]   #该省份坐标、中英文名、
+                provinceResult={}            #该省份数据
+                # proInfo = provincesInfo[i]   #该省份坐标、中英文名、
 
-                provinceResult["chineseName"]=proInfo[1]        #该省中文名全称
-                provinceResult["name"]=proInfo[2]               #该省英文名
-                provinceResult["chineseAbbrName"]=proInfo[3]    #该省中文名 缩写
-                provinceResult["latitude"]=proInfo[4]    #该省纬度
-                provinceResult["longitude"]=proInfo[5]    #该省经度
+                provinceResult["chineseName"]=provincesInfo[i][1]        #该省中文名全称
+                provinceResult["name"]=provincesInfo[i][2]               #该省英文名
+                provinceResult["chineseAbbrName"]=provincesInfo[i][3]    #该省中文名 缩写
+                provinceResult["latitude"]=provincesInfo[i][4]    #该省纬度
+                provinceResult["longitude"]=provincesInfo[i][5]    #该省经度
                 provinceResult["exportSum"]=Tra[i][0]   #该省出口总值
                 provinceResult["importSum"]=Tra[i][1]    #该省进口总值
 
 
                 # exportData=      getProExportData()   #获取该省出口数据          
                 # importData=      getProImportData()   #获取该省出口数据  
-                provinceResult["exportData"]=exportData
-                provinceResult["importData"]=importData
+                # provinceResult["exportData"]=exportData
+                # provinceResult["importData"]=importData
 
 
-                result[proInfo[2]]=provinceResult  #该省的信息
+                result[provincesInfo[i][2]]=provinceResult  #该省的信息
 
            
 
