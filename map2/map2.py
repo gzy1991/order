@@ -17,7 +17,6 @@ def getTableData():
     provinceNum=31  #省份数量，默认是31
     provincesInfo = ExcelTool.getArrayBySheetName("\\country_excel\\Province.xlsx","province")  #获取省份名列表，包括 ： 中文名、英文名、纬度、经度
     print(os.getcwd())
-    #files = get_file_name_list()
     files = ExcelTool.listExcelFile("\\excel_map2")
     print files  # .xlsx结果文件列表
     resultList = []
@@ -62,8 +61,8 @@ def getTableData():
                 provinceResult["longitude"]=provincesInfo[i][5]    #该省经度
                 provinceResult["exportSum"]=Tra[i][0]    #该省出口总值
                 provinceResult["importSum"]=Tra[i][1]    #该省进口总值
-                exportData=      getProExportData(Tot,Tot_exportSort,provincesInfo,i,proShowNum)   #获取该省出口数据          
-                importData=      getProImportData(Tot,Tot_importSort,provincesInfo,i,proShowNum)   #获取该省进口数据  
+                exportData=      getProExportData(Tra,Tot,Tot_exportSort,provincesInfo,i,proShowNum)   #获取该省出口数据
+                importData=      getProImportData(Tra,Tot,Tot_importSort,provincesInfo,i,proShowNum)   #获取该省进口数据
                 provinceResult["exportData"]=exportData
                 provinceResult["importData"]=importData
 
@@ -72,6 +71,7 @@ def getTableData():
             #一个文件计算完毕
         except BaseException:
             print "Error: 文件有问题," + file
+            print BaseException
             errMsg += file + "<br/>"
 
     resultListJson=json.dumps(resultList)
@@ -85,7 +85,7 @@ def getTableData():
 #   provincesInfo   所有省份的信息
 #   i               省份索引
 #   proShowNum      显示的贸易对象个数
-def getProExportData(Tot,Tot_exportSort,provincesInfo,i,proShowNum):
+def getProExportData(Tra,Tot,Tot_exportSort,provincesInfo,i,proShowNum):
     curProExport = []               #该省出口数据 ，容器
     
     for j  in range(proShowNum):    #遍历排名前proShowNum个省份的数据
@@ -96,9 +96,9 @@ def getProExportData(Tot,Tot_exportSort,provincesInfo,i,proShowNum):
         curProExpToJPro["chineseAbbrName"]  = provincesInfo[proIndex][3] # j省中文名 缩写
         curProExpToJPro["latitude"]=provincesInfo[proIndex][4]     # j省纬度
         curProExpToJPro["longitude"]=provincesInfo[proIndex][5]    # j省经度
-        curProExpToJPro["sort"]  = j                   #排序
-        curProExpToJPro["value"] = Tot[i][j]           # i省对j省的出口贸易额
-        curProExpToJPro["sum"] = Tra[proIndex][1]      # j省进口自总额
+        curProExpToJPro["sort"]  = j+1                   #排序
+        curProExpToJPro["value"] = Tot[i][proIndex]           # i省对j省的出口贸易额
+        curProExpToJPro["sum"] = Tra[proIndex][1]      # j省进口总额
 
         curProExport.append(curProExpToJPro)
 
@@ -111,19 +111,19 @@ def getProExportData(Tot,Tot_exportSort,provincesInfo,i,proShowNum):
 #   provincesInfo   所有省份的信息
 #   i               省份索引
 #   proShowNum      显示的贸易对象个数
-def getProImportData(Tot,Tot_importSort,provincesInfo,i,proShowNum):
+def getProImportData(Tra,Tot,Tot_importSort,provincesInfo,i,proShowNum):
     curProImport = []               #该省进口数据 ，容器
     
     for j in range(proShowNum):     #遍历排名前proShowNum个省份的数据
         curProImpToJPro={}          #容器
-        proIndex = Tot_exportSort[j][i]     #排名第j的省份的索引
+        proIndex = Tot_importSort[j][i]     #排名第j的省份的索引
 
         curProImpToJPro["name"]  = provincesInfo[proIndex][2] #英文名
         curProImpToJPro["chineseAbbrName"]  = provincesInfo[proIndex][3] # j省中文名 缩写
         curProImpToJPro["latitude"]=provincesInfo[proIndex][4]     # j省纬度
         curProImpToJPro["longitude"]=provincesInfo[proIndex][5]    # j省经度
-        curProImpToJPro["sort"]  = j                   #排序
-        curProImpToJPro["value"] = Tot[j][i]           # i省对j省的进口贸易额
+        curProImpToJPro["sort"]  = j+1                   #排序
+        curProImpToJPro["value"] = Tot[proIndex][i]           # i省对j省的进口贸易额
         curProImpToJPro["sum"] = Tra[proIndex][0]      # j省出口总额
 
         curProImport.append(curProImpToJPro)

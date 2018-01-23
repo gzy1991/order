@@ -11,5 +11,5 @@ def getPage(request):
 #图2 表格数据  json格式
 def getTableData(request):
     result =map2.getTableData()
-    return result
+    return  HttpResponse(result)
 
