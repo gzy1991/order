@@ -53,28 +53,21 @@ def getTableData():
             Tot_exportSort = np.argsort(-Tot,axis=1)  #按行排序，出口排序，降序
             #对31个省份循环处理
             for i in range(provinceNum):
-                provinceResult={}            #该省份数据
+                provinceResult={}            #该省份数据容器
                 # proInfo = provincesInfo[i]   #该省份坐标、中英文名、
-
-                provinceResult["chineseName"]=provincesInfo[i][1]        #该省中文名全称
+                provinceResult["chineseName"]=provincesInfo[i][1]        #该省中文名 全称
                 provinceResult["name"]=provincesInfo[i][2]               #该省英文名
                 provinceResult["chineseAbbrName"]=provincesInfo[i][3]    #该省中文名 缩写
-                provinceResult["latitude"]=provincesInfo[i][4]    #该省纬度
+                provinceResult["latitude"]=provincesInfo[i][4]     #该省纬度
                 provinceResult["longitude"]=provincesInfo[i][5]    #该省经度
-                provinceResult["exportSum"]=Tra[i][0]   #该省出口总值
+                provinceResult["exportSum"]=Tra[i][0]    #该省出口总值
                 provinceResult["importSum"]=Tra[i][1]    #该省进口总值
+                exportData=      getProExportData(Tot,Tot_exportSort,provincesInfo,i,proShowNum)   #获取该省出口数据          
+                importData=      getProImportData(Tot,Tot_importSort,provincesInfo,i,proShowNum)   #获取该省进口数据  
+                provinceResult["exportData"]=exportData
+                provinceResult["importData"]=importData
 
-
-                # exportData=      getProExportData()   #获取该省出口数据          
-                # importData=      getProImportData()   #获取该省出口数据  
-                # provinceResult["exportData"]=exportData
-                # provinceResult["importData"]=importData
-
-
-                result[provincesInfo[i][2]]=provinceResult  #该省的信息
-
-           
-
+                result[provincesInfo[i][2]]=provinceResult  #该省信息
             resultList.append(result)
             #一个文件计算完毕
         except BaseException:
@@ -86,7 +79,53 @@ def getTableData():
     print   resultListJson
     return  resultListJson
 
+#获取该省出口数据
+#   Tot             所有省份的全部贸易数据
+#   Tot_exportSort  所有省份的出口数据排序
+#   provincesInfo   所有省份的信息
+#   i               省份索引
+#   proShowNum      显示的贸易对象个数
+def getProExportData(Tot,Tot_exportSort,provincesInfo,i,proShowNum):
+    curProExport = []               #该省出口数据 ，容器
+    
+    for j  in range(proShowNum):    #遍历排名前proShowNum个省份的数据
+        curProExpToJPro={}          #容器
+        proIndex = Tot_exportSort[i][j]     #排名第j的省份的索引
+        
+        curProExpToJPro["name"]  = provincesInfo[proIndex][2] #英文名
+        curProExpToJPro["chineseAbbrName"]  = provincesInfo[proIndex][3] # j省中文名 缩写
+        curProExpToJPro["latitude"]=provincesInfo[proIndex][4]     # j省纬度
+        curProExpToJPro["longitude"]=provincesInfo[proIndex][5]    # j省经度
+        curProExpToJPro["sort"]  = j                   #排序
+        curProExpToJPro["value"] = Tot[i][j]           # i省对j省的出口贸易额
+        curProExpToJPro["sum"] = Tra[proIndex][1]      # j省进口自总额
+
+        curProExport.append(curProExpToJPro)
+
+    return curProExport
 
 
+#获取该省进口数据
+#   Tot             所有省份的全部贸易数据
+#   Tot_importSort  所有省份的进口数据排序
+#   provincesInfo   所有省份的信息
+#   i               省份索引
+#   proShowNum      显示的贸易对象个数
+def getProImportData(Tot,Tot_importSort,provincesInfo,i,proShowNum):
+    curProImport = []               #该省进口数据 ，容器
+    
+    for j in range(proShowNum):     #遍历排名前proShowNum个省份的数据
+        curProImpToJPro={}          #容器
+        proIndex = Tot_exportSort[j][i]     #排名第j的省份的索引
 
+        curProImpToJPro["name"]  = provincesInfo[proIndex][2] #英文名
+        curProImpToJPro["chineseAbbrName"]  = provincesInfo[proIndex][3] # j省中文名 缩写
+        curProImpToJPro["latitude"]=provincesInfo[proIndex][4]     # j省纬度
+        curProImpToJPro["longitude"]=provincesInfo[proIndex][5]    # j省经度
+        curProImpToJPro["sort"]  = j                   #排序
+        curProImpToJPro["value"] = Tot[j][i]           # i省对j省的进口贸易额
+        curProImpToJPro["sum"] = Tra[proIndex][0]      # j省出口总额
+
+        curProImport.append(curProImpToJPro)
+    return curProImport
 
