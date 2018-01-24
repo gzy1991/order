@@ -25,9 +25,9 @@ urlpatterns = [
     url(r'^map2/$',map2.getPage),  # 图2页面
     url(r'^initMap2/$',map2.getTableData),  # 图2数据
     url(r'^calculate/$',calculate),
-    url('^rank/$',rank),
-    url('^deleteData/$',deleteData),
-
+    url(r'^rank/$',rank),
+    url(r'^deleteData/$',deleteData),
+    url(r'^deleteDataInMap2/$',map2.deleteDataInMap2),
 
 
     url('^index/$',index)

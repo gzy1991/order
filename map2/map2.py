@@ -25,10 +25,11 @@ def getTableData():
     for file in files:      # 遍历每个excel文件
         try :
             result = {}  # 单个excel文件处理后的结果
-            fileName = file.split("\\")[len(file.split("\\")) - 1].split(".")[0]
+            fullFileName = file.split("\\")[len(file.split("\\")) - 1]
             result['importProvinceNum']=proShowNum
             result['exportProvinceNum']=proShowNum
-            result["fileName"] = fileName
+            result["fullFileName"] = fullFileName   # 文件全名 （带后缀）
+            result["fileName"] = fullFileName.split(".")[0]   # 文件全名 （不带后缀）
             print file + " start"
             excelData = xlrd.open_workbook(file, "rb")
 

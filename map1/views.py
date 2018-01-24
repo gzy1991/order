@@ -35,7 +35,6 @@ def rank(request):
 def index(request):
     return render_to_response("index.html")
 
-
 #图1 删除数据
 def deleteData(request):
     fileNameList = request.GET.get("fileNameList").encode("utf-8")

@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>中国</title>
+<title>世界</title>
 <style>
  .tabldTitle{
     font-size: 20px;
@@ -11,18 +11,19 @@
     text-align: center;
     white-space: nowrap;
     vertical-align: middle;
- 	}
- 	td{
-    white-space:nowrap;text-overflow:ellipsis;
   }
+  td{  
+    white-space:nowrap;text-overflow:ellipsis;
+  }  
 </style>
- <meta charset="utf-8">
- <script type="text/javascript" src="/static/js/echart4/echarts.min.js"></script>
-{% comment %}  <script type="text/javascript" src="/static/resource/echart/ecStat.min.js"></script>
+
+ <script type="text/javascript" src="/static/resource/echart/echarts-all-3.js"></script>
+  <script type="text/javascript" src="/static/resource/echart/ecStat.min.js"></script>
   <script type="text/javascript" src="/static/resource/echart/dataTool.min.js"></script>
   <script type="text/javascript" src="/static/resource/echart/china.js"></script>
   <script type="text/javascript" src="/static/resource/echart/world.js"></script>
-  <script type="text/javascript" src="/static/resource/echart/bmap.min.js"></script>{% endcomment %}
+  {% comment %}<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=ZUONbpqGBsYGXNIYHicvbAbM"></script>{% endcomment %}
+  <script type="text/javascript" src="/static/resource/echart/bmap.min.js"></script>
 
   <script type="text/javascript" src="/static/resource/jquery/jquery.min.js"></script>
   <script type="text/javascript" src="/static/resource/bootstrap/js/bootstrap.js"></script>
@@ -32,7 +33,7 @@
   <link href="/static/js/bootstrapValidator.min.css" rel="stylesheet" />
   <link href="/static/js/popup.css" rel="stylesheet" />
   <script type="text/javascript" src="/static/js/popup.js"></script>
-{% comment %}<script type="text/javascript" src="/static/js/contray.js"></script>{% endcomment %}
+<script type="text/javascript" src="/static/js/contray.js"></script>
 
   <script type="text/javascript" src="/static/js/bootstrapValidator.min.js"></script>
   <script type="text/javascript" src="/static/resource/bootstrap-table/bootstrap-table-zh-CN.js"></script>
@@ -61,15 +62,15 @@
   </div>
 
   <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
+    <div class="modal-dialog" role="document">  
+        <div class="modal-content">  
+            <div class="modal-header">  
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">  
+                    <span aria-hidden="true">×</span>  
+                </button>  
                 <h4 class="modal-title" id="myModalLabel">新增</h4>
-            </div>
-            <div class="modal-body">
+            </div>  
+            <div class="modal-body">  
               <form class="form-horizontal" id="saveadmin_form"
                   name="form-horizontal">
                   <input type="hidden" id="adminid" />
@@ -128,21 +129,21 @@
 
                       </dl>
                   </div>
-			            <div class="modal-footer">
-			                <button onclick="saveAdmin()" type="button" class="btn btn-success">
-			                    <i class="fa fa-check"></i> 计算
-			                </button>
-			                <button type="button" class="btn btn-danger" data-dismiss="modal">
-			                    <i class="fa fa-times"></i> 关闭
-			                </button>
-			            </div>
-      				</form>
+                  <div class="modal-footer">
+                      <button onclick="saveAdmin()" type="button" class="btn btn-success">
+                          <i class="fa fa-check"></i> 计算
+                      </button>
+                      <button type="button" class="btn btn-danger" data-dismiss="modal">
+                          <i class="fa fa-times"></i> 关闭
+                      </button>
+                  </div>
+              </form>
 
                 <div id ="result"></div>
-            </div>
-        </div>
-    </div>
-	</div>
+            </div>   
+        </div>  
+    </div>  
+  </div>
 
   <div class="modal fade" id="loading" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop='static'>
       <div class="modal-dialog" role="document">
@@ -169,7 +170,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-dismiss="modal">
                     <i class="fa fa-times"></i> 关闭
-			                </button>
+                      </button>
 
             </div>
 
@@ -177,9 +178,12 @@
         </div>
       </div>
     </div>
+    
 
-
-	</body>
-    <script type="text/javascript" src="/static/map2.js"></script>
+  </body>
+    <script type="text/javascript" src="/static/map1.js"></script>
+    <script type="text/javascript">
+          initData();   #   调用初始化页面 
+    </script>
 </html>
 
