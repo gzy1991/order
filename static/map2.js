@@ -40,13 +40,14 @@ var nameMap={  //地图省份名字映射关系
 	};
 
 var geoData=[ // 选中的省份,初始化的时候是空
-                          // {name:'广东', selected:true},
-                          // {name:'河南', selected:true},
-                          // {name:'福建', selected:true}
+							{name:'Guangdong', selected:true},
+                          	{name:'Beijing', selected:true},
+							{name:'Ningxia', selected:true},
+                          	{name:'Jiangsu', selected:true},
+                          	{name:'陕西', selected:true},
+                          	{name:'河南', selected:true},
+                          	{name:'福建', selected:true}
 ];
-
-
-
 
 /* 初始化echart  ,第一次打开页面时、点击表格行事件时，调用本函数
 *  入参：行数据  */
@@ -82,7 +83,7 @@ var initEchart = function(row){
 	        selectedMode : 'multiple',
 	        roam: true,
 		    selected:true,
-		    nameMap: nameMap,
+		    //nameMap: nameMap,
 		    itemStyle: {
 		        normal: {
 		           /* areaColor: '#323c48',
@@ -108,16 +109,11 @@ var initEchart = function(row){
 
 	myChart.setOption(option, true);
 
-	// if (option && typeof option === "object") {
-	//   		myChart.setOption(option, true);
-	// }		
-
 }
 
 
 
 //初始化渲染表格数据
-
 var initTable = function(datas){
 	$("#tableDiv").css("padding-right", 0);
 	//先销毁表格
@@ -316,7 +312,7 @@ var initData=function(){
 	        console.log(" initMap2 扫描成功");
 	        datas=JSON.parse(data);
 	        //initLoadResultFile();//初始化加载数据并保存
-	        initTables(datas)
+	        initTable(datas)
 	        adjustScrollPage(); //页面自适应
 	        //页面加载完
             $(function(){
