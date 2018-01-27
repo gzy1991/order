@@ -38,7 +38,40 @@
   <script type="text/javascript" src="/static/js/bootstrapValidator.min.js"></script>
   <script type="text/javascript" src="/static/resource/bootstrap-table/bootstrap-table-zh-CN.js"></script>
 </head>
-<body>
+
+  <!-- page header -->
+  <header class="navbar navbar-fixed-top navbar-inverse">
+    <div class="container">
+      <nav>
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">Logo</a>
+        </div>
+        <div>
+          <ul class="nav navbar-nav">
+            <li><a href="#">无下拉链接1</a></li>
+            <li><a href="#">无下拉链接2</a></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                下拉1
+                <b class="caret"></b>
+              </a>
+              <ul class="dropdown-menu">
+                <li><a href="#">链接1</a></li>
+                <li><a href="#">链接2</a></li>
+                <li><a href="#">链接3</a></li>
+                <li class="divider"></li>
+                <li><a href="#">链接4</a></li>
+                <li class="divider"></li>
+                <li><a href="#">链接5</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+<body style="padding-top: 50px;">
   <div id="bodyId" class="row">
       <div>
           <div class="col-md-3 col-sm-3 col-xs-3" id="tableDiv" style="overflow:auto;background:#e8e8e8;">
