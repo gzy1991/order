@@ -45,8 +45,17 @@
             <button id="button" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" style="margin-top:2px;margin-left:5px;float:left;">新增</button>
             <button id="delBtn" type="button" class="btn btn-danger"     style="margin-top:2px;margin-left:5px;float:left;" onclick="delBtnFn()">删除</button>
             <button id="refBtn" type="button" class="btn btn-success"  style="margin-top:2px;margin-left:5px;float:left;" onclick="refBtnFn()">刷新</button>
-            <button id="switchBtn" type="button" class="btn btn-info "
-                    style="margin-top:2px;margin-left:5px;float:left;" onclick="switchBtn()">切换背景</button>
+
+            <div class="btn-group">
+              <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-top:2px;margin-left:5px;float:left;">
+                切换背景 <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu">
+                <li><a href="#">黑色</a></li>
+                <li><a href="#">白色</a></li>
+              </ul>
+            </div>
+
             <button id="switchSignBtn" type="button" class="btn btn-warning "
                     style="margin-top:2px;margin-left:5px;float:left;" onclick="switchSignBtn()">切换标签</button>
 
