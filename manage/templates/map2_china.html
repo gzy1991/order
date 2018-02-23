@@ -2,6 +2,8 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+
 <title>世界</title>
 <style>
  .tabldTitle{
@@ -37,8 +39,14 @@
 
   <script type="text/javascript" src="/static/js/bootstrapValidator.min.js"></script>
   <script type="text/javascript" src="/static/resource/bootstrap-table/bootstrap-table-zh-CN.js"></script>
+
+{% comment %}<link rel="import" href="/static/html/header.html" />{% endcomment %}
 </head>
-<body>
+  <header class="navbar navbar-fixed-top navbar-inverse" id = "headerContainer">
+  </header>
+
+<body style="padding-top: 50px;">
+
   <div id="bodyId" class="row">
       <div>
           <div class="col-md-3 col-sm-3 col-xs-3" id="tableDiv" style="overflow:auto;background:#e8e8e8;">
@@ -192,8 +200,53 @@
   </body>
     <script type="text/javascript" src="/static/map2.js"></script>
     <script type="text/javascript">
+            // 初始化header 导航栏
+            $(document).ready(function(){
+                $("#headerContainer").load("/static/html/header.html");
+            });
             initData();  //   调用初始化页面
             initEvent();//初始化事件绑定
     </script>
 </html>
 
+
+{% comment %}
+坐标
+
+
+'新疆',  '41.748', '84.9023'
+'西藏',  '31.6846', '88.7695'
+'内蒙古',  '44.3408', '117.5977'
+'青海',  '35.4199', '96.2402'
+''四川',  '30.1904', '102.9199'
+'黑龙江',  '48.5156', '128.1445'
+'甘肃',  '40.166', '95.7129'
+'云南',  '25.1807', '101.8652'
+'广西',  '23.6426', '108.2813'
+'湖南',  '27.3779', '111.5332'
+'陕西',  '35.6396', '109.5996'
+'广东',  '22.8076', '113.4668'
+'吉林',  '43.5938', '126.4746'
+'河北',  '37.9688', '115.4004'
+'湖北',  '31.1572', '112.2363'
+'贵州',  '26.9385', '106.6113'
+'山东',  '36.4307', '118.7402'
+'江西',  '27.29', '116.0156'
+'河南',  '33.8818', '113.4668'
+'辽宁',  '41.0889', '122.3438'
+'山西',  '37.6611', '112.4121'
+'安徽',  '32.0361', '117.2461'
+'福建',  '25.9277', '118.3008'
+'浙江',  '29.0918', '120.498'
+'江苏',  '32.915', '120.0586'
+'重庆',  '30.1904', '107.7539'
+'宁夏',  '37.3096', '105.9961'
+'海南',  '19.2041', '109.9512'
+'台湾',  '23.5986', '121.0254'
+'北京',  '40.2539', '116.4551'
+'天津',  '39.4189', '117.4219'
+'上海',  '31.2891', '121.4648'
+'香港',  '22.3242', '114.2578'
+'澳门',  '22.1484', '113.5547'
+
+{% endcomment %}

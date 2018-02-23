@@ -1,7 +1,7 @@
 #coding:utf-8
 #!/usr/bin/python
 
-# 批量读取 excel_map2中的数据 ，
+# 批量读取 \\file\\map2 中的数据 ，
 import os
 import  sys
 import xlrd
@@ -15,9 +15,9 @@ import Tool.ExcelTool as ExcelTool
 def getTableData():
     proShowNum = 5  # 每个省份的前5个进口货出口。默认是5，这个参数可以从页面上传进来
     provinceNum=31  #省份数量，默认是31
-    provincesInfo = ExcelTool.getArrayBySheetName("\\country_excel\\Province.xlsx","province")  #获取省份名列表，包括 ： 中文名、英文名、纬度、经度
+    provincesInfo = ExcelTool.getArrayBySheetName("\\file\\common\\Province.xlsx","province")  #获取省份名列表，包括 ： 中文名、英文名、纬度、经度
     print(os.getcwd())
-    files = ExcelTool.listExcelFile("\\excel_map2")
+    files = ExcelTool.listExcelFile("\\file\\map2")
     print files  # .xlsx结果文件列表
     resultList = []
     errMsg = "";

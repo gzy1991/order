@@ -17,5 +17,5 @@ def getTableData(request):
 #图2 删除数据
 def deleteDataInMap2(request):
     fileNameList = request.GET.get("fileNameList").encode("utf-8")
-    res=ExcelTool.deleteFile("\\excel_map2",fileNameList)
+    res=ExcelTool.deleteFile("\\file\\map2",fileNameList)
     return HttpResponse("<p>"+res+"</p>")

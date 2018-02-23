@@ -16,19 +16,30 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
-from  map1.views import *
-import  map2.views  as map2
+import  map1.views as map1
+import  manage.map2.views  as map2
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^matrix/$',map1),  #主页面
+    #公共资源
+    #url(r'^header/$',map1.getHeader),  # 获取导航栏 header.html
+
+    #图1
+    url(r'^matrix/$',map1.map1),  #图1 页面
+    url(r'^calculate/$',map1.calculate),    #图1
+    url(r'^rank/$',map1.rank),
+    url(r'^deleteData/$',map1.deleteData),
+    url('^index/$', map1.index),
+
+    #图2
     url(r'^map2/$',map2.getPage),  # 图2页面
     url(r'^initMap2/$',map2.getTableData),  # 图2数据
-    url(r'^calculate/$',calculate),
-    url(r'^rank/$',rank),
-    url(r'^deleteData/$',deleteData),
-    url(r'^deleteDataInMap2/$',map2.deleteDataInMap2),
+    url(r'^deleteDataInMap2/$',map2.deleteDataInMap2)
+
+    #图3
+
+    #图4
 
 
-    url('^index/$',index)
+
 ]

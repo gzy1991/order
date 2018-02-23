@@ -19,10 +19,10 @@ def rank_result():
 
     #country_name =get_country_name_array()
     # #获取国家名 地址列表
-    country_name =ExcelTool.getArrayBySheetName("\\country_excel\\Countries.xlsx","country")
+    country_name =ExcelTool.getArrayBySheetName("\\file\\common\\Countries.xlsx","country")
     print(os.getcwd())
     #获取结果excel 地址列表  ，只获取xls和xlsx文件
-    files = ExcelTool.listExcelFile("\\result_excel")
+    files = ExcelTool.listExcelFile("\\file\\map1_result_excel")
     print files  # .xlsx结果文件列表
     result_list=[]
     errMsg="";

@@ -21,7 +21,7 @@ def calculate(FD_add,E_add,T_add,result_name,unit):
 
     root_add = os.getcwd()
     #print(os.getcwd())  # 获取工程根目录
-    file_dir = root_add + "\\result_excel\\"  # 结果excel所在目录
+    file_dir = root_add + "\\file\\map1_result_excel\\"  # 结果excel所在目录
     result_name = file_dir + result_name + '.xls'  # 结果数据的名字
     #判断 文件名是否已存在
     if os.path.exists(result_name):

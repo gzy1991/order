@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'map1',
+    'manage'
 ]
 
 MIDDLEWARE = [
@@ -55,8 +56,8 @@ ROOT_URLCONF = 'order.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        # 'DIRS': [os.path.join(BASE_DIR, 'templates')] ,
-        'DIRS': [BASE_DIR + '/view_'],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')] ,
+        # 'DIRS': [BASE_DIR + '/static'],
 
         'APP_DIRS': True,
         'OPTIONS': {
@@ -127,3 +128,4 @@ STATIC_URL = '/static/'
 #
 # )
 STATICFILES_DIRS = (os.path.join(os.path.dirname(__file__), '../static/').replace('\\','/'),)
+

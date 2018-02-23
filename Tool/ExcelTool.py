@@ -15,7 +15,6 @@ import numpy as np
 #   从根目录下读取指定的excel数据
 def getArrayBySheetName(excelDir,sheetName):
     root_add = os.getcwd()
-    #fileDir = root_add + "\\country_excel\\Countries.xlsx"  #  excel所在目录
     fileDir = root_add + excelDir  #  excel所在目录
     excelData = xlrd.open_workbook(fileDir, "rb")
     Country_array = getArrayFromSheet(excelData,sheetName,'name')
@@ -24,7 +23,6 @@ def getArrayBySheetName(excelDir,sheetName):
 # 读取根目录下制定的excel数据
 def getArrayBySheetIndex(excelDir,index):
     root_add = os.getcwd()
-    #fileDir = root_add + "\\country_excel\\Countries.xlsx"  #  excel所在目录
     fileDir = root_add + excelDir  #  excel所在目录
     excelData = xlrd.open_workbook(fileDir, "rb")
     Country_array = getArrayFromSheet(excelData,index,'index')
@@ -59,7 +57,6 @@ def listExcelFile( dir ):
     res=[]
     root_add=os.getcwd()
     print(os.getcwd())                       # 获取工程根目录
-    file_dir=root_add+"\\excel_map2"     #  结果excel所在目录
     file_dir=root_add+dir     #  结果excel所在目录
     for root, dirs, files in os.walk(file_dir):
         for file in files:
