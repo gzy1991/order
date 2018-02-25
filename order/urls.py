@@ -34,7 +34,7 @@ urlpatterns = [
     #图2
     url(r'^map2/$',map2.getPage),  # 图2页面
     url(r'^initMap2/$',map2.getTableData),  # 图2数据
-    url(r'^deleteDataInMap2/$',map2.deleteDataInMap2)
+    url(r'^deleteDataInMap2/$',map2.deleteDataInMap2)  #删除
 
     #图3
 

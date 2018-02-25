@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 
-<title>世界</title>
+<title>中国</title>
 <style>
  .tabldTitle{
     font-size: 20px;
@@ -54,18 +54,37 @@
             <button id="delBtn" type="button" class="btn btn-danger"     style="margin-top:2px;margin-left:5px;float:left;" onclick="delBtnFn()">删除</button>
             <button id="refBtn" type="button" class="btn btn-success"  style="margin-top:2px;margin-left:5px;float:left;" onclick="refBtnFn()">刷新</button>
 
-            <div class="btn-group">
+            <div class="btn-group hiddenClass">
               <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-top:2px;margin-left:5px;float:left;">
-                切换背景 <span class="caret"></span>
+                背景 <span class="caret"></span>
               </button>
               <ul class="dropdown-menu">
-                <li><a href="#">黑色</a></li>
-                <li><a href="#">白色</a></li>
+                <li id ="black_li"><a href="#">黑色</a></li>
+                <li id ="white_li"><a href="#">白色</a></li>
               </ul>
             </div>
 
-            <button id="switchSignBtn" type="button" class="btn btn-warning "
-                    style="margin-top:2px;margin-left:5px;float:left;" onclick="switchSignBtn()">切换标签</button>
+              <div class="btn-group hiddenClass">
+              <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-top:2px;margin-left:5px;float:left;">
+                类型 <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu">
+                <li id ="import_li"><a href="#">进口</a></li>
+                <li id ="export_li"><a href="#">出口</a></li>
+                <li id ="all_li"><a href="#">全部</a></li>
+              </ul>
+            </div>
+
+              <div class="btn-group hiddenClass">
+              <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-top:2px;margin-left:5px;float:left;">
+                标签 <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu">
+                <li id ="show_li"><a href="#">显示</a></li>
+                <li id ="hide_li"><a href="#">隐藏</a></li>
+              </ul>
+            </div>
+
 
             <span id="hideList" style="float:right;cursor: pointer;"><img src="/static/img/left.png" title="缩进"/></span>
             <table id="tableContainer"></table>
@@ -74,6 +93,7 @@
           <div class="col-md-9 col-sm-9 col-xs-9" id="mapDiv" style="padding: 0;height: 100%;weight:100%">
               <div id="mapContainer" style="height: 100%;weight:100%">
               </div>
+
           </div>
       </div>
   </div>
