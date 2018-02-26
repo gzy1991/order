@@ -13,7 +13,7 @@ import Tool.ExcelTool as ExcelTool
 # 获得table数据 json格式,
 # 对每个excel的数据，进行排序，找出每个省份出口前5和进口前5
 def getTableData():
-    proShowNum = 5  # 每个省份的前5个进口货出口。默认是5，这个参数可以从页面上传进来
+    proShowNum = 3  # 每个省份的前5个进口货出口。默认是5，这个参数可以从页面上传进来
     provinceNum=31  #省份数量，默认是31
     provincesInfo = ExcelTool.getArrayBySheetName("\\file\\common\\Province.xlsx","province")  #获取省份名列表，包括 ： 中文名、英文名、纬度、经度
     print(os.getcwd())
@@ -60,8 +60,10 @@ def getTableData():
                 provinceResult["chineseAbbrName"]=provincesInfo[i][3]    #该省中文名 缩写
                 provinceResult["latitude"]=provincesInfo[i][4]     #该省纬度
                 provinceResult["longitude"]=provincesInfo[i][5]    #该省经度
-                provinceResult["exportSum"]=Tra[i][0]    #该省出口总值
-                provinceResult["importSum"]=Tra[i][1]    #该省进口总值
+                #provinceResult["exportSum"]=Tra[i][0]    #该省出口总值
+                #provinceResult["importSum"]=Tra[i][1]    #该省进口总值
+                provinceResult["exportSum"] = Tra[i][0]  # 该省出口总值  单位PJ
+                provinceResult["importSum"] = Tra[i][1]  # 该省进口总值  单位PJ
                 exportData=      getProExportData(Tra,Tot,Tot_exportSort,provincesInfo,i,proShowNum)   #获取该省出口数据
                 importData=      getProImportData(Tra,Tot,Tot_importSort,provincesInfo,i,proShowNum)   #获取该省进口数据
                 provinceResult["exportData"]=exportData

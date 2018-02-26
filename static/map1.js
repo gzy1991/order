@@ -488,7 +488,7 @@ function formValidator(){
 //页面自适应
 var adjustScrollPage = function() {
 	var windowEl = $(window);
-	var windowH = windowEl.height();
+	var windowH = windowEl.height()-50;//减去导航栏的那个高度 50px
     var windowW = windowEl.width();
     $('#bodyId').css('height', windowH).css('width', windowW);
     $("#tableDiv").css("height", windowH);

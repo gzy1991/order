@@ -38,7 +38,7 @@ pip install pandas
 
 # 3 打开页面
 
-- 图1: http://127.0.0.1:8000/matrix/得
+- 图1: http://127.0.0.1:8000/matrix/
 - 图2：http://127.0.0.1:8000/map2/
 
 # 4 .m文件说明

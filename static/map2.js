@@ -7,8 +7,8 @@
 //背景切换所需的数据
 var backgroundColor ='#404a59';  //echart背景色
 var color=[]
-var areaColor ='#323c48'; //地图区域的颜色
-var emphasisAreaColor='#2a333d';   //选中省份时，背景色
+var areaColor ='#fff'; //地图区域的颜色
+var emphasisAreaColor='#FFFF00';   //选中省份时，背景色
 var textColor='#fff';
 var browserHeight=$(window).height() ; //浏览器高度
 var browserWidth=$(window).width();		//浏览器宽度
@@ -23,7 +23,7 @@ var myChart;
 var option = null;
 var seriesData =[]; //
 var unit='';  //单位
-var tradeType="all" ; 	//进出口类型，进口import、出口export 或者全部all，默认是全部
+var tradeType="export" ; 	//进出口类型，进口import、出口export 或者全部all，默认是export
 var backGroundType="white" ; //背景颜色类型，白色和黑色，默认是白色
 var isShowSign=true;  	//是否显示标签 ，默认显示
 
@@ -51,8 +51,11 @@ var nameMap={  //地图省份名字映射关系
 		"Tibet":"西藏","Xinjiang":"新疆","Yunnan":"云南","Shanghai":"上海","Zhejiang":"浙江"
 	};
 
-var geoData=[ // 选中的省份,初始化的时候是空
-
+var geoData=[ 			// 选中的省份,初始化的时候是空.点击省份时，更新这个数据
+	//{name:'Guangdong', selected:true},
+	//{name:'广东', selected:true},
+	// {name:'陕西', selected:true},
+	// {name:'云南',selected:true}
 ];
 
 /* 初始化echart  ,第一次打开页面时或者点击表格行事件时，调用本函数
@@ -78,9 +81,17 @@ var initEchart = function(row){
 	      	trigger: 'item',
 	      	formatter: '{b}'
 	  	},
+		backgroundColor: backgroundColor,
+		title : {
+			text: row.fileName,
+			subtext: 'Unit：'+unit,
+			left: 'center',
+			textStyle : {
+				color: textColor
+			}
+		},
 		//图
 	  	geo: {
-
 	      	show:true,
 	      	map: 'china',
 	      	label: {
@@ -89,16 +100,16 @@ var initEchart = function(row){
 	        	}
 	      	},
 	        selectedMode : 'multiple',
-	        roam: true,
+	        roam: true, //允许缩放和平移
 		    selected:true,
-		    //nameMap: nameMap,
+		    nameMap: nameMap,  //省份显示英文
 		    itemStyle: {
 		        normal: {
-		           /* areaColor: '#323c48',
-		            borderColor: '#404a59'*/
+		        	areaColor: areaColor,//地图区域的颜色。
+					borderColor: '#404a59'
 		        },
 		        emphasis: {
-		            /*areaColor: '#2a333d'*/
+		            areaColor:emphasisAreaColor    //选中国家时，国家背景色
 		        }
 	    	},
 		    label: {
@@ -112,57 +123,75 @@ var initEchart = function(row){
 		      	}
     		},
 	    	regions:geoData
-	    },
-		series:seriesData
+	    }
+		//series:seriesData
 		//化线
-
 	};
 
 	myChart.setOption(option, true);
 
 	//绑定省份的点击事件
 	myChart.on('click', function (params) {
-    	console.log('点击了'+params.name);
-    	var name =  params.region.name;  //省份名
-		if("香港澳门台湾".indexOf(name)!=-1){  //有几个省份是忽略的
+		if("geo"!=params.componentType){  //如果点击的不是地图的省份，那么跳过，不处理
 			return;
 		}
-    	var state = params.region.selected; //选中状态，是否被选中，true 是， false 否
-		if(state){  //如果选中，添加
+    	console.log('点击了'+params.name);
+    	var name =  params.region.name;  //省份名  英文名
+		if("Hong Kong,Macau,Taiwan,Tibet,香港,澳门,台湾,西藏".indexOf(name)!=-1){  //有几个省份是忽略的
+			myChart.setOption(option,true);
+			return;
+		}
+    	//var state = params.region.selected; //选中状态，是否被选中，true 是， false 否
+		var isSelected=selectedPros.indexOf(name) != -1; //省份是否已经被选中了，
+		if(!isSelected){  //如果之前未被选中，那么添加
 			var index=selectedPros.indexOf(name);
 			if(index == -1){
 				selectedPros.push(name);
+				//选中省份
+				geoData.push({name: name ,selected:true});
+				geoData.push({name: nameMap[name] ,selected:true});
+				//划线
 				generateSeries();  //生成series数据, 划线
-				option.series=seriesData;
-				myChart.setOption(option,true);
+				//option.series=seriesData;
+				option.geo.regions=geoData;
 			}
-		}else{   //如果取消选中 ,删除
+		}else if(isSelected){   //否则 ,删除
 			var index=selectedPros.indexOf(name);
 			if(index!== -1){
-				selectedPros.splice(index,1)
+				selectedPros.splice(index,1);
+				//取消选中
+				var tempGeoData=[];
+				geoData.forEach(function(item,i){
+					if(item.name != name && item.name!=nameMap[name]){
+						tempGeoData.push(item);
+					}
+				});
+				geoData=tempGeoData;
 				//划线
 				generateSeries();  //生成series数据
-				option.series=seriesData;
-				myChart.setOption(option,true);
+				//option.series=seriesData;
+				option.geo.regions=geoData;
 			}
 		}
-    	//console.log(params);
+		myChart.setOption(option,true);
     	console.log(selectedPros);
+    	console.log(myChart.getOption());
 	});
 }
 
 /* 根据当前选中的省份 和 进出口类型，生成series */
 var generateSeries = function(){
 	//  tradeType ; 贸易类型
+	seriesData=[];  //先清空之前的线
 	if(tradeType == "import"){
-		generateLines("export");
+		generateLines("import");
 	}else if (tradeType=="export"){
 		generateLines("export");
 	}else if (tradeType  =="all"){
 		generateLines("import");
 		generateLines("export");
 	}
-
+	option.series=seriesData;
 }
 /*生成线
 *  type: import 或 export
@@ -172,12 +201,12 @@ var generateLines = function(type ){
 	//selectedPros  当前选中的省份数据
 	lines=[];
 	if(selectedPros && selectedPros.length>0){
-		selectedPros.forEach( function(province,i){  //遍历省份    province是中文名， nameMap[province] 是对应的英文名
+		selectedPros.forEach( function(province,i){  //遍历省份    province是英文名，
 			var tradeData=[];
 			if(type=="import"){
-				tradeData = selectedSheet[nameMap[province]].importData  ;//进口
+				tradeData = selectedSheet[province].importData  ;//进口
 			}else if (type=="export"){
-				tradeData = selectedSheet[nameMap[province]].exportData  ;//出口
+				tradeData = selectedSheet[province].exportData  ;//出口
 			}
 			if(tradeData && tradeData.length>0){  //遍历这个省份的出口或进口数据
 				tradeData.forEach(function(item,j){
@@ -187,9 +216,9 @@ var generateLines = function(type ){
 						type: 'lines',
 						zlevel: 2,
 						symbol: ['none', 'arrow'],
-						symbolSize: 20,
-						effect: {
-							show: true,
+						symbolSize: 10,
+						effect: { //线特效  ，这里先不显示
+							show: false,
 							period: 6,
 							trailLength: 0,
 						},
@@ -210,35 +239,36 @@ var generateLines = function(type ){
 }
 
 /*生成线的 坐标关系
-*  province 选中的省份,中文名
+*  province 选中的省份,英文名
 *  tradeData： 这个省份的贸易数据  （出口前5或者进口前5）
 *  type : import 或者 export
 * */
 var convertData = function(province,tradeData,type){
 	var res=[];
-	var provinceName = nameMap[province];//英文名
-	var proData = selectedSheet[provinceName];//当前图的全部数据，即当前选中的行数据
+	//var provinceName = nameMap[province];//英文名
+	var proData = selectedSheet[province];//当前图的全部数据，即当前选中的行数据
 	for(var i=0;i<tradeData.length;i++){
 		var fromCoord = [proData.longitude, proData.latitude];
 		var toCoord=[ tradeData[i].longitude,tradeData[i].latitude  ];
+		var tagPosition="middle";  //标签的位置，
 		if("import"===type){//如果是进口  ,转换箭头方向
 			var temp =fromCoord;
 			fromCoord=toCoord;
 			toCoord=temp;
+			tagPosition="start";
 		}
 		if(fromCoord && toCoord){
 			res.push({
-				name: provinceName + " "+type+" "+tradeData[i].name,
+				name: province + " "+type+" "+tradeData[i].name,
 				coords: [fromCoord, toCoord],
-				value:tradeData[i].value,
-
+				value:parseInt(tradeData[i].value/1000000000000000), //除以2的15次方
 				label :{		// 单个数据（单条线）的标签设置
 					normal:{
 						show:isShowSign,
-						position :'middle',
+						position :tagPosition,
 						formatter:'{c}',
 						fontWeight:'lighter',// 文字字体的粗细
-						fontSize:4,  //标签字体的大小
+						fontSize:20,  //标签字体的大小
 					}
 				},
 				symbolSize :15, //箭头大小
@@ -293,13 +323,13 @@ window.onresize = function(){
 //页面自适应
 var adjustScrollPage = function() {
 	var windowEl = $(window);
-	var windowH = windowEl.height();
+	var windowH = windowEl.height()-50; //减去导航栏的那个高度 50px
     var windowW = windowEl.width();
     $('#bodyId').css('height', windowH).css('width', windowW);
     $("#tableDiv").css("height", windowH);
     setTimeout(function(){
 		dom.style.width = (window.innerWidth - $("#tableDiv").width())+'px';
-		dom.style.height = (window.innerHeight - 5)+'px';
+		dom.style.height = (window.innerHeight - 55)+'px';
     	myChart.resize();
     },100);
 }
@@ -344,9 +374,9 @@ var initEvent = function() {
 	});
 
 	//贸易类型 按钮 ： 进口、出口、全部 ， 默认全部
-	$("#import_li").bind("click",function(){ tradeType ="import"  ; })
-	$("#export_li").bind("click",function(){ tradeType ="export"  ;  })
-	$("#all_li").bind("click",function(){ tradeType ="all"  ; })
+	$("#import_li").bind("click",function(){ tradeType ="import"  ; generateSeries();myChart.setOption(option,true);})
+	$("#export_li").bind("click",function(){ tradeType ="export"  ;generateSeries();myChart.setOption(option,true);  })
+	$("#all_li").bind("click",function(){ tradeType ="all"  ;generateSeries();myChart.setOption(option,true); })
 
 	//背景  :  黑色，白色  ，默认白色
 	$("#black_li").bind("click",function(){ backGroundType ="black"  ; })
@@ -354,8 +384,8 @@ var initEvent = function() {
 
 
 	//标签  显示、隐藏，默认显示
-	$("#show_li").bind("click",function(){ isShowSign =true  ; initTable(datas);})
-	$("#hide_li").bind("click",function(){ isShowSign =false  ; initTable(datas);})
+	$("#show_li").bind("click",function(){ isShowSign =true  ; generateSeries();myChart.setOption(option,true);})
+	$("#hide_li").bind("click",function(){ isShowSign =false  ;generateSeries();myChart.setOption(option,true); })
 
 			//切换标签
 		// var switchSignBtn =function(){
