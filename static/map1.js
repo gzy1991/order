@@ -70,7 +70,12 @@ var initEchart=function(row){
 			text: row.fileName,
 			subtext: 'Unit：'+unit,
 			left: 'center',
+			subtextStyle : {  //副标题
+				fontFamily:"Times New Roman",//字体
+				color: textColor
+			},
 			textStyle : {
+				fontFamily:"Times New Roman",//字体
 				color: textColor
 			}
 		},
@@ -90,10 +95,17 @@ var initEchart=function(row){
 			},
 			selectedMode: 'false' 									//single    false  multiple
 		},
-	geo: {
+		geo: {
+			show:true,
 			map: 'world',//china
 			label: {
+				normal: {
+					fontFamily : "Times New Roman",//字体
+					color:"#fff",
+		          	show: true
+		      	},
 				emphasis: {
+					fontFamily : "Times New Roman",//字体
 					color :geoTextColor,
 					show: true
 				}
@@ -494,7 +506,7 @@ var adjustScrollPage = function() {
     $("#tableDiv").css("height", windowH);
     setTimeout(function(){
 		dom.style.width = (window.innerWidth - $("#tableDiv").width())+'px';
-		dom.style.height = (window.innerHeight - 5)+'px';
+		dom.style.height = (window.innerHeight - 55)+'px';
     	myChart.resize();
     },100);
 }

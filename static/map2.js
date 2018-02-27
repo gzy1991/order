@@ -6,10 +6,10 @@
 
 //背景切换所需的数据
 var backgroundColor ='#404a59';  //echart背景色
-var color=[]
-var areaColor ='#fff'; //地图区域的颜色
-var emphasisAreaColor='#FFFF00';   //选中省份时，背景色
-var textColor='#fff';
+//var color=[]
+var areaColor ='#323c48'; //地图区域的颜色
+var emphasisAreaColor='#2a333d';   //选中省份时，背景色
+var textColor='#fff';					//标题与副标题的颜色
 var browserHeight=$(window).height() ; //浏览器高度
 var browserWidth=$(window).width();		//浏览器宽度
 $("#tableDiv").height(browserHeight+"px");
@@ -32,6 +32,7 @@ var selectedSheet;   		//table中选中的那一行 的行数据
 var selectedPros= [];  	//图中选中的省份名集合
 var lines ;  //线  ，数据容器
 var nameMap={  //地图省份名字映射关系
+		'南海诸岛':"NanHai",
 		'河南': "Henan",'山西': "Shanxi",
 		'安徽': "Anhui",		'北京': "Beijing",		'甘肃': "Gansu",		'重庆': "Chongqing",
 		'福建': "Fujian",		'广东': "Guangdong",		'广西': "Guangxi",		'贵州': "Guizhou",
@@ -86,7 +87,12 @@ var initEchart = function(row){
 			text: row.fileName,
 			subtext: 'Unit：'+unit,
 			left: 'center',
+			subtextStyle : {		//副标题
+				fontFamily:"Times New Roman",//字体
+				color: textColor
+			},
 			textStyle : {
+				fontFamily:"Times New Roman",//字体
 				color: textColor
 			}
 		},
@@ -94,15 +100,11 @@ var initEchart = function(row){
 	  	geo: {
 	      	show:true,
 	      	map: 'china',
-	      	label: {
-	        	emphasis: {
-	            show: false
-	        	}
-	      	},
 	        selectedMode : 'multiple',
 	        roam: true, //允许缩放和平移
 		    selected:true,
 		    nameMap: nameMap,  //省份显示英文
+			//fontFamily : "Times New Roman"//字体
 		    itemStyle: {
 		        normal: {
 		        	areaColor: areaColor,//地图区域的颜色。
@@ -114,12 +116,15 @@ var initEchart = function(row){
 	    	},
 		    label: {
 		      	position:'left',
-		      	show:true,
+		      	show:false,
 		      	normal: {
-		          show: true
+					//fontFamily : "Times New Roman",//字体
+		          	show: false
 		      	},
 		      	emphasis: {
-		          show: true
+		      		fontFamily : "Times New Roman",//字体
+					color :geoTextColor,
+		            show: true
 		      	}
     		},
 	    	regions:geoData
@@ -137,7 +142,7 @@ var initEchart = function(row){
 		}
     	console.log('点击了'+params.name);
     	var name =  params.region.name;  //省份名  英文名
-		if("Hong Kong,Macau,Taiwan,Tibet,香港,澳门,台湾,西藏".indexOf(name)!=-1){  //有几个省份是忽略的
+		if("Hong Kong,Macau,Taiwan,Tibet,香港,澳门,台湾,西藏".indexOf(name)!=-1 || name ==undefined){  //有几个省份是忽略的
 			myChart.setOption(option,true);
 			return;
 		}
@@ -210,24 +215,44 @@ var generateLines = function(type ){
 			}
 			if(tradeData && tradeData.length>0){  //遍历这个省份的出口或进口数据
 				tradeData.forEach(function(item,j){
-					seriesData.push({
-						//  线  +  飞机
+					seriesData.push(
+						//动画效果，移动的亮点
+						{
+							name:"",
+							type:"lines",
+							zlevel: 1,
+							effect: {              							//线特效的配置
+								show: isShowSign,
+								period: 1,              					//特效动画的时间,单位为 s。
+								color: '#fff',
+								symbolSize: 3          						//特效标记的大小,可以设置成诸如 10 这样单一的数字,也可以用数组分开表示高和宽,例如 [20, 10] 表示标记宽为20,高为10。
+							},
+							lineStyle: {            						//对线的各种设置 ：颜色,形状,曲度
+								normal: {
+									color: "#404a59",                   //求余
+									width: 0,           					//线宽
+									curveness: 0.2  						//边的曲度,支持从 0 到 1 的值,值越大曲度越大。0代表直线,1代表圆
+								}
+							},
+							data:convertData2(province,tradeData,type)  //坐标关系
+						},
+
+						//  线  +  箭头
+						{
 						name: province.chineseName+" "+item.sort+": "+item.chineseAbbrName  ,
 						type: 'lines',
 						zlevel: 2,
 						symbol: ['none', 'arrow'],
 						symbolSize: 10,
 						effect: { //线特效  ，这里先不显示
-							show: false,
+							show: true,
 							period: 6,
 							trailLength: 0,
 						},
 						lineStyle: {
 							normal: {
 								color: '#FF3030',
-								//width: 1,           					//线宽与数值有关
 								opacity: 0.6,    						//图形透明度。支持从 0 到 1 的数字,为 0 时不绘制该图形。
-								//curveness: 0
 							}
 						},
 						data: convertData(province,tradeData,type)  //坐标关系
@@ -236,6 +261,18 @@ var generateLines = function(type ){
 			}
 		})
 	}
+}
+/*
+*	动画效果线的 坐标关系
+*   直接调用convertData() ，然后获取里面的坐标信息即可
+* */
+var convertData2=function(province,tradeData,type){
+	var coords=[];
+	var tempData =convertData(province,tradeData,type);//坐标关系
+	tempData.forEach(function(item,i){
+		coords.push({coords:item.coords,lineStyle:item.lineStyle});
+	});
+	return coords;
 }
 
 /*生成线的 坐标关系
@@ -259,26 +296,25 @@ var convertData = function(province,tradeData,type){
 		}
 		if(fromCoord && toCoord){
 			res.push({
-				name: province + " "+type+" "+tradeData[i].name,
 				coords: [fromCoord, toCoord],
-				value:parseInt(tradeData[i].value/1000000000000000), //除以2的15次方
+				value:(tradeData[i].value/1000000000000000).toFixed(2), //除以2的15次方
 				label :{		// 单个数据（单条线）的标签设置
 					normal:{
-						show:isShowSign,
+						show:isShowSign, //
 						position :tagPosition,
 						formatter:'{c}',
 						fontWeight:'lighter',// 文字字体的粗细
-						fontSize:20,  //标签字体的大小
+						fontSize:15,  //标签字体的大小
+						fontFamily : "Times New Roman"//字体
 					}
 				},
 				symbolSize :15, //箭头大小
 				lineStyle:{
 						normal:{
-							//width: ,   //线宽
 							opacity: 0.6,    // 图形透明度。支持从 0 到 1 的数字,为 0 时不绘制该图形。
-							curveness: 0
+							curveness:0.2     //线的弯曲程度
 						}
-					}
+				}
 			});
 		}
 	}
@@ -295,9 +331,12 @@ var initTable = function(datas){
 		width:30,
 		onClickRow:function (row, $element, field) {/*表格的行点击事件*/
 			console.log("你点击了行："+row.fileName);
+			selectedPros=[];  //选中的省份,清空
+			geoData=[];       // option中的regions，对选中的省份设备背景色 ,清空
+			seriesData=[];    //  根据进出口类型和选中的省份画的线，清空
 			initEchart(row);
 			selectedSheet=row;
-			selectedPros=[]; //清空
+
 		},
 	    columns: [{  
             checkbox: true  
@@ -378,9 +417,25 @@ var initEvent = function() {
 	$("#export_li").bind("click",function(){ tradeType ="export"  ;generateSeries();myChart.setOption(option,true);  })
 	$("#all_li").bind("click",function(){ tradeType ="all"  ;generateSeries();myChart.setOption(option,true); })
 
-	//背景  :  黑色，白色  ，默认白色
-	$("#black_li").bind("click",function(){ backGroundType ="black"  ; })
-	$("#white_li").bind("click",function(){ backGroundType ="white"  ; })
+	//切换背景色 :  黑色，白色  ，默认黑色
+	$("#black_li").bind("click",function(){
+		backgroundColor='#404a59';
+		areaColor='#323c48';
+		emphasisAreaColor='#2a333d';
+		textColor='#fff';
+		legendColor='#fff';
+		geoTextColor="#fff";
+		initEchart(selectedSheet);
+	})
+	$("#white_li").bind("click",function(){
+		backgroundColor='#FFFAF0';
+		areaColor='#DCDCDC';
+		emphasisAreaColor='#808080';
+		textColor='#2a333d';
+		legendColor='#8A2BE2';
+		geoTextColor="#FFFF00";
+		initEchart(selectedSheet);
+	})
 
 
 	//标签  显示、隐藏，默认显示
@@ -446,52 +501,6 @@ var refBtnFn =function(){
 	})
 }
 
-//切换背景色
-var switchBtn=function(){
-	if(backgroundColor =='#404a59'){
-		backgroundColor='#FFFAF0';
-		color=[
-			'#FF3030',
-			'#0000CD',
-			'#8A2BE2',
-			'#7CFC00',
-			'#838B8B',
-			'#36648B',
-			'#FFFF00',
-			'#7A378B',
-			'#00868B',
-			'#6E8B3D'
-		];
-		areaColor='#DCDCDC';
-		emphasisAreaColor='#808080';
-		textColor='#2a333d';
-		legendColor='#8A2BE2';
-		geoTextColor="#FFFF00"
-
-	}else{
-		backgroundColor='#404a59';
-		color=['#a6c84c',
-				'#ffa022',
-				'#FF3030',
-				'#EE82EE',
-				'#CDCD00',
-				'#FFFF00',
-				'#8A2BE2',
-				'#43CD80',
-				'#00CED1',
-				'#46bee9'];
-		areaColor='#323c48';
-		emphasisAreaColor='#2a333d';
-		textColor='#fff';
-		legendColor='#fff';
-		geoTextColor="#fff"
-	}
-	initTable(datas);
-}
-
-
-
-
 //初始化页面,  主要是表格数据
 var initData=function(){
 	$.ajax({
@@ -501,7 +510,6 @@ var initData=function(){
         success:function (data) {
 	        console.log(" initMap2 扫描成功");
 	        datas=JSON.parse(data);
-	        //initLoadResultFile();//初始化加载数据并保存
 	        initTable(datas)
 	        adjustScrollPage(); //页面自适应
 	        //页面加载完
