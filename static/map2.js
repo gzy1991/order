@@ -11,18 +11,18 @@ var areaColor ='#323c48'; //地图区域的颜色
 var emphasisAreaColor='#2a333d';   //选中省份时，背景色
 var textColor='#fff';					//标题与副标题的颜色
 var lineColor ="#FF3030";					//线和线上标签的颜色
+var geoTextColor="#fff"; //地图上，选中国家时，国家名的颜色
+
 var browserHeight=$(window).height() ; //浏览器高度
 var browserWidth=$(window).width();		//浏览器宽度
 $("#tableDiv").height(browserHeight+"px");
 
-var geoTextColor="#fff"; //地图上，选中国家时，国家名的颜色
 
 //echart全局变量
 var dom = document.getElementById("mapContainer");;
 var myChart;
-//var app = {};
 var option = null;
-var seriesData =[]; //
+var seriesData =[]; //  容器，存储线的数据
 var unit='';  //单位
 var tradeType="export" ; 	//进出口类型，进口import、出口export 或者全部all，默认是export
 var backGroundType="white" ; //背景颜色类型，白色和黑色，默认是白色
@@ -53,7 +53,7 @@ var nameMap={  //地图省份名字映射关系
 		"Tibet":"西藏","Xinjiang":"新疆","Yunnan":"云南","Shanghai":"上海","Zhejiang":"浙江"
 	};
 
-var geoData=[ 			// 选中的省份,初始化的时候是空.点击省份时，更新这个数据
+var geoData=[ 			// 选中的省份,初始化的时候是空.当点击省份时，更新这个数据
 	//{name:'Guangdong', selected:true},
 	//{name:'广东', selected:true},
 	// {name:'陕西', selected:true},
@@ -74,11 +74,6 @@ var initEchart = function(row){
 	}
 	dom = document.getElementById("mapContainer");
 	myChart = echarts.init(dom);
-	option = null;
-	//seriesData =[];  //初始化 series数据
-	//selectedPros=[];
-
-
 	option = {
 	  	tooltip: {
 	      	trigger: 'item',
@@ -98,7 +93,7 @@ var initEchart = function(row){
 				color: textColor
 			}
 		},
-		//图
+		//地图
 	  	geo: {
 	      	show:true,
 	      	map: 'china',
@@ -106,7 +101,6 @@ var initEchart = function(row){
 	        roam: true, //允许缩放和平移
 		    selected:true,
 		    nameMap: nameMap,  //省份显示英文
-			//fontFamily : "Times New Roman"//字体
 		    itemStyle: {
 		        normal: {
 		        	areaColor: areaColor,//地图区域的颜色。
@@ -120,7 +114,6 @@ var initEchart = function(row){
 		      	position:'left',
 		      	show:false,
 		      	normal: {
-					//fontFamily : "Times New Roman",//字体
 		          	show: false
 		      	},
 		      	emphasis: {
@@ -130,11 +123,9 @@ var initEchart = function(row){
 		      	}
     		},
 	    	regions:geoData
-	    },
-		//series:seriesData
-		//化线
+	    }
 	};
-	if(selectedPros.length>0){
+	if(selectedPros.length>0){  //如果点击了切换背景，那么这个线数据的颜色变了，要重新生成，
 		generateSeries();
 	}
 	myChart.setOption(option, true);
@@ -144,7 +135,6 @@ var initEchart = function(row){
 		if("geo"!=params.componentType){  //如果点击的不是地图的省份，那么跳过，不处理
 			return;
 		}
-    	console.log('点击了'+params.name);
     	var name =  params.region.name;  //省份名  英文名
 		if("Hong Kong,Macau,Taiwan,Tibet,香港,澳门,台湾,西藏".indexOf(name)!=-1 || name ==undefined){  //有几个省份是忽略的
 			myChart.setOption(option,true);
@@ -183,8 +173,6 @@ var initEchart = function(row){
 			}
 		}
 		myChart.setOption(option,true);
-    	console.log(selectedPros);
-    	console.log(myChart.getOption());
 	});
 }
 
@@ -340,7 +328,6 @@ var initTable = function(datas){
 			seriesData=[];    //  根据进出口类型和选中的省份画的线，清空
 			initEchart(row);
 			selectedSheet=row;
-
 		},
 	    columns: [{  
             checkbox: true  
@@ -379,14 +366,6 @@ var adjustScrollPage = function() {
 
 //初始化事件绑定
 var initEvent = function() {
-	//新增提交
-	/*$("#commitBtn").bind('click', function(){
-		$("#addForm").submit();
-		//TODO 新增提交成功之后，进行修改datas参数，然后对table进行refresh
-		initData();
-		//$('#tableContainer').bootstrapTable('refresh');
-	});*/
-	
 	//增加缩进/展开功能
 	$("#hideList").bind("click", function(){
 		if($(".bootstrap-table").css("display") == 'none') {
@@ -447,17 +426,6 @@ var initEvent = function() {
 	//标签  显示、隐藏，默认显示
 	$("#show_li").bind("click",function(){ isShowSign =true  ; generateSeries();myChart.setOption(option,true);})
 	$("#hide_li").bind("click",function(){ isShowSign =false  ;generateSeries();myChart.setOption(option,true); })
-
-			//切换标签
-		// var switchSignBtn =function(){
-		// 	if(isShowSign){   //如果已经显示标签，那么切换为不显示
-		// 		isShowSign=false;
-		// 	}else{
-		// 		isShowSign=true;
-		// 	}
-		// 	initTable(datas);
-		// }
-
 	//Modal验证销毁重构
 	$('#myModal').on('hidden.bs.modal', function() {
     $("#saveadmin_form").data('bootstrapValidator').destroy();
@@ -466,9 +434,6 @@ var initEvent = function() {
     formValidator();
 	});
 }
-
-
-
 
 //删除表格行
 var delBtnFn = function() {
@@ -493,7 +458,6 @@ var delBtnFn = function() {
 			success:function(data){
 				initData();
 				$("#deleteResult").html(data);
-				console.log(data);
 			}
 		});
     });
