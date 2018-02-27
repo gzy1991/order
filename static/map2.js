@@ -10,6 +10,7 @@ var backgroundColor ='#404a59';  //echart背景色
 var areaColor ='#323c48'; //地图区域的颜色
 var emphasisAreaColor='#2a333d';   //选中省份时，背景色
 var textColor='#fff';					//标题与副标题的颜色
+var lineColor ="#FF3030";					//线和线上标签的颜色
 var browserHeight=$(window).height() ; //浏览器高度
 var browserWidth=$(window).width();		//浏览器宽度
 $("#tableDiv").height(browserHeight+"px");
@@ -74,8 +75,9 @@ var initEchart = function(row){
 	dom = document.getElementById("mapContainer");
 	myChart = echarts.init(dom);
 	option = null;
-	seriesData =[];  //初始化 series数据
+	//seriesData =[];  //初始化 series数据
 	//selectedPros=[];
+
 
 	option = {
 	  	tooltip: {
@@ -128,11 +130,13 @@ var initEchart = function(row){
 		      	}
     		},
 	    	regions:geoData
-	    }
+	    },
 		//series:seriesData
 		//化线
 	};
-
+	if(selectedPros.length>0){
+		generateSeries();
+	}
 	myChart.setOption(option, true);
 
 	//绑定省份的点击事件
@@ -251,7 +255,7 @@ var generateLines = function(type ){
 						},
 						lineStyle: {
 							normal: {
-								color: '#FF3030',
+								color:lineColor,
 								opacity: 0.6,    						//图形透明度。支持从 0 到 1 的数字,为 0 时不绘制该图形。
 							}
 						},
@@ -418,22 +422,24 @@ var initEvent = function() {
 	$("#all_li").bind("click",function(){ tradeType ="all"  ;generateSeries();myChart.setOption(option,true); })
 
 	//切换背景色 :  黑色，白色  ，默认黑色
-	$("#black_li").bind("click",function(){
+	$("#black_li").bind("click",function(){  //切换成黑色背景
 		backgroundColor='#404a59';
 		areaColor='#323c48';
 		emphasisAreaColor='#2a333d';
 		textColor='#fff';
 		legendColor='#fff';
 		geoTextColor="#fff";
+		lineColor="#FF3030";
 		initEchart(selectedSheet);
 	})
-	$("#white_li").bind("click",function(){
+	$("#white_li").bind("click",function(){ //切换成白色背景
 		backgroundColor='#FFFAF0';
 		areaColor='#DCDCDC';
 		emphasisAreaColor='#808080';
 		textColor='#2a333d';
 		legendColor='#8A2BE2';
 		geoTextColor="#FFFF00";
+		lineColor="#323c48";
 		initEchart(selectedSheet);
 	})
 

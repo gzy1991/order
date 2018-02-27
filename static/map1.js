@@ -102,7 +102,7 @@ var initEchart=function(row){
 				normal: {
 					fontFamily : "Times New Roman",//字体
 					color:"#fff",
-		          	show: true
+		          	show: false
 		      	},
 				emphasis: {
 					fontFamily : "Times New Roman",//字体
