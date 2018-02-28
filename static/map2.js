@@ -119,7 +119,7 @@ var initEchart = function(row){
 		      	emphasis: {
 		      		fontFamily : "Times New Roman",//字体
 					color :geoTextColor,
-		            show: true
+		            show: false
 		      	}
     		},
 	    	regions:geoData
@@ -151,7 +151,6 @@ var initEchart = function(row){
 				geoData.push({name: nameMap[name] ,selected:true});
 				//划线
 				generateSeries();  //生成series数据, 划线
-				//option.series=seriesData;
 				option.geo.regions=geoData;
 			}
 		}else if(isSelected){   //否则 ,删除
@@ -167,8 +166,7 @@ var initEchart = function(row){
 				});
 				geoData=tempGeoData;
 				//划线
-				generateSeries();  //生成series数据
-				//option.series=seriesData;
+				generateSeries();  //生成series数据 ，包括 线数据，线特效，选中的省份的名字和相关省份的名字
 				option.geo.regions=geoData;
 			}
 		}
@@ -178,27 +176,78 @@ var initEchart = function(row){
 
 /* 根据当前选中的省份 和 进出口类型，生成series */
 var generateSeries = function(){
-	//  tradeType ; 贸易类型
 	seriesData=[];  //先清空之前的线
 	if(tradeType == "import"){
-		generateLines("import");
+		generateLinesAndName("import");
 	}else if (tradeType=="export"){
-		generateLines("export");
+		generateLinesAndName("export");
 	}else if (tradeType  =="all"){
-		generateLines("import");
-		generateLines("export");
+		generateLinesAndName("import");
+		generateLinesAndName("export");
 	}
 	option.series=seriesData;
 }
-/*生成线
+
+/*生成省份名
+* province ：省份英文名
+* */
+var generateProName = function(province){
+	var flag=true;
+	seriesData.forEach(function(item,i){
+		if(item.name ==province){ //如果省份名已经存在了，那就不用再加了
+			flag=false;
+		}
+	})
+	if(!flag){
+		return;
+	}
+	seriesData.push({  //选中的省份的名字
+		name:province,
+		type:"effectScatter",
+		coordinateSystem: 'geo',
+		zlevel: 2,
+		rippleEffect: {                     		//涟漪特效相关配置
+			brushType: 'stroke'             		//波纹的绘制方式   可选 'stroke' 和 'fill'
+		},
+		label:{								//图形上的文本标签,可用于说明图形的一些数据信息
+			normal: {
+				fontFamily : "Times New Roman" ,  //字体
+				show: isShowSign,
+				//position: 'right',      			//标签的位置。
+				position: [10, 10],      			//标签的位置。
+				formatter: '{b}'           			//标签内容格式器,支持字符串模板和回调函数两种形式,字符串模板与回调函数返回的字符串均支持用 \n 换行。
+													//模板变量有 {a}、{b}、{c},分别表示系列名,数据名,数据值。
+			}
+		},
+		symbolSize: function (val) {            	//标记的大小,可以设置成诸如 10 这样单一的数字,也可以用数组分开表示宽和高
+			return 2 ;
+		},
+		itemStyle: {
+			normal: {
+				color: geoTextColor
+			}
+		},
+		data:[{
+			name:province,
+			value:[
+				selectedSheet[province].longitude,
+				selectedSheet[province].latitude,
+				selectedSheet[province].latitude.sum
+			]
+		}]
+	});
+}
+
+/*生成线  以及省份名
 *  type: import 或 export
 * */
-var generateLines = function(type ){
+var generateLinesAndName = function(type ){
 	//selectedSheet 当前选中的table行数据
 	//selectedPros  当前选中的省份数据
 	lines=[];
 	if(selectedPros && selectedPros.length>0){
 		selectedPros.forEach( function(province,i){  //遍历省份    province是英文名，
+			generateProName(province);
 			var tradeData=[];
 			if(type=="import"){
 				tradeData = selectedSheet[province].importData  ;//进口
@@ -207,54 +256,56 @@ var generateLines = function(type ){
 			}
 			if(tradeData && tradeData.length>0){  //遍历这个省份的出口或进口数据
 				tradeData.forEach(function(item,j){
-					seriesData.push(
-						//动画效果，移动的亮点
-						{
-							name:"",
-							type:"lines",
-							zlevel: 1,
-							effect: {              							//线特效的配置
-								show: isShowSign,
-								period: 1,              					//特效动画的时间,单位为 s。
-								color: lineeffectColor,						//特效颜色
-								symbolSize: 4          						//特效标记的大小,可以设置成诸如 10 这样单一的数字,也可以用数组分开表示高和宽,例如 [20, 10] 表示标记宽为20,高为10。
-							},
-							lineStyle: {            						//对线的各种设置 ：颜色,形状,曲度
-								normal: {
-									color: lineeffectColor,                   //
-									width: 0,           					//线宽
-									curveness: 0.2  						//边的曲度,支持从 0 到 1 的值,值越大曲度越大。0代表直线,1代表圆
-								}
-							},
-							data:convertData2(province,tradeData,type)  //坐标关系
-						},
-						//  线  +  箭头
-						{
-						name: province.chineseName+" "+item.sort+": "+item.chineseAbbrName  ,
-						type: 'lines',
-						zlevel: 2,
-						symbol: ['none', 'arrow'],
-						symbolSize: 10,
-						effect: { //线特效  ，这里先不显示
-							show: false,
-							period: 6,
-							trailLength: 0,
-						},
-						lineStyle: {
-							normal: {
-								color:lineColor,
-								opacity: 0.6,    						//图形透明度。支持从 0 到 1 的数字,为 0 时不绘制该图形。
-							}
-						},
-						data: convertData(province,tradeData,type)  //坐标关系
-					});
+					generateProName(item.name);
 				});
 			}
+			seriesData.push(
+				//动画效果，移动的亮点
+				{
+					name:province+"_light",
+					type:"lines",
+					zlevel: 1,
+					effect: {              							//线特效的配置
+						show: isShowSign,
+						period: 1,              					//特效动画的时间,单位为 s。
+						color: lineeffectColor,						//特效颜色
+						symbolSize: 4          						//特效标记的大小,可以设置成诸如 10 这样单一的数字,也可以用数组分开表示高和宽,例如 [20, 10] 表示标记宽为20,高为10。
+					},
+					lineStyle: {            						//对线的各种设置 ：颜色,形状,曲度
+						normal: {
+							color: lineeffectColor,                   //
+							width: 0,           					//线宽
+							curveness: 0.2  						//边的曲度,支持从 0 到 1 的值,值越大曲度越大。0代表直线,1代表圆
+						}
+					},
+					data:convertData2(province,tradeData,type)  //坐标关系
+				},
+				//  线  +  箭头
+				{
+				name: province+"_line"  ,
+				type: 'lines',
+				zlevel: 2,
+				symbol: ['none', 'arrow'],
+				symbolSize: 10,
+				effect: { //线特效  ，这里先不显示
+					show: false,
+					period: 6,
+					trailLength: 0,
+				},
+				lineStyle: {
+					normal: {
+						color:lineColor,
+						opacity: 0.6,    						//图形透明度。支持从 0 到 1 的数字,为 0 时不绘制该图形。
+					}
+				},
+				data: convertData(province,tradeData,type)  //坐标关系
+			});
+
 		})
 	}
 }
 /*
-*	动画效果线的 坐标关系
+*	生成动画效果线的 坐标关系
 *   直接调用convertData() ，然后获取里面的坐标信息即可
 * */
 var convertData2=function(province,tradeData,type){
@@ -266,14 +317,13 @@ var convertData2=function(province,tradeData,type){
 	return coords;
 }
 
-/*生成线的 坐标关系
+/* 生成普通线的 坐标关系
 *  province 选中的省份,英文名
 *  tradeData： 这个省份的贸易数据  （出口前5或者进口前5）
 *  type : import 或者 export
 * */
 var convertData = function(province,tradeData,type){
 	var res=[];
-	//var provinceName = nameMap[province];//英文名
 	var proData = selectedSheet[province];//当前图的全部数据，即当前选中的行数据
 	for(var i=0;i<tradeData.length;i++){
 		var fromCoord = [proData.longitude, proData.latitude];
