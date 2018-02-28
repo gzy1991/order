@@ -9,15 +9,16 @@ import xlwt
 import numpy as np
 import json
 import Tool.ExcelTool as ExcelTool
+import order.settings as Setting
 
 # 获得table数据 json格式,
 # 对每个excel的数据，进行排序，找出每个省份出口前5和进口前5
 def getTableData():
     proShowNum = 3  # 每个省份的前5个进口货出口。默认是5，这个参数可以从页面上传进来
     provinceNum=31  #省份数量，默认是31
-    provincesInfo = ExcelTool.getArrayBySheetName("\\file\\common\\Province.xlsx","province")  #获取省份名列表，包括 ： 中文名、英文名、纬度、经度
-    print(os.getcwd())
-    files = ExcelTool.listExcelFile("\\file\\map2")
+    print(os.path.join(Setting.FILR_DIR["COMMON_DIR"]))
+    provincesInfo =ExcelTool.getArrayBySheetName(os.path.join(Setting.FILR_DIR["COMMON_DIR"],"Province.xlsx"),"province")#获取省份名列表，包括 ： 中文名、英文名、纬度、经度
+    files = ExcelTool.listExcelFile(Setting.FILR_DIR["MAP2_DIR"])
     print files  # .xlsx结果文件列表
     resultList = []
     errMsg = "";

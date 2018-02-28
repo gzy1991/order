@@ -12,7 +12,7 @@ var emphasisAreaColor='#2a333d';   //选中省份时，背景色
 var textColor='#fff';					//标题与副标题的颜色
 var lineColor ="#FF3030";					//线和线上标签的颜色
 var geoTextColor="#fff"; //地图上，选中国家时，国家名的颜色
-
+var lineeffectColor = "#fff";   //线上特效点的颜色
 var browserHeight=$(window).height() ; //浏览器高度
 var browserWidth=$(window).width();		//浏览器宽度
 $("#tableDiv").height(browserHeight+"px");
@@ -158,7 +158,7 @@ var initEchart = function(row){
 			var index=selectedPros.indexOf(name);
 			if(index!== -1){
 				selectedPros.splice(index,1);
-				//取消选中
+				//取消选中，删除这个省份
 				var tempGeoData=[];
 				geoData.forEach(function(item,i){
 					if(item.name != name && item.name!=nameMap[name]){
@@ -216,19 +216,18 @@ var generateLines = function(type ){
 							effect: {              							//线特效的配置
 								show: isShowSign,
 								period: 1,              					//特效动画的时间,单位为 s。
-								color: '#fff',
-								symbolSize: 3          						//特效标记的大小,可以设置成诸如 10 这样单一的数字,也可以用数组分开表示高和宽,例如 [20, 10] 表示标记宽为20,高为10。
+								color: lineeffectColor,						//特效颜色
+								symbolSize: 4          						//特效标记的大小,可以设置成诸如 10 这样单一的数字,也可以用数组分开表示高和宽,例如 [20, 10] 表示标记宽为20,高为10。
 							},
 							lineStyle: {            						//对线的各种设置 ：颜色,形状,曲度
 								normal: {
-									color: "#404a59",                   //求余
+									color: lineeffectColor,                   //
 									width: 0,           					//线宽
 									curveness: 0.2  						//边的曲度,支持从 0 到 1 的值,值越大曲度越大。0代表直线,1代表圆
 								}
 							},
 							data:convertData2(province,tradeData,type)  //坐标关系
 						},
-
 						//  线  +  箭头
 						{
 						name: province.chineseName+" "+item.sort+": "+item.chineseAbbrName  ,
@@ -237,7 +236,7 @@ var generateLines = function(type ){
 						symbol: ['none', 'arrow'],
 						symbolSize: 10,
 						effect: { //线特效  ，这里先不显示
-							show: true,
+							show: false,
 							period: 6,
 							trailLength: 0,
 						},
@@ -372,7 +371,6 @@ var initEvent = function() {
 			$(".bootstrap-table").show();
 			$("#tableDiv").css("width", "25.0%");
 			$("#mapDiv").css("width", "75.0%");
-
 			$("#hideList > img").attr("src", "/static/img/left.png").attr("title", "缩进");
 			$("#button").show();
 			$("#delBtn").show();
@@ -409,6 +407,7 @@ var initEvent = function() {
 		legendColor='#fff';
 		geoTextColor="#fff";
 		lineColor="#FF3030";
+		lineeffectColor="#fff";
 		initEchart(selectedSheet);
 	})
 	$("#white_li").bind("click",function(){ //切换成白色背景
@@ -418,7 +417,9 @@ var initEvent = function() {
 		textColor='#2a333d';
 		legendColor='#8A2BE2';
 		geoTextColor="#FFFF00";
-		lineColor="#323c48";
+		//lineColor="#323c48";
+		lineColor="#000000";
+		lineeffectColor="#FF3030";
 		initEchart(selectedSheet);
 	})
 
@@ -428,12 +429,36 @@ var initEvent = function() {
 	$("#hide_li").bind("click",function(){ isShowSign =false  ;generateSeries();myChart.setOption(option,true); })
 	//Modal验证销毁重构
 	$('#myModal').on('hidden.bs.modal', function() {
-    $("#saveadmin_form").data('bootstrapValidator').destroy();
-    $('#saveadmin_form').data('bootstrapValidator', null);
-    document.getElementById("saveadmin_form").reset();
-    formValidator();
+		$('#saveadmin_form').data('bootstrapValidator', null);
+		document.getElementById("saveadmin_form").reset();
+		$("#addButtonResult").html("");  //隐藏弹出框后，把提示信息清空
 	});
 }
+
+
+
+/*初始化上传组件*/
+var initUpload = function(ctrlName, uploadUrl){
+	 var control = $('#' + ctrlName);
+	 control.fileinput({
+		language: 'zh', //设置语言
+		uploadUrl:uploadUrl,  //上传的地址
+		showUpload: true,
+		maxFileCount: 1,
+		maxFileSize:1000,  //单位为kb，如果为0表示不限制文件大小
+		enctype: 'multipart/form-data',
+		mainClass: "input-group-lg"
+	 }).on("fileuploaded",function(event, data, previewId, index){  //上传结果处理
+		console.log(data);
+		$("#addButtonResult").append("<p>"+data.response.message+"<p>");
+		if("true"==data.response.result){ //刷新表格
+			refBtnFn();
+		}else if ("false"==data.response.result){
+
+		}
+	 });
+}
+
 
 //删除表格行
 var delBtnFn = function() {

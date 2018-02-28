@@ -9,6 +9,7 @@ import xlwt
 import numpy as np
 import json
 import Tool.ExcelTool as ExcelTool
+import order.settings as Setting
 
 
 
@@ -17,12 +18,11 @@ def rank_result():
 
     country_num = 5  # 前10个国家,这个参数可以从页面上传进来
 
-    #country_name =get_country_name_array()
     # #获取国家名 地址列表
-    country_name =ExcelTool.getArrayBySheetName("\\file\\common\\Countries.xlsx","country")
+    country_name =ExcelTool.getArrayBySheetName(os.path.join(Setting.FILR_DIR["COMMON_DIR"],"Countries.xlsx"),"country")
     print(os.getcwd())
     #获取结果excel 地址列表  ，只获取xls和xlsx文件
-    files = ExcelTool.listExcelFile("\\file\\map1_result_excel")
+    files = ExcelTool.listExcelFile(Setting.FILR_DIR["MAP1_DIR"])
     print files  # .xlsx结果文件列表
     result_list=[]
     errMsg="";
@@ -69,8 +69,6 @@ def rank_result():
             result["exportData"]=export_data
             result["importData"]=import_data
 
-            # for i in range (0,country_num):    #针对每个国家，获取国家名，以及贸易对象的排名
-            #     print country_name[index_ex[189 - i]][0].encode("utf-8")  ,Tra[index_ex[189 - i], 0]
             print file + " end"
             result_list.append(result)
             #一个文件计算完毕

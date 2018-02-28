@@ -14,17 +14,13 @@ import numpy as np
 
 #   从根目录下读取指定的excel数据
 def getArrayBySheetName(excelDir,sheetName):
-    root_add = os.getcwd()
-    fileDir = root_add + excelDir  #  excel所在目录
-    excelData = xlrd.open_workbook(fileDir, "rb")
+    excelData = xlrd.open_workbook(excelDir, "rb")
     Country_array = getArrayFromSheet(excelData,sheetName,'name')
     return Country_array
 
 # 读取根目录下制定的excel数据
 def getArrayBySheetIndex(excelDir,index):
-    root_add = os.getcwd()
-    fileDir = root_add + excelDir  #  excel所在目录
-    excelData = xlrd.open_workbook(fileDir, "rb")
+    excelData = xlrd.open_workbook(excelDir, "rb")
     Country_array = getArrayFromSheet(excelData,index,'index')
     return Country_array
 
@@ -55,10 +51,7 @@ def getArrayFromSheet(excelData,param ,type):
 #   dir: 指定的目录
 def listExcelFile( dir ):
     res=[]
-    root_add=os.getcwd()
-    print(os.getcwd())                       # 获取工程根目录
-    file_dir=root_add+dir     #  结果excel所在目录
-    for root, dirs, files in os.walk(file_dir):
+    for root, dirs, files in os.walk(dir):
         for file in files:
             try:
                 if os.path.splitext(file)[1] == '.xlsx' or  os.path.splitext(file)[1] == '.xls':
@@ -73,13 +66,10 @@ def listExcelFile( dir ):
 #   address :      根目录下的指定目录
 #   fileNameList : 要删除的文件名  如 “文件1.xls,文件2.xlsx,文件3.xlsx,文件4.xlsx”
 def deleteFile(address,fileNameList ):
-    root_add = os.getcwd()
-    # file_dir = root_add + "\\result_excel"  # 结果excel所在目录
-    file_dir = root_add + address  # 结果excel所在目录
     nameList=fileNameList.split(",")
     resString=""
     for fileName in nameList:
-        file_address=file_dir+"\\"+fileName
+        file_address=os.path.join(address,fileName)
         os.remove(file_address)
         resString=resString+",<br>"+fileName
     resString=resString[1:len(resString)]

@@ -23,8 +23,6 @@
   <script type="text/javascript" src="/static/resource/echart/ecStat.min.js"></script>
   <script type="text/javascript" src="/static/resource/echart/dataTool.min.js"></script>
   <script type="text/javascript" src="/static/resource/echart/china.js"></script>
-  <script type="text/javascript" src="/static/resource/echart/world.js"></script>
-  {% comment %}<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=ZUONbpqGBsYGXNIYHicvbAbM"></script>{% endcomment %}
   <script type="text/javascript" src="/static/resource/echart/bmap.min.js"></script>
 
   <script type="text/javascript" src="/static/resource/jquery/jquery.min.js"></script>
@@ -39,7 +37,9 @@
 
   <script type="text/javascript" src="/static/js/bootstrapValidator.min.js"></script>
   <script type="text/javascript" src="/static/resource/bootstrap-table/bootstrap-table-zh-CN.js"></script>
-
+    <script type="text/javascript" src="/static/resource/bootstrap-fileinput/fileinput.min.js"></script>
+    <script type="text/javascript" src="/static/resource/bootstrap-fileinput/locales/zh.js"></script>
+    <link href="/static/resource/bootstrap-fileinput/fileinput.min.css" rel="stylesheet" />
 </head>
   <header class="navbar navbar-fixed-top navbar-inverse" id = "headerContainer">
   </header>
@@ -98,13 +98,13 @@
   </div>
 
   <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
-    <div class="modal-dialog" role="document">  
+    <div class="modal-dialog" role="document" style ="height:600px">
         <div class="modal-content">  
             <div class="modal-header">  
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">  
                     <span aria-hidden="true">×</span>  
                 </button>  
-                <h4 class="modal-title" id="myModalLabel">新增</h4>
+                <h4 class="modal-title" id="myModalLabel">请选择excel文件</h4>
             </div>  
             <div class="modal-body">  
               <form class="form-horizontal" id="saveadmin_form"
@@ -112,70 +112,29 @@
                   <input type="hidden" id="adminid" />
                   <div class="box-body">
                       <dl class="dl-horizontal">
-                          <div class="form-group">
-                              <div class="col-sm-10">
-                                  <dt>主题：</dt>
-                                  <dd>
-                                      <lable id="edit_show_adminname"></lable>
-                                      <input type="text" class="form-control" id="title"
-                                          name="title" data-bv-notempty="true" >
-                                  </dd>
-                              </div>
-                          </div>
-                          <div class="form-group">
-                              <div class="col-sm-10">
-                                  <dt>单位：</dt>
-                                  <dd>
-                                    <input type="text" name="unit"
-                                        class="form-control" id="unit">
-                                  </dd>
-                              </div>
-                          </div>
 
                           <div class="form-group">
-                              <div class="col-sm-10">
-                                  <dt>FD：</dt>
-                                  <dd>
-                                    <input type="text" name="fd_address"
-                                        class="form-control" id="fd_address" placeholder="例: D:\FD.csv">
-                                  </dd>
+                              <div class="col-sm-12">
+                                    <div class="file-loading">
+                                        <input id="excelFile" name="excelFile" type="file"
+                                               data-msg-placeholder=""
+                                               data-allowed-file-extensions='[ "xlsx"]'>
+                                    </div>
                               </div>
                           </div>
-
-                          <div class="form-group">
-                              <div class="col-sm-10">
-                                  <dt>E：</dt>
-                                  <dd>
-                                    <input type="text" name="e_address"
-                                        class="form-control" id="e_address" placeholder="例: D:\E.csv">
-                                  </dd>
-                              </div>
-                          </div>
-
-                          <div class="form-group">
-                              <div class="col-sm-10">
-                                  <dt>T：</dt>
-                                  <dd>
-                                    <input type="text" name="t_address"
-                                        class="form-control" id="t_address" placeholder="例: D:\T.csv">
-                                  </dd>
-                              </div>
-                          </div>
-
-
                       </dl>
                   </div>
+                  <div id ="addButtonResult" style="font-size:18px;color:red"></div>
                   <div class="modal-footer">
-                      <button onclick="saveAdmin()" type="button" class="btn btn-success">
-                          <i class="fa fa-check"></i> 计算
-                      </button>
+
+
                       <button type="button" class="btn btn-danger" data-dismiss="modal">
                           <i class="fa fa-times"></i> 关闭
                       </button>
                   </div>
               </form>
 
-                <div id ="result"></div>
+
             </div>   
         </div>  
     </div>  
@@ -207,9 +166,7 @@
                 <button type="button" class="btn btn-danger" data-dismiss="modal">
                     <i class="fa fa-times"></i> 关闭
                       </button>
-
             </div>
-
 
         </div>
       </div>
@@ -223,49 +180,10 @@
             $(document).ready(function(){
                 $("#headerContainer").load("/static/html/header.html");
             });
+            //上传组件
+            initUpload("excelFile","/uploadExcelInMap2");
             initData();  //   调用初始化页面
             initEvent();//初始化事件绑定
     </script>
 </html>
 
-
-{% comment %}
-坐标
-
-
-'新疆',  '41.748', '84.9023'
-'西藏',  '31.6846', '88.7695'
-'内蒙古',  '44.3408', '117.5977'
-'青海',  '35.4199', '96.2402'
-''四川',  '30.1904', '102.9199'
-'黑龙江',  '48.5156', '128.1445'
-'甘肃',  '40.166', '95.7129'
-'云南',  '25.1807', '101.8652'
-'广西',  '23.6426', '108.2813'
-'湖南',  '27.3779', '111.5332'
-'陕西',  '35.6396', '109.5996'
-'广东',  '22.8076', '113.4668'
-'吉林',  '43.5938', '126.4746'
-'河北',  '37.9688', '115.4004'
-'湖北',  '31.1572', '112.2363'
-'贵州',  '26.9385', '106.6113'
-'山东',  '36.4307', '118.7402'
-'江西',  '27.29', '116.0156'
-'河南',  '33.8818', '113.4668'
-'辽宁',  '41.0889', '122.3438'
-'山西',  '37.6611', '112.4121'
-'安徽',  '32.0361', '117.2461'
-'福建',  '25.9277', '118.3008'
-'浙江',  '29.0918', '120.498'
-'江苏',  '32.915', '120.0586'
-'重庆',  '30.1904', '107.7539'
-'宁夏',  '37.3096', '105.9961'
-'海南',  '19.2041', '109.9512'
-'台湾',  '23.5986', '121.0254'
-'北京',  '40.2539', '116.4551'
-'天津',  '39.4189', '117.4219'
-'上海',  '31.2891', '121.4648'
-'香港',  '22.3242', '114.2578'
-'澳门',  '22.1484', '113.5547'
-
-{% endcomment %}
