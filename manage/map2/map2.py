@@ -55,14 +55,11 @@ def getTableData():
             #对31个省份循环处理
             for i in range(provinceNum):
                 provinceResult={}            #该省份数据容器
-                # proInfo = provincesInfo[i]   #该省份坐标、中英文名、
                 provinceResult["chineseName"]=provincesInfo[i][1]        #该省中文名 全称
                 provinceResult["name"]=provincesInfo[i][2]               #该省英文名
                 provinceResult["chineseAbbrName"]=provincesInfo[i][3]    #该省中文名 缩写
                 provinceResult["latitude"]=provincesInfo[i][4]     #该省纬度
                 provinceResult["longitude"]=provincesInfo[i][5]    #该省经度
-                #provinceResult["exportSum"]=Tra[i][0]    #该省出口总值
-                #provinceResult["importSum"]=Tra[i][1]    #该省进口总值
                 provinceResult["exportSum"] = Tra[i][0]  # 该省出口总值  单位PJ
                 provinceResult["importSum"] = Tra[i][1]  # 该省进口总值  单位PJ
                 exportData=      getProExportData(Tra,Tot,Tot_exportSort,provincesInfo,i,proShowNum)   #获取该省出口数据
