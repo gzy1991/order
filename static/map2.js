@@ -6,7 +6,6 @@
 
 //背景切换所需的数据
 var backgroundColor ='#404a59';  //echart背景色
-//var color=[]
 var areaColor ='#323c48'; //地图区域的颜色
 var emphasisAreaColor='#2a333d';   //选中省份时，背景色
 var textColor='#fff';					//标题与副标题的颜色
@@ -25,7 +24,6 @@ var option = null;
 var seriesData =[]; //  容器，存储线的数据
 var unit='';  //单位
 var tradeType="export" ; 	//进出口类型，进口import、出口export 或者全部all，默认是export
-var backGroundType="white" ; //背景颜色类型，白色和黑色，默认是白色
 var isShowSign=true;  	//是否显示标签 ，默认显示
 
 var datas ; 		 		//  容器，存储了表格的全部数据，
@@ -140,7 +138,6 @@ var initEchart = function(row){
 			myChart.setOption(option,true);
 			return;
 		}
-    	//var state = params.region.selected; //选中状态，是否被选中，true 是， false 否
 		var isSelected=selectedPros.indexOf(name) != -1; //省份是否已经被选中了，
 		if(!isSelected){  //如果之前未被选中，那么添加
 			var index=selectedPros.indexOf(name);
@@ -220,7 +217,7 @@ var generateProName = function(province){
 			}
 		},
 		symbolSize: function (val) {            	//标记的大小,可以设置成诸如 10 这样单一的数字,也可以用数组分开表示宽和高
-			return 2 ;
+			return 4 ;
 		},
 		itemStyle: {
 			normal: {
