@@ -1,6 +1,6 @@
 #coding:utf-8
 #!/usr/bin/python
-# 删除功能   ：  删除result_excel文件夹下的文件
+# 删除功能   ：  删除 result_excel 文件夹下的文件
 
 import os
 import os.path
@@ -9,7 +9,7 @@ import os.path
 
 def deleteData(fileNameList):
     root_add = os.getcwd()
-    file_dir = root_add + "\\result_excel"  # 结果excel所在目录
+    file_dir = root_add + "\\file\\map1_result_excel"  # 结果excel所在目录
     nameList=fileNameList.split(",")
     resString=""
     for fileName in nameList:

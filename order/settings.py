@@ -1,3 +1,4 @@
+#coding:utf-8
 """
 Django settings for order project.
 
@@ -38,13 +39,14 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'map1',
+    'manage'
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    #'django.middleware.csrf.CsrfViewMiddleware',   # post上传excel文件时，报错CSRF cookie not set，所以注释掉
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -55,8 +57,8 @@ ROOT_URLCONF = 'order.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        # 'DIRS': [os.path.join(BASE_DIR, 'templates')] ,
-        'DIRS': [BASE_DIR + '/view_'],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')] ,
+        # 'DIRS': [BASE_DIR + '/static'],
 
         'APP_DIRS': True,
         'OPTIONS': {
@@ -127,3 +129,11 @@ STATIC_URL = '/static/'
 #
 # )
 STATICFILES_DIRS = (os.path.join(os.path.dirname(__file__), '../static/').replace('\\','/'),)
+FILR_BASE_DIR=os.path.join(BASE_DIR,"file")  #文件路径
+FILR_DIR={                                    #各个图自己的路径
+    "COMMON_DIR":os.path.join(FILR_BASE_DIR,"common"),  #公共文件路径
+    "MAP1_DIR":os.path.join(FILR_BASE_DIR,"map1_result_excel"),
+    "MAP2_DIR":os.path.join(FILR_BASE_DIR,"map2")
+}
+
+
