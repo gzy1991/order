@@ -15,7 +15,15 @@ var lineeffectColor = "#fff";   //线上特效点的颜色
 var browserHeight=$(window).height() ; //浏览器高度
 var browserWidth=$(window).width();		//浏览器宽度
 $("#tableDiv").height(browserHeight+"px");
-
+var provinceColoer ={//  省份 线的颜色
+	"Jiangsu":"#a6c84c","Anhui":"#a6c84c","Fujian":"#a6c84c","Shanghai":"#a6c84c","Zhejiang":"#a6c84c",
+	"Hubei":"#ffa022","Hunan":"#ffa022","Henan":"#ffa022","Jiangxi":"#ffa022",
+	"Guangdong":"#EE82EE","Guangxi":"#EE82EE","Hainan":"#EE82EE",
+	"Beijing":"#7CFC00","Tianjin":"#7CFC00","Hebei":"#7CFC00","Shanxi":"#7CFC00","Inner mongolia":"#7CFC00",
+	"Chongqing":"#43CD80","Sichuan":"#43CD80","Guizhou":"#43CD80","Yunnan":"#43CD80",
+	"Shaanxi":"#46bee9","Gansu":"#46bee9","Qinghai":"#46bee9","Ningxia":"#46bee9","Xinjiang":"#46bee9",
+	"Liaoning":"#CDCD00","Jilin":"#CDCD00","Heilongjiang":"#CDCD00"
+}
 
 //echart全局变量
 var dom = document.getElementById("mapContainer");;
@@ -210,14 +218,13 @@ var generateProName = function(province){
 			normal: {
 				fontFamily : "Times New Roman" ,  //字体
 				show: isShowSign,
-				//position: 'right',      			//标签的位置。
 				position: [10, 10],      			//标签的位置。
 				formatter: '{b}'           			//标签内容格式器,支持字符串模板和回调函数两种形式,字符串模板与回调函数返回的字符串均支持用 \n 换行。
 													//模板变量有 {a}、{b}、{c},分别表示系列名,数据名,数据值。
 			}
 		},
 		symbolSize: function (val) {            	//标记的大小,可以设置成诸如 10 这样单一的数字,也可以用数组分开表示宽和高
-			return 4 ;
+			return 7 ;
 		},
 		itemStyle: {
 			normal: {
@@ -276,14 +283,15 @@ var generateLinesAndName = function(type ){
 						}
 					},
 					data:convertData2(province,tradeData,type)  //坐标关系
-				},
+				}
+				,
 				//  线  +  箭头
 				{
 				name: province+"_line"  ,
 				type: 'lines',
 				zlevel: 2,
 				symbol: ['none', 'arrow'],
-				symbolSize: 10,
+				//symbolSize: 10,
 				effect: { //线特效  ，这里先不显示
 					show: false,
 					period: 6,
@@ -291,12 +299,13 @@ var generateLinesAndName = function(type ){
 				},
 				lineStyle: {
 					normal: {
-						color:lineColor,
+						color:provinceColoer[province],
 						opacity: 0.6,    						//图形透明度。支持从 0 到 1 的数字,为 0 时不绘制该图形。
 					}
 				},
 				data: convertData(province,tradeData,type)  //坐标关系
-			});
+			}
+			);
 
 		})
 	}
@@ -309,7 +318,15 @@ var convertData2=function(province,tradeData,type){
 	var coords=[];
 	var tempData =convertData(province,tradeData,type);//坐标关系
 	tempData.forEach(function(item,i){
-		coords.push({coords:item.coords,lineStyle:item.lineStyle});
+		coords.push({
+			coords:item.coords,
+			effect: {
+				show: isShowSign,
+				period: 1,
+				color: lineeffectColor,						//特效颜色
+				symbolSize: 10-item.sort*1.5
+			}
+		});
 	});
 	return coords;
 }
@@ -332,8 +349,10 @@ var convertData = function(province,tradeData,type){
 			toCoord=temp;
 			tagPosition="start";
 		}
+		tagPosition="middle";  //标签的位置,仙豆设置成中间，
 		if(fromCoord && toCoord){
 			res.push({
+				sort:tradeData[i].sort,  //排序数据
 				coords: [fromCoord, toCoord],
 				value:(tradeData[i].value/1000000000000000).toFixed(2), //除以2的15次方
 				label :{		// 单个数据（单条线）的标签设置
@@ -341,14 +360,16 @@ var convertData = function(province,tradeData,type){
 						show:isShowSign, //
 						position :tagPosition,
 						formatter:'{c}',
-						fontWeight:'lighter',// 文字字体的粗细
-						fontSize:15,  //标签字体的大小
+						//fontWeight:'lighter',// 文字字体的粗细
+						fontWeight:'bolder',// 文字字体的粗细
+						fontSize:12,  //标签字体的大小
 						fontFamily : "Times New Roman"//字体
 					}
 				},
-				symbolSize :15, //箭头大小
+				symbolSize :20-tradeData.length* tradeData[i].sort, //箭头大小，根据贸易量排序，大小不同
 				lineStyle:{
 						normal:{
+							width:tradeData.length+1-tradeData[i].sort,
 							opacity: 0.6,    // 图形透明度。支持从 0 到 1 的数字,为 0 时不绘制该图形。
 							curveness:0.2     //线的弯曲程度
 						}
@@ -455,6 +476,15 @@ var initEvent = function() {
 		geoTextColor="#fff";
 		lineColor="#FF3030";
 		lineeffectColor="#fff";
+		provinceColoer ={//  省份 线的颜色
+			"Jiangsu":"#a6c84c","Anhui":"#a6c84c","Fujian":"#a6c84c","Shanghai":"#a6c84c","Zhejiang":"#a6c84c",
+			"Hubei":"#ffa022","Hunan":"#ffa022","Henan":"#ffa022","Jiangxi":"#ffa022",
+			"Guangdong":"#EE82EE","Guangxi":"#EE82EE","Hainan":"#EE82EE",
+			"Beijing":"#7CFC00","Tianjin":"#7CFC00","Hebei":"#7CFC00","Shanxi":"#7CFC00","Inner mongolia":"#7CFC00",
+			"Chongqing":"#43CD80","Sichuan":"#43CD80","Guizhou":"#43CD80","Yunnan":"#43CD80",
+			"Shaanxi":"#46bee9","Gansu":"#46bee9","Qinghai":"#46bee9","Ningxia":"#46bee9","Xinjiang":"#46bee9",
+			"Liaoning":"#CDCD00","Jilin":"#CDCD00","Heilongjiang":"#CDCD00"
+		}
 		initEchart(selectedSheet);
 	})
 	$("#white_li").bind("click",function(){ //切换成白色背景
@@ -463,10 +493,18 @@ var initEvent = function() {
 		emphasisAreaColor='#808080';
 		textColor='#2a333d';
 		legendColor='#8A2BE2';
-		geoTextColor="#FFFF00";
-		//lineColor="#323c48";
+		geoTextColor="#2a333d";
 		lineColor="#000000";
 		lineeffectColor="#FF3030";
+		provinceColoer ={//  省份 线的颜色
+			"Jiangsu":"#800000","Anhui":"#800000","Fujian":"#800000","Shanghai":"#800000","Zhejiang":"#800000",
+			"Hubei":"#00868B","Jiangsu":"#00868B","Henan":"#00868B","Jiangxi":"#00868B",
+			"Guangdong":"#0000CD","Guangxi":"#0000CD","Hainan":"#0000CD",
+			"Beijing":"#8A2BE2","Tianjin":"#8A2BE2","Hebei":"#8A2BE2","Shanxi":"#8A2BE2","Inner mongolia":"#8A2BE2",
+			"Chongqing":"#006400","Sichuan":"#006400","Guizhou":"#006400","Yunnan":"#006400",
+			"Shaanxi":"#7A378B","Gansu":"#7A378B","Qinghai":"#7A378B","Ningxia":"#7A378B","Xinjiang":"#7A378B",
+			"Liaoning":"#8B4513","Jilin":"#8B4513","Heilongjiang":"#8B4513"
+		}
 		initEchart(selectedSheet);
 	})
 
