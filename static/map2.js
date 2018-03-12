@@ -492,7 +492,8 @@ var initEvent = function() {
 		backgroundColor='#FFFAF0';
 		areaColor='#DCDCDC';
 		//emphasisAreaColor='#808080';
-		emphasisAreaColor='#A3A3A3';
+		//emphasisAreaColor='#A3A3A3';
+		emphasisAreaColor='#C1C1C1';
 		textColor='#2a333d';
 		legendColor='#8A2BE2';
 		geoTextColor="#2a333d";
@@ -500,7 +501,8 @@ var initEvent = function() {
 		//lineeffectColor="#FF3030";
 		//lineeffectColor="#FFBA6F";
 		//lineeffectColor="#FFA48E";
-		lineeffectColor="#16FF59";
+		//lineeffectColor="#16FF59";
+		lineeffectColor="#FFFAF0";
 		provinceColoer ={//  省份 线的颜色
 			"Jiangsu":"#800000","Anhui":"#800000","Fujian":"#800000","Shanghai":"#800000","Zhejiang":"#800000",
 			"Hubei":"#00868B","Jiangsu":"#00868B","Henan":"#00868B","Jiangxi":"#00868B",
