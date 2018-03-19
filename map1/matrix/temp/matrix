@@ -1,7 +1,8 @@
-import numpy as np
-import pandas as pd
-import csv, sys
-import time
+# 用python复写的matlab代码
+#import numpy as np
+#import pandas as pd
+#import csv, sys
+#import time
 # E  :  E.csv
 # matrix :data.csv，，     T
 # matrix_1: matrix的行和

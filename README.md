@@ -8,7 +8,7 @@
 ```
 pip install django==1.11
 ```
-## 1.2 安装 mlab
+## 1.2 安装 mlab和 numpy
 参考这里[mlab安装指南](http://blog.csdn.net/sunny_xsc1994/article/details/70197168)
 
 ## 1.3 安装 xlrd 和 xlwt
@@ -28,10 +28,7 @@ pip install xlwt
 pip install pymysql
 ```
 
-## 1.6 安装 pandas
-```
-pip install pandas
-```
+
 
 # 2 通过 github 更新代码
 [Tutorial](https://www.cnblogs.com/mff520mff/archive/2017/08/13/7355118.html)
@@ -50,4 +47,4 @@ pip install pandas
 
 # 5
 #图1使用了echart3
-#图2使用了echart4
+#图2使用了echart3
