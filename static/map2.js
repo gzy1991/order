@@ -193,7 +193,7 @@ var generateSeries = function(){
 	option.series=seriesData;
 }
 
-/*生成省份名
+/*生成省份名  以及圆圈动画效果
 * province ：省份英文名
 * */
 var generateProName = function(province){
@@ -206,12 +206,13 @@ var generateProName = function(province){
 	if(!flag){
 		return;
 	}
-	seriesData.push({  //选中的省份的名字
+	seriesData.push({  //选中的省份的名字，以及圆圈动画效果
 		name:province,
 		type:"effectScatter",
 		coordinateSystem: 'geo',
 		zlevel: 2,
 		rippleEffect: {                     		//涟漪特效相关配置
+			scale:2,
 			brushType: 'stroke'             		//波纹的绘制方式   可选 'stroke' 和 'fill'
 		},
 		label:{								//图形上的文本标签,可用于说明图形的一些数据信息
@@ -224,7 +225,7 @@ var generateProName = function(province){
 			}
 		},
 		symbolSize: function (val) {            	//标记的大小,可以设置成诸如 10 这样单一的数字,也可以用数组分开表示宽和高
-			return 7 ;
+			return 5 ;
 		},
 		itemStyle: {
 			normal: {
@@ -322,7 +323,7 @@ var convertData2=function(province,tradeData,type){
 			coords:item.coords,
 			effect: {
 				show: isShowSign,
-				period: 1,
+				period: 4,
 				color: lineeffectColor,						//特效颜色
 				symbolSize: 10-item.sort*1.5
 			}
@@ -490,12 +491,18 @@ var initEvent = function() {
 	$("#white_li").bind("click",function(){ //切换成白色背景
 		backgroundColor='#FFFAF0';
 		areaColor='#DCDCDC';
-		emphasisAreaColor='#808080';
+		//emphasisAreaColor='#808080';
+		//emphasisAreaColor='#A3A3A3';
+		emphasisAreaColor='#C1C1C1';
 		textColor='#2a333d';
 		legendColor='#8A2BE2';
 		geoTextColor="#2a333d";
 		lineColor="#000000";
-		lineeffectColor="#FF3030";
+		//lineeffectColor="#FF3030";
+		//lineeffectColor="#FFBA6F";
+		//lineeffectColor="#FFA48E";
+		//lineeffectColor="#16FF59";
+		lineeffectColor="#FFFAF0";
 		provinceColoer ={//  省份 线的颜色
 			"Jiangsu":"#800000","Anhui":"#800000","Fujian":"#800000","Shanghai":"#800000","Zhejiang":"#800000",
 			"Hubei":"#00868B","Jiangsu":"#00868B","Henan":"#00868B","Jiangxi":"#00868B",
