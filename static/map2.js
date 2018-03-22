@@ -16,12 +16,12 @@ var browserHeight=$(window).height() ; //浏览器高度
 var browserWidth=$(window).width();		//浏览器宽度
 $("#tableDiv").height(browserHeight+"px");
 var provinceColoer ={//  省份 线的颜色
-	"Jiangsu":"#a6c84c","Anhui":"#a6c84c","Fujian":"#a6c84c","Shanghai":"#a6c84c","Zhejiang":"#a6c84c",
+	"Jiangsu":"#a6c84c","Anhui":"#a6c84c","Fujian":"#a6c84c","Shanghai":"#a6c84c","Zhejiang":"#a6c84c","Shandong":"#a6c84c",
 	"Hubei":"#ffa022","Hunan":"#ffa022","Henan":"#ffa022","Jiangxi":"#ffa022",
 	"Guangdong":"#EE82EE","Guangxi":"#EE82EE","Hainan":"#EE82EE",
 	"Beijing":"#7CFC00","Tianjin":"#7CFC00","Hebei":"#7CFC00","Shanxi":"#7CFC00","Inner mongolia":"#7CFC00",
 	"Chongqing":"#43CD80","Sichuan":"#43CD80","Guizhou":"#43CD80","Yunnan":"#43CD80",
-	"Shaanxi":"#46bee9","Gansu":"#46bee9","Qinghai":"#46bee9","Ningxia":"#46bee9","Xinjiang":"#46bee9",
+	"Shaanxi":"#46bee9","Gansu":"#46bee9","Qinghai":"#46bee9","Ningxia":"#46bee9","Xinjiang":"#46bee9","Tibet":"#46bee9",
 	"Liaoning":"#CDCD00","Jilin":"#CDCD00","Heilongjiang":"#CDCD00"
 }
 
@@ -116,7 +116,7 @@ var initEchart = function(row){
 		            areaColor:emphasisAreaColor    //选中国家时，国家背景色
 		        }
 	    	},
-		    label: {
+		    label: {   //标签
 		      	position:'left',
 		      	show:false,
 		      	normal: {
@@ -142,11 +142,17 @@ var initEchart = function(row){
 			return;
 		}
     	var name =  params.region.name;  //省份名  英文名
-		if("Hong Kong,Macau,Taiwan,Tibet,香港,澳门,台湾,西藏".indexOf(name)!=-1 || name ==undefined){  //有几个省份是忽略的
+
+		if("Hong Kong,Macau,Taiwan,香港,澳门,台湾".indexOf(name)!=-1 || name ==undefined){  //有几个省份是忽略的
+			myChart.setOption(option,true);
+			return;
+		}else if(   !(selectedSheet[name]&&selectedSheet[name].exportSum!=0 && selectedSheet[name].importSum!=0 )  ){
+			/*有些省份的数据可能是0，这时候不显示这个省份的线*/
 			myChart.setOption(option,true);
 			return;
 		}
 		var isSelected=selectedPros.indexOf(name) != -1; //省份是否已经被选中了，
+
 		if(!isSelected){  //如果之前未被选中，那么添加
 			var index=selectedPros.indexOf(name);
 			if(index == -1){
@@ -193,13 +199,27 @@ var generateSeries = function(){
 	option.series=seriesData;
 }
 
-/*生成省份名  以及圆圈动画效果
+/* 生成省份名  以及省份名字的的圆圈动画效果
 * province ：省份英文名
+* isSelected: 是否是选中省份 ：true  false      （false 意味着只是关联省份，而不是选中省份）
 * */
-var generateProName = function(province){
+var generateProName = function(province,isSelected){
+	/*进出、出口或进出口总值*/
+	var provinceShowData=0;
+	if(tradeType=="import"){
+		provinceShowData=selectedSheet[province].importSum
+	}else if (tradeType=="export"){
+		provinceShowData=selectedSheet[province].exportSum
+	}else{
+		provinceShowData=selectedSheet[province].exportSum+selectedSheet[province].importSum
+	}
+	provinceShowData=(provinceShowData/1000000000000000).toFixed(2);/*进出、出口或进出口总值，如果有需要，会显示在省份名后*/
 	var flag=true;
 	seriesData.forEach(function(item,i){
-		if(item.name ==province){ //如果省份名已经存在了，那就不用再加了
+		if(item.name ==province ){ //如果省份名已经存在了，那就不用再加了
+			if( isSelected){  //此时要先更新数据
+				item.label.normal.formatter=province+":"+provinceShowData;
+			}
 			flag=false;
 		}
 	})
@@ -220,8 +240,13 @@ var generateProName = function(province){
 				fontFamily : "Times New Roman" ,  //字体
 				show: isShowSign,
 				position: [10, 10],      			//标签的位置。
-				formatter: '{b}'           			//标签内容格式器,支持字符串模板和回调函数两种形式,字符串模板与回调函数返回的字符串均支持用 \n 换行。
-													//模板变量有 {a}、{b}、{c},分别表示系列名,数据名,数据值。
+				formatter: function(params){
+					if(isSelected){
+						return province+":"+provinceShowData
+					}else{
+						return province
+					}
+				}
 			}
 		},
 		symbolSize: function (val) {            	//标记的大小,可以设置成诸如 10 这样单一的数字,也可以用数组分开表示宽和高
@@ -229,7 +254,8 @@ var generateProName = function(province){
 		},
 		itemStyle: {
 			normal: {
-				color: geoTextColor
+				//color: geoTextColor
+				color: provinceColoer[province]
 			}
 		},
 		data:[{
@@ -252,7 +278,7 @@ var generateLinesAndName = function(type ){
 	lines=[];
 	if(selectedPros && selectedPros.length>0){
 		selectedPros.forEach( function(province,i){  //遍历省份    province是英文名，
-			generateProName(province);
+			generateProName(province,true);
 			var tradeData=[];
 			if(type=="import"){
 				tradeData = selectedSheet[province].importData  ;//进口
@@ -261,7 +287,7 @@ var generateLinesAndName = function(type ){
 			}
 			if(tradeData && tradeData.length>0){  //遍历这个省份的出口或进口数据
 				tradeData.forEach(function(item,j){
-					generateProName(item.name);
+					generateProName(item.name,false);
 				});
 			}
 			seriesData.push(
@@ -478,12 +504,12 @@ var initEvent = function() {
 		lineColor="#FF3030";
 		lineeffectColor="#fff";
 		provinceColoer ={//  省份 线的颜色
-			"Jiangsu":"#a6c84c","Anhui":"#a6c84c","Fujian":"#a6c84c","Shanghai":"#a6c84c","Zhejiang":"#a6c84c",
+			"Jiangsu":"#a6c84c","Anhui":"#a6c84c","Fujian":"#a6c84c","Shanghai":"#a6c84c","Zhejiang":"#a6c84c","Shandong":"#a6c84c",
 			"Hubei":"#ffa022","Hunan":"#ffa022","Henan":"#ffa022","Jiangxi":"#ffa022",
 			"Guangdong":"#EE82EE","Guangxi":"#EE82EE","Hainan":"#EE82EE",
 			"Beijing":"#7CFC00","Tianjin":"#7CFC00","Hebei":"#7CFC00","Shanxi":"#7CFC00","Inner mongolia":"#7CFC00",
 			"Chongqing":"#43CD80","Sichuan":"#43CD80","Guizhou":"#43CD80","Yunnan":"#43CD80",
-			"Shaanxi":"#46bee9","Gansu":"#46bee9","Qinghai":"#46bee9","Ningxia":"#46bee9","Xinjiang":"#46bee9",
+			"Shaanxi":"#46bee9","Gansu":"#46bee9","Qinghai":"#46bee9","Ningxia":"#46bee9","Xinjiang":"#46bee9","Tibet":"#46bee9",
 			"Liaoning":"#CDCD00","Jilin":"#CDCD00","Heilongjiang":"#CDCD00"
 		}
 		initEchart(selectedSheet);
@@ -504,12 +530,12 @@ var initEvent = function() {
 		//lineeffectColor="#16FF59";
 		lineeffectColor="#FFFAF0";
 		provinceColoer ={//  省份 线的颜色
-			"Jiangsu":"#800000","Anhui":"#800000","Fujian":"#800000","Shanghai":"#800000","Zhejiang":"#800000",
+			"Jiangsu":"#800000","Anhui":"#800000","Fujian":"#800000","Shanghai":"#800000","Zhejiang":"#800000","Shandong":"#800000",
 			"Hubei":"#00868B","Jiangsu":"#00868B","Henan":"#00868B","Jiangxi":"#00868B",
 			"Guangdong":"#0000CD","Guangxi":"#0000CD","Hainan":"#0000CD",
 			"Beijing":"#8A2BE2","Tianjin":"#8A2BE2","Hebei":"#8A2BE2","Shanxi":"#8A2BE2","Inner mongolia":"#8A2BE2",
 			"Chongqing":"#006400","Sichuan":"#006400","Guizhou":"#006400","Yunnan":"#006400",
-			"Shaanxi":"#7A378B","Gansu":"#7A378B","Qinghai":"#7A378B","Ningxia":"#7A378B","Xinjiang":"#7A378B",
+			"Shaanxi":"#7A378B","Gansu":"#7A378B","Qinghai":"#7A378B","Ningxia":"#7A378B","Xinjiang":"#7A378B","Tibet":"#7A378B",
 			"Liaoning":"#8B4513","Jilin":"#8B4513","Heilongjiang":"#8B4513"
 		}
 		initEchart(selectedSheet);

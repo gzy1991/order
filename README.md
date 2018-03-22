@@ -1,7 +1,8 @@
 # 1.安装说明
 
 > Python版本：python 2.7 X64
-> 
+> 可能会遇到编码问题，Python2.7编码问题解决方案
+https://www.cnblogs.com/kevingrace/p/5893121.html
 > pip：参考这里[pip安装指南](https://www.cnblogs.com/rain124/p/6196053.html)
 
 ## 1.1 安装 django
