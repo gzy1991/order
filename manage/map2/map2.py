@@ -12,9 +12,9 @@ import Tool.ExcelTool as ExcelTool
 import order.settings as Setting
 
 # 获得table数据 json格式,
-# 对每个excel的数据，进行排序，找出每个省份出口前5和进口前5
+# 对每个excel的数据，进行排序，找出每个省份出口前3和进口前3
 def getTableData():
-    proShowNum = 3  # 每个省份的前5个进口货出口。默认是5，这个参数可以从页面上传进来
+    proShowNum = 3  # 每个省份的前3个进口货出口。默认是3，这个参数可以从页面上传进来
     provinceNum=31  #省份数量，默认是31
     print(os.path.join(Setting.FILR_DIR["COMMON_DIR"]))
     provincesInfo =ExcelTool.getArrayBySheetName(os.path.join(Setting.FILR_DIR["COMMON_DIR"],"Province.xlsx"),"province")#获取省份名列表，包括 ： 中文名、英文名、纬度、经度
@@ -45,10 +45,10 @@ def getTableData():
                 if (e.message.find("No sheet named") == -1):
                     unit = '未定义'  # 单位未定义
             result['unit'] = unit  # 单位
-            for i in range(0, len(Tot[0]) - 1):  # 对Tot做处理，把对角线数据设为0
+            for i in range(0, len(Tot[0]) ):  # 对Tot做处理，把对角线数据设为0
                 Tot[i, i] = 0
-                Tot[i, len(Tot[0]) - 1] = 0
-                Tot[len(Tot[0]) - 1, i] = 0
+                #Tot[i, len(Tot[0]) - 1] = 0
+                #Tot[len(Tot[0]) - 1, i] = 0
 
             Tot_importSort = np.argsort(-Tot,axis=0)  #按列排序, 进口排序，降序
             Tot_exportSort = np.argsort(-Tot,axis=1)  #按行排序，出口排序，降序
