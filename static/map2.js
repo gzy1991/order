@@ -15,7 +15,7 @@ var lineeffectColor = "#fff";   //线上特效点的颜色
 var browserHeight=$(window).height() ; //浏览器高度
 var browserWidth=$(window).width();		//浏览器宽度
 $("#tableDiv").height(browserHeight+"px");
-var provinceColoer ={//  省份 线的颜色
+var provinceColor ={//  省份 线的颜色
 	"Jiangsu":"#a6c84c","Anhui":"#a6c84c","Fujian":"#a6c84c","Shanghai":"#a6c84c","Zhejiang":"#a6c84c","Shandong":"#a6c84c",
 	"Hubei":"#ffa022","Hunan":"#ffa022","Henan":"#ffa022","Jiangxi":"#ffa022",
 	"Guangdong":"#EE82EE","Guangxi":"#EE82EE","Hainan":"#EE82EE",
@@ -255,7 +255,7 @@ var generateProName = function(province,isSelected){
 		itemStyle: {
 			normal: {
 				//color: geoTextColor
-				color: provinceColoer[province]
+				color: provinceColor[province]
 			}
 		},
 		data:[{
@@ -326,7 +326,7 @@ var generateLinesAndName = function(type ){
 				},
 				lineStyle: {
 					normal: {
-						color:provinceColoer[province],
+						color:provinceColor[province],
 						opacity: 0.6,    						//图形透明度。支持从 0 到 1 的数字,为 0 时不绘制该图形。
 					}
 				},
@@ -503,7 +503,7 @@ var initEvent = function() {
 		geoTextColor="#fff";
 		lineColor="#FF3030";
 		lineeffectColor="#fff";
-		provinceColoer ={//  省份 线的颜色
+		provinceColor ={//  省份 线的颜色
 			"Jiangsu":"#a6c84c","Anhui":"#a6c84c","Fujian":"#a6c84c","Shanghai":"#a6c84c","Zhejiang":"#a6c84c","Shandong":"#a6c84c",
 			"Hubei":"#ffa022","Hunan":"#ffa022","Henan":"#ffa022","Jiangxi":"#ffa022",
 			"Guangdong":"#EE82EE","Guangxi":"#EE82EE","Hainan":"#EE82EE",
@@ -529,7 +529,7 @@ var initEvent = function() {
 		//lineeffectColor="#FFA48E";
 		//lineeffectColor="#16FF59";
 		lineeffectColor="#FFFAF0";
-		provinceColoer ={//  省份 线的颜色
+		provinceColor ={//  省份 线的颜色
 			"Jiangsu":"#800000","Anhui":"#800000","Fujian":"#800000","Shanghai":"#800000","Zhejiang":"#800000","Shandong":"#800000",
 			"Hubei":"#00868B","Jiangsu":"#00868B","Henan":"#00868B","Jiangxi":"#00868B",
 			"Guangdong":"#0000CD","Guangxi":"#0000CD","Hainan":"#0000CD",
@@ -595,7 +595,7 @@ var delBtnFn = function() {
 		data=data.substring(1,data.length)
 		$.ajax({
 			type:"GET",
-			async:false,
+			async:true,
 			url:"/deleteDataInMap2",
 			data:{fileNameList:data},
 			success:function(data){
