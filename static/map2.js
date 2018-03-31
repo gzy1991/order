@@ -27,7 +27,7 @@ var provinceColor ={//  省份 线的颜色
 
 //echart全局变量
 var dom = document.getElementById("mapContainer");;
-var myChart;
+var myChart = echarts.init(dom);;
 var option = null;
 var seriesData =[]; //  容器，存储线的数据
 var unit='';  //单位
