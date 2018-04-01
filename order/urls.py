@@ -18,7 +18,6 @@ from django.conf.urls import url
 from django.contrib import admin
 import  map1.views as map1
 import  manage.map2.views  as map2
-import  manage.map3.views  as map3
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -36,14 +35,12 @@ urlpatterns = [
     url(r'^map2/$',map2.getPage),  # 图2页面
     url(r'^initMap2/$',map2.getTableData),  # 图2数据
     url(r'^deleteDataInMap2/$',map2.deleteDataInMap2),  #删除
-    url(r'^uploadExcelInMap2$',map2.uploadExcelInMap2),  #新增
+    url(r'^uploadExcelInMap2$',map2.uploadExcelInMap2)  #删除
 
     #图3
-    url(r'^nengyuan/$',map3.nengyuan),  # 图页面
 
     #图4
 
 
-    url(r'^nengyuan/$',map2.nengyuan),  # 图页面
 
 ]
