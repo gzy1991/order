@@ -49,3 +49,4 @@ pip install pymysql
 # 5
 #图1使用了echart3
 #图2使用了echart3
+#图3使用了echart4
