@@ -21,7 +21,7 @@ var unit='';  //单位
 var unitX='';  //单位 X轴
 var unitY='';  //单位 Y轴
 
-var countryShowNum= 50 ; //   显示的国家数目，默认是50
+var countryShowNum= 50 ;  //   显示的国家数目，默认是50
 var datas ; 		 		//  容器，存储了表格的全部数据，
 var selectedSheet;   		//table中选中的那一行 的行数据
 
@@ -35,20 +35,16 @@ var itemStyle = {
         }
     };
     // 计算出气泡半径
- var sizeFunction = function (x) {
+ var sizeFunction = function (x,averageSize) {
         var y = Math.sqrt(x / 5e8) + 0.1;
         return y * 80;
     };
     // Schema:
 var schema = [
-    {name: 'Country', index: 0, text: '国家', unit: ''}
-    ,{name: 'GDP per capita', index: 1, text: '人均GDP', unit: '美元'}
-    ,{name: 'Welfare per capita', index: 2, text: '人均消耗', unit: '美元'}
+    {name: 'GDP per capita', index: 0, text: '人均GDP', unit: '美元'}
+    ,{name: 'Welfare per capita', index: 1, text: '人均消耗', unit: '美元'}
+    ,{name: 'Country', index: 2, text: '国家', unit: ''}
 
-    // {name: 'Income', index: 0, text: '人均收入', unit: '美元'},
-    // {name: 'LifeExpectancy', index: 1, text: '人均寿命', unit: '岁'},
-    // {name: 'Population', index: 2, text: '总人口', unit: ''},
-    // {name: 'Country', index: 3, text: '国家', unit: ''}
 ];
 
 /* 初始化echart  ,第一次打开页面时或者点击表格行事件时，调用本函数
@@ -69,38 +65,26 @@ var initEchart=function(row){
         baseOption:{
             timeline: {
                 axisType: 'category',
-                orient: 'vertical',
-                autoPlay: true,
-                inverse: true,
-                playInterval: 1000,
-                left: null,
-                right: 0,
-                top: 20,
-                bottom: 20,
-                width: 55,
-                height: null,
+                orient: 'horizontal',
+                autoPlay: true,		//是否自动播放
+                inverse: true,			//是否反向放置 timeline，反向则首位颠倒过来
+				rewind :false, 		//是否反向播放
+                playInterval: 1000,	//播放速度
                 label: {
-                    normal: {
-                        textStyle: {
+                	textStyle: {
                             color: '#999'
                         }
-                    },
-                    emphasis: {
-                        textStyle: {
-                            color: '#fff'
-                        }
-                    }
                 },
                 symbol: 'none',
                 lineStyle: {
                     color: '#555'
                 },
-                checkpointStyle: {
+                checkpointStyle: { //
                     color: '#bbb',
                     borderColor: '#777',
                     borderWidth: 2
                 },
-                controlStyle: {
+                controlStyle: { //播放按钮
                     showNextBtn: false,
                     showPrevBtn: false,
                     normal: {
@@ -114,13 +98,129 @@ var initEchart=function(row){
                 },
                 data: []
             },
+			backgroundColor: '#404a59',				//背景
+			title: [ 									//标题
+				{
+					text: '各国人均GDP与人均消耗关系演变',
+					left: 'center',
+					top: 10,
+					textStyle: {
+						fontFamily:"Times New Roman",	//字体
+						color: '#aaa',
+						fontWeight: 'normal',
+						fontSize: 20
+					},
+					subtext: 'Unit：'+unit,				//副标题
+					subtextStyle : {  						//副标题
+						fontFamily:"Times New Roman",	//字体
+						color: textColor
+					},
+				}
+			],
+			tooltip: {										//提示框组件
+                padding: 5,
+                backgroundColor: '#222',
+                borderColor: '#777',
+                borderWidth: 1,
+                formatter: function (obj) {
+                    var value = obj.value;
+                    return schema[2].text + '：' + value[2] + '<br>'
+                            + schema[0].text + '：' + value[0] + schema[0].unit + '<br>'
+                            + schema[1].text + '：' + value[1] + schema[1].unit + '<br>'
+                            ;
+                }
+            },
+			grid: {
+                top: 100,
+				bottom:110,
+                containLabel: true,
+                left: 30,
+                right: 30
+            },
+			xAxis: {
+                //type: 'log', 		//对数轴。适用于对数数据
+                type: 'value',		//数值轴，适用于连续数据
+                name: '人均GDP(单位:'+unitX+")",
+                max: row.xAxisMax,
+                min: row.xAxisMin,
+                nameGap: 25,
+                nameLocation: 'middle',
+                nameTextStyle: {                    //坐标轴名称的文字样式。
+                    fontFamily:"Times New Roman",   //字体
+                    fontSize: 18
+                },
+                splitLine: {  			//  分割线
+                    show: false
+                },
+                axisLine: {			//坐标轴轴线设置
+                    lineStyle: {
+                        color: '#ccc'	//坐标轴线线的颜色
+                    }
+                },
+                axisLabel: {			//坐标轴刻度标签
+                    formatter: '{value}'
+                }
+            },
+			yAxis: {
+                type: 'value',
+                name: '人均消耗(单位:'+unitY+")",
+                max: row.yAxisMax,
+                min: row.yAxisMin,
+                nameTextStyle: {                    //坐标轴名称的文字样式。
+                    fontFamily:"Times New Roman",//字体
+                    color: '#ccc',
+                    fontSize: 18
+                },
+                axisLine: {                 //坐标轴轴线设置
+                    lineStyle: {
+                        color: '#ccc'
+                    }
+                },
+                splitLine: {                //  分割线
+                    show: false
+                },
+                axisLabel: {
+                    formatter: '{value}'
+                }
+            },
+            visualMap: [
+                {
+                    show: false,
+                    dimension: 3,                   //指定用数据的『哪个维度』
+                    categories: data.counties,
+                    calculable: true,
+                    precision: 0.1,
+                    textGap: 30,
+                    textStyle: {
+                        color: '#ccc'
+                    },
+                    inRange: {
+                        color: (function () {
+                            var colors = ['#bcd3bb', '#e88f70', '#9dc5c8', '#e1e8c8', '#7b7c68', '#e5b5b5', '#f0b489', '#928ea8', '#bda29a', '#376956', '#c3bed4', '#495a80', '#9966cc', '#bdb76a', '#eee8ab', '#a35015', '#04dd98', '#d9b3e6', '#b6c3fc','#315dbc','#c5c975','#476a54','#66e638','#a59619','#822ee2','#49450d','#eeebd4','#2b98dc','#b95c25', '#8f1ec2', '#d50390', '#36a15d', '#edc1a5'];
+                            return colors.concat(colors);
+                        })()
+                    }
+                }
+            ],
+            series: [
+                {
+                    type: 'scatter',
+                    id: 'gridScatter',
+                    itemStyle: itemStyle,
+                    data: data.series[0],
+                    symbolSize: function(val) {
+                        return sizeFunction(val[2],row.averageSize);
+                    }
+                }
+            ],
+
         }
 
     }
 
     myChart = echarts.init(dom);
 
-    //绑定 年份切换时间=
+    //绑定 年份切换 事件
     myChart.on('timelinechanged', function (params) {
         console.log(params);
 

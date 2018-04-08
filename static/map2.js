@@ -517,17 +517,11 @@ var initEvent = function() {
 	$("#white_li").bind("click",function(){ //切换成白色背景
 		backgroundColor='#FFFAF0';
 		areaColor='#DCDCDC';
-		//emphasisAreaColor='#808080';
-		//emphasisAreaColor='#A3A3A3';
 		emphasisAreaColor='#C1C1C1';
 		textColor='#2a333d';
 		legendColor='#8A2BE2';
 		geoTextColor="#2a333d";
 		lineColor="#000000";
-		//lineeffectColor="#FF3030";
-		//lineeffectColor="#FFBA6F";
-		//lineeffectColor="#FFA48E";
-		//lineeffectColor="#16FF59";
 		lineeffectColor="#FFFAF0";
 		provinceColor ={//  省份 线的颜色
 			"Jiangsu":"#800000","Anhui":"#800000","Fujian":"#800000","Shanghai":"#800000","Zhejiang":"#800000","Shandong":"#800000",
@@ -553,8 +547,6 @@ var initEvent = function() {
 	});
 }
 
-
-
 /*初始化上传组件*/
 var initUpload = function(ctrlName, uploadUrl){
 	 var control = $('#' + ctrlName);
@@ -576,7 +568,6 @@ var initUpload = function(ctrlName, uploadUrl){
 		}
 	 });
 }
-
 
 //删除表格行
 var delBtnFn = function() {
