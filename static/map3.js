@@ -36,7 +36,8 @@ var itemStyle = {
     };
     // 计算出气泡半径
  var sizeFunction = function (x,averageSize) {
-        var y = Math.sqrt(x / 5e8) + 0.1;
+        //var y = Math.sqrt(x / 5e8) + 0.1;
+        var y = Math.sqrt(x / averageSize) + 0.1;
         return y * 80;
     };
     // Schema:
@@ -213,12 +214,26 @@ var initEchart=function(row){
                     }
                 }
             ],
-
-        }
-
-    }
-
-    myChart = echarts.init(dom);
+			animationDurationUpdate: 1000,			//数据更新动画的时长。
+            animationEasingUpdate: 'quinticInOut'	//数据更新动画的缓动效果
+        },
+		options: []
+    };
+    for(var n=0;n<data.timeline.length;n++){
+    	option.baseOption.timeline.data.push(data.timeline[n]);
+		option.options.push({
+            series: {
+                name: data.timeline[n],
+                type: 'scatter',
+                itemStyle: itemStyle,
+                data: data.series[n],
+                symbolSize: function(val) {
+                    return sizeFunction(val[2],row.averageSize);
+                }
+            }
+        });
+	}
+	myChart.setOption(option,true);
 
     //绑定 年份切换 事件
     myChart.on('timelinechanged', function (params) {
