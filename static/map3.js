@@ -17,27 +17,26 @@ var dom = document.getElementById("mapContainer");;
 var myChart = echarts.init(dom);;
 var option = null;
 var seriesData =[]; //  容器，存储线的数据
-var unit='';  //单位
-var unitX='';  //单位 X轴
-var unitY='';  //单位 Y轴
+// var unit='';  //单位
+// var unitX='';  //单位 X轴
+// var unitY='';  //单位 Y轴
 
 var countryShowNum= 50 ;  //   显示的国家数目，默认是50
 var datas ; 		 		//  容器，存储了表格的全部数据，
 var selectedSheet;   		//table中选中的那一行 的行数据
 
 var itemStyle = {
-        normal: {
-            opacity: 0.8,
-            shadowBlur: 10,
-            shadowOffsetX: 0,
-            shadowOffsetY: 0,
-            shadowColor: 'rgba(0, 0, 0, 0.5)'
-        }
+    opacity: 0.8,
+    shadowBlur: 10,
+    shadowOffsetX: 0,
+    shadowOffsetY: 0,
+    shadowColor: 'rgba(0, 0, 0, 0.5)',
     };
     // 计算出气泡半径
  var sizeFunction = function (x,averageSize) {
         //var y = Math.sqrt(x / 5e8) + 0.1;
         var y = Math.sqrt(x / averageSize) + 0.1;
+        console.log(y*80);
         return y * 80;
     };
     // Schema:
@@ -68,9 +67,9 @@ var initEchart=function(row){
                 axisType: 'category',
                 orient: 'horizontal',
                 autoPlay: true,		//是否自动播放
-                inverse: true,			//是否反向放置 timeline，反向则首位颠倒过来
+                inverse: false,		//是否反向放置 timeline，反向则首位颠倒过来
 				rewind :false, 		//是否反向播放
-                playInterval: 1000,	//播放速度
+                playInterval: 3000,	//播放速度
                 label: {
                 	textStyle: {
                             color: '#999'
@@ -111,10 +110,10 @@ var initEchart=function(row){
 						fontWeight: 'normal',
 						fontSize: 20
 					},
-					subtext: 'Unit：'+unit,				//副标题
+					subtext: 'Unit：'+row.unit,				//副标题
 					subtextStyle : {  						//副标题
 						fontFamily:"Times New Roman",	//字体
-						color: textColor
+						color: '#aaa'
 					},
 				}
 			],
@@ -126,8 +125,8 @@ var initEchart=function(row){
                 formatter: function (obj) {
                     var value = obj.value;
                     return schema[2].text + '：' + value[2] + '<br>'
-                            + schema[0].text + '：' + value[0] + schema[0].unit + '<br>'
-                            + schema[1].text + '：' + value[1] + schema[1].unit + '<br>'
+                            + schema[0].text + '：' + value[0].toFixed(2) + row.unitX + '<br>'
+                            + schema[1].text + '：' + value[1].toFixed(2) + row.unitY + '<br>'
                             ;
                 }
             },
@@ -139,11 +138,11 @@ var initEchart=function(row){
                 right: 30
             },
 			xAxis: {
-                //type: 'log', 		//对数轴。适用于对数数据
-                type: 'value',		//数值轴，适用于连续数据
-                name: '人均GDP(单位:'+unitX+")",
-                max: row.xAxisMax,
-                min: row.xAxisMin,
+                type: 'log', 		//对数轴。适用于对数数据
+                //type: 'value',		//数值轴，适用于连续数据
+                name: '人均GDP(单位:'+row.unitX+")",
+                max: parseInt(row.xAxisMax),
+                min: parseInt(row.xAxisMin),
                 nameGap: 25,
                 nameLocation: 'middle',
                 nameTextStyle: {                    //坐标轴名称的文字样式。
@@ -163,11 +162,13 @@ var initEchart=function(row){
                 }
             },
 			yAxis: {
-                type: 'value',
-                name: '人均消耗(单位:'+unitY+")",
-                max: row.yAxisMax,
-                min: row.yAxisMin,
-                nameTextStyle: {                    //坐标轴名称的文字样式。
+                type: 'log', 		//对数轴。适用于对数数据
+                //type: 'value',
+                name: '人均消耗(单位:'+row.unitY+")",
+                offset :-25,
+                max: parseInt(row.yAxisMax),
+                min: parseInt(row.yAxisMin),
+                nameTextStyle: {                    //坐标轴名称的文字样式
                     fontFamily:"Times New Roman",//字体
                     color: '#ccc',
                     fontSize: 18
@@ -186,9 +187,10 @@ var initEchart=function(row){
             },
             visualMap: [
                 {
+                    type: 'piecewise',
                     show: false,
                     dimension: 3,                   //指定用数据的『哪个维度』
-                    categories: data.counties,
+                    categories: row.counties,
                     calculable: true,
                     precision: 0.1,
                     textGap: 30,
@@ -198,37 +200,42 @@ var initEchart=function(row){
                     inRange: {
                         color: (function () {
                             var colors = ['#bcd3bb', '#e88f70', '#9dc5c8', '#e1e8c8', '#7b7c68', '#e5b5b5', '#f0b489', '#928ea8', '#bda29a', '#376956', '#c3bed4', '#495a80', '#9966cc', '#bdb76a', '#eee8ab', '#a35015', '#04dd98', '#d9b3e6', '#b6c3fc','#315dbc','#c5c975','#476a54','#66e638','#a59619','#822ee2','#49450d','#eeebd4','#2b98dc','#b95c25', '#8f1ec2', '#d50390', '#36a15d', '#edc1a5'];
-                            return colors.concat(colors);
+                            for(var i=0 ;i <3;i++){
+                                colors=colors.concat(colors)
+                            }
+                            return colors;
                         })()
-                    }
+                    },
+                    outOfRange: {
+                        color: '#555'
+                  }
                 }
             ],
             series: [
                 {
                     type: 'scatter',
-                    id: 'gridScatter',
                     itemStyle: itemStyle,
-                    data: data.series[0],
+                    data: row.series[0],
                     symbolSize: function(val) {
-                        return sizeFunction(val[2],row.averageSize);
+                        return sizeFunction(val[3],row.averageSize);
                     }
                 }
             ],
-			animationDurationUpdate: 1000,			//数据更新动画的时长。
+			animationDurationUpdate: 3000,			//数据更新动画的时长。
             animationEasingUpdate: 'quinticInOut'	//数据更新动画的缓动效果
         },
 		options: []
     };
-    for(var n=0;n<data.timeline.length;n++){
-    	option.baseOption.timeline.data.push(data.timeline[n]);
+    for(var n=0;n<row.timeline.length;n++){
+    	option.baseOption.timeline.data.push(row.timeline[n]);
 		option.options.push({
             series: {
-                name: data.timeline[n],
+                name: row.timeline[n],
                 type: 'scatter',
                 itemStyle: itemStyle,
-                data: data.series[n],
+                data: row.series[n],
                 symbolSize: function(val) {
-                    return sizeFunction(val[2],row.averageSize);
+                    return sizeFunction(val[3],row.averageSize);
                 }
             }
         });
@@ -237,10 +244,9 @@ var initEchart=function(row){
 
     //绑定 年份切换 事件
     myChart.on('timelinechanged', function (params) {
-        console.log(params);
+        //console.log(params);
 
-
-        myChart.setOption(option,true);
+        //myChart.setOption(option,true);
 
     });
 

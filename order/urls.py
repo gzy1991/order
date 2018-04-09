@@ -42,9 +42,9 @@ urlpatterns = [
     #图3
     , url(r'^nengyuanju/$',map3.nengyuanju)             #示例
     , url(r'^map3/$',map3.getPage)                      #获取页面
-    , url(r'^initMap3/$',map3.getPage)                  #获取页面数据，初始化页面
-    , url(r'^deleteDataInMap3/$',map3.getPage)          #删除
-    , url(r'^uploadExcelInMap3$/$',map3.getPage)        #新增
+    , url(r'^initMap3/$',map3.getTableData)                  #获取页面数据，初始化页面
+    , url(r'^deleteDataInMap3/$',map3.deleteData)          #删除
+    , url(r'^uploadExcelInMap3$/$',map3.uploadExcel)        #新增
 
 
 
