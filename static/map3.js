@@ -17,9 +17,6 @@ var dom = document.getElementById("mapContainer");;
 var myChart = echarts.init(dom);;
 var option = null;
 var seriesData =[]; //  容器，存储线的数据
-// var unit='';  //单位
-// var unitX='';  //单位 X轴
-// var unitY='';  //单位 Y轴
 
 var countryShowNum= 50 ;  //   显示的国家数目，默认是50
 var datas ; 		 		//  容器，存储了表格的全部数据，
@@ -35,17 +32,27 @@ var itemStyle = {
     // 计算出气泡半径
  var sizeFunction = function (x,averageSize) {
         //var y = Math.sqrt(x / 5e8) + 0.1;
-        var y = Math.sqrt(x / averageSize) + 0.1;
+        var y = Math.sqrt(1+x / averageSize) ;
         console.log(y*80);
         return y * 80;
     };
-    // Schema:
 var schema = [
     {name: 'GDP per capita', index: 0, text: '人均GDP', unit: '美元'}
     ,{name: 'Welfare per capita', index: 1, text: '人均消耗', unit: '美元'}
     ,{name: 'Country', index: 2, text: '国家', unit: ''}
+    ,{name: 'size', index: 3, text: '气泡大小', unit: ''}
+    ,{name: 'sort', index: 4, text: '排序', unit: ''}
 
 ];
+var legends= {
+                orient: 'vertical',
+                bottom:"5%",
+                left:"5%",
+                //x: 'left',
+                //y:'',
+                //z:3,
+                data:['直接访问','邮件营销','联盟广告','视频广告','搜索引擎']
+            }
 
 /* 初始化echart  ,第一次打开页面时或者点击表格行事件时，调用本函数
 *  入参：表格的行数据  */
@@ -62,7 +69,9 @@ var initEchart=function(row){
 	dom = document.getElementById("mapContainer");
     myChart = echarts.init(dom);
     option={
+
         baseOption:{
+
             timeline: {
                 axisType: 'category',
                 orient: 'horizontal',
@@ -70,14 +79,17 @@ var initEchart=function(row){
                 inverse: false,		//是否反向放置 timeline，反向则首位颠倒过来
 				rewind :false, 		//是否反向播放
                 playInterval: 3000,	//播放速度
+                bottom :'3%',
+                right:'3%',
                 label: {
                 	textStyle: {
-                            color: '#999'
+                            fontFamily:"Times New Roman",	//字体
+                            color: '#ccc'
                         }
                 },
                 symbol: 'none',
                 lineStyle: {
-                    color: '#555'
+                    color: '#ccc'
                 },
                 checkpointStyle: { //
                     color: '#bbb',
@@ -88,8 +100,8 @@ var initEchart=function(row){
                     showNextBtn: false,
                     showPrevBtn: false,
                     normal: {
-                        color: '#666',
-                        borderColor: '#666'
+                        color: '#ccc',
+                        borderColor: '#ccc'
                     },
                     emphasis: {
                         color: '#aaa',
@@ -106,14 +118,14 @@ var initEchart=function(row){
 					top: 10,
 					textStyle: {
 						fontFamily:"Times New Roman",	//字体
-						color: '#aaa',
+						color: '#ccc',
 						fontWeight: 'normal',
 						fontSize: 20
 					},
 					subtext: 'Unit：'+row.unit,				//副标题
 					subtextStyle : {  						//副标题
 						fontFamily:"Times New Roman",	//字体
-						color: '#aaa'
+						color: '#ccc'
 					},
 				}
 			],
@@ -127,6 +139,8 @@ var initEchart=function(row){
                     return schema[2].text + '：' + value[2] + '<br>'
                             + schema[0].text + '：' + value[0].toFixed(2) + row.unitX + '<br>'
                             + schema[1].text + '：' + value[1].toFixed(2) + row.unitY + '<br>'
+                            + schema[3].text + '：' + value[4].toFixed(2)  + '<br>'
+                            + schema[4].text + '：' + value[3]  + '<br>'
                             ;
                 }
             },
@@ -138,7 +152,7 @@ var initEchart=function(row){
                 right: 30
             },
 			xAxis: {
-                type: 'log', 		//对数轴。适用于对数数据
+                type: 'value', 		//对数轴。适用于对数数据
                 //type: 'value',		//数值轴，适用于连续数据
                 name: '人均GDP(单位:'+row.unitX+")",
                 max: parseInt(row.xAxisMax),
@@ -164,8 +178,8 @@ var initEchart=function(row){
 			yAxis: {
                 type: 'log', 		//对数轴。适用于对数数据
                 //type: 'value',
-                name: '人均消耗(单位:'+row.unitY+")",
-                offset :-25,
+                name: '            人均消耗(单位:'+row.unitY+")",     //坐标轴名称
+                //offset :-20,
                 max: parseInt(row.yAxisMax),
                 min: parseInt(row.yAxisMin),
                 nameTextStyle: {                    //坐标轴名称的文字样式
@@ -181,55 +195,97 @@ var initEchart=function(row){
                 splitLine: {                //  分割线
                     show: false
                 },
-                axisLabel: {
+                axisLabel: {                //坐标轴刻度标签的相关设置。
                     formatter: '{value}'
                 }
             },
             visualMap: [
-                {
-                    type: 'piecewise',
-                    show: false,
-                    dimension: 3,                   //指定用数据的『哪个维度』
-                    categories: row.counties,
+                // {//国家
+                //     type: 'piecewise',
+                //     show: false,
+                //     dimension: 2,                   //指定用数据的『哪个维度』,这个很重要，用这个来确定绑定关系
+                //     categories: row.counties,
+                //     calculable: true,
+                //     precision: 0.1,
+                //     textGap: 30,
+                //     textStyle: {
+                //         color: '#ccc'
+                //     },
+                //     inRange: {
+                //         color: [
+                //             '#bcd3bb', '#e88f70', '#9dc5c8', '#e1e8c8', '#7b7c68', '#e5b5b5', '#f0b489', '#928ea8', '#bda29a', '#376956',
+                //             '#bcd3bb', '#e88f70', '#9dc5c8', '#e1e8c8', '#7b7c68', '#e5b5b5', '#f0b489', '#928ea8', '#bda29a', '#376956',
+                //             '#bcd3bb', '#e88f70', '#9dc5c8', '#e1e8c8', '#7b7c68', '#e5b5b5', '#f0b489', '#928ea8', '#bda29a', '#376956',
+                //             '#bcd3bb', '#e88f70', '#9dc5c8', '#e1e8c8', '#7b7c68', '#e5b5b5', '#f0b489', '#928ea8', '#bda29a', '#376956',
+                //             '#bcd3bb', '#e88f70', '#9dc5c8', '#e1e8c8', '#7b7c68', '#e5b5b5', '#f0b489', '#928ea8', '#bda29a', '#376956',
+                //             '#bcd3bb', '#e88f70', '#9dc5c8', '#e1e8c8', '#7b7c68', '#e5b5b5', '#f0b489', '#928ea8', '#bda29a', '#376956',
+                //             '#c3bed4', '#495a80', '#9966cc', '#bdb76a', '#eee8ab', '#a35015', '#04dd98', '#d9b3e6', '#b6c3fc','#315dbc','#c5c975','#476a54','#66e638','#a59619','#822ee2','#49450d','#eeebd4','#2b98dc','#b95c25', '#8f1ec2', '#d50390', '#36a15d', '#edc1a5'
+                //             ,'#c3bed4', '#495a80', '#9966cc', '#bdb76a', '#eee8ab', '#a35015', '#04dd98', '#d9b3e6', '#b6c3fc','#315dbc','#c5c975','#476a54','#66e638','#a59619','#822ee2','#49450d','#eeebd4','#2b98dc','#b95c25', '#8f1ec2', '#d50390', '#36a15d', '#edc1a5'
+                //             ,'#c3bed4', '#495a80', '#9966cc', '#bdb76a', '#eee8ab', '#a35015', '#04dd98', '#d9b3e6', '#b6c3fc','#315dbc','#c5c975','#476a54','#66e638','#a59619','#822ee2','#49450d','#eeebd4','#2b98dc','#b95c25', '#8f1ec2', '#d50390', '#36a15d', '#edc1a5'
+                //             ,'#c3bed4', '#495a80', '#9966cc', '#bdb76a', '#eee8ab', '#a35015', '#04dd98', '#d9b3e6', '#b6c3fc','#315dbc','#c5c975','#476a54','#66e638','#a59619','#822ee2','#49450d','#eeebd4','#2b98dc','#b95c25', '#8f1ec2', '#d50390', '#36a15d', '#edc1a5'
+                //             ,'#c3bed4', '#495a80', '#9966cc', '#bdb76a', '#eee8ab', '#a35015', '#04dd98', '#d9b3e6', '#b6c3fc','#315dbc','#c5c975','#476a54','#66e638','#a59619','#822ee2','#49450d','#eeebd4','#2b98dc','#b95c25', '#8f1ec2', '#d50390', '#36a15d', '#edc1a5'
+                //             ,'#c3bed4', '#495a80', '#9966cc', '#bdb76a', '#eee8ab', '#a35015', '#04dd98', '#d9b3e6', '#b6c3fc','#315dbc','#c5c975','#476a54','#66e638','#a59619','#822ee2','#49450d','#eeebd4','#2b98dc','#b95c25', '#8f1ec2', '#d50390', '#36a15d', '#edc1a5'
+                //         ]
+                //     },
+                //     outOfRange: {
+                //         //color: '#555'
+                //         color: '#bcd3bb'
+                //     }
+                // },
+                {           //排序
+                    type: 'continuous',
+                    show: true,
+                    orient :'horizontal',           //水平
+                    dimension: 3,                   //指定用数据的『哪个维度』,这个很重要，用这个来确定绑定关系
+                    min:1,
+                    max:189,
+                    range:[1,50],
+                    left:'',
+                    bottom:'5%',
+                    //align:'bottom',
                     calculable: true,
                     precision: 0.1,
                     textGap: 30,
+                    text:['小','大'],
+                    textGap:5,
                     textStyle: {
-                        color: '#ccc'
+                        color: '#ccc',
+                        fontFamily:"Times New Roman"	//字体
                     },
-                    inRange: {
-                        color: (function () {
-                            var colors = ['#bcd3bb', '#e88f70', '#9dc5c8', '#e1e8c8', '#7b7c68', '#e5b5b5', '#f0b489', '#928ea8', '#bda29a', '#376956', '#c3bed4', '#495a80', '#9966cc', '#bdb76a', '#eee8ab', '#a35015', '#04dd98', '#d9b3e6', '#b6c3fc','#315dbc','#c5c975','#476a54','#66e638','#a59619','#822ee2','#49450d','#eeebd4','#2b98dc','#b95c25', '#8f1ec2', '#d50390', '#36a15d', '#edc1a5'];
-                            for(var i=0 ;i <3;i++){
-                                colors=colors.concat(colors)
-                            }
-                            return colors;
-                        })()
-                    },
-                    outOfRange: {
-                        color: '#555'
-                  }
+                    //color: ['orangered','yellow','lightskyblue'],
+                    color: ['green','yellow','lightskyblue'],
+                    outOfRange: {               //未选中的
+                        symbolSize:0,           //气泡半径
+                        opacity:"0",            //透明度
+                        color: '#4c5665'
+                    }
                 }
             ],
+
             series: [
                 {
                     type: 'scatter',
+                    id: 'gridScatter',
                     itemStyle: itemStyle,
-                    data: row.series[0],
+                    data: [],
                     symbolSize: function(val) {
                         return sizeFunction(val[3],row.averageSize);
                     }
                 }
             ],
 			animationDurationUpdate: 3000,			//数据更新动画的时长。
-            animationEasingUpdate: 'quinticInOut'	//数据更新动画的缓动效果
+            //animationEasingUpdate: 'cubicInOut'	//数据更新动画的缓动效果
+            //animationEasingUpdate: 'quinticInOut'	//数据更新动画的缓动效果
         },
-		options: []
+		options: [
+        ]
     };
     for(var n=0;n<row.timeline.length;n++){
     	option.baseOption.timeline.data.push(row.timeline[n]);
 		option.options.push({
+		    //legend: legends,
             series: {
+                id: 'gridScatter',
                 name: row.timeline[n],
                 type: 'scatter',
                 itemStyle: itemStyle,
