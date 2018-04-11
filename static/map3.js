@@ -15,15 +15,19 @@ var visualMapColor=['#565AB1','#7EB19A','#9CC63D'];//visualMap颜色变化范围
 var browserHeight=$(window).height() ; //浏览器高度
 $("#tableDiv").height(browserHeight+"px");
 
-//echart全局变量
-var dom = document.getElementById("mapContainer");;
+//          地图全局变量
+var dom2 = document.getElementById("mapContainer2");;//小地图
+var myChart2 = echarts.init(dom2);;
+var option2 = null;
+
+//echart    主图全局变量
+var dom = document.getElementById("mapContainer");;//   主图
 var myChart = echarts.init(dom);;
 var option = null;
 var seriesData =[]; //  容器，存储线的数据
-
-var countryShowNum= 50 ;  //   显示的国家数目，默认是50
 var datas ; 		 		//  容器，存储了表格的全部数据，
 var selectedRow;   		//table中选中的那一行 的行数据
+var visualMapRange = [1,100];    //visualMap 排序变化范围
 
 var itemStyle = {
     opacity: 0.8,
@@ -34,9 +38,7 @@ var itemStyle = {
     };
     // 计算出气泡半径
  var sizeFunction = function (x,averageSize) {
-        //var y = Math.sqrt(x / 5e8) + 0.1;
         var y = Math.sqrt(1+x / averageSize) ;
-        console.log(y*80);
         return y * 80;
     };
 var schema = [
@@ -47,18 +49,38 @@ var schema = [
     ,{name: 'sort', index: 4, text: '排序', unit: ''}
 
 ];
-var legends= {
-                orient: 'vertical',
-                bottom:"5%",
-                left:"5%",
-                //x: 'left',
-                //y:'',
-                //z:3,
-                data:['直接访问','邮件营销','联盟广告','视频广告','搜索引擎']
-            }
 
-/* 初始化echart  ,第一次打开页面时或者点击表格行事件时，调用本函数
-*  入参：表格的行数据  */
+/*初始化小地图 echart */
+var initEchart2 = function(row){
+    console.log("初始化地图echarts！");
+    if(myChart2&&myChart2.dispose){
+        myChart2.dispose();
+    }
+    dom2 = document.getElementById("mapContainer2");
+    myChart2 = echarts.init(dom2);
+    option2={
+        backgroundColor:backgroundColor,				//背景
+        geo: {              //小地图
+            show:true,
+            name: 'maps',
+            type: 'map',
+            map: 'world',
+            aspectScale :1,
+            roam: true,
+            silent:true,            //不响应鼠标点击事件
+            selectedMode:true,      //支持选中多个
+            itemStyle: {
+                borderColor: '#aaa',
+                areaColor: '#555'
+            }
+        }
+    };
+    myChart2.setOption(option2,true);
+}
+
+
+
+/*  入参：表格的行数据  */
 var initEchart=function(row){
     if(myChart&&myChart.dispose){
 		myChart.dispose();
@@ -210,7 +232,7 @@ var initEchart=function(row){
                     dimension: 3,                   //指定用数据的『哪个维度』,这个很重要，用这个来确定绑定关系
                     min:1,
                     max:189,
-                    range:[1,189],
+                    range:visualMapRange,
                     left:'',
                     bottom:'5%',
                     //align:'bottom',
@@ -267,22 +289,14 @@ var initEchart=function(row){
         });
 	}
 	myChart.setOption(option,true);
-
     //绑定 年份切换 事件
     myChart.on('timelinechanged', function (params) {
         //console.log(params);
-
         //myChart.setOption(option,true);
 
     });
 
-
 }
-
-
-
-
-
 
 
 //初始化渲染表格数据
@@ -298,8 +312,10 @@ var initTable = function(datas){
 			selectedPros=[];  //选中的省份,清空
 			geoData=[];       // option中的regions，对选中的省份设备背景色 ,清空
 			seriesData=[];    //  根据进出口类型和选中的省份画的线，清空
-			initEchart(row);
 			selectedRow=row;
+            initEchart(row);
+            initEchart2(selectedRow);//初始化小地图
+
 		},
 	    columns: [{
             checkbox: true
@@ -311,8 +327,10 @@ var initTable = function(datas){
 	});
 	if(datas && datas.length>0){
 		console.log("第一次初始化echart: "+datas[0].fileName);
-		initEchart(datas[0]);
 		selectedRow=datas[0];
+		initEchart(datas[0]);
+		initEchart2(selectedRow);//初始化小地图
+
 	}
 	$('#loading').modal('hide');
 }
@@ -330,10 +348,16 @@ var adjustScrollPage = function() {
     var windowW = windowEl.width();
     $('#bodyId').css('height', windowH).css('width', windowW);
     $("#tableDiv").css("height", windowH);
+    //$("#mapDiv").css("height", windowH);
     setTimeout(function(){
 		dom.style.width = (window.innerWidth - $("#tableDiv").width())+'px';
 		dom.style.height = (window.innerHeight - 55)+'px';
     	myChart.resize();
+    },100);
+    setTimeout(function(){
+		dom2.style.width = $("#tableDiv").width()+'px';
+		dom2.style.height = $("#tableDiv").width()*0.4+'px';
+    	myChart2.resize();
     },100);
 }
 
@@ -346,8 +370,8 @@ var initEvent = function() {
     $("#hideList").bind("click", function(){
 		if($(".bootstrap-table").css("display") == 'none') {
 			$(".bootstrap-table").show();
-			$("#tableDiv").css("width", "25.0%");
-			$("#mapDiv").css("width", "75.0%");
+			$("#tableDiv").css("width", "33.3%");
+			$("#mapDiv").css("width", "66.6%");
 			$("#hideList > img").attr("src", "/static/img/left.png").attr("title", "缩进");
 			$("#button").show();
 			$("#delBtn").show();
@@ -374,6 +398,7 @@ var initEvent = function() {
         visualMapColorOutOfRange='#4c5665';
         visualMapColor=['#565AB1','#7EB19A','#9CC63D'];
         initEchart(selectedRow);
+        initEchart2(selectedRow);//初始化小地图
     })
     
     $("#white_li").bind("click",function() {  //切换成白色背景
@@ -383,6 +408,7 @@ var initEvent = function() {
         visualMapColorOutOfRange='#B1B1B1';
         visualMapColor=['orangered','yellow','lightskyblue'];
         initEchart(selectedRow);
+        initEchart2(selectedRow);//初始化小地图
     })
     
 
