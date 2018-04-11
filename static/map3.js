@@ -7,8 +7,11 @@
 
 
 //背景切换所需的数据
-var backgroundColor ='#404a59';  //echart背景色
-
+var backgroundColor ='#404a59';     //echart背景色
+var textColor='#ccc';                   //文字颜色
+var emphasisColor='#aaa';;              //播放按钮颜色
+var visualMapColorOutOfRange='#4c5665'; //visualMap，范围外颜色
+var visualMapColor=['#565AB1','#7EB19A','#9CC63D'];//visualMap颜色变化范围
 var browserHeight=$(window).height() ; //浏览器高度
 $("#tableDiv").height(browserHeight+"px");
 
@@ -20,7 +23,7 @@ var seriesData =[]; //  容器，存储线的数据
 
 var countryShowNum= 50 ;  //   显示的国家数目，默认是50
 var datas ; 		 		//  容器，存储了表格的全部数据，
-var selectedSheet;   		//table中选中的那一行 的行数据
+var selectedRow;   		//table中选中的那一行 的行数据
 
 var itemStyle = {
     opacity: 0.8,
@@ -84,15 +87,15 @@ var initEchart=function(row){
                 label: {
                 	textStyle: {
                             fontFamily:"Times New Roman",	//字体
-                            color: '#ccc'
+                            color: textColor
                         }
                 },
                 symbol: 'none',
                 lineStyle: {
-                    color: '#ccc'
+                    color: textColor
                 },
-                checkpointStyle: { //
-                    color: '#bbb',
+                checkpointStyle: { //『当前项』（checkpoint）的图形样式。
+                    color: textColor,
                     borderColor: '#777',
                     borderWidth: 2
                 },
@@ -100,17 +103,17 @@ var initEchart=function(row){
                     showNextBtn: false,
                     showPrevBtn: false,
                     normal: {
-                        color: '#ccc',
-                        borderColor: '#ccc'
+                        color: textColor,
+                        borderColor: textColor
                     },
                     emphasis: {
-                        color: '#aaa',
-                        borderColor: '#aaa'
+                        color: emphasisColor,
+                        borderColor: emphasisColor
                     }
                 },
                 data: []
             },
-			backgroundColor: '#404a59',				//背景
+			backgroundColor:backgroundColor,				//背景
 			title: [ 									//标题
 				{
 					text: '各国人均GDP与人均消耗关系演变',
@@ -118,14 +121,14 @@ var initEchart=function(row){
 					top: 10,
 					textStyle: {
 						fontFamily:"Times New Roman",	//字体
-						color: '#ccc',
+						color: textColor,
 						fontWeight: 'normal',
 						fontSize: 20
 					},
 					subtext: 'Unit：'+row.unit,				//副标题
 					subtextStyle : {  						//副标题
 						fontFamily:"Times New Roman",	//字体
-						color: '#ccc'
+						color: textColor
 					},
 				}
 			],
@@ -168,7 +171,7 @@ var initEchart=function(row){
                 },
                 axisLine: {			//坐标轴轴线设置
                     lineStyle: {
-                        color: '#ccc'	//坐标轴线线的颜色
+                        color: textColor	//坐标轴线线的颜色
                     }
                 },
                 axisLabel: {			//坐标轴刻度标签
@@ -184,12 +187,12 @@ var initEchart=function(row){
                 min: parseInt(row.yAxisMin),
                 nameTextStyle: {                    //坐标轴名称的文字样式
                     fontFamily:"Times New Roman",//字体
-                    color: '#ccc',
+                    color: textColor,
                     fontSize: 18
                 },
                 axisLine: {                 //坐标轴轴线设置
                     lineStyle: {
-                        color: '#ccc'
+                        color: textColor
                     }
                 },
                 splitLine: {                //  分割线
@@ -200,46 +203,14 @@ var initEchart=function(row){
                 }
             },
             visualMap: [
-                // {//国家
-                //     type: 'piecewise',
-                //     show: false,
-                //     dimension: 2,                   //指定用数据的『哪个维度』,这个很重要，用这个来确定绑定关系
-                //     categories: row.counties,
-                //     calculable: true,
-                //     precision: 0.1,
-                //     textGap: 30,
-                //     textStyle: {
-                //         color: '#ccc'
-                //     },
-                //     inRange: {
-                //         color: [
-                //             '#bcd3bb', '#e88f70', '#9dc5c8', '#e1e8c8', '#7b7c68', '#e5b5b5', '#f0b489', '#928ea8', '#bda29a', '#376956',
-                //             '#bcd3bb', '#e88f70', '#9dc5c8', '#e1e8c8', '#7b7c68', '#e5b5b5', '#f0b489', '#928ea8', '#bda29a', '#376956',
-                //             '#bcd3bb', '#e88f70', '#9dc5c8', '#e1e8c8', '#7b7c68', '#e5b5b5', '#f0b489', '#928ea8', '#bda29a', '#376956',
-                //             '#bcd3bb', '#e88f70', '#9dc5c8', '#e1e8c8', '#7b7c68', '#e5b5b5', '#f0b489', '#928ea8', '#bda29a', '#376956',
-                //             '#bcd3bb', '#e88f70', '#9dc5c8', '#e1e8c8', '#7b7c68', '#e5b5b5', '#f0b489', '#928ea8', '#bda29a', '#376956',
-                //             '#bcd3bb', '#e88f70', '#9dc5c8', '#e1e8c8', '#7b7c68', '#e5b5b5', '#f0b489', '#928ea8', '#bda29a', '#376956',
-                //             '#c3bed4', '#495a80', '#9966cc', '#bdb76a', '#eee8ab', '#a35015', '#04dd98', '#d9b3e6', '#b6c3fc','#315dbc','#c5c975','#476a54','#66e638','#a59619','#822ee2','#49450d','#eeebd4','#2b98dc','#b95c25', '#8f1ec2', '#d50390', '#36a15d', '#edc1a5'
-                //             ,'#c3bed4', '#495a80', '#9966cc', '#bdb76a', '#eee8ab', '#a35015', '#04dd98', '#d9b3e6', '#b6c3fc','#315dbc','#c5c975','#476a54','#66e638','#a59619','#822ee2','#49450d','#eeebd4','#2b98dc','#b95c25', '#8f1ec2', '#d50390', '#36a15d', '#edc1a5'
-                //             ,'#c3bed4', '#495a80', '#9966cc', '#bdb76a', '#eee8ab', '#a35015', '#04dd98', '#d9b3e6', '#b6c3fc','#315dbc','#c5c975','#476a54','#66e638','#a59619','#822ee2','#49450d','#eeebd4','#2b98dc','#b95c25', '#8f1ec2', '#d50390', '#36a15d', '#edc1a5'
-                //             ,'#c3bed4', '#495a80', '#9966cc', '#bdb76a', '#eee8ab', '#a35015', '#04dd98', '#d9b3e6', '#b6c3fc','#315dbc','#c5c975','#476a54','#66e638','#a59619','#822ee2','#49450d','#eeebd4','#2b98dc','#b95c25', '#8f1ec2', '#d50390', '#36a15d', '#edc1a5'
-                //             ,'#c3bed4', '#495a80', '#9966cc', '#bdb76a', '#eee8ab', '#a35015', '#04dd98', '#d9b3e6', '#b6c3fc','#315dbc','#c5c975','#476a54','#66e638','#a59619','#822ee2','#49450d','#eeebd4','#2b98dc','#b95c25', '#8f1ec2', '#d50390', '#36a15d', '#edc1a5'
-                //             ,'#c3bed4', '#495a80', '#9966cc', '#bdb76a', '#eee8ab', '#a35015', '#04dd98', '#d9b3e6', '#b6c3fc','#315dbc','#c5c975','#476a54','#66e638','#a59619','#822ee2','#49450d','#eeebd4','#2b98dc','#b95c25', '#8f1ec2', '#d50390', '#36a15d', '#edc1a5'
-                //         ]
-                //     },
-                //     outOfRange: {
-                //         //color: '#555'
-                //         color: '#bcd3bb'
-                //     }
-                // },
-                {           //排序
+                {           //
                     type: 'continuous',
                     show: true,
                     orient :'horizontal',           //水平
                     dimension: 3,                   //指定用数据的『哪个维度』,这个很重要，用这个来确定绑定关系
                     min:1,
                     max:189,
-                    range:[1,50],
+                    range:[1,189],
                     left:'',
                     bottom:'5%',
                     //align:'bottom',
@@ -249,15 +220,14 @@ var initEchart=function(row){
                     text:['小','大'],
                     textGap:5,
                     textStyle: {
-                        color: '#ccc',
+                        color: textColor,
                         fontFamily:"Times New Roman"	//字体
                     },
-                    //color: ['orangered','yellow','lightskyblue'],
-                    color: ['green','yellow','lightskyblue'],
+                    color: visualMapColor,      //颜色变化范围
                     outOfRange: {               //未选中的
                         symbolSize:0,           //气泡半径
                         opacity:"0",            //透明度
-                        color: '#4c5665'
+                        color: visualMapColorOutOfRange
                     }
                 }
             ],
@@ -329,7 +299,7 @@ var initTable = function(datas){
 			geoData=[];       // option中的regions，对选中的省份设备背景色 ,清空
 			seriesData=[];    //  根据进出口类型和选中的省份画的线，清空
 			initEchart(row);
-			selectedSheet=row;
+			selectedRow=row;
 		},
 	    columns: [{
             checkbox: true
@@ -342,7 +312,7 @@ var initTable = function(datas){
 	if(datas && datas.length>0){
 		console.log("第一次初始化echart: "+datas[0].fileName);
 		initEchart(datas[0]);
-		selectedSheet=datas[0];
+		selectedRow=datas[0];
 	}
 	$('#loading').modal('hide');
 }
@@ -372,6 +342,49 @@ var adjustScrollPage = function() {
 
 //初始化事件绑定
 var initEvent = function() {
+    //缩进/展开功能
+    $("#hideList").bind("click", function(){
+		if($(".bootstrap-table").css("display") == 'none') {
+			$(".bootstrap-table").show();
+			$("#tableDiv").css("width", "25.0%");
+			$("#mapDiv").css("width", "75.0%");
+			$("#hideList > img").attr("src", "/static/img/left.png").attr("title", "缩进");
+			$("#button").show();
+			$("#delBtn").show();
+			$("#refBtn").show();
+			$(".hiddenClass").show();
+		}else {
+			$(".bootstrap-table").hide();
+		  	$("#tableDiv").css("width", "3%");
+			$("#mapDiv").css("width", "97%");
+			$("#hideList > img").attr("src", "/static/img/right.png").attr("title", "展开");
+			$("#button").hide();
+			$("#delBtn").hide();
+			$("#refBtn").hide();
+			$(".hiddenClass").hide();
+		}
+   	 	adjustScrollPage();
+	});
+    
+    //切换背景色 :  黑色，白色  ，默认黑色
+    $("#black_li").bind("click",function() {  //切换成黑色背景
+        backgroundColor="#404a59";
+        textColor='#ccc';
+        emphasisColor='#aaa';
+        visualMapColorOutOfRange='#4c5665';
+        visualMapColor=['#565AB1','#7EB19A','#9CC63D'];
+        initEchart(selectedRow);
+    })
+    
+    $("#white_li").bind("click",function() {  //切换成白色背景
+        backgroundColor="#FFFAF0";
+        textColor='#000000';
+        emphasisColor='#555555';
+        visualMapColorOutOfRange='#B1B1B1';
+        visualMapColor=['orangered','yellow','lightskyblue'];
+        initEchart(selectedRow);
+    })
+    
 
 }
 

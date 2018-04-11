@@ -17,7 +17,6 @@ import order.settings as Setting
 #获得table数据 ，json格式,
 def getTableData():
 
-    #print(os.path.join(Setting.FILR_DIR["COMMON_DIR"]))
     files = ExcelTool.listExcelFile(Setting.FILR_DIR["MAP3_DIR"])
     print files             # .xlsx结果文件列表
     resultList = []
@@ -33,28 +32,28 @@ def getTableData():
             print file + " start"
 
             excelData = xlrd.open_workbook(file, "rb")
-            # 获取国家名列表
             unit = ''  # 单位
-            unitX = ''  # 单位           `
+            unitX = ''  # 单位
             unitY = ''  # 单位
             xAxis = []      #x轴最小值  最大值 人均gdp
             yAxis = []      #y轴最小值  最大值 人均消耗
             symbolSize=[]   # sheet中 气泡大小之和列表，
+            # 获取国家名列表
             country_name = ExcelTool.getArrayBySheetName(os.path.join(Setting.FILR_DIR["COMMON_DIR"], "Countries.xlsx"),"country")
             countryList=[]   #  国家名list，有序
             for i in range(countryNum):
                 countryList.append(country_name[i,0].encode("utf-8"))
 
-            timeline=[]                                       #timeline  ,年数的集合
-            sheetNameList=excelData.sheet_names()         #获取此文件的全部sheet名
-            seriesList=[]                                     # series数据，所有年份，所有国家的数据
-            for sheetName in sheetNameList:                  #遍历sheet
+            timeline=[]                                         #timeline  ,年数的集合
+            sheetNameList=excelData.sheet_names()               #获取此文件的全部sheet名
+            seriesList=[]                                       # series数据，所有年份，所有国家的数据
+            for sheetName in sheetNameList:                     #遍历sheet
                 sheetName=sheetName.encode("utf-8")             #转码
-                if sheetName != 'Unit':                      #处理某年（某sheet）的数据
+                if sheetName != 'Unit':                         #处理某年（某sheet）的数据
                     sheetData = ExcelTool.getArrayFromSheet(excelData, sheetName, 'name')   #获取某年（某sheet）的数据
                     symbolSize.append(sheetData[:,2].sum())       #本sheet中，气泡大小之和
-                    series=[]                                 # 某年，所有国家的数据
-                    timeline.append(int(sheetName))                # 年份加入timeline中,转为int
+                    series=[]                                     # 某年，所有国家的数据
+                    timeline.append(int(sheetName))               # 年份加入timeline中,转为int
                     sheetDataSort=np.argsort(-sheetData ,axis=0 )                          #排序，按列排序，降序
                     xAxis.append([sheetData[sheetDataSort[0][0]][0]  , sheetData[sheetDataSort[countryNum-1][0]][0] ])      #把最大值和最小值都先存起来，之后比较
                     yAxis.append([sheetData[sheetDataSort[0][1]][1]  , sheetData[sheetDataSort[countryNum-1][1]][1] ])      #把最大值和最小值都先存起来，之后比较
@@ -77,8 +76,8 @@ def getTableData():
 
             # 从excel获取sheet， 转化成numpy.array
             result['unit'] = unit.encode("utf-8")                           # 单位
-            result['unitX'] = unitX.encode("utf-8")                         # 单位
-            result['unitY'] = unitY.encode("utf-8")                         # 单位
+            result['unitX'] = unitX.encode("utf-8")                         # 单位X轴
+            result['unitY'] = unitY.encode("utf-8")                         # 单位Y轴
             result["xAxisMax"] = np.array(xAxis).max()      #x轴最小值  最大值 人均gdp
             result["xAxisMin"] = np.array(xAxis).min()      #x轴最小值  最大值 人均gdp
             result["yAxisMax"] = np.array(yAxis).max()      #y轴最小值  最大值 人均消耗

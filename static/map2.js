@@ -583,7 +583,7 @@ var delBtnFn = function() {
 		$.each(selectedData, function(i, item) {
 			data=data+','+item.fullFileName;
 		});
-		data=data.substring(1,data.length)
+		data=data.substring(1,data.length);
 		$.ajax({
 			type:"GET",
 			async:true,
