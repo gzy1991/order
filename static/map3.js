@@ -1,4 +1,3 @@
-
 /**
  * Created by gzy on 2018/1/19
  */
@@ -19,6 +18,9 @@ $("#tableDiv").height(browserHeight+"px");
 var dom2 = document.getElementById("mapContainer2");;//小地图
 var myChart2 = echarts.init(dom2);;
 var option2 = null;
+var geoRegions=[        ];//地图选中国家
+var visualMapRange = [1,100];    //visualMap 排序变化范围
+var curIndex=0;
 
 //echart    主图全局变量
 var dom = document.getElementById("mapContainer");;//   主图
@@ -27,7 +29,7 @@ var option = null;
 var seriesData =[]; //  容器，存储线的数据
 var datas ; 		 		//  容器，存储了表格的全部数据，
 var selectedRow;   		//table中选中的那一行 的行数据
-var visualMapRange = [1,100];    //visualMap 排序变化范围
+
 
 var itemStyle = {
     opacity: 0.8,
@@ -50,14 +52,44 @@ var schema = [
 
 ];
 
+/*
+*   更新最新的 geoRegions
+* */
+var getGeoRegions = function(){
+    geoRegions=[]; //先清空
+    if(selectedRow ==null || selectedRow.length==0 ){
+        console.log("当前选中行为空");
+        return geoRegions;
+    }
+    var series=selectedRow.series[curIndex];
+    for(var i=0;i<series.length;i++){
+        var sort=series[i][3];
+        if(sort<=visualMapRange[1] && sort>=visualMapRange[0]){//如果在这个范围内，那么就选中
+            var counName =series[i][2];
+            if(countrySwitch[counName]!=null ){  //如果可以转换
+                if(countrySwitch[counName]!=""){    //此时转换名字
+                    counName=countrySwitch[counName];
+                }else{
+                    continue; //跳过，这些国家无法在echarts的geo地图上是无法显示的
+                }
+            }
+            geoRegions.push({name: counName ,selected:true});
+        }
+    }
+}
+
 /*初始化小地图 echart */
 var initEchart2 = function(row){
     console.log("初始化地图echarts！");
     if(myChart2&&myChart2.dispose){
         myChart2.dispose();
     }
+    curIndex=0;                 //初始化
+    visualMapRange=[0,100];     //初始化
+    geoRegions=[];              //初始化
     dom2 = document.getElementById("mapContainer2");
     myChart2 = echarts.init(dom2);
+    getGeoRegions(0,visualMapRange[0],visualMapRange[1]);  //获取初始化时，需要获取选中的国家列表
     option2={
         backgroundColor:backgroundColor,				//背景
         geo: {              //小地图
@@ -65,10 +97,27 @@ var initEchart2 = function(row){
             name: 'maps',
             type: 'map',
             map: 'world',
-            aspectScale :1,
+            aspectScale :1,//用于 scale 地图的长宽比。
             roam: true,
             silent:true,            //不响应鼠标点击事件
-            selectedMode:true,      //支持选中多个
+            selectedMode:'multiple',      //支持选中多个
+            selected:true,
+            zoom:1,
+            scaleLimit:{//滚轮缩放的极限控制，通过min, max最小和最大的缩放值
+                min:0.8,
+                max:2
+            },
+            regions:geoRegions,
+
+            emphasis:{
+                label:{
+                    show:false
+                },
+                itemStyle:{
+                    borderColor: '#aaa',
+                    areaColor: '#f0ff53'
+                }
+            },
             itemStyle: {
                 borderColor: '#aaa',
                 areaColor: '#555'
@@ -289,12 +338,23 @@ var initEchart=function(row){
         });
 	}
 	myChart.setOption(option,true);
-    //绑定 年份切换 事件
+    //绑定年份timeline切换 事件
     myChart.on('timelinechanged', function (params) {
-        //console.log(params);
-        //myChart.setOption(option,true);
+        curIndex = params.currentIndex;
+        getGeoRegions();
+        option2.geo.regions=geoRegions;
+        myChart2.setOption(option2,true);
 
     });
+    /* 绑定visualMap 切换事件 */
+    myChart.on('datarangeselected', function (params) {
+        visualMapRange=[Math.round(params.selected[0]), Math.round(params.selected[1])];
+        getGeoRegions();
+        option2.geo.regions=geoRegions;
+        myChart2.setOption(option2,true);
+
+    });
+
 
 }
 
@@ -313,7 +373,7 @@ var initTable = function(datas){
 			geoData=[];       // option中的regions，对选中的省份设备背景色 ,清空
 			seriesData=[];    //  根据进出口类型和选中的省份画的线，清空
 			selectedRow=row;
-            initEchart(row);
+            initEchart(selectedRow);
             initEchart2(selectedRow);//初始化小地图
 
 		},
@@ -328,7 +388,7 @@ var initTable = function(datas){
 	if(datas && datas.length>0){
 		console.log("第一次初始化echart: "+datas[0].fileName);
 		selectedRow=datas[0];
-		initEchart(datas[0]);
+		initEchart(selectedRow);
 		initEchart2(selectedRow);//初始化小地图
 
 	}
@@ -360,8 +420,6 @@ var adjustScrollPage = function() {
     	myChart2.resize();
     },100);
 }
-
-
 
 
 //初始化事件绑定
@@ -410,8 +468,6 @@ var initEvent = function() {
         initEchart(selectedRow);
         initEchart2(selectedRow);//初始化小地图
     })
-    
-
 }
 
 
