@@ -13,14 +13,17 @@ var visualMapColorOutOfRange='#4c5665'; //visualMap，范围外颜色
 var visualMapColor=['#565AB1','#7EB19A','#9CC63D'];//visualMap颜色变化范围
 var browserHeight=$(window).height() ; //浏览器高度
 $("#tableDiv").height(browserHeight+"px");
+var emphasisAreaColor="#727272";         //选中国家的颜色
+var areaColor="#2a333d";              //国家的颜色
 
 //          地图全局变量
 var dom2 = document.getElementById("mapContainer2");;//小地图
 var myChart2 = echarts.init(dom2);;
 var option2 = null;
 var geoRegions=[        ];//地图选中国家
-var visualMapRange = [1,100];    //visualMap 排序变化范围
+var visualMapRange = [1,50];    //visualMap 排序变化范围
 var curIndex=0;
+
 
 //echart    主图全局变量
 var dom = document.getElementById("mapContainer");;//   主图
@@ -109,18 +112,18 @@ var initEchart2 = function(row){
             },
             regions:geoRegions,
 
-            emphasis:{
+            emphasis:{      //选中国家的颜色
                 label:{
                     show:false
                 },
                 itemStyle:{
                     borderColor: '#aaa',
-                    areaColor: '#f0ff53'
+                    areaColor: emphasisAreaColor
                 }
             },
             itemStyle: {
                 borderColor: '#aaa',
-                areaColor: '#555'
+                areaColor: areaColor
             }
         }
     };
@@ -395,8 +398,6 @@ var initTable = function(datas){
 	$('#loading').modal('hide');
 }
 
-
-
 //窗体改变时触发
 window.onresize = function(){
 	adjustScrollPage();
@@ -455,6 +456,8 @@ var initEvent = function() {
         emphasisColor='#aaa';
         visualMapColorOutOfRange='#4c5665';
         visualMapColor=['#565AB1','#7EB19A','#9CC63D'];
+        emphasisAreaColor="#727272";
+        areaColor="#2a333d";
         initEchart(selectedRow);
         initEchart2(selectedRow);//初始化小地图
     })
@@ -465,6 +468,8 @@ var initEvent = function() {
         emphasisColor='#555555';
         visualMapColorOutOfRange='#B1B1B1';
         visualMapColor=['orangered','yellow','lightskyblue'];
+        emphasisAreaColor="#808080";
+        areaColor="#DCDCDC";
         initEchart(selectedRow);
         initEchart2(selectedRow);//初始化小地图
     })

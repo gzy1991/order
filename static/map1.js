@@ -664,7 +664,7 @@ var refBtnFn =function(){
 //切换背景色
 var switchBtn=function(){
 	if(backgroundColor =='#404a59'){
-		backgroundColor='#FFFAF0';
+		backgroundColor='#FFFAF0';			//白色背景
 		color=[
 			'#FF3030',
 			'#0000CD',
@@ -684,7 +684,7 @@ var switchBtn=function(){
 		geoTextColor="#FFFF00"
 
 	}else{
-		backgroundColor='#404a59';
+		backgroundColor='#404a59';		//黑色背景
 		color=['#a6c84c',
 				'#ffa022',
 				'#FF3030',
