@@ -19,7 +19,7 @@ def nengyuanju(request):
 
 #获取图3页面
 def getPage(request):
-    return render(request, 'map3.html')
+    return render(request, 'map3_suo.html')
 
 #图3 获取表格数据  json格式
 def getTableData(request):
