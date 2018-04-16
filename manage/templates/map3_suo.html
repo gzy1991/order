@@ -21,8 +21,7 @@
 <body  >
 
   <div id="main-container"  >
-
-          <div class="" id="code-container" style="width: 40%; ">
+          <div class="" id="table-container" style="width: 40%; ">
               <div style="height: 60%;weight:100%;overflow:auto;background:#e8e8e8;" >
                 <button id="button" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" style="margin-top:2px;margin-left:5px;float:left;">新增</button>
                 <button id="delBtn" type="button" class="btn btn-danger"     style="margin-top:2px;margin-left:5px;float:left;" onclick="delBtnFn()">删除</button>
@@ -50,7 +49,7 @@
           </div>
           <div id="h-handler" class="handler" style="left: 40%;"></div>
           <div  id="mapDiv" class = "right-container" style="width: 60%;left: 40%;  ">
-              <div id="mapContainer" style="height: 30%;weight:100%">  {% comment %} 主图 {% endcomment %}
+              <div id="mapContainer" style="height: 30%;weight:100%;">  {% comment %} 主图 {% endcomment %}
               </div>
 
           </div>
@@ -159,11 +158,13 @@
             // 初始化header 导航栏
             $(document).ready(function(){
                 $("#headerContainer").load("/static/html/header.html");
+                //初始化上传组件
+                initUpload("excelFile","/uploadExcelInMap3");
+                initEvent();//初始化事件绑定
+                initEventHandler(); //
+                initData();  //   调用初始化页面
             });
-            //初始化上传组件
-            initUpload("excelFile","/uploadExcelInMap3");
-            initData();  //   调用初始化页面
-            initEvent();//初始化事件绑定
+
     </script>
 </html>
 

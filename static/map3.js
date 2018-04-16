@@ -12,7 +12,7 @@ var emphasisColor='#aaa';;              //播放按钮颜色
 var visualMapColorOutOfRange='#4c5665'; //visualMap，范围外颜色
 var visualMapColor=['#565AB1','#7EB19A','#9CC63D'];//visualMap颜色变化范围
 var browserHeight=$(window).height() ; //浏览器高度
-$("#tableDiv").height(browserHeight+"px");
+// $("#main-container").height(browserHeight+"px");
 var emphasisAreaColor="#727272";         //选中国家的颜色
 var areaColor="#2a333d";              //国家的颜色
 
@@ -402,49 +402,98 @@ var initTable = function(datas){
 window.onresize = function(){
 	adjustScrollPage();
 }
+//窗体左右比例    初始化 是 40%
+var widewsPercentage=[40,40];
 //页面自适应
 var adjustScrollPage = function() {
 	var windowEl = $(window);
-	var windowH = windowEl.height()-50; //减去导航栏的那个高度 50px
-    var windowW = windowEl.width();
-    $('#bodyId').css('height', windowH).css('width', windowW);
-    $("#tableDiv").css("height", windowH);
-    //$("#mapDiv").css("height", windowH);
+	var windowH = windowEl.height()-50-17; //减去导航栏的那个高度 50px
+    //var windowW = windowEl.width();
+    $('#main-container').css('height', windowH);
+    $("#table-container").css("height", windowH);
+    $("#h-handler").css("height", windowH);
+    $("#mapDiv").css("height", windowH);
+
+    $('#table-container').css('width', widewsPercentage[0] + '%');
+    $('.right-container').css('width', (100 - widewsPercentage[0]) + '%')
+        .css('left', widewsPercentage[0] + '%');
+    $('#h-handler').css('left', widewsPercentage[0] + '%');
+
     setTimeout(function(){
-		dom.style.width = (window.innerWidth - $("#tableDiv").width())+'px';
-		dom.style.height = (window.innerHeight - 55)+'px';
+		 //dom.style.width = (window.innerWidth - $("#table-container").width()
+         //    -$("#h-handler").width())+'px';
+		 dom.style.height = (window.innerHeight - 55)+'px';
     	myChart.resize();
     },100);
     setTimeout(function(){
-		dom2.style.width = $("#tableDiv").width()+'px';
-		dom2.style.height = $("#tableDiv").width()*0.4+'px';
+		 dom2.style.width = $("#table-container").width()+'px';
+		 dom2.style.height = $("#table-container").height()*0.4+'px';
     	myChart2.resize();
     },100);
 }
 
+//临时数据区，
+var gb = {
+    handler: {
+        isDown: false
+    }
+}
+// 缩放功能
+var initEventHandler = function(){
+    // reset typing state
+    var typingHandler = null;
+    $('#h-handler').mousedown(function() {
+        gb.handler.isDown = true;
+    });
+    $(window).mousemove(function(e) {
+        if (gb.handler.isDown) {
+            var left = e.clientX / window.innerWidth;
+            setSplitPosition(left);
+        }
+
+    }).mouseup(function() {
+        gb.handler.isDown = false;
+    });
+    $(window).resize(function() {
+        adjustScrollPage();
+    });
+}
+
+//  set splitter position by percentage, left should be between 0 to 1
+var setSplitPosition = function(percentage){
+    percentage = Math.min(0.9, Math.max(0.1, percentage));
+    widewsPercentage =[ percentage * 100, percentage * 100];
+    // $('#table-container').css('width', widewsPercentage + '%');
+    // $('.right-container').css('width', (100 - widewsPercentage) + '%')
+    //     .css('left', widewsPercentage + '%');
+    // $('#h-handler').css('left', widewsPercentage + '%');
+    adjustScrollPage();
+}
 
 //初始化事件绑定
 var initEvent = function() {
     //缩进/展开功能
     $("#hideList").bind("click", function(){
-		if($(".bootstrap-table").css("display") == 'none') {
+		if($(".bootstrap-table").css("display") == 'none') { //显示
 			$(".bootstrap-table").show();
-			$("#tableDiv").css("width", "33.3%");
-			$("#mapDiv").css("width", "66.6%");
+			//$("#tableDiv").css("width", "33.3%");
+			//$("#mapDiv").css("width", "66.6%");
 			$("#hideList > img").attr("src", "/static/img/left.png").attr("title", "缩进");
 			$("#button").show();
 			$("#delBtn").show();
 			$("#refBtn").show();
 			$(".hiddenClass").show();
-		}else {
+			widewsPercentage[0]=widewsPercentage[1];
+		}else {                                             //隐藏
 			$(".bootstrap-table").hide();
-		  	$("#tableDiv").css("width", "3%");
-			$("#mapDiv").css("width", "97%");
+		  	//$("#tableDiv").css("width", "3%");
+			//$("#mapDiv").css("width", "97%");
 			$("#hideList > img").attr("src", "/static/img/right.png").attr("title", "展开");
 			$("#button").hide();
 			$("#delBtn").hide();
 			$("#refBtn").hide();
 			$(".hiddenClass").hide();
+			widewsPercentage[0]=0;
 		}
    	 	adjustScrollPage();
 	});
