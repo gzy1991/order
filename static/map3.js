@@ -4,7 +4,6 @@
 
 //全局变量
 
-
 //背景切换所需的数据
 var backgroundColor ='#404a59';     //echart背景色
 var textColor='#ccc';                   //文字颜色
@@ -16,7 +15,7 @@ var browserHeight=$(window).height() ; //浏览器高度
 var emphasisAreaColor="#727272";         //选中国家的颜色
 var areaColor="#2a333d";              //国家的颜色
 
-//          地图全局变量
+//    echart      地图全局变量
 var dom2 = document.getElementById("mapContainer2");;//小地图
 var myChart2 = echarts.init(dom2);;
 var option2 = null;
@@ -25,7 +24,7 @@ var visualMapRange = [1,50];    //visualMap 排序变化范围
 var curIndex=0;
 
 
-//echart    主图全局变量
+//  echart    主图全局变量
 var dom = document.getElementById("mapContainer");;//   主图
 var myChart = echarts.init(dom);;
 var option = null;
@@ -34,6 +33,16 @@ var datas ; 		 		//  容器，存储了表格的全部数据，
 var selectedRow;   		//table中选中的那一行 的行数据
 
 
+//缩放功能 数据区，
+var widewsPercentage=[40,40];       //窗体左右比例    初始化 是 40%  。记录两个40，是因为点击缩放按钮的时候，需要记录点击之前的比例和点击之后的比例
+var gb = {
+    handler: {          //一个锁
+        isDown: false
+    },
+    lock:false       //是否锁死缩放栏,默认是false。但是点击缩进按钮后，缩放栏会锁死，不允许缩放。
+}
+
+//配置数据
 var itemStyle = {
     opacity: 0.8,
     shadowBlur: 10,
@@ -52,7 +61,6 @@ var schema = [
     ,{name: 'Country', index: 2, text: '国家', unit: ''}
     ,{name: 'size', index: 3, text: '气泡大小', unit: ''}
     ,{name: 'sort', index: 4, text: '排序', unit: ''}
-
 ];
 
 /*
@@ -105,7 +113,7 @@ var initEchart2 = function(row){
             silent:true,            //不响应鼠标点击事件
             selectedMode:'multiple',      //支持选中多个
             selected:true,
-            zoom:1,
+            zoom:1.2,
             scaleLimit:{//滚轮缩放的极限控制，通过min, max最小和最大的缩放值
                 min:0.8,
                 max:2
@@ -148,7 +156,6 @@ var initEchart=function(row){
     option={
 
         baseOption:{
-
             timeline: {
                 axisType: 'category',
                 orient: 'horizontal',
@@ -157,7 +164,7 @@ var initEchart=function(row){
 				rewind :false, 		//是否反向播放
                 playInterval: 3000,	//播放速度
                 bottom :'3%',
-                right:'3%',
+                //right:'3%',
                 label: {
                 	textStyle: {
                             fontFamily:"Times New Roman",	//字体
@@ -225,7 +232,7 @@ var initEchart=function(row){
                 top: 100,
 				bottom:110,
                 containLabel: true,
-                left: 30,
+                left: 50,
                 right: 30
             },
 			xAxis: {
@@ -280,12 +287,12 @@ var initEchart=function(row){
                 {           //
                     type: 'continuous',
                     show: true,
-                    orient :'horizontal',           //水平
+                    orient :'vertical',           //垂直 ，水平   horizontal
                     dimension: 3,                   //指定用数据的『哪个维度』,这个很重要，用这个来确定绑定关系
                     min:1,
                     max:189,
                     range:visualMapRange,
-                    left:'',
+                    left:'10',
                     bottom:'5%',
                     //align:'bottom',
                     calculable: true,
@@ -341,7 +348,7 @@ var initEchart=function(row){
         });
 	}
 	myChart.setOption(option,true);
-    //绑定年份timeline切换 事件
+    //绑定年份timeline 切换 事件
     myChart.on('timelinechanged', function (params) {
         curIndex = params.currentIndex;
         getGeoRegions();
@@ -357,8 +364,6 @@ var initEchart=function(row){
         myChart2.setOption(option2,true);
 
     });
-
-
 }
 
 
@@ -400,10 +405,12 @@ var initTable = function(datas){
 
 //窗体改变时触发
 window.onresize = function(){
+    if(gb.lock){            //这种情况下，要重新计算比例，否则会出现大量空白，影响效果
+        widewsPercentage[0]=100*28/$(window).width();
+    }
 	adjustScrollPage();
 }
-//窗体左右比例    初始化 是 40%
-var widewsPercentage=[40,40];
+
 //页面自适应
 var adjustScrollPage = function() {
 	var windowEl = $(window);
@@ -432,12 +439,6 @@ var adjustScrollPage = function() {
     },100);
 }
 
-//临时数据区，
-var gb = {
-    handler: {
-        isDown: false
-    }
-}
 // 缩放功能
 var initEventHandler = function(){
     // reset typing state
@@ -454,19 +455,16 @@ var initEventHandler = function(){
     }).mouseup(function() {
         gb.handler.isDown = false;
     });
-    $(window).resize(function() {
-        adjustScrollPage();
-    });
 }
 
 //  set splitter position by percentage, left should be between 0 to 1
+//设置 左右两侧新的比例
 var setSplitPosition = function(percentage){
+    if(gb.lock){
+        return;     //锁未开，不允许设置
+    }
     percentage = Math.min(0.9, Math.max(0.1, percentage));
     widewsPercentage =[ percentage * 100, percentage * 100];
-    // $('#table-container').css('width', widewsPercentage + '%');
-    // $('.right-container').css('width', (100 - widewsPercentage) + '%')
-    //     .css('left', widewsPercentage + '%');
-    // $('#h-handler').css('left', widewsPercentage + '%');
     adjustScrollPage();
 }
 
@@ -474,10 +472,10 @@ var setSplitPosition = function(percentage){
 var initEvent = function() {
     //缩进/展开功能
     $("#hideList").bind("click", function(){
+        var windowW = $(window).width();
 		if($(".bootstrap-table").css("display") == 'none') { //显示
+            gb.lock=false;          //开放 缩放功能
 			$(".bootstrap-table").show();
-			//$("#tableDiv").css("width", "33.3%");
-			//$("#mapDiv").css("width", "66.6%");
 			$("#hideList > img").attr("src", "/static/img/left.png").attr("title", "缩进");
 			$("#button").show();
 			$("#delBtn").show();
@@ -485,15 +483,14 @@ var initEvent = function() {
 			$(".hiddenClass").show();
 			widewsPercentage[0]=widewsPercentage[1];
 		}else {                                             //隐藏
+            gb.lock=true;           //关闭缩放功能
 			$(".bootstrap-table").hide();
-		  	//$("#tableDiv").css("width", "3%");
-			//$("#mapDiv").css("width", "97%");
 			$("#hideList > img").attr("src", "/static/img/right.png").attr("title", "展开");
 			$("#button").hide();
 			$("#delBtn").hide();
 			$("#refBtn").hide();
 			$(".hiddenClass").hide();
-			widewsPercentage[0]=0;
+			widewsPercentage[0]=100*28/windowW;     //计算一个合适的比例，使缩放按钮可以正常显示
 		}
    	 	adjustScrollPage();
 	});
