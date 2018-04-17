@@ -39,7 +39,7 @@ var gb = {
     handler: {          //一个锁
         isDown: false
     },
-    lock:false       //是否锁死缩放栏,默认是false。但是点击缩进按钮后，缩放栏会锁死，不允许缩放。
+    lock:true       //是否锁死缩放栏,默认是false。但是点击缩进按钮后，缩放栏会锁死，不允许缩放。
 }
 
 //配置数据
@@ -474,7 +474,7 @@ var initEvent = function() {
     $("#hideList").bind("click", function(){
         var windowW = $(window).width();
 		if($(".bootstrap-table").css("display") == 'none') { //显示
-            gb.lock=false;          //开放 缩放功能
+            gb.lock=true;          //开放 缩放功能
 			$(".bootstrap-table").show();
 			$("#hideList > img").attr("src", "/static/img/left.png").attr("title", "缩进");
 			$("#button").show();
