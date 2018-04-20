@@ -32,9 +32,9 @@ def getTableData():
             print file + " start"
 
             excelData = xlrd.open_workbook(file, "rb")
-            unit = ''  # 单位
-            unitX = ''  # 单位
-            unitY = ''  # 单位
+            unit = 'undefined'  # 单位 默认undefined
+            unitX = 'undefined'  # 单位
+            unitY = 'undefined'  # 单位
             xAxis = []      #x轴最小值  最大值 人均gdp
             yAxis = []      #y轴最小值  最大值 人均消耗
             symbolSize=[]   # sheet中 气泡大小之和列表，
@@ -51,6 +51,8 @@ def getTableData():
                 sheetName=sheetName.encode("utf-8")             #转码
                 if sheetName != 'Unit':                         #处理某年（某sheet）的数据
                     sheetData = ExcelTool.getArrayFromSheet(excelData, sheetName, 'name')   #获取某年（某sheet）的数据
+                    #先处理空数据
+
                     symbolSize.append(sheetData[:,2].sum())       #本sheet中，气泡大小之和
                     series=[]                                     # 某年，所有国家的数据
                     timeline.append(int(sheetName))               # 年份加入timeline中,转为int
