@@ -171,7 +171,7 @@ var initEchart=function(row){
                             color: textColor
                         }
                 },
-                symbol: 'none',
+                //symbol: 'diamond',
                 lineStyle: {
                     color: textColor
                 },
@@ -238,7 +238,7 @@ var initEchart=function(row){
 			xAxis: {
                 type: 'value', 		//对数轴。适用于对数数据
                 //type: 'value',		//数值轴，适用于连续数据
-                name: '人均GDP(单位:'+row.unitX+")",
+                name: '人均消耗(单位:'+row.unitX+")",
                 max: parseInt(row.xAxisMax),
                 min: parseInt(row.xAxisMin),
                 nameGap: 25,
@@ -260,12 +260,13 @@ var initEchart=function(row){
                 }
             },
 			yAxis: {
-                type: 'log', 		//对数轴。适用于对数数据
-                //type: 'value',
-                name: '            人均消耗(单位:'+row.unitY+")",     //坐标轴名称
+                //type: 'log', 		//对数轴。适用于对数数据
+                type: 'log',
+                name: '              人均GDP(单位:'+row.unitY+")",     //坐标轴名称
                 //offset :-20,
                 max: parseInt(row.yAxisMax),
-                min: parseInt(row.yAxisMin),
+                //min: parseInt(row.yAxisMin),
+                min: -2,
                 nameTextStyle: {                    //坐标轴名称的文字样式
                     fontFamily:"Times New Roman",//字体
                     color: textColor,

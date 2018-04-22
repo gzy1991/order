@@ -50,31 +50,40 @@ def getTableData():
             for sheetName in sheetNameList:                     #遍历sheet
                 sheetName=sheetName.encode("utf-8")             #转码
                 if sheetName != 'Unit':                         #处理某年（某sheet）的数据
-                    sheetData = ExcelTool.getArrayFromSheet(excelData, sheetName, 'name')   #获取某年（某sheet）的数据
-                    #先处理空数据
-
+                    timeline.append(int(sheetName))  # 年份加入timeline中,转为int
+                    series = []  # 某年，所有国家的数据
+                    sheetData = ExcelTool.getArrayFromSheet(excelData, sheetName, 'name',row=189)   #获取某年（某sheet）的数据
+                    #先处理空sheet
+                    if (len(sheetData)==0):
+                        seriesList.append(series)
+                        continue
                     symbolSize.append(sheetData[:,2].sum())       #本sheet中，气泡大小之和
-                    series=[]                                     # 某年，所有国家的数据
-                    timeline.append(int(sheetName))               # 年份加入timeline中,转为int
                     sheetDataSort=np.argsort(-sheetData ,axis=0 )                          #排序，按列排序，降序
-                    xAxis.append([sheetData[sheetDataSort[0][0]][0]  , sheetData[sheetDataSort[countryNum-1][0]][0] ])      #把最大值和最小值都先存起来，之后比较
-                    yAxis.append([sheetData[sheetDataSort[0][1]][1]  , sheetData[sheetDataSort[countryNum-1][1]][1] ])      #把最大值和最小值都先存起来，之后比较
+                    yAxis.append([sheetData[sheetDataSort[0][0]][0]  , sheetData[sheetDataSort[countryNum-1][0]][0] ])      #把最大值和最小值都先存起来，之后比较
+                    xAxis.append([sheetData[sheetDataSort[0][1]][1]  , sheetData[sheetDataSort[countryNum-1][1]][1] ])      #把最大值和最小值都先存起来，之后比较
                     sort={}                                                                #气泡大小排序 ，
                     for i in range(countryNum):
                         sort[sheetDataSort[i][2]]=i                   # 索引和排序都从0开始
                     for j in range(countryNum):
                         seriesCountry=[]                                #某年某个国家的数据
+                        seriesCountry.append(sheetData[j][1])  # 人均消耗量
                         seriesCountry.append(sheetData[j][0])           # 人均gdp
-                        seriesCountry.append(sheetData[j][1])           # 人均消耗量
                         seriesCountry.append(countryList[j])            # 国家名
-                        seriesCountry.append(sort[j]+1)                   # 排序号，气泡大小的排序号. 从1开始
+                        seriesCountry.append(sort[j]+1)                   # 排序号，气泡
+
+
+
+
+
+
+                        # 大小的排序号. 从1开始
                         seriesCountry.append(sheetData[j][2])           # 气泡大小
                         series.append(seriesCountry)
                     seriesList.append(series)
                 else:                                       #处理3个单位
                     unit = excelData.sheet_by_name("Unit").cell_value(0, 1)     # 标题单位
-                    unitX = excelData.sheet_by_name("Unit").cell_value(1, 1)    # X轴单位
-                    unitY= excelData.sheet_by_name("Unit").cell_value(2, 1)     # Y轴单位
+                    unitY = excelData.sheet_by_name("Unit").cell_value(1, 1)    # Y轴单位
+                    unitX= excelData.sheet_by_name("Unit").cell_value(2, 1)     # X轴单位
 
             # 从excel获取sheet， 转化成numpy.array
             result['unit'] = unit.encode("utf-8")                           # 单位
