@@ -29,16 +29,16 @@ def getArrayBySheetIndex(excelDir,index):
 #   excelData: excel数据
 #   type:      "name" 或"index"
 #   param   :sheet的索引或名称
-#   row     :可以指定长度，相当于切片。默认是sheet的行
-#   column  :可以指定长度，相当于切片。默认是sheet的列
+#   row     : 可以指定长度，相当于切片。默认是sheet的行
+#   column  : 可以指定长度，相当于切片。默认是sheet的列
 def getArrayFromSheet(excelData,param ,type,row=0,column=0):
     if(type=='index'):
         sheet = excelData.sheet_by_index(param)
     elif(type=='name'):
         sheet=excelData.sheet_by_name(param)
-    if not (row!=0 and row<sheet.nrows):
+    if not (row!=0 and row<sheet.nrows):            # 行是否切片
         row=sheet.nrows
-    if not(column!=0 and column<sheet.ncols):
+    if not(column!=0 and column<sheet.ncols):       # 列是否切片
         column = sheet.ncols  # 列
     _array=[]
     for i in range(0,row):

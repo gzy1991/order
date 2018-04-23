@@ -21,7 +21,7 @@ var myChart2 = echarts.init(dom2);;
 var option2 = null;
 var geoRegions=[        ];//地图选中国家
 var visualMapRange = [1,50];    //visualMap 排序变化范围
-var curIndex=0;
+var curIndex=0;             //当前年,默认是第一年
 
 
 //  echart    主图全局变量
@@ -31,6 +31,7 @@ var option = null;
 var seriesData =[]; //  容器，存储线的数据
 var datas ; 		 		//  容器，存储了表格的全部数据，
 var selectedRow;   		//table中选中的那一行 的行数据
+var switchTime =2000;       //切换时间 2秒
 
 
 //缩放功能 数据区，
@@ -146,15 +147,11 @@ var initEchart=function(row){
 		myChart.dispose();
 	}
 	unit='';  //单位
-    if(row.unit && row.unit!==''){
-		unit=row.unit;
-	}else{
-		unit='undefined'
-	}
+    unit=row.unit;
 	dom = document.getElementById("mapContainer");
     myChart = echarts.init(dom);
+    curIndex=0;
     option={
-
         baseOption:{
             timeline: {
                 axisType: 'category',
@@ -162,7 +159,7 @@ var initEchart=function(row){
                 autoPlay: true,		//是否自动播放
                 inverse: false,		//是否反向放置 timeline，反向则首位颠倒过来
 				rewind :false, 		//是否反向播放
-                playInterval: 3000,	//播放速度
+                playInterval: switchTime,	//播放速度
                 bottom :'3%',
                 //right:'3%',
                 label: {
@@ -220,6 +217,9 @@ var initEchart=function(row){
                 borderWidth: 1,
                 formatter: function (obj) {
                     var value = obj.value;
+                    if(typeof(value)!="object"){
+                        return
+                    }
                     return schema[2].text + '：' + value[2] + '<br>'
                             + schema[0].text + '：' + value[0].toFixed(2) + row.unitX + '<br>'
                             + schema[1].text + '：' + value[1].toFixed(2) + row.unitY + '<br>'
@@ -325,7 +325,7 @@ var initEchart=function(row){
                     }
                 }
             ],
-			animationDurationUpdate: 3000,			//数据更新动画的时长。
+			animationDurationUpdate: switchTime,			//数据更新动画的时长。
             //animationEasingUpdate: 'cubicInOut'	//数据更新动画的缓动效果
             //animationEasingUpdate: 'quinticInOut'	//数据更新动画的缓动效果
         },
@@ -352,6 +352,24 @@ var initEchart=function(row){
     //绑定年份timeline 切换 事件
     myChart.on('timelinechanged', function (params) {
         curIndex = params.currentIndex;
+        if(selectedRow.emptySheets.indexOf(selectedRow.timeline[curIndex].toString())!=-1){      //，如果点了空sheet这时直接跳过，切换到不是空的那年sheet数据
+            var allYears=selectedRow.timeline;
+            allYears=allYears.concat(allYears);
+            var emptyYears=selectedRow.emptySheets;
+            var index=curIndex+1;           //目标年的index
+            for( ; index<allYears.length ; index++){
+                if(emptyYears.indexOf(allYears[index]) ==-1){   //如果不是空，那么就是这年
+                    curIndex=index % (allYears.length/2); //求余
+                    console.log(curIndex);
+                    myChart.dispatchAction({
+                        type: 'timelineChange',
+                        // 时间点的 index
+                        currentIndex: curIndex
+                    });
+                    break;
+                }
+            }
+        }
         getGeoRegions();
         option2.geo.regions=geoRegions;
         myChart2.setOption(option2,true);

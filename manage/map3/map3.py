@@ -35,6 +35,7 @@ def getTableData():
             unit = 'undefined'  # 单位 默认undefined
             unitX = 'undefined'  # 单位
             unitY = 'undefined'  # 单位
+            emptySheets=[]           # 空数据的sheet
             xAxis = []      #x轴最小值  最大值 人均gdp
             yAxis = []      #y轴最小值  最大值 人均消耗
             symbolSize=[]   # sheet中 气泡大小之和列表，
@@ -52,11 +53,17 @@ def getTableData():
                 if sheetName != 'Unit':                         #处理某年（某sheet）的数据
                     timeline.append(int(sheetName))  # 年份加入timeline中,转为int
                     series = []  # 某年，所有国家的数据
-                    sheetData = ExcelTool.getArrayFromSheet(excelData, sheetName, 'name',row=189)   #获取某年（某sheet）的数据
+                    sheetData = ExcelTool.getArrayFromSheet(excelData, sheetName, 'name',row=countryNum)   #获取某年（某sheet）的数据
                     #先处理空sheet
                     if (len(sheetData)==0):
                         seriesList.append(series)
+                        emptySheets.append(sheetName)
                         continue
+                    # 遍历一遍，如果有负数，处理成0
+                    for row in range(countryNum):
+                        for column in range(3):                 #   默认都是3列
+                            if(sheetData[row][column]<0):
+                                sheetData[row][column]=0
                     symbolSize.append(sheetData[:,2].sum())       #本sheet中，气泡大小之和
                     sheetDataSort=np.argsort(-sheetData ,axis=0 )                          #排序，按列排序，降序
                     yAxis.append([sheetData[sheetDataSort[0][0]][0]  , sheetData[sheetDataSort[countryNum-1][0]][0] ])      #把最大值和最小值都先存起来，之后比较
@@ -70,13 +77,8 @@ def getTableData():
                         seriesCountry.append(sheetData[j][0])           # 人均gdp
                         seriesCountry.append(countryList[j])            # 国家名
                         seriesCountry.append(sort[j]+1)                   # 排序号，气泡
-
-
-
-
-
-
                         # 大小的排序号. 从1开始
+
                         seriesCountry.append(sheetData[j][2])           # 气泡大小
                         series.append(seriesCountry)
                     seriesList.append(series)
@@ -93,8 +95,9 @@ def getTableData():
             result["xAxisMin"] = np.array(xAxis).min()      #x轴最小值  最大值 人均gdp
             result["yAxisMax"] = np.array(yAxis).max()      #y轴最小值  最大值 人均消耗
             result["yAxisMin"] = np.array(yAxis).min()      #y轴最小值  最大值 人均消耗
-            result["counties"]=countryList
-            result["timeline"]=timeline
+            result["counties"]=countryList                  #国家列表
+            result["timeline"]=timeline                     # 时间 ，sheet名集合
+            result["emptySheets"]=emptySheets              #空数据sheet名集合
             result["series"]=seriesList
             result["averageSize"]=np.array(symbolSize).sum()/ (countryNum *len(timeline))                # 气泡大小平均值
 
