@@ -53,12 +53,13 @@ var itemStyle = {
     };
     // 计算出气泡半径
  var sizeFunction = function (x,averageSize) {
-        var y = Math.sqrt(1+x / averageSize) ;
-        return y * 80;
+        var y = Math.sqrt(0.01+x / averageSize) ;
+        return y * 30;
     };
 var schema = [
-    {name: 'GDP per capita', index: 0, text: '人均GDP', unit: '美元'}
-    ,{name: 'Welfare per capita', index: 1, text: '人均消耗', unit: '美元'}
+
+    {name: 'Welfare per capita', index: 1, text: '人均消耗', unit: '美元'}
+    ,{name: 'GDP per capita', index: 0, text: '人均GDP', unit: '美元'}
     ,{name: 'Country', index: 2, text: '国家', unit: ''}
     ,{name: 'size', index: 3, text: '气泡大小', unit: ''}
     ,{name: 'sort', index: 4, text: '排序', unit: ''}
@@ -150,7 +151,7 @@ var initEchart=function(row){
     unit=row.unit;
 	dom = document.getElementById("mapContainer");
     myChart = echarts.init(dom);
-    curIndex=0;
+    //curIndex=0;
     option={
         baseOption:{
             timeline: {
@@ -221,8 +222,8 @@ var initEchart=function(row){
                         return
                     }
                     return schema[2].text + '：' + value[2] + '<br>'
-                            + schema[0].text + '：' + value[0].toFixed(2) + row.unitX + '<br>'
-                            + schema[1].text + '：' + value[1].toFixed(2) + row.unitY + '<br>'
+                            + schema[0].text + '：' + value[0].toFixed(2)   + '<br>'
+                            + schema[1].text + '：' + value[1].toFixed(2)  + '<br>'
                             + schema[3].text + '：' + value[4].toFixed(2)  + '<br>'
                             + schema[4].text + '：' + value[3]  + '<br>'
                             ;
@@ -265,8 +266,9 @@ var initEchart=function(row){
                 name: '              人均GDP(单位:'+row.unitY+")",     //坐标轴名称
                 //offset :-20,
                 max: parseInt(row.yAxisMax),
+                //max: 200,
                 //min: parseInt(row.yAxisMin),
-                min: -2,
+                min: 0.01,
                 nameTextStyle: {                    //坐标轴名称的文字样式
                     fontFamily:"Times New Roman",//字体
                     color: textColor,
@@ -321,7 +323,7 @@ var initEchart=function(row){
                     itemStyle: itemStyle,
                     data: [],
                     symbolSize: function(val) {
-                        return sizeFunction(val[3],row.averageSize);
+                        return sizeFunction(val[4],row.averageSize);
                     }
                 }
             ],
@@ -343,7 +345,7 @@ var initEchart=function(row){
                 itemStyle: itemStyle,
                 data: row.series[n],
                 symbolSize: function(val) {
-                    return sizeFunction(val[3],row.averageSize);
+                    return sizeFunction(val[4],row.averageSize);
                 }
             }
         });
