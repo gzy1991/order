@@ -1,5 +1,5 @@
 /**
- * Created by  on 2018/1/19
+ * Created by gzy on 2018/1/19
  */
 
 //全局变量
@@ -27,7 +27,7 @@ var provinceColor ={//  省份 线的颜色
 
 //echart全局变量
 var dom = document.getElementById("mapContainer");;
-var myChart;
+var myChart = echarts.init(dom);;
 var option = null;
 var seriesData =[]; //  容器，存储线的数据
 var unit='';  //单位
@@ -396,7 +396,7 @@ var convertData = function(province,tradeData,type){
 				symbolSize :20-tradeData.length* tradeData[i].sort, //箭头大小，根据贸易量排序，大小不同
 				lineStyle:{
 						normal:{
-							width:tradeData.length+1-tradeData[i].sort,
+							width:tradeData.length+1-tradeData[i].sort,  //线宽
 							opacity: 0.6,    // 图形透明度。支持从 0 到 1 的数字,为 0 时不绘制该图形。
 							curveness:0.2     //线的弯曲程度
 						}
@@ -517,17 +517,11 @@ var initEvent = function() {
 	$("#white_li").bind("click",function(){ //切换成白色背景
 		backgroundColor='#FFFAF0';
 		areaColor='#DCDCDC';
-		//emphasisAreaColor='#808080';
-		//emphasisAreaColor='#A3A3A3';
 		emphasisAreaColor='#C1C1C1';
 		textColor='#2a333d';
 		legendColor='#8A2BE2';
 		geoTextColor="#2a333d";
 		lineColor="#000000";
-		//lineeffectColor="#FF3030";
-		//lineeffectColor="#FFBA6F";
-		//lineeffectColor="#FFA48E";
-		//lineeffectColor="#16FF59";
 		lineeffectColor="#FFFAF0";
 		provinceColor ={//  省份 线的颜色
 			"Jiangsu":"#800000","Anhui":"#800000","Fujian":"#800000","Shanghai":"#800000","Zhejiang":"#800000","Shandong":"#800000",
@@ -553,8 +547,6 @@ var initEvent = function() {
 	});
 }
 
-
-
 /*初始化上传组件*/
 var initUpload = function(ctrlName, uploadUrl){
 	 var control = $('#' + ctrlName);
@@ -572,11 +564,10 @@ var initUpload = function(ctrlName, uploadUrl){
 		if("true"==data.response.result){ //刷新表格
 			refBtnFn();
 		}else if ("false"==data.response.result){
-
+			//不操作
 		}
 	 });
 }
-
 
 //删除表格行
 var delBtnFn = function() {
@@ -592,7 +583,7 @@ var delBtnFn = function() {
 		$.each(selectedData, function(i, item) {
 			data=data+','+item.fullFileName;
 		});
-		data=data.substring(1,data.length)
+		data=data.substring(1,data.length);
 		$.ajax({
 			type:"GET",
 			async:true,
@@ -614,7 +605,7 @@ var refBtnFn =function(){
 	})
 }
 
-//初始化页面,  主要是表格数据
+//初始化页面表格数据
 var initData=function(){
 	$.ajax({
         type:"GET",

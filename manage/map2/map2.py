@@ -11,7 +11,7 @@ import json
 import Tool.ExcelTool as ExcelTool
 import order.settings as Setting
 
-# 获得table数据 json格式,
+# 获得table数据， json格式,
 # 对每个excel的数据，进行排序，找出每个省份出口前3和进口前3
 def getTableData():
     proShowNum = 3  # 每个省份的前3个进口货出口。默认是3，这个参数可以从页面上传进来
@@ -76,7 +76,7 @@ def getTableData():
             errMsg += file + "<br/>"
 
     resultListJson=json.dumps(resultList)
-    print "返回值 resultListJson :"
+    print "Map2返回值 resultListJson :"
     print   resultListJson
     return  resultListJson
 

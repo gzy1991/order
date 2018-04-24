@@ -1,0 +1,170 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+
+<title>Map3</title>
+<style>
+
+{#  td{#}
+{#    white-space:nowrap;text-overflow:ellipsis;#}
+{#  }#}
+
+</style>
+
+
+</head>
+  <header class="navbar navbar-fixed-top navbar-inverse" id = "headerContainer">
+  </header>
+
+<body  >
+
+  <div id="main-container"  >
+          <div class="" id="table-container" style="width: 40%; ">
+              <div style="height: 60%;weight:100%;overflow:auto;background:#e8e8e8;" >
+                <button id="button" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" style="margin-top:2px;margin-left:5px;float:left;">新增</button>
+                <button id="delBtn" type="button" class="btn btn-danger"     style="margin-top:2px;margin-left:5px;float:left;" onclick="delBtnFn()">删除</button>
+                <button id="refBtn" type="button" class="btn btn-success"  style="margin-top:2px;margin-left:5px;float:left;" onclick="refBtnFn()">刷新</button>
+
+                    <div class="btn-group hiddenClass">
+                      <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-top:2px;margin-left:5px;float:left;">
+                        背景 <span class="caret"></span>
+                      </button>
+                      <ul class="dropdown-menu">
+                        <li id ="black_li"><a href="#">黑色</a></li>
+                        <li id ="white_li"><a href="#">白色</a></li>
+                      </ul>
+                    </div>
+
+                <span id="hideList" style="float:right;cursor: pointer;"><img src="/static/img/left.png" title="缩进"/></span>
+                <table id="tableContainer" ></table>
+
+                </div>
+              <div class="hiddenClass" style="height: 40%;" style="padding-right: 20px;"> {% comment %}   小地图     {% endcomment %}
+                  <div  id ="mapContainer2" ></div>
+
+              </div>
+
+          </div>
+          <div id="h-handler" class="handler" style="left: 40%;"></div>
+          <div  id="mapDiv" class = "right-container" style="width: 60%;left: 40%;  ">
+              <div id="mapContainer" style="height: 30%;weight:100%;">  {% comment %} 主图 {% endcomment %}
+              </div>
+
+          </div>
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog" role="document" style ="height:600px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">请选择excel文件</h4>
+            </div>
+            <div class="modal-body">
+              <form class="form-horizontal" id="saveadmin_form"
+                  name="form-horizontal">
+                  <input type="hidden" id="adminid" />
+                  <div class="box-body">
+                      <dl class="dl-horizontal">
+
+                          <div class="form-group">
+                              <div class="col-sm-12">
+                                    <div class="file-loading">
+                                        <input id="excelFile" name="excelFile" type="file"
+                                               data-msg-placeholder=""
+                                               data-allowed-file-extensions='[ "xlsx"]'>
+                                    </div>
+                              </div>
+                          </div>
+                      </dl>
+                  </div>
+                  <div id ="addButtonResult" style="font-size:18px;color:red"></div>
+                  <div class="modal-footer">
+
+
+                      <button type="button" class="btn btn-danger" data-dismiss="modal">
+                          <i class="fa fa-times"></i> 关闭
+                      </button>
+                  </div>
+              </form>
+
+
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="loading" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop='static'>
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="myModalLabel">提示</h4>
+          </div>
+          <div class="modal-body">
+            正在刷新数据，请稍候。。。
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="deleteModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop='static'>
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="deleteModalLabel">删除</h4>
+          </div>
+          <div class="modal-body" id ="deleteResult">
+            正在删除数据，请稍候...
+          </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">
+                    <i class="fa fa-times"></i> 关闭
+                      </button>
+            </div>
+
+        </div>
+      </div>
+    </div>
+
+
+  </body>
+ <script type="text/javascript" src="/static/resource/echarts4/echarts.min.js"></script>
+  <script type="text/javascript" src="/static/resource/echart/ecStat.min.js"></script>
+  <script type="text/javascript" src="/static/resource/echart/dataTool.min.js"></script>
+    <script type="text/javascript" src="/static/resource/echart/world.js"></script>
+  <script type="text/javascript" src="/static/resource/jquery/jquery.min.js"></script>
+  <script type="text/javascript" src="/static/resource/bootstrap/js/bootstrap.js"></script>
+  <link href="/static/resource/bootstrap/css/bootstrap.css" rel="stylesheet" />
+    <script type="text/javascript" src="/static/resource/bootstrap-table/bootstrap-table.js"></script>
+  <link href="/static/resource/bootstrap-table/bootstrap-table.css" rel="stylesheet" />
+  <link href="/static/resource/css/map3.css" rel="stylesheet" />
+  <link href="/static/js/bootstrapValidator.min.css" rel="stylesheet" />
+  <link href="/static/js/popup.css" rel="stylesheet" />
+  <script type="text/javascript" src="/static/js/popup.js"></script>
+<script type="text/javascript" src="/static/js/contray.js"></script>
+
+  <script type="text/javascript" src="/static/js/bootstrapValidator.min.js"></script>
+  <script type="text/javascript" src="/static/resource/bootstrap-table/bootstrap-table-zh-CN.js"></script>
+    <script type="text/javascript" src="/static/resource/bootstrap-fileinput/fileinput.min.js"></script>
+    <script type="text/javascript" src="/static/resource/bootstrap-fileinput/locales/zh.js"></script>
+    <link href="/static/resource/bootstrap-fileinput/fileinput.min.css" rel="stylesheet" />
+    <script type="text/javascript" src="/static/map3.js"></script>
+    <script type="text/javascript">
+            // 初始化header 导航栏
+            $(document).ready(function(){
+                $("#headerContainer").load("/static/html/header.html");
+                //初始化上传组件
+                initUpload("excelFile","/uploadExcelInMap3");
+                initEvent();//初始化事件绑定
+                initEventHandler(); //
+                initData();  //   调用初始化页面
+            });
+
+    </script>
+</html>
+

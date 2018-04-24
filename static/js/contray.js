@@ -2,12 +2,10 @@
 /*
 latitude  纬度
 longitude 经度
-
-'latitude': , 'longitude':
-
 *
 * */
-/*国家坐标信息、中文名、英文名*/
+/*国家信息、坐标、中文名、英文名*/
+
 var countrytInfo={
 'Guyana': {'name': 'Guyana', 'latitude': 4.860416, 'longitude': -58.93018, 'chineseName': '圭亚那', 'code': 'GY'},
 'Greece': {'name': 'Greece', 'latitude': 39.074208, 'longitude': 21.824312, 'chineseName': '希腊', 'code': 'GR'},
@@ -222,3 +220,42 @@ var countrytInfo={
 
 'Mali': {'name': 'Mali', 'latitude': 17.570692, 'longitude': -3.996166, 'chineseName': '马里', 'code': 'ML'}
 }
+//echarts中世界地图的国家名列表  217个国家名
+var counEchart=['Somalia', 'Liechtenstein', 'Morocco', 'W. Sahara', 'Serbia', 'Afghanistan', 'Angola', 'Albania', 'Aland', 'Andorra', 'United Arab Emirates', 'Argentina', 'Armenia', 'American Samoa', 'Fr. S. Antarctic Lands', 'Antigua and Barb.', 'Australia', 'Austria', 'Azerbaijan', 'Burundi', 'Belgium', 'Benin', 'Burkina Faso', 'Bangladesh', 'Bulgaria', 'Bahrain', 'Bahamas', 'Bosnia and Herz.', 'Belarus', 'Belize', 'Bermuda', 'Bolivia', 'Brazil', 'Barbados', 'Brunei', 'Bhutan', 'Botswana', 'Central African Rep.', 'Canada', 'Switzerland', 'Chile', 'China', "C\xc3\xb4te d'Ivoire", 'Cameroon', 'Dem. Rep. Congo', 'Congo', 'Colombia', 'Comoros', 'Cape Verde', 'Costa Rica', 'Cuba', 'Cura\xc3\xa7ao', 'Cayman Is.', 'N. Cyprus', 'Cyprus', 'Czech Rep.', 'Germany', 'Djibouti', 'Dominica', 'Denmark', 'Dominican Rep.', 'Algeria', 'Ecuador', 'Egypt', 'Eritrea', 'Spain', 'Estonia', 'Ethiopia', 'Finland', 'Fiji', 'Falkland Is.', 'France', 'Faeroe Is.', 'Micronesia', 'Gabon', 'United Kingdom', 'Georgia', 'Ghana', 'Guinea', 'Gambia', 'Guinea-Bissau', 'Eq. Guinea', 'Greece', 'Grenada', 'Greenland', 'Guatemala', 'Guam', 'Guyana', 'Heard I. and McDonald Is.', 'Honduras', 'Croatia', 'Haiti', 'Hungary', 'Indonesia', 'Isle of Man', 'India', 'Br. Indian Ocean Ter.', 'Ireland', 'Iran', 'Iraq', 'Iceland', 'Israel', 'Italy', 'Jamaica', 'Jersey', 'Jordan', 'Japan', 'Siachen Glacier', 'Kazakhstan', 'Kenya', 'Kyrgyzstan', 'Cambodia', 'Kiribati', 'Korea', 'Kuwait', 'Lao PDR', 'Lebanon', 'Liberia', 'Libya', 'Saint Lucia', 'Sri Lanka', 'Lesotho', 'Lithuania', 'Luxembourg', 'Latvia', 'Moldova', 'Madagascar', 'Mexico', 'Macedonia', 'Mali', 'Malta', 'Myanmar', 'Montenegro', 'Mongolia', 'N. Mariana Is.', 'Mozambique', 'Mauritania', 'Montserrat', 'Mauritius', 'Malawi', 'Malaysia', 'Namibia', 'New Caledonia', 'Niger', 'Nigeria', 'Nicaragua', 'Niue', 'Netherlands', 'Norway', 'Nepal', 'New Zealand', 'Oman', 'Pakistan', 'Panama', 'Peru', 'Philippines', 'Palau', 'Papua New Guinea', 'Poland', 'Puerto Rico', 'Dem. Rep. Korea', 'Portugal', 'Paraguay', 'Palestine', 'Fr. Polynesia', 'Qatar', 'Romania', 'Russia', 'Rwanda', 'Saudi Arabia', 'Sudan', 'S. Sudan', 'Senegal', 'Singapore', 'S. Geo. and S. Sandw. Is.', 'Saint Helena', 'Solomon Is.', 'Sierra Leone', 'El Salvador', 'St. Pierre and Miquelon', 'S\xc3\xa3o Tom\xc3\xa9 and Principe', 'Suriname', 'Slovakia', 'Slovenia', 'Sweden', 'Swaziland', 'Seychelles', 'Syria', 'Turks and Caicos Is.', 'Chad', 'Togo', 'Thailand', 'Tajikistan', 'Turkmenistan', 'Timor-Leste', 'Tonga', 'Trinidad and Tobago', 'Tunisia', 'Turkey', 'Tanzania', 'Uganda', 'Ukraine', 'Uruguay', 'United States', 'Uzbekistan', 'St. Vin. and Gren.', 'Venezuela', 'U.S. Virgin Is.', 'Vietnam', 'Vanuatu', 'Samoa', 'Yemen', 'South Africa', 'Zambia', 'Zimbabwe', '', '']
+//客户提供的国家excel中国家名列表	189个国家名
+var countryExcel= ['Afghanistan', 'Albania', 'Algeria', 'Andorra', 'Angola', 'Antigua', 'Argentina', 'Armenia', 'Aruba', 'Australia', 'Austria', 'Azerbaijan', 'Bahamas', 'Bahrain', 'Bangladesh', 'Barbados', 'Belarus', 'Belgium', 'Belize', 'Benin', 'Bermuda', 'Bhutan', 'Bolivia', 'Bosnia and Herzegovina', 'Botswana', 'Brazil', 'British Virgin Islands', 'Brunei', 'Bulgaria', 'Burkina Faso', 'Burundi', 'Cambodia', 'Cameroon', 'Canada', 'Cape Verde', 'Cayman Islands', 'Central African Republic', 'Chad', 'Chile', 'China', 'Colombia', 'Congo', 'Costa Rica', 'Croatia', 'Cuba', 'Cyprus', 'Czech Republic', 'Cote dIvoire', 'North Korea', 'DR Congo', 'Denmark', 'Djibouti', 'Dominican Republic', 'Ecuador', 'Egypt', 'El Salvador', 'Eritrea', 'Estonia', 'Ethiopia', 'Fiji', 'Finland', 'France', 'French Polynesia', 'Gabon', 'Gambia', 'Georgia', 'Germany', 'Ghana', 'Greece', 'Greenland', 'Guatemala', 'Guinea', 'Guyana', 'Haiti', 'Honduras', 'Hong Kong', 'Hungary', 'Iceland', 'India', 'Indonesia', 'Iran', 'Iraq', 'Ireland', 'Israel', 'Italy', 'Jamaica', 'Japan', 'Jordan', 'Kazakhstan', 'Kenya', 'Kuwait', 'Kyrgyzstan', 'Laos', 'Latvia', 'Lebanon', 'Lesotho', 'Liberia', 'Libya', 'Liechtenstein', 'Lithuania', 'Luxembourg', 'Macao SAR', 'Madagascar', 'Malawi', 'Malaysia', 'Maldives', 'Mali', 'Malta', 'Mauritania', 'Mauritius', 'Mexico', 'Monaco', 'Mongolia', 'Montenegro', 'Morocco', 'Mozambique', 'Myanmar', 'Namibia', 'Nepal', 'Netherlands', 'Netherlands Antilles', 'New Caledonia', 'New Zealand', 'Nicaragua', 'Niger', 'Nigeria', 'Norway', 'Gaza Strip', 'Oman', 'Pakistan', 'Panama', 'Papua New Guinea', 'Paraguay', 'Peru', 'Philippines', 'Poland', 'Portugal', 'Qatar', 'South Korea', 'Moldova', 'Romania', 'Russia', 'Rwanda', 'Samoa', 'San Marino', 'Sao Tome and Principe', 'Saudi Arabia', 'Senegal', 'Serbia', 'Seychelles', 'Sierra Leone', 'Singapore', 'Slovakia', 'Slovenia', 'Somalia', 'South Africa', 'South Sudan', 'Spain', 'Sri Lanka', 'Sudan', 'Suriname', 'Swaziland', 'Sweden', 'Switzerland', 'Syria', 'Taiwan', 'Tajikistan', 'Thailand', 'TFYR Macedonia', 'Togo', 'Trinidad and Tobago', 'Tunisia', 'Turkey', 'Turkmenistan', 'Former USSR', 'Uganda', 'Ukraine', 'UAE', 'UK', 'Tanzania', 'USA', 'Uruguay', 'Uzbekistan', 'Vanuatu', 'Venezuela', 'Viet Nam', 'Yemen', 'Zambia', 'Zimbabwe']
+//30个国家名对照表， 这30个国家名存在于countryExcel，但是不存在于counEchart中，
+//需要转换
+var countrySwitch={
+	'Antigua':'Antigua and Barb.',
+	'Aruba':'',
+	'Bosnia and Herzegovina':'Bosnia and Herz.',
+	'British Virgin Islands':'U.S. Virgin Is.',
+	'Cayman Islands':'Cayman Is.',
+	'Central African Republic':'Central African Rep.',
+	'Czech Republic':'Central African Rep.',
+	'Cote dIvoire':"Côte d'Ivoire",
+	'North Korea':'Dem. Rep. Korea',
+	'DR Congo':'Dem. Rep. Congo',
+	'Dominican Republic':'Dominican Rep.',
+	'French Polynesia':'Fr. Polynesia',
+	'Hong Kong':'',
+	'Laos':'Lao PDR',
+	'Macao SAR':'',
+	'Maldives':'',
+	'Monaco':'',
+	'Netherlands Antilles':'',
+	'Gaza Strip':'',
+	'South Korea':'Korea',
+	'San Marino':'',
+	'Sao Tome and Principe':'São Tomé and Principe',
+	'South Sudan':'S. Sudan',
+	'Taiwan':'',
+	'TFYR Macedonia':'Macedonia',
+	'Former USSR':'',
+	'UAE':'United Arab Emirates',
+	'UK':'United Kingdom',
+	'USA':'United States',
+	'Viet Nam':'Vietnam'
+}
+

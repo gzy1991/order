@@ -20,13 +20,15 @@ var areaColor ='#323c48'; //地图区域的颜色
 var emphasisAreaColor='#2a333d';   //选中国家时，背景色
 var textColor='#fff';
 var legendColor='#fff';
-var datas ;
+var datas ;						//  容器，存储了表格的全部数据，
 var browserHeight=$(window).height() ; //浏览器高度
 var browserWidth=$(window).width();		//浏览器宽度
 var geoTextColor="#fff"; //地图上，选中国家时，国家名的颜色
 //标签切换所需的数据
 var isShowSign=true;  //是否显示标签 ，初始化的时候显示
-
+var seriesData =[]; //  容器，存储线数据、圆点数据
+var selectedSheet;   		//table中选中的那一行 的行数据
+var selectedLegends= {};  	//选中的图例 容器
 
 // $("div.form-group").height(browserHeight+"px");
 // $("div.form-group").width(browserWidth+"px");
@@ -56,11 +58,18 @@ var initEchart=function(row){
 	myChart = echarts.init(dom);
 	option = null;
 	series =[];  //初始化 series数据
+
 	var legendNameList=[];
 	var legendSelected={};
 	row.exportData.forEach(function(item,i){legendNameList.push("Export"+item.sort+": "+item.name)  ;});
 	row.importData.forEach(function(item,i){legendNameList.push("Import"+item.sort+": "+item.name)  ;});
-	legendNameList.forEach(function(item,i){ legendSelected[item]=false    ;});  //初始化时，图例不选中
+	legendNameList.forEach(function(item,i){  //初始化时，图例默认不选中
+	    if(selectedLegends[item] && selectedLegends[item] ){
+            legendSelected[item]=true   ;
+        }else{
+	        legendSelected[item]=false    ;
+        }
+	});
 	generateSeries(row.exportData,"Export");
 	generateSeries(row.importData,"Import");
 
@@ -125,6 +134,11 @@ var initEchart=function(row){
 		series: series
 		};;
 		myChart.setOption(option, true);
+        myChart.on('legendselectchanged',function(params){
+            selectedLegends=params.selected; //更新容器
+        });
+
+
 }
 
 	/* 数据处理：把后台传过来的数据，转换成echart所需要的格式 */
@@ -144,7 +158,7 @@ var initEchart=function(row){
 				lineStyle: {            						//对线的各种设置 ：颜色,形状,曲度
 					normal: {
 						color: color[i%10],                   //求余
-						width: 0,           					//线宽
+						width: 0,           					//线宽为0
 						curveness: 0.4  						//边的曲度,支持从 0 到 1 的值,值越大曲度越大。0代表直线,1代表圆
 					}
 				},
@@ -247,7 +261,7 @@ var initEchart=function(row){
 		});
 	}
 
-	//额外设置线宽
+	//生成线的坐标信息 ，额外设置线宽
 	var convertData2 = function (item) {
 		var res = [];
 		for (var i = 0; i < item.data.length; i++) {
@@ -282,6 +296,7 @@ var initEchart=function(row){
 					lineStyle:{
 						normal:{
 							width: (dataItem.value/item.sum)*10,   //线宽
+							//width: 8-dataItem.sort*1.4,   //线宽
 							opacity: 0.6,    // 图形透明度。支持从 0 到 1 的数字,为 0 时不绘制该图形。
 							curveness: 0.4
 						}
@@ -291,7 +306,7 @@ var initEchart=function(row){
 		}
 		return res;
 };
-/**/
+/*生成线的坐标信息*/
 var convertData = function(item){
 		var res = [];
 		for (var i = 0; i < item.data.length; i++) {
@@ -523,6 +538,8 @@ var initTable = function(datas) {
 		//showRefresh:true,
 		onClickRow:function (row, $element, field) {/*表格的行点击事件*/
 			console.log("你点击了行："+row.fileName);
+			selectedLegends={};//此时要清空legend 数据
+            selectedSheet=row; //更新选中行数据
 			initEchart(row);
 		},
 
@@ -537,6 +554,7 @@ var initTable = function(datas) {
 	if(datas && datas.length>0){
 		console.log("第一次初始化echart: "+datas[0].fileName);
 		initEchart(datas[0]);
+		selectedSheet=datas[0]; //更新选中行数据
 	}
 	$('#loading').modal('hide');
 }
@@ -646,7 +664,7 @@ var refBtnFn =function(){
 //切换背景色
 var switchBtn=function(){
 	if(backgroundColor =='#404a59'){
-		backgroundColor='#FFFAF0';
+		backgroundColor='#FFFAF0';			//白色背景
 		color=[
 			'#FF3030',
 			'#0000CD',
@@ -666,7 +684,7 @@ var switchBtn=function(){
 		geoTextColor="#FFFF00"
 
 	}else{
-		backgroundColor='#404a59';
+		backgroundColor='#404a59';		//黑色背景
 		color=['#a6c84c',
 				'#ffa022',
 				'#FF3030',
@@ -683,7 +701,9 @@ var switchBtn=function(){
 		legendColor='#fff';
 		geoTextColor="#fff"
 	}
-	initTable(datas);
+	//initTable(datas);
+    initEchart(selectedSheet);
+
 }
 
 //切换标签
@@ -693,7 +713,8 @@ var switchSignBtn =function(){
 	}else{
 		isShowSign=true;
 	}
-	initTable(datas);
+	//initTable(datas);
+	initEchart(selectedSheet);
 }
 
 //初始化页面数据  包括表格数据

@@ -16,8 +16,10 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
+
 import  map1.views as map1
 import  manage.map2.views  as map2
+import  manage.map3.views  as map3
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -35,9 +37,17 @@ urlpatterns = [
     url(r'^map2/$',map2.getPage),  # 图2页面
     url(r'^initMap2/$',map2.getTableData),  # 图2数据
     url(r'^deleteDataInMap2/$',map2.deleteDataInMap2),  #删除
-    url(r'^uploadExcelInMap2$',map2.uploadExcelInMap2)  #删除
+    url(r'^uploadExcelInMap2$',map2.uploadExcelInMap2)  #新增
 
     #图3
+    , url(r'^nengyuanju/$',map3.nengyuanju)             #示例
+    , url(r'^map3/$',map3.getPage)                      #获取页面
+    , url(r'^initMap3/$',map3.getTableData)                  #获取页面数据，初始化页面
+    , url(r'^deleteDataInMap3/$',map3.deleteData)          #删除
+    , url(r'^uploadExcelInMap3$/$',map3.uploadExcel)        #新增
+
+
+
 
     #图4
 
