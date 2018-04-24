@@ -12,8 +12,7 @@ var visualMapColorOutOfRange='#4c5665'; //visualMap，范围外颜色
 var visualMapColor=['#565AB1','#7EB19A','#9CC63D'];//visualMap颜色变化范围
 var browserHeight=$(window).height() ; //浏览器高度
 // $("#main-container").height(browserHeight+"px");
-var emphasisAreaColor="#727272";         //选中国家的颜色
-var areaColor="#2a333d";              //国家的颜色
+
 
 //    echart      地图全局变量
 var dom2 = document.getElementById("mapContainer2");;//小地图
@@ -22,7 +21,8 @@ var option2 = null;
 var geoRegions=[        ];//地图选中国家
 var visualMapRange = [1,50];    //visualMap 排序变化范围
 var curIndex=0;             //当前年,默认是第一年
-
+var emphasisAreaColor="#727272";         //选中国家的颜色
+var areaColor="#2a333d";              //国家的颜色
 
 //  echart    主图全局变量
 var dom = document.getElementById("mapContainer");;//   主图
@@ -45,16 +45,16 @@ var gb = {
 
 //配置数据
 var itemStyle = {
-    opacity: 0.8,
+    opacity: 0.7,
     shadowBlur: 10,
     shadowOffsetX: 0,
     shadowOffsetY: 0,
     shadowColor: 'rgba(0, 0, 0, 0.5)',
     };
     // 计算出气泡半径
- var sizeFunction = function (x,averageSize) {
+    var sizeFunction = function (x,averageSize) {
         var y = Math.sqrt(0.01+x / averageSize) ;
-        return y * 30;
+        return y * 30+1;
     };
 var schema = [
 
@@ -83,7 +83,7 @@ var getGeoRegions = function(){
                 if(countrySwitch[counName]!=""){    //此时转换名字
                     counName=countrySwitch[counName];
                 }else{
-                    continue; //跳过，这些国家无法在echarts的geo地图上是无法显示的
+                    continue; //跳过，这些国家无法在echarts的geo地图上是无法显示的。因为echarts不存在这些国家
                 }
             }
             geoRegions.push({name: counName ,selected:true});
@@ -264,11 +264,11 @@ var initEchart=function(row){
                 //type: 'log', 		//对数轴。适用于对数数据
                 type: 'log',
                 name: '              人均GDP(单位:'+row.unitY+")",     //坐标轴名称
-                //offset :-20,
                 max: parseInt(row.yAxisMax),
                 //max: 200,
                 //min: parseInt(row.yAxisMin),
-                min: 0.01,
+                //min: 0.01,
+                min: row.yAxisMin,
                 nameTextStyle: {                    //坐标轴名称的文字样式
                     fontFamily:"Times New Roman",//字体
                     color: textColor,
@@ -530,13 +530,17 @@ var initEvent = function() {
     })
     
     $("#white_li").bind("click",function() {  //切换成白色背景
-        backgroundColor="#FFFAF0";
+        // backgroundColor="#FFFAF0";
+        // backgroundColor="#DCDCDC";
+        backgroundColor="#C1C1C1";
         textColor='#000000';
         emphasisColor='#555555';
         visualMapColorOutOfRange='#B1B1B1';
         visualMapColor=['orangered','yellow','lightskyblue'];
-        emphasisAreaColor="#808080";
-        areaColor="#DCDCDC";
+        // emphasisAreaColor="#808080";
+        // areaColor="#DCDCDC";
+        emphasisAreaColor="#555555";
+        areaColor="#8a8a8a";
         initEchart(selectedRow);
         initEchart2(selectedRow);//初始化小地图
     })

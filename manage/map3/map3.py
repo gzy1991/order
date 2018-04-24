@@ -14,6 +14,18 @@ import json
 import Tool.ExcelTool as ExcelTool
 import order.settings as Setting
 
+#   关于本图中excel的格式规则
+#   sheet名为“Unit” 或年份 如 1991、1992
+#   其中年份sheet的格式：   189行*3列
+#   第1列 人均gdp   Y轴
+#   第2列 人均消耗  X轴
+#   第3列   气泡大小
+#   其中Unit 的sheet的格式： 3*3
+#   第一行第二列         标题单位
+#   第二行第二列         Y轴单位
+#   第三行第二列         X轴单位
+
+
 #获得table数据 ，json格式,
 def getTableData():
 
@@ -36,8 +48,8 @@ def getTableData():
             unitX = 'undefined'  # 单位
             unitY = 'undefined'  # 单位
             emptySheets=[]           # 空数据的sheet
-            xAxis = []      #x轴最小值  最大值 人均gdp
-            yAxis = []      #y轴最小值  最大值 人均消耗
+            xAxis = []      # x轴最小值  最大值 人均gdp
+            yAxis = []      # y轴最小值  最大值 人均消耗
             symbolSize=[]   # sheet中 气泡大小之和列表，
             # 获取国家名列表
             country_name = ExcelTool.getArrayBySheetName(os.path.join(Setting.FILR_DIR["COMMON_DIR"], "Countries.xlsx"),"country")
@@ -66,9 +78,13 @@ def getTableData():
                                 sheetData[row][column]=0
                     symbolSize.append(sheetData[:,2].sum())       #本sheet中，气泡大小之和
                     sheetDataSort=np.argsort(-sheetData ,axis=0 )                          #排序，按列排序，降序
-                    yAxis.append([sheetData[sheetDataSort[0][0]][0]  , sheetData[sheetDataSort[countryNum-1][0]][0] ])      #把最大值和最小值都先存起来，之后比较
+                    yAxis.append(sheetData[sheetDataSort[0][0]][0])      #把最大值 先存起来，之后比较
+                    for index in range(1,countryNum):                   #找到y轴最小的非0值，作为y轴最小值
+                        if (sheetData[sheetDataSort[countryNum-index][0]][0]  !=0):
+                            yAxis.append(sheetData[sheetDataSort[countryNum-index][0]][0])
+                            break
                     xAxis.append([sheetData[sheetDataSort[0][1]][1]  , sheetData[sheetDataSort[countryNum-1][1]][1] ])      #把最大值和最小值都先存起来，之后比较
-                    sort={}                                                                #气泡大小排序 ，
+                    sort={}                                                                #气泡大小排序
                     for i in range(countryNum):
                         sort[sheetDataSort[i][2]]=i                   # 索引和排序都从0开始
                     for j in range(countryNum):
