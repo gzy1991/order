@@ -103,11 +103,15 @@ def getTableData():
                     unitY = excelData.sheet_by_name("Unit").cell_value(1, 1)    # Y轴单位
                     unitX= excelData.sheet_by_name("Unit").cell_value(2, 1)     # X轴单位
 
+            xAxisMax=np.array(xAxis).max()*0.9  # x轴的最大值做下处理，乘以0.9后，找最近的整数
+            length=len(str(int(xAxisMax)))-2
+            xMax = int(xAxisMax/(10**length)) * (10**length)
             # 从excel获取sheet， 转化成numpy.array
             result['unit'] = unit.encode("utf-8")                           # 单位
             result['unitX'] = unitX.encode("utf-8")                         # 单位X轴
             result['unitY'] = unitY.encode("utf-8")                         # 单位Y轴
-            result["xAxisMax"] = np.array(xAxis).max()      #x轴最小值  最大值 人均gdp
+            result["xAxisMax"] = xAxisMax                   #x轴最小值  最大值 人均gdp
+            result["xMax"] = xMax                           #x轴最大值   人均gdp
             result["xAxisMin"] = np.array(xAxis).min()      #x轴最小值  最大值 人均gdp
             result["yAxisMax"] = np.array(yAxis).max()      #y轴最小值  最大值 人均消耗
             result["yAxisMin"] = np.array(yAxis).min()      #y轴最小值  最大值 人均消耗

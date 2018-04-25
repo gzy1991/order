@@ -7,11 +7,11 @@
 //背景切换所需的数据
 var backgroundColor ='#404a59';     //echart背景色
 var textColor='#ccc';                   //文字颜色
+var textEmphasisColor="#fff";               //年份选中时颜色
 var emphasisColor='#aaa';;              //播放按钮颜色
 var visualMapColorOutOfRange='#4c5665'; //visualMap，范围外颜色
 var visualMapColor=['#565AB1','#7EB19A','#9CC63D'];//visualMap颜色变化范围
 var browserHeight=$(window).height() ; //浏览器高度
-// $("#main-container").height(browserHeight+"px");
 
 
 //    echart      地图全局变量
@@ -21,8 +21,9 @@ var option2 = null;
 var geoRegions=[        ];//地图选中国家
 var visualMapRange = [1,50];    //visualMap 排序变化范围
 var curIndex=0;             //当前年,默认是第一年
-var emphasisAreaColor="#727272";         //选中国家的颜色
-var areaColor="#2a333d";              //国家的颜色
+var emphasisAreaColor="#fff";         //选中国家的颜色
+var areaColor="#404a59";              //国家的颜色
+var borderColor="#aaa";                     //国家边界颜色
 
 //  echart    主图全局变量
 var dom = document.getElementById("mapContainer");;//   主图
@@ -35,7 +36,7 @@ var switchTime =2000;       //切换时间 2秒
 
 
 //缩放功能 数据区，
-var widewsPercentage=[40,40];       //窗体左右比例    初始化 是 40%  。记录两个40，是因为点击缩放按钮的时候，需要记录点击之前的比例和点击之后的比例
+var widewsPercentage=[40,40];       //窗体左右比例    初始化,左边是 40%  。记录两个40，是因为点击缩放按钮的时候，需要记录点击之前的比例和点击之后的比例
 var gb = {
     handler: {          //一个锁
         isDown: false
@@ -49,13 +50,27 @@ var itemStyle = {
     shadowBlur: 10,
     shadowOffsetX: 0,
     shadowOffsetY: 0,
-    shadowColor: 'rgba(0, 0, 0, 0.5)',
+    shadowColor: 'rgba(0, 0, 0, 0.5)'
     };
-    // 计算出气泡半径
-    var sizeFunction = function (x,averageSize) {
-        var y = Math.sqrt(0.01+x / averageSize) ;
-        return y * 30+1;
-    };
+// 计算出气泡半径
+//根据 原始气泡数据与平均值的比值关系来计算，
+//当比值太大的时候，要做一些处理，不然数据效果不好看
+var sizeFunction = function (x,averageSize) {
+    // var y = Math.sqrt(0.01+x / averageSize) ;
+    // console.log(y * 30+1)
+    // return y * 30+1;                         //一种方案
+    var z=x / averageSize;                      //比值关系
+    var y=0;
+    // return (Math.log(Math.E+z)-1)*50+0.3;    //一种方案
+    if(z<0.1){
+        y=Math.sqrt(0.01+z)*25+1
+    }else if(z>10){
+        y=Math.sqrt(0.01+10)*25+1 + (z-10)*1.5
+    }else{
+        y=Math.sqrt(0.01+z)*25+1
+    }
+    return y;
+};
 var schema = [
 
     {name: 'Welfare per capita', index: 1, text: '人均消耗', unit: '美元'}
@@ -98,7 +113,7 @@ var initEchart2 = function(row){
         myChart2.dispose();
     }
     curIndex=0;                 //初始化
-    visualMapRange=[0,100];     //初始化
+    visualMapRange=[0,50];     //初始化
     geoRegions=[];              //初始化
     dom2 = document.getElementById("mapContainer2");
     myChart2 = echarts.init(dom2);
@@ -127,12 +142,12 @@ var initEchart2 = function(row){
                     show:false
                 },
                 itemStyle:{
-                    borderColor: '#aaa',
+                    borderColor: borderColor,
                     areaColor: emphasisAreaColor
                 }
             },
             itemStyle: {
-                borderColor: '#aaa',
+                borderColor: borderColor,
                 areaColor: areaColor
             }
         }
@@ -151,25 +166,34 @@ var initEchart=function(row){
     unit=row.unit;
 	dom = document.getElementById("mapContainer");
     myChart = echarts.init(dom);
-    //curIndex=0;
+    curIndex=0;
     option={
         baseOption:{
             timeline: {
                 axisType: 'category',
                 orient: 'horizontal',
-                autoPlay: true,		//是否自动播放
+                autoPlay: false,		//是否自动播放
                 inverse: false,		//是否反向放置 timeline，反向则首位颠倒过来
 				rewind :false, 		//是否反向播放
                 playInterval: switchTime,	//播放速度
                 bottom :'3%',
-                //right:'3%',
                 label: {
-                	textStyle: {
+                    normal: {           //年份效果
+                        textStyle: {
                             fontFamily:"Times New Roman",	//字体
                             color: textColor
                         }
+                    },
+                    emphasis: {         //年份点击时效果
+                        textStyle: {
+                            fontFamily:"Times New Roman",	//字体
+                            //fontWeight :"bold",
+                            fontSize  :14,
+                            color: textEmphasisColor
+                        }
+                    }
                 },
-                //symbol: 'diamond',
+                symbol: 'none',
                 lineStyle: {
                     color: textColor
                 },
@@ -211,15 +235,19 @@ var initEchart=function(row){
 					},
 				}
 			],
-			tooltip: {										//提示框组件
+            tooltip: {										//提示框组件
                 padding: 5,
                 backgroundColor: '#222',
                 borderColor: '#777',
                 borderWidth: 1,
                 formatter: function (obj) {
                     var value = obj.value;
+                    if(value[3]<visualMapRange[0] || value[3]>visualMapRange[1]){           //未选中的范围，不显示提示框
+                        return;
+                    }
+                    console.log(typeof(value));
                     if(typeof(value)!="object"){
-                        return
+                        return;
                     }
                     return schema[2].text + '：' + value[2] + '<br>'
                             + schema[0].text + '：' + value[0].toFixed(2)   + '<br>'
@@ -238,15 +266,15 @@ var initEchart=function(row){
             },
 			xAxis: {
                 type: 'value', 		//对数轴。适用于对数数据
-                //type: 'value',		//数值轴，适用于连续数据
                 name: '人均消耗(单位:'+row.unitX+")",
-                max: parseInt(row.xAxisMax),
+                max: row.xMax,
                 min: parseInt(row.xAxisMin),
                 nameGap: 25,
                 nameLocation: 'middle',
+                nameGap :35,                //坐标轴名称与轴线之间的距离。
                 nameTextStyle: {                    //坐标轴名称的文字样式。
                     fontFamily:"Times New Roman",   //字体
-                    fontSize: 18
+                    fontSize: 15
                 },
                 splitLine: {  			//  分割线
                     show: false
@@ -265,15 +293,15 @@ var initEchart=function(row){
                 type: 'log',
                 name: '              人均GDP(单位:'+row.unitY+")",     //坐标轴名称
                 max: parseInt(row.yAxisMax),
-                //max: 200,
-                //min: parseInt(row.yAxisMin),
-                //min: 0.01,
                 min: row.yAxisMin,
                 nameTextStyle: {                    //坐标轴名称的文字样式
                     fontFamily:"Times New Roman",//字体
                     color: textColor,
-                    fontSize: 18
+                    fontSize: 15
                 },
+                nameRotate :90,             //坐标轴名字旋转，角度值。
+                nameLocation :"middle",     //坐标轴名称显示位置
+                nameGap :45,                //坐标轴名称与轴线之间的距离。
                 axisLine: {                 //坐标轴轴线设置
                     lineStyle: {
                         color: textColor
@@ -290,14 +318,16 @@ var initEchart=function(row){
                 {           //
                     type: 'continuous',
                     show: true,
-                    orient :'vertical',           //垂直 ，水平   horizontal
+                    orient :'vertical',           //垂直 。  水平：   horizontal
                     dimension: 3,                   //指定用数据的『哪个维度』,这个很重要，用这个来确定绑定关系
                     min:1,
                     max:189,
                     range:visualMapRange,
                     left:'10',
                     bottom:'5%',
-                    //align:'bottom',
+                    hoverLink :false,
+                    realtime :false,        //拖拽时，是否实时更新 。注意 ，如果设置为true，可能会出现一些bug，比如气泡隐藏后，鼠标放上去依然有效果
+                    //align:'top',
                     calculable: true,
                     precision: 0.1,
                     textGap: 30,
@@ -310,7 +340,7 @@ var initEchart=function(row){
                     color: visualMapColor,      //颜色变化范围
                     outOfRange: {               //未选中的
                         symbolSize:0,           //气泡半径
-                        opacity:"0",            //透明度
+                        opacity:0,            //透明度
                         color: visualMapColorOutOfRange
                     }
                 }
@@ -337,7 +367,6 @@ var initEchart=function(row){
     for(var n=0;n<row.timeline.length;n++){
     	option.baseOption.timeline.data.push(row.timeline[n]);
 		option.options.push({
-		    //legend: legends,
             series: {
                 id: 'gridScatter',
                 name: row.timeline[n],
@@ -351,7 +380,7 @@ var initEchart=function(row){
         });
 	}
 	myChart.setOption(option,true);
-    //绑定年份timeline 切换 事件
+    //绑定年份timeline 切换事件
     myChart.on('timelinechanged', function (params) {
         curIndex = params.currentIndex;
         if(selectedRow.emptySheets.indexOf(selectedRow.timeline[curIndex].toString())!=-1){      //，如果点了空sheet这时直接跳过，切换到不是空的那年sheet数据
@@ -362,7 +391,6 @@ var initEchart=function(row){
             for( ; index<allYears.length ; index++){
                 if(emptyYears.indexOf(allYears[index]) ==-1){   //如果不是空，那么就是这年
                     curIndex=index % (allYears.length/2); //求余
-                    console.log(curIndex);
                     myChart.dispatchAction({
                         type: 'timelineChange',
                         // 时间点的 index
@@ -484,7 +512,7 @@ var setSplitPosition = function(percentage){
     if(gb.lock){
         return;     //锁未开，不允许设置
     }
-    percentage = Math.min(0.9, Math.max(0.1, percentage));
+    percentage = Math.min(0.50, Math.max(0.25, percentage));  // 比例极限区间是 [25,50]
     widewsPercentage =[ percentage * 100, percentage * 100];
     adjustScrollPage();
 }
@@ -524,25 +552,31 @@ var initEvent = function() {
         visualMapColorOutOfRange='#4c5665';
         visualMapColor=['#565AB1','#7EB19A','#9CC63D'];
         emphasisAreaColor="#727272";
-        areaColor="#2a333d";
+        areaColor="#404a59";
+        textEmphasisColor="#fff";
+        borderColor="#aaa";
         initEchart(selectedRow);
-        initEchart2(selectedRow);//初始化小地图
+        getGeoRegions();
+        option2.geo.regions=geoRegions;
+        myChart2.setOption(option2,true);
+        //initEchart2(selectedRow);//初始化小地图
     })
     
     $("#white_li").bind("click",function() {  //切换成白色背景
-        // backgroundColor="#FFFAF0";
-        // backgroundColor="#DCDCDC";
         backgroundColor="#C1C1C1";
-        textColor='#000000';
+        textColor='#444444';
         emphasisColor='#555555';
         visualMapColorOutOfRange='#B1B1B1';
         visualMapColor=['orangered','yellow','lightskyblue'];
-        // emphasisAreaColor="#808080";
-        // areaColor="#DCDCDC";
         emphasisAreaColor="#555555";
-        areaColor="#8a8a8a";
+        areaColor="#C1C1C1";
+        textEmphasisColor="#000000";
+        borderColor="#555555";
         initEchart(selectedRow);
-        initEchart2(selectedRow);//初始化小地图
+        getGeoRegions();
+        option2.geo.regions=geoRegions;
+        myChart2.setOption(option2,true);
+        //initEchart2(selectedRow);//初始化小地图
     })
 }
 
