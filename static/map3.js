@@ -557,9 +557,7 @@ var initEvent = function() {
         borderColor="#aaa";
         initEchart(selectedRow);
         getGeoRegions();
-        option2.geo.regions=geoRegions;
-        myChart2.setOption(option2,true);
-        //initEchart2(selectedRow);//初始化小地图
+        initEchart2(selectedRow);//初始化小地图
     })
     
     $("#white_li").bind("click",function() {  //切换成白色背景
@@ -574,9 +572,7 @@ var initEvent = function() {
         borderColor="#555555";
         initEchart(selectedRow);
         getGeoRegions();
-        option2.geo.regions=geoRegions;
-        myChart2.setOption(option2,true);
-        //initEchart2(selectedRow);//初始化小地图
+        initEchart2(selectedRow);//初始化小地图
     })
 }
 
