@@ -266,7 +266,7 @@ var initEchart=function(row){
             },
 			xAxis: {
                 type: 'value', 		//对数轴。适用于对数数据
-                name: 'Welfare per capita('+row.unitX+")",
+                name: 'Welfare per capita ('+row.unitX+")",
                 max: row.xMax,
                 min: row.Min,
                 nameGap: 25,
@@ -291,7 +291,7 @@ var initEchart=function(row){
 			yAxis: {
                 //type: 'log', 		//对数轴。适用于对数数据
                 type: 'log',
-                name: 'GDP per capita('+row.unitY+")",     //坐标轴名称
+                name: 'GDP per capita ('+row.unitY+")",     //坐标轴名称
                 max: row.yMax,
                 min: row.yMin,
                 nameTextStyle: {                    //坐标轴名称的文字样式

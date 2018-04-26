@@ -138,7 +138,8 @@ def getTableData():
 
 #对x或y轴的最大值或最小值做下处理：乘以0.9后，找最近的整数
 #type :max 或者 min
-def handleMaxMin(list,type):
+#len: 精度，保留1位或2位
+def handleMaxMin(list,type,len=2):
     if(type=="max"):
         newData=np.array(list).max()*0.9
     elif(type=="min"):
