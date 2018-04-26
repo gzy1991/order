@@ -219,7 +219,7 @@ var initEchart=function(row){
 			backgroundColor:backgroundColor,				//背景
 			title: [ 									//标题
 				{
-					text: '各国人均GDP与人均消耗关系演变',
+					text: row.fileName,
 					left: 'center',
 					top: 10,
 					textStyle: {
@@ -266,9 +266,9 @@ var initEchart=function(row){
             },
 			xAxis: {
                 type: 'value', 		//对数轴。适用于对数数据
-                name: '人均消耗(单位:'+row.unitX+")",
+                name: 'Welfare per capita('+row.unitX+")",
                 max: row.xMax,
-                min: parseInt(row.xAxisMin),
+                min: row.Min,
                 nameGap: 25,
                 nameLocation: 'middle',
                 nameGap :35,                //坐标轴名称与轴线之间的距离。
@@ -291,9 +291,9 @@ var initEchart=function(row){
 			yAxis: {
                 //type: 'log', 		//对数轴。适用于对数数据
                 type: 'log',
-                name: '              人均GDP(单位:'+row.unitY+")",     //坐标轴名称
-                max: parseInt(row.yAxisMax),
-                min: row.yAxisMin,
+                name: 'GDP per capita('+row.unitY+")",     //坐标轴名称
+                max: row.yMax,
+                min: row.yMin,
                 nameTextStyle: {                    //坐标轴名称的文字样式
                     fontFamily:"Times New Roman",//字体
                     color: textColor,
@@ -301,7 +301,7 @@ var initEchart=function(row){
                 },
                 nameRotate :90,             //坐标轴名字旋转，角度值。
                 nameLocation :"middle",     //坐标轴名称显示位置
-                nameGap :45,                //坐标轴名称与轴线之间的距离。
+                nameGap :55,                //坐标轴名称与轴线之间的距离。
                 axisLine: {                 //坐标轴轴线设置
                     lineStyle: {
                         color: textColor
@@ -331,7 +331,7 @@ var initEchart=function(row){
                     calculable: true,
                     precision: 0.1,
                     textGap: 30,
-                    text:['小','大'],
+                    text:['Min','Max'],
                     textGap:5,
                     textStyle: {
                         color: textColor,
@@ -438,7 +438,7 @@ var initTable = function(datas){
             checkbox: true
         },{
 	        field: 'fileName',
-	        title: '<span class="tabldTitle">数据列表</span>'
+	        title: '<span class="tabldTitle">Excel List</span>'
 	    }],
 	    data: datas
 	});

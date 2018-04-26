@@ -547,7 +547,7 @@ var initTable = function(datas) {
             checkbox: true  
         },{
 	        field: 'fileName',
-	        title: '<span class="tabldTitle">数据列表</span>'
+	        title: '<span class="tabldTitle">Excel List</span>'
 	    }],
 	    data: datas
 	});

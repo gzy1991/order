@@ -94,7 +94,6 @@ def getTableData():
                         seriesCountry.append(countryList[j])            # 国家名
                         seriesCountry.append(sort[j]+1)                   # 排序号，气泡
                         # 大小的排序号. 从1开始
-
                         seriesCountry.append(sheetData[j][2])           # 气泡大小
                         series.append(seriesCountry)
                     seriesList.append(series)
@@ -103,18 +102,22 @@ def getTableData():
                     unitY = excelData.sheet_by_name("Unit").cell_value(0, 1)    # Y轴单位
                     unitX= excelData.sheet_by_name("Unit").cell_value(0, 0)     # X轴单位
 
-            xAxisMax=np.array(xAxis).max()*0.9  # x轴的最大值做下处理，乘以0.9后，找最近的整数
-            length=len(str(int(xAxisMax)))-2
-            xMax = int(xAxisMax/(10**length)) * (10**length)
-            # 从excel获取sheet， 转化成numpy.array
+            xMax=handleMaxMin(xAxis,"max")
+            xMin=handleMaxMin(xAxis,"min")
+            yMax=handleMaxMin(yAxis,"max")
+            yMin=handleMaxMin(yAxis,"min")
+
             result['unit'] = unit.encode("utf-8")                           # 单位
             result['unitX'] = unitX.encode("utf-8")                         # 单位X轴
             result['unitY'] = unitY.encode("utf-8")                         # 单位Y轴
-            result["xAxisMax"] = xAxisMax                   #x轴最小值  最大值 人均gdp
-            result["xMax"] = xMax                           #x轴最大值   人均gdp
-            result["xAxisMin"] = np.array(xAxis).min()      #x轴最小值  最大值 人均gdp
-            result["yAxisMax"] = np.array(yAxis).max()      #y轴最小值  最大值 人均消耗
-            result["yAxisMin"] = np.array(yAxis).min()      #y轴最小值  最大值 人均消耗
+            result["xAxisMax"] = np.array(yAxis).max()      #x轴最小值  最大值 人均消耗
+            result["xMax"] = xMax                           #x轴最大值 人均消耗
+            result["xMin"] = xMin                           #x轴最小值 人均消耗
+            result["xAxisMin"] = np.array(xAxis).min()      #x轴最小值  最大值 人均消耗
+            result["yAxisMax"] = np.array(yAxis).max()      #y轴最小值  最大值 人均gdp
+            result["yAxisMin"] = np.array(yAxis).min()      #y轴最小值  最大值 人均gdp
+            result["yMax"] = yMax                           # y轴最大值   人均gdp
+            result["yMin"] = yMin                           # y轴最小值   人均gdp
             result["counties"]=countryList                  #国家列表
             result["timeline"]=timeline                     #时间 ，sheet名集合
             result["emptySheets"]=emptySheets              #空数据sheet名集合
@@ -133,9 +136,17 @@ def getTableData():
     return resultListJson
 
 
-
-
-
-
+#对x或y轴的最大值或最小值做下处理：乘以0.9后，找最近的整数
+#type :max 或者 min
+def handleMaxMin(list,type):
+    if(type=="max"):
+        newData=np.array(list).max()*0.9
+    elif(type=="min"):
+        newData = np.array(list).min() * 0.9
+    if(newData<0 or newData==0):
+        return newData
+    length = len(str(int(newData))) - 2
+    xMaxMin = int(newData / (10 ** length)) * (10 ** length)
+    return xMaxMin
 
 
