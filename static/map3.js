@@ -73,11 +73,11 @@ var sizeFunction = function (x,averageSize) {
 };
 var schema = [
 
-    {name: 'Welfare per capita', index: 1, text: '人均消耗', unit: '美元'}
-    ,{name: 'GDP per capita', index: 0, text: '人均GDP', unit: '美元'}
-    ,{name: 'Country', index: 2, text: '国家', unit: ''}
-    ,{name: 'size', index: 3, text: '气泡大小', unit: ''}
-    ,{name: 'sort', index: 4, text: '排序', unit: ''}
+    {name: 'Welfare per capita', index: 1, text: 'Welfare', unit: '美元'}
+    ,{name: 'GDP per capita', index: 0, text: 'GDP', unit: '美元'}
+    ,{name: 'Country', index: 2, text: 'Region', unit: ''}
+    ,{name: 'size', index: 3, text: ' Size', unit: ''}
+    ,{name: 'sort', index: 4, text: ' Rank', unit: ''}
 ];
 
 /*
@@ -265,10 +265,10 @@ var initEchart=function(row){
                 right: 30
             },
 			xAxis: {
-                type: 'value', 		//对数轴。适用于对数数据
+                type: 'log', 		//对数轴。适用于对数数据
                 name: 'Welfare per capita  ('+row.unitX+")",
-                max: row.xMax,
-                min: row.Min,
+                max: parseInt(row.xAxisMax),
+                min:0.1,
                 nameGap: 25,
                 nameLocation: 'middle',
                 nameGap :35,                //坐标轴名称与轴线之间的距离。

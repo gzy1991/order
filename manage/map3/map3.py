@@ -110,7 +110,7 @@ def getTableData():
             result['unit'] = unit.encode("utf-8")                           # 单位
             result['unitX'] = unitX.encode("utf-8")                         # 单位X轴
             result['unitY'] = unitY.encode("utf-8")                         # 单位Y轴
-            result["xAxisMax"] = np.array(yAxis).max()      #x轴最小值  最大值 人均消耗
+            result["xAxisMax"] = np.array(xAxis).max()      #x轴最小值  最大值 人均消耗
             result["xMax"] = xMax                           #x轴最大值 人均消耗
             result["xMin"] = xMin                           #x轴最小值 人均消耗
             result["xAxisMin"] = np.array(xAxis).min()      #x轴最小值  最大值 人均消耗
