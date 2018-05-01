@@ -48,8 +48,8 @@ def getTableData():
             unitX = 'undefined'  # 单位
             unitY = 'undefined'  # 单位
             emptySheets=[]           # 空数据的sheet
-            xAxis = []      # x轴最小值  最大值 人均gdp
-            yAxis = []      # y轴最小值  最大值 人均消耗
+            xAxis = []      # x轴最小值  最大值    人均消耗
+            yAxis = []      # y轴最小值  最大值    人均gdp
             symbolSize=[]   # sheet中 气泡大小之和列表，
             # 获取国家名列表
             country_name = ExcelTool.getArrayBySheetName(os.path.join(Setting.FILR_DIR["COMMON_DIR"], "Countries.xlsx"),"country")
@@ -76,47 +76,50 @@ def getTableData():
                         for column in range(3):                 #   默认都是3列
                             if(sheetData[row][column]<0):
                                 sheetData[row][column]=0
-                    symbolSize.append(sheetData[:,2].sum())       #本sheet中，气泡大小之和
-                    sheetDataSort=np.argsort(-sheetData ,axis=0 )                          #排序，按列排序，降序
-                    yAxis.append(sheetData[sheetDataSort[0][0]][0])      #把最大值 先存起来，之后比较
+                    symbolSize.append(sheetData[:,2].sum())              #本sheet中，气泡大小之和
+                    sheetDataSort=np.argsort(-sheetData ,axis=0 )        #排序，按列排序，降序
+                    yAxis.append(sheetData[sheetDataSort[0][1]][1])      #把最大值 先存起来，之后比较
                     for index in range(1,countryNum):                   #找到y轴最小的非0值，作为y轴最小值
-                        if (sheetData[sheetDataSort[countryNum-index][0]][0]  !=0):
-                            yAxis.append(sheetData[sheetDataSort[countryNum-index][0]][0])
+                        if (sheetData[sheetDataSort[countryNum-index][1]][1]  !=0):
+                            yAxis.append(sheetData[sheetDataSort[countryNum-index][1]][1])
                             break
-                    xAxis.append([sheetData[sheetDataSort[0][1]][1]  , sheetData[sheetDataSort[countryNum-1][1]][1] ])      #把最大值和最小值都先存起来，之后比较
+                    xAxis.append([sheetData[sheetDataSort[0][0]][0]  , sheetData[sheetDataSort[countryNum-1][0]][0] ])      #把最大值和最小值都先存起来，之后比较
                     sort={}                                                                #气泡大小排序
                     for i in range(countryNum):
                         sort[sheetDataSort[i][2]]=i                   # 索引和排序都从0开始
                     for j in range(countryNum):
                         seriesCountry=[]                                #某年某个国家的数据
-                        seriesCountry.append(sheetData[j][1])  # 人均消耗量
-                        seriesCountry.append(sheetData[j][0])           # 人均gdp
+                        seriesCountry.append(sheetData[j][0])           # 人均消耗量
+                        seriesCountry.append(sheetData[j][1])           # 人均gdp
                         seriesCountry.append(countryList[j])            # 国家名
                         seriesCountry.append(sort[j]+1)                   # 排序号，气泡
                         # 大小的排序号. 从1开始
-
                         seriesCountry.append(sheetData[j][2])           # 气泡大小
                         series.append(seriesCountry)
                     seriesList.append(series)
                 else:                                       #处理3个单位
-                    unit = excelData.sheet_by_name("Unit").cell_value(0, 1)     # 标题单位
-                    unitY = excelData.sheet_by_name("Unit").cell_value(1, 1)    # Y轴单位
-                    unitX= excelData.sheet_by_name("Unit").cell_value(2, 1)     # X轴单位
+                    unit = excelData.sheet_by_name("Unit").cell_value(0, 2)     # 标题单位
+                    unitY = excelData.sheet_by_name("Unit").cell_value(0, 1)    # Y轴单位
+                    unitX= excelData.sheet_by_name("Unit").cell_value(0, 0)     # X轴单位
 
-            xAxisMax=np.array(xAxis).max()*0.9  # x轴的最大值做下处理，乘以0.9后，找最近的整数
-            length=len(str(int(xAxisMax)))-2
-            xMax = int(xAxisMax/(10**length)) * (10**length)
-            # 从excel获取sheet， 转化成numpy.array
+            xMax=handleMaxMin(xAxis,"max",1)
+            xMin=handleMaxMin(xAxis,"min")
+            yMax=handleMaxMin(yAxis,"max",1)
+            yMin=handleMaxMin(yAxis,"min")
+
             result['unit'] = unit.encode("utf-8")                           # 单位
             result['unitX'] = unitX.encode("utf-8")                         # 单位X轴
             result['unitY'] = unitY.encode("utf-8")                         # 单位Y轴
-            result["xAxisMax"] = xAxisMax                   #x轴最小值  最大值 人均gdp
-            result["xMax"] = xMax                           #x轴最大值   人均gdp
-            result["xAxisMin"] = np.array(xAxis).min()      #x轴最小值  最大值 人均gdp
-            result["yAxisMax"] = np.array(yAxis).max()      #y轴最小值  最大值 人均消耗
-            result["yAxisMin"] = np.array(yAxis).min()      #y轴最小值  最大值 人均消耗
+            result["xAxisMax"] = np.array(xAxis).max()      #x轴最小值  最大值 人均消耗
+            result["xMax"] = xMax                           #x轴最大值 人均消耗
+            result["xMin"] = xMin                           #x轴最小值 人均消耗
+            result["xAxisMin"] = np.array(xAxis).min()      #x轴最小值  最大值 人均消耗
+            result["yAxisMax"] = np.array(yAxis).max()      #y轴最小值  最大值 人均gdp
+            result["yAxisMin"] = np.array(yAxis).min()      #y轴最小值  最大值 人均gdp
+            result["yMax"] = yMax                           # y轴最大值   人均gdp
+            result["yMin"] = yMin                           # y轴最小值   人均gdp
             result["counties"]=countryList                  #国家列表
-            result["timeline"]=timeline                     # 时间 ，sheet名集合
+            result["timeline"]=timeline                     #时间 ，sheet名集合
             result["emptySheets"]=emptySheets              #空数据sheet名集合
             result["series"]=seriesList
             result["averageSize"]=np.array(symbolSize).sum()/ (countryNum *len(timeline))                # 气泡大小平均值
@@ -133,9 +136,18 @@ def getTableData():
     return resultListJson
 
 
-
-
-
-
+#对x或y轴的最大值或最小值做下处理：乘以0.9后，找最近的整数
+#type :max 或者 min
+#len: 精度，保留1位或2位
+def handleMaxMin(list,type,accuracy=2):
+    if(type=="max"):
+        newData=np.array(list).max()*0.9
+    elif(type=="min"):
+        newData = np.array(list).min() * 0.9
+    if(newData<0 or newData==0):
+        return newData
+    length = len(str(int(newData))) - accuracy
+    xMaxMin = int(newData / (10 ** length)) * (10 ** length)
+    return xMaxMin
 
 

@@ -73,11 +73,11 @@ var sizeFunction = function (x,averageSize) {
 };
 var schema = [
 
-    {name: 'Welfare per capita', index: 1, text: '人均消耗', unit: '美元'}
-    ,{name: 'GDP per capita', index: 0, text: '人均GDP', unit: '美元'}
-    ,{name: 'Country', index: 2, text: '国家', unit: ''}
-    ,{name: 'size', index: 3, text: '气泡大小', unit: ''}
-    ,{name: 'sort', index: 4, text: '排序', unit: ''}
+    {name: 'Welfare per capita', index: 1, text: 'Welfare', unit: '美元'}
+    ,{name: 'GDP per capita', index: 0, text: 'GDP', unit: '美元'}
+    ,{name: 'Country', index: 2, text: 'Region', unit: ''}
+    ,{name: 'size', index: 3, text: ' Size', unit: ''}
+    ,{name: 'sort', index: 4, text: ' Rank', unit: ''}
 ];
 
 /*
@@ -219,7 +219,7 @@ var initEchart=function(row){
 			backgroundColor:backgroundColor,				//背景
 			title: [ 									//标题
 				{
-					text: '各国人均GDP与人均消耗关系演变',
+					text: row.fileName,
 					left: 'center',
 					top: 10,
 					textStyle: {
@@ -265,10 +265,10 @@ var initEchart=function(row){
                 right: 30
             },
 			xAxis: {
-                type: 'value', 		//对数轴。适用于对数数据
-                name: '人均消耗(单位:'+row.unitX+")",
-                max: row.xMax,
-                min: parseInt(row.xAxisMin),
+                type: 'log', 		//对数轴。适用于对数数据
+                name: 'Welfare per capita  ('+row.unitX+")",
+                max: parseInt(row.xAxisMax),
+                min:0.1,
                 nameGap: 25,
                 nameLocation: 'middle',
                 nameGap :35,                //坐标轴名称与轴线之间的距离。
@@ -291,9 +291,9 @@ var initEchart=function(row){
 			yAxis: {
                 //type: 'log', 		//对数轴。适用于对数数据
                 type: 'log',
-                name: '              人均GDP(单位:'+row.unitY+")",     //坐标轴名称
-                max: parseInt(row.yAxisMax),
-                min: row.yAxisMin,
+                name: 'GDP per capita  ('+row.unitY+")",     //坐标轴名称
+                max: row.yMax,
+                min: row.yMin,
                 nameTextStyle: {                    //坐标轴名称的文字样式
                     fontFamily:"Times New Roman",//字体
                     color: textColor,
@@ -301,7 +301,7 @@ var initEchart=function(row){
                 },
                 nameRotate :90,             //坐标轴名字旋转，角度值。
                 nameLocation :"middle",     //坐标轴名称显示位置
-                nameGap :45,                //坐标轴名称与轴线之间的距离。
+                nameGap :55,                //坐标轴名称与轴线之间的距离。
                 axisLine: {                 //坐标轴轴线设置
                     lineStyle: {
                         color: textColor
@@ -331,7 +331,7 @@ var initEchart=function(row){
                     calculable: true,
                     precision: 0.1,
                     textGap: 30,
-                    text:['小','大'],
+                    text:['Min','Max'],
                     textGap:5,
                     textStyle: {
                         color: textColor,
@@ -438,7 +438,7 @@ var initTable = function(datas){
             checkbox: true
         },{
 	        field: 'fileName',
-	        title: '<span class="tabldTitle">数据列表</span>'
+	        title: '<span class="tabldTitle">Excel List</span>'
 	    }],
 	    data: datas
 	});
@@ -557,9 +557,7 @@ var initEvent = function() {
         borderColor="#aaa";
         initEchart(selectedRow);
         getGeoRegions();
-        option2.geo.regions=geoRegions;
-        myChart2.setOption(option2,true);
-        //initEchart2(selectedRow);//初始化小地图
+        initEchart2(selectedRow);//初始化小地图
     })
     
     $("#white_li").bind("click",function() {  //切换成白色背景
@@ -574,9 +572,7 @@ var initEvent = function() {
         borderColor="#555555";
         initEchart(selectedRow);
         getGeoRegions();
-        option2.geo.regions=geoRegions;
-        myChart2.setOption(option2,true);
-        //initEchart2(selectedRow);//初始化小地图
+        initEchart2(selectedRow);//初始化小地图
     })
 }
 
