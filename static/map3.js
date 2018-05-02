@@ -10,7 +10,14 @@ var textColor='#ccc';                   //文字颜色
 var textEmphasisColor="#fff";               //年份选中时颜色
 var emphasisColor='#aaa';;              //播放按钮颜色
 var visualMapColorOutOfRange='#4c5665'; //visualMap，范围外颜色
-var visualMapColor=['#565AB1','#7EB19A','#9CC63D'];//visualMap颜色变化范围
+var visualMapColor=['#b14628',
+    '#a2b1b0',
+    '#33a5c6'];//visualMap颜色变化范围
+visualMapColor=[
+    "#33a5c6",
+    "#1BB116",
+    "#c67f58"
+];
 var browserHeight=$(window).height() ; //浏览器高度
 
 
@@ -113,11 +120,10 @@ var initEchart2 = function(row){
         myChart2.dispose();
     }
     curIndex=0;                 //初始化
-    visualMapRange=[0,50];     //初始化
     geoRegions=[];              //初始化
     dom2 = document.getElementById("mapContainer2");
     myChart2 = echarts.init(dom2);
-    getGeoRegions(0,visualMapRange[0],visualMapRange[1]);  //获取初始化时，需要获取选中的国家列表
+    getGeoRegions();  //获取初始化时，需要获取选中的国家列表
     option2={
         backgroundColor:backgroundColor,				//背景
         geo: {              //小地图
@@ -267,7 +273,8 @@ var initEchart=function(row){
 			xAxis: {
                 type: 'value', 		//对数轴。适用于对数数据
                 name: 'Welfare per capita  ('+row.unitX+")",
-                max: parseInt(row.xMax),
+                //max: parseInt(row.xMax),
+                max: Math.round(row.xMax/Math.pow(10,row.xMax.toString().length-1)) * Math.pow(10,row.xMax.toString().length-1),
                 min: parseInt(row.xMin),
                 nameGap: 25,
                 nameLocation: 'middle',
@@ -550,7 +557,9 @@ var initEvent = function() {
         textColor='#ccc';
         emphasisColor='#aaa';
         visualMapColorOutOfRange='#4c5665';
-        visualMapColor=['#565AB1','#7EB19A','#9CC63D'];
+        visualMapColor=["#33a5c6",
+            "#1BB116",
+            "#c67f58"];
         emphasisAreaColor="#727272";
         areaColor="#404a59";
         textEmphasisColor="#fff";

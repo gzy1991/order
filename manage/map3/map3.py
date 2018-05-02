@@ -102,7 +102,7 @@ def getTableData():
                     unitY = excelData.sheet_by_name("Unit").cell_value(0, 1)    # Y轴单位
                     unitX= excelData.sheet_by_name("Unit").cell_value(0, 0)     # X轴单位
 
-            xMax=handleMaxMin(xAxis,"max",1,rate=0.8)
+            xMax=handleMaxMin(xAxis,"max",2,rate=1)
             xMin=handleMaxMin(xAxis,"min",2)
             yMax=handleMaxMin(yAxis,"max",1)
             yMin=handleMaxMin(yAxis,"min",2)
@@ -138,7 +138,7 @@ def getTableData():
 
 #对x或y轴的最大值或最小值做下处理：乘以0.9后，找最近的整数
 #type :max 或者 min
-#len: 精度，保留1位或2位
+#accuracy: 精度，保留1位或2位
 #rate :系数
 def handleMaxMin(list,type,accuracy=2,rate=0.9):
     if(type=="max"):
