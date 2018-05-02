@@ -265,7 +265,7 @@ var initEchart=function(row){
                 right: 30
             },
 			xAxis: {
-                type: 'log', 		//对数轴。适用于对数数据
+                type: 'value', 		//对数轴。适用于对数数据
                 name: 'Welfare per capita  ('+row.unitX+")",
                 max: parseInt(row.xAxisMax),
                 min:0.1,
