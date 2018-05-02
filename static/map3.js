@@ -267,8 +267,8 @@ var initEchart=function(row){
 			xAxis: {
                 type: 'value', 		//对数轴。适用于对数数据
                 name: 'Welfare per capita  ('+row.unitX+")",
-                max: parseInt(row.xAxisMax),
-                min:0.1,
+                max: parseInt(row.xMax),
+                min: parseInt(row.xMin),
                 nameGap: 25,
                 nameLocation: 'middle',
                 nameGap :35,                //坐标轴名称与轴线之间的距离。
