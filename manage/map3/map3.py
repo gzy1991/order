@@ -31,7 +31,7 @@ def getTableData():
 
     files = ExcelTool.listExcelFile(Setting.FILR_DIR["MAP3_DIR"])
     print files             # .xlsx结果文件列表
-    resultList = []
+    resultList = []         # 全部excel文件处理后的结果，容器
     errMsg = ""             #错误信息
     countryNum=189          #国家总数
 

@@ -20,6 +20,7 @@ from django.contrib import admin
 import  map1.views as map1
 import  manage.map2.views  as map2
 import  manage.map3.views  as map3
+import  manage.map4.views  as map4
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -46,11 +47,11 @@ urlpatterns = [
     , url(r'^deleteDataInMap3/$',map3.deleteData)          #删除
     , url(r'^uploadExcelInMap3$/$',map3.uploadExcel)        #新增
 
-
-
-
     #图4
-
+    , url(r'^map4/$',map4.getPage)                      #获取页面
+    , url(r'^initMap4/$',map4.getTableData)                  #获取页面数据，初始化页面
+    , url(r'^deleteDataInMap4/$',map4.deleteData)          #删除
+    , url(r'^uploadExcelInMap4$/$',map4.uploadExcel)        #新增
 
 
 ]
