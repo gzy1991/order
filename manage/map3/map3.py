@@ -34,6 +34,12 @@ def getTableData():
     resultList = []         # 全部excel文件处理后的结果，容器
     errMsg = ""             #错误信息
     countryNum=189          #国家总数
+    # 获取国家名列表
+    country_name = ExcelTool.getArrayBySheetName(os.path.join(Setting.FILR_DIR["COMMON_DIR"], "Countries.xlsx"),
+                                                 "country")
+    countryList = []  # 国家名list，有序
+    for i in range(countryNum):
+        countryList.append(country_name[i, 0].encode("utf-8"))
 
     for file in files:      # 遍历每个excel文件
         try:
@@ -51,11 +57,7 @@ def getTableData():
             xAxis = []      # x轴最小值  最大值    人均消耗
             yAxis = []      # y轴最小值  最大值    人均gdp
             symbolSize=[]   # sheet中 气泡大小之和列表，
-            # 获取国家名列表
-            country_name = ExcelTool.getArrayBySheetName(os.path.join(Setting.FILR_DIR["COMMON_DIR"], "Countries.xlsx"),"country")
-            countryList=[]   #  国家名list，有序
-            for i in range(countryNum):
-                countryList.append(country_name[i,0].encode("utf-8"))
+
 
             timeline=[]                                         #timeline  ,年数的集合
             sheetNameList=excelData.sheet_names()               #获取此文件的全部sheet名

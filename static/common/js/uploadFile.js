@@ -4,8 +4,16 @@
 
 
 
+
+
 /*初始化上传组件*/
-var initUpload = function(ctrlName, uploadUrl,addButtonResult){
+/*
+* ctrlName  按钮id
+* uploadUrl	：上传链接
+* addButtonResult ：结果显示div的id
+*
+* */
+var initUpload = function(ctrlName, uploadUrl,addButtonResult,refreshFun){
 	 var control = $('#' + ctrlName);
 	 control.fileinput({
 		language: 'zh', //设置语言
@@ -19,7 +27,7 @@ var initUpload = function(ctrlName, uploadUrl,addButtonResult){
 		console.log(data);
 		$("#"+addButtonResult).append("<p>"+data.response.message+"<p>");
 		if("true"==data.response.result){ //刷新表格
-			refBtnFn();
+			refreshFun();
 		}else if ("false"==data.response.result){
 			//不操作
 		}

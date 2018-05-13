@@ -24,7 +24,7 @@
           <div class="" id="table-container" style="width: 40%; ">
               <div style="height: 60%;weight:100%;overflow:auto;background:#e8e8e8;" >
                 <button id="button" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" style="margin-top:2px;margin-left:5px;float:left;">新增</button>
-                <button id="delBtn" type="button" class="btn btn-danger"     style="margin-top:2px;margin-left:5px;float:left;" onclick="delBtnFn()">删除</button>
+                <button id="delBtn" type="button" class="btn btn-danger"     style="margin-top:2px;margin-left:5px;float:left;" >删除</button>
                 <button id="refBtn" type="button" class="btn btn-success"  style="margin-top:2px;margin-left:5px;float:left;" onclick="refBtnFn()">刷新</button>
 
                     <div class="btn-group hiddenClass">
@@ -41,15 +41,15 @@
                 <table id="tableContainer" ></table>
 
                 </div>
-              <div class="hiddenClass" style="height: 40%;" style="padding-right: 20px;"> {% comment %}   小地图 中国     {% endcomment %}
-                  <div  id ="mapContainer2" ></div>
+              <div class="" style="height: 40%;" style="padding-right: 20px;"> {% comment %}   小地图 中国     {% endcomment %}
+                  <div  id ="mapContainer" ></div>
 
               </div>
 
           </div>
           <div id="h-handler" class="handler" style="left: 40%;"></div>
           <div  id="mapDiv" class = "right-container" style="width: 60%;left: 40%;  ">
-              <div id="mapContainer" style="height: 30%;weight:100%;">  {% comment %} 主图 世界{% endcomment %}
+              <div id="mapContainer2" style="height: 30%;weight:100%;">  {% comment %} 主图 世界{% endcomment %}
               </div>
 
           </div>
@@ -136,6 +136,7 @@
  <script type="text/javascript" src="/static/resource/echarts4/echarts.min.js"></script>
   <script type="text/javascript" src="/static/resource/echart/ecStat.min.js"></script>
   <script type="text/javascript" src="/static/resource/echart/dataTool.min.js"></script>
+    <script type="text/javascript" src="/static/resource/echart/china.js"></script>
     <script type="text/javascript" src="/static/resource/echart/world.js"></script>
   <script type="text/javascript" src="/static/resource/jquery/jquery.min.js"></script>
   <script type="text/javascript" src="/static/resource/bootstrap/js/bootstrap.js"></script>
@@ -153,16 +154,18 @@
     <script type="text/javascript" src="/static/resource/bootstrap-fileinput/fileinput.min.js"></script>
     <script type="text/javascript" src="/static/resource/bootstrap-fileinput/locales/zh.js"></script>
     <link href="/static/resource/bootstrap-fileinput/fileinput.min.css" rel="stylesheet" />
+    <script type="text/javascript" src="/static/common/js/uploadFile.js"></script>
+    <script type="text/javascript" src="/static/common/js/gridTool.js"></script>
     <script type="text/javascript" src="/static/map4.js"></script>
     <script type="text/javascript">
             // 初始化header 导航栏
             $(document).ready(function(){
                 $("#headerContainer").load("/static/html/header.html");
                 //初始化上传组件
-                initUpload("excelFile","/uploadExcelInMap3");
-                initEvent();//初始化事件绑定
-                initEventHandler(); //
-                initData();  //   调用初始化页面
+                initUpload("excelFile","/uploadExcelInMap3","addButtonResult",refBtnFn());
+                initEvent();//初始化事件绑定,缩进/展开功能
+                initEventHandler("h-handler"); //绑定缩放功能
+                initPageData();  //   调用初始化页面
             });
 
     </script>

@@ -10,15 +10,12 @@ var textColor='#ccc';                   //文字颜色
 var textEmphasisColor="#fff";               //年份选中时颜色
 var emphasisColor='#aaa';;              //播放按钮颜色
 var visualMapColorOutOfRange='#4c5665'; //visualMap，范围外颜色
-var visualMapColor=['#b14628',
-    '#a2b1b0',
-    '#33a5c6'];//visualMap颜色变化范围
-visualMapColor=[
+var visualMapColor=[//visualMap颜色变化范围
     "#33a5c6",
     "#1BB116",
     "#c67f58"
 ];
-var browserHeight=$(window).height() ; //浏览器高度
+//var browserHeight=$(window).height() ; //浏览器高度
 
 
 //    echart      地图全局变量
@@ -435,7 +432,7 @@ var initTable = function(datas){
 			console.log("你点击了行："+row.fileName);
 			selectedPros=[];  //选中的省份,清空
 			geoData=[];       // option中的regions，对选中的省份设备背景色 ,清空
-			seriesData=[];    //  根据进出口类型和选中的省份画的线，清空
+			seriesData=[];    //  根据
 			selectedRow=row;
             initEchart(selectedRow);
             initEchart2(selectedRow);//初始化小地图
