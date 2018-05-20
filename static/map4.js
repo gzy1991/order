@@ -29,17 +29,70 @@ var switchTime =2000;       //动画切换时间 2秒
 var dom = document.getElementById("mapContainer");;//
 var myChart = echarts.init(dom);;
 var option=null;
-var geoRegions=[        ];//地图选中省份，
 var emphasisAreaColor="#fff";         //选中省份的颜色
 var areaColor="#404a59";              //省份的颜色
 var borderColor="#aaa";                     //省份边界颜色
+var selectedPros= "Beijing";  	//图中选中的省份名，默认是北京
+//地图选中省份，  选中的省份,初始化的时候是空.当点击省份时，更新这个数据。.
+// 默认是北京.最多只能选一个省份
+var  geoData=[
+    {name:"Beijing",selected:true }
+    ,{name:"北京",selected:true }
+];
 
 /*世界地图*/
 var dom2= document.getElementById("mapContainer2");;//
 var myChart2 = echarts.init(dom2);;
 var option2 = null;
 var seriesData =[]; //  容器，存储数据
+var curIndex=0;             //滚动轴当前项,默认是第一个
+var  geoData2=[              //世界地图，颜色
+    {
+        name:"China",
+        selected:true,
+        itemStyle:{
+            color:'#cc484a',
+            areaColor :{
+                color:'#cc484a'
+            }
+        },
+        emphasis:{
+            itemStyle:{
+                 color:'#cc484a'
+            }
+        }
+    }
+];
+/*生成世界地图中，各国的颜色数据*/
+/* 根据 selectedPros 和 curIndex ，生成geoData2  */
+var generateColor=function(){
+    geoData2=[];//先清空
+    for(var i=0;i<189;i++){
 
+    }
+
+}
+
+var nameMap={  //地图省份名字映射关系
+		'南海诸岛':"NanHai",
+		'河南': "Henan",'山西': "Shanxi",
+		'安徽': "Anhui",		'北京': "Beijing",		'甘肃': "Gansu",		'重庆': "Chongqing",
+		'福建': "Fujian",		'广东': "Guangdong",		'广西': "Guangxi",		'贵州': "Guizhou",
+		'黑龙江': "Heilongjiang",		'香港': "Hong Kong",		'湖北': "Hubei",
+		'湖南': "Hunan",		'江苏': "Jiangsu",		'辽宁': "Liaoning",
+		'江西': "Jiangxi",		'吉林': "Jilin",		'海南': "Hainan",
+		'澳门': "Macau",		'内蒙古': "Inner mongolia",		'宁夏': "Ningxia",
+		'青海': "Qinghai",		'河北': "Hebei",		'陕西': "Shaanxi",		'山东': "Shandong",
+		'四川': "Sichuan",		'台湾': "Taiwan",		'天津': "Tianjin",		'西藏': "Tibet",
+		'新疆': "Xinjiang",		'云南': "Yunnan",		'上海': "Shanghai",				'浙江': "Zhejiang"	,
+
+	 	"Henan":"河南","Shanxi":"山西","Anhui":"安徽","Beijing":"北京","Gansu":"甘肃","Chongqing":"重庆",
+		"Fujian":"福建","Guangdong":"广东","Guangxi":"广西","Guizhou":"贵州","Heilongjiang":"黑龙江",
+		"Hong Kong":"香港","Hubei":"湖北","Hunan":"湖南","Jiangsu":"江苏","Liaoning":"辽宁","Jiangxi":"江西",
+		"Jilin":"吉林","Hainan":"海南","Macau":"澳门","Inner mongolia":"内蒙古","Ningxia":"宁夏","Qinghai":"青海",
+		"Hebei":"河北","Shaanxi":"陕西","Shandong":"山东","Sichuan":"四川","Taiwan":"台湾","Tianjin":"天津",
+		"Tibet":"西藏","Xinjiang":"新疆","Yunnan":"云南","Shanghai":"上海","Zhejiang":"浙江"
+	};
 //提示框配置数据
 var itemStyle = {
     opacity: 0.7,
@@ -88,7 +141,7 @@ var initTable=function(datas){
 			console.log("你点击了行："+row.fileName);
 			selectedPros=[];        //选中的省份,改为默认身份  todo
 			//geoData=[];             // option中的regions，对选中的省份设备背景色 ,清空
-			seriesData=[];          //  根据进出口类型和选中的省份画的线，清空
+			seriesData=[];          //
 			selectedRow=row;
             initEchart(selectedRow);    //初始化中国地图
             initEchart2(selectedRow);   //初始化世界地图
@@ -134,13 +187,14 @@ var initEchart = function(row){
             roam: true,
             silent:false,            //不响应鼠标点击事件
             selectedMode:'single',      //只能选一个
+            nameMap: nameMap,  //省份显示英文
             selected:true,//?
             zoom:1.2,
             scaleLimit:{//滚轮缩放的极限控制，通过min, max最小和最大的缩放值
                 min:0.8,
                 max:2
             },
-            regions:geoRegions,
+            regions:geoData,
 
             emphasis:{      //选中国家的颜色
                 label:{
@@ -158,11 +212,158 @@ var initEchart = function(row){
         }
     };
     myChart.setOption(option,true);
+
+    /*绑定身份点击事件*/
+    myChart.on('click', function (params) {
+        if("geo"!=params.componentType){  //如果点击的不是地图的省份，那么跳过，不处理
+            return;
+        }
+        var name =  params.region.name;  //省份名  英文名
+        if("Hong Kong,Macau,Taiwan,香港,澳门,台湾".indexOf(name)!=-1 || name ==undefined){  //有几个省份是忽略的
+		}else{
+            selectedPros=name;
+            geoData=[
+                {name:name, selected:true  }
+                ,
+                {name:nameMap[name], selected:true }
+                ];
+            option.geo.regions=geoData;
+        }
+        //var isSelected=selectedPros.indexOf(name) != -1; //省份是否已经被选中了，
+        /*更新选中的省份*/
+        myChart.setOption(option,true);
+    })
+
+
 }
 
 
 /*初始化世界地图*/
 var initEchart2= function(row){
+    console.log("初始化世界地图echarts！");
+
+    if(myChart2&&myChart2.dispose){
+        myChart2.dispose();
+    }
+    unit=row.unit;
+    dom2 = document.getElementById("mapContainer2");
+    myChart2 = echarts.init(dom2);
+    option2={
+        baseOption:{
+            timeline: {
+                axisType: 'category',
+                orient: 'horizontal',
+                autoPlay: false,		//是否自动播放
+                inverse: false,		//是否反向放置 timeline，反向则首位颠倒过来
+				rewind :false, 		//是否反向播放
+                playInterval: switchTime,	//播放速度
+                bottom :'3%',
+                label: {
+                    normal: {           //轴效果
+                        textStyle: {
+                            fontFamily:"Times New Roman",	//字体
+                            color: textColor
+                        }
+                    },
+                    emphasis: {         //轴点击时效果
+                        textStyle: {
+                            fontFamily:"Times New Roman",	//字体
+                            //fontWeight :"bold",
+                            fontSize  :14,
+                            color: textEmphasisColor
+                        }
+                    }
+                },
+                symbol: 'none',
+                lineStyle: {
+                    color: textColor
+                },
+                checkpointStyle: { //『当前项』（checkpoint）的图形样式。
+                    color: textColor,
+                    borderColor: '#777',
+                    borderWidth: 2
+                },
+                controlStyle: { //播放按钮
+                    showNextBtn: false,
+                    showPrevBtn: false,
+                    normal: {
+                        color: textColor,
+                        borderColor: textColor
+                    },
+                    emphasis: {
+                        color: emphasisColor,
+                        borderColor: emphasisColor
+                    }
+                },
+                data: []
+            },
+            backgroundColor:backgroundColor,				//背景
+            title: [ 									//标题
+				{
+					text: row.fileName,
+					left: 'center',
+					top: 10,
+					textStyle: {
+						fontFamily:"Times New Roman",	//字体
+						color: textColor,
+						fontWeight: 'normal',
+						fontSize: 20
+					},
+					subtext: 'Unit：'+row.unit,				//副标题
+					subtextStyle : {  						//副标题
+						fontFamily:"Times New Roman",	//字体
+						color: textColor
+					},
+				}
+			],
+
+            animationDurationUpdate: switchTime			//数据更新动画的时长。
+        },
+        options: [
+        ]
+
+    };
+     for(var n=0;n<row.timeline.length;n++){
+    	option2.baseOption.timeline.data.push(row.timeline[n]);
+    	option2.options.push({
+            geo: {              //世界地图
+                show:true,
+                name: 'maps2',
+                type: 'map',
+                map: 'world',
+                aspectScale :1,//用于 scale 地图的长宽比。
+                roam: true,
+                silent:false,            //不响应鼠标点击事件
+                selectedMode:'false',      //只能选一个
+                //selected:true,//?
+                zoom:1.2,
+                scaleLimit:{//滚轮缩放的极限控制，通过min, max最小和最大的缩放值
+                    min:0.8,
+                    max:2
+                },
+                emphasis:{      //选中国家的颜色
+                    label:{
+                        show:false
+                    },
+                    itemStyle:{
+                        borderColor: borderColor,
+                        areaColor: emphasisAreaColor
+                    }
+                },
+                itemStyle: {
+                    borderColor: borderColor,
+                    areaColor: areaColor
+                },
+                regions:geoData2  //地图颜色信息
+            },
+        })
+
+	}
+    myChart2.setOption(option2,true);
+    myChart2.on('click', function (params) {
+        console.log(params)
+
+    })
 
 }
 
@@ -183,16 +384,14 @@ var adjustScrollPage = function() {
         .css('left', widewsPercentage[0] + '%');
     $('#h-handler').css('left', widewsPercentage[0] + '%');
 
-    setTimeout(function(){
-		 //dom.style.width = (window.innerWidth - $("#table-container").width()
-         //    -$("#h-handler").width())+'px';
-		 //dom.style.height = (window.innerHeight - 55)+'px';
-    	//myChart.resize();
+    setTimeout(function(){/*世界地图*/
+         dom2.style.height = (window.innerHeight - 55)+'px';
+         myChart2.resize();
     },100);
-    setTimeout(function(){
-		 //dom2.style.width = $("#table-container").width()+'px';
-		 //dom2.style.height = $("#table-container").height()*0.4+'px';
-    	//myChart2.resize();
+    setTimeout(function(){/*中国地图*/
+        dom.style.width = $("#table-container").width()+'px';
+		 dom.style.height = $("#table-container").height()*0.4+'px';
+    	myChart.resize();
     },100);
 }
 
@@ -291,12 +490,11 @@ var initEvent = function(){
         visualMapColor=["#33a5c6",
             "#1BB116",
             "#c67f58"];
-        emphasisAreaColor="#727272";
+        emphasisAreaColor="#fff";
         areaColor="#404a59";
         textEmphasisColor="#fff";
         borderColor="#aaa";
         initEchart(selectedRow);
-        //getGeoRegions();
         initEchart2(selectedRow);//初始化小地图
     })
 
@@ -311,7 +509,6 @@ var initEvent = function(){
         textEmphasisColor="#000000";
         borderColor="#555555";
         initEchart(selectedRow);
-        //getGeoRegions();
         initEchart2(selectedRow);//初始化小地图
     })
     /*删除按钮*/

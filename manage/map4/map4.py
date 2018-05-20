@@ -37,7 +37,6 @@ def getTableData():
     print files  # .xlsx结果文件列表
     resultList = []  # 全部excel文件处理后的结果，容器
     errMsg = ""  # 错误信息
-
     unit='%'            # 单位 默认undefined
 
     for file in files:      # 遍历每个excel文件
@@ -54,14 +53,16 @@ def getTableData():
             timeline = []  # timeline  滚动轴 的 数据集合
             sheetNameList = excelData.sheet_names()  # 获取此文件的全部sheet名
             seriesList = []  # series数据，，所有省份对国家的数据
-
+            validData = []     # sheet中 所有有效数据之和，
+            validDataNum=0           #有效数据的个数，大于0的数据都是有效数据
             for sheetName in sheetNameList:  # 遍历所有sheet
                 sheetName = sheetName.encode("utf-8")  # sheet名转码
                  #处理（某sheet）的数据
                 timeline.append(int(sheetName))  # 年份加入timeline中,转为int
-                series = []  # 某sheet，所有省份的数据
+                series = {}  # 某sheet，所有省份的数据
                 sheetData = ExcelTool.getArrayFromSheet(excelData, sheetName, 'name',
                                                         row=countryNum,column=provinceNum)  # 获取某年（某sheet）的数据
+                sheetData.sum()/(countryNum*provinceNum)
                 # 先处理空sheet
                 if (len(sheetData) == 0):
                     #创建一个189*31的 零矩阵
@@ -69,20 +70,24 @@ def getTableData():
                         tempList=[]
                         for j in range(countryNum):
                             tempList.append(0)
-                        series.append(tempList)
+                        #series.append(tempList)
+                        series[provincesInfo[i][2]] = (tempList)
                     seriesList.append(series)
                     emptySheets.append(sheetName)
                     continue
-
 
                 #seriesProvince = []
                 for i in range(provinceNum): #省份
                     seriesCountry = []
                     for j in range(countryNum):  #国家
                         seriesCountry.append(sheetData[j][i])
-                    series.append(seriesCountry)
-                seriesList.append(series)
 
+                        if(sheetData[j][i]>0):              #记录下有效数据
+                            validData.append(sheetData[j][i])
+                            validDataNum=validDataNum+1
+                    series[provincesInfo[i][2]]=(seriesCountry)
+                seriesList.append(series)
+            result["average"]=np.array(validData).sum()/validDataNum   #平均值
             result["counties"] = countryList        # 国家列表
             result["timeline"] = timeline           # 滚动轴，sheet名集合
             result["emptySheets"] = emptySheets    # 空数据sheet名集合

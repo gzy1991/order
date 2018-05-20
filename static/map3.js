@@ -22,9 +22,9 @@ var visualMapColor=[//visualMap颜色变化范围
 var dom2 = document.getElementById("mapContainer2");;//小地图
 var myChart2 = echarts.init(dom2);;
 var option2 = null;
-var geoRegions=[        ];//地图选中国家
-var visualMapRange = [1,50];    //visualMap 排序变化范围
-var curIndex=0;             //当前年,默认是第一年
+var geoRegions=[        ];              //地图选中国家
+var visualMapRange = [1,50];            //visualMap 排序变化范围
+var curIndex=0;                         //当前年,默认是第一年
 var emphasisAreaColor="#fff";         //选中国家的颜色
 var areaColor="#404a59";              //国家的颜色
 var borderColor="#aaa";                     //国家边界颜色
@@ -165,14 +165,13 @@ var initEchart=function(row){
     if(myChart&&myChart.dispose){
 		myChart.dispose();
 	}
-	unit='';  //单位
-    unit=row.unit;
+	var unit='%';  //单位
+    //unit=row.unit;
 	dom = document.getElementById("mapContainer");
     myChart = echarts.init(dom);
     curIndex=0;
     option={
-        baseOption:{
-            timeline: {
+        timeline: {
                 axisType: 'category',
                 orient: 'horizontal',
                 autoPlay: false,		//是否自动播放
@@ -219,6 +218,8 @@ var initEchart=function(row){
                 },
                 data: []
             },
+        baseOption:{
+
 			backgroundColor:backgroundColor,				//背景
 			title: [ 									//标题
 				{
@@ -369,7 +370,7 @@ var initEchart=function(row){
         ]
     };
     for(var n=0;n<row.timeline.length;n++){
-    	option.baseOption.timeline.data.push(row.timeline[n]);
+    	option.timeline.data.push(row.timeline[n]);
 		option.options.push({
             series: {
                 id: 'gridScatter',
@@ -557,7 +558,7 @@ var initEvent = function() {
         visualMapColor=["#33a5c6",
             "#1BB116",
             "#c67f58"];
-        emphasisAreaColor="#727272";
+        emphasisAreaColor="#fff";
         areaColor="#404a59";
         textEmphasisColor="#fff";
         borderColor="#aaa";

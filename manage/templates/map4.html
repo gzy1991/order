@@ -41,7 +41,7 @@
                 <table id="tableContainer" ></table>
 
                 </div>
-              <div class="" style="height: 40%;" style="padding-right: 20px;"> {% comment %}   小地图 中国     {% endcomment %}
+              <div class="hiddenClass" style="height: 40%;" style="padding-right: 20px;"> {% comment %}   小地图 中国     {% endcomment %}
                   <div  id ="mapContainer" ></div>
 
               </div>
@@ -162,7 +162,7 @@
             $(document).ready(function(){
                 $("#headerContainer").load("/static/html/header.html");
                 //初始化上传组件
-                initUpload("excelFile","/uploadExcelInMap3","addButtonResult",refBtnFn());
+                initUpload("excelFile","/uploadExcelInMap4");
                 initEvent();//初始化事件绑定,缩进/展开功能
                 initEventHandler("h-handler"); //绑定缩放功能
                 initPageData();  //   调用初始化页面
