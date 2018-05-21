@@ -59,7 +59,8 @@ def getTableData():
                 sheetName = sheetName.encode("utf-8")  # sheet名转码
                  #处理（某sheet）的数据
                 timeline.append(int(sheetName))  # 年份加入timeline中,转为int
-                series = {}  # 某sheet，所有省份的数据
+                # series = {}  # 某sheet，所有省份的数据
+                series = []
                 sheetData = ExcelTool.getArrayFromSheet(excelData, sheetName, 'name',
                                                         row=countryNum,column=provinceNum)  # 获取某年（某sheet）的数据
                 sheetData.sum()/(countryNum*provinceNum)
@@ -67,25 +68,50 @@ def getTableData():
                 if (len(sheetData) == 0):
                     #创建一个189*31的 零矩阵
                     for i in range( provinceNum):
-                        tempList=[]
-                        for j in range(countryNum):
-                            tempList.append(0)
-                        #series.append(tempList)
-                        series[provincesInfo[i][2]] = (tempList)
+                        seriesCountry = []
+                        for k in range(countryNum):  # 国家
+                            # seriesCountry.append(sheetData[j][i])
+                            # countryInfo = []
+                            # countryInfo.append(countryNum)      # 排序 #数据无效，排序都是189
+                            # countryInfo.append(countryList[k])  # 国家名
+                            # countryInfo.append(0)               # 数据，全部是0
+                            # countryInfo.append(sheetName)  # sheet名，滚动轴项名
+                            countryInfo = {}
+                            countryInfo["rank"] = countryNum
+                            countryInfo["name"] = countryList[k]
+                            countryInfo["value"] =0
+                            countryInfo["year"] = sheetName
+                            seriesCountry.append(countryInfo)
+                        series.append(seriesCountry)
                     seriesList.append(series)
-                    emptySheets.append(sheetName)
+                    emptySheets.append(sheetName)   #记下空sheet
                     continue
-
+                #再处理非空sheet
                 #seriesProvince = []
-                for i in range(provinceNum): #省份
-                    seriesCountry = []
-                    for j in range(countryNum):  #国家
-                        seriesCountry.append(sheetData[j][i])
+                sheetDataSort = np.argsort(-sheetData, axis=0)  # 排序，按列排序，降序
 
-                        if(sheetData[j][i]>0):              #记录下有效数据
-                            validData.append(sheetData[j][i])
+                for i in range(provinceNum): #遍历省份，即每一列
+                    sort={}
+                    for j in range(countryNum):
+                        sort[sheetDataSort[j][i]]=j+1     # 索引从0开始，排序从1开始。获取到此列（某省）的买个国家的排序
+                    seriesCountry = []
+                    for k in range(countryNum):  #国家
+                        # seriesCountry.append(sheetData[j][i])
+                        countryInfo = {}
+                        countryInfo["rank"]=sort[k]
+                        countryInfo["name"]=countryList[k]
+                        countryInfo["value"]=sheetData[k][i]
+                        countryInfo["year"]=sheetName
+                        # countryInfo=[]
+                        # countryInfo.append(sort[k])         #排序
+                        # countryInfo.append(countryList[k])  #国家名
+                        # countryInfo.append(sheetData[k][i]) #数据
+                        # countryInfo.append(sheetName)       #sheet名，滚动轴项名
+                        seriesCountry.append(countryInfo)
+                        if(sheetData[k][i]>0):              #记录下有效数据
+                            validData.append(sheetData[k][i])
                             validDataNum=validDataNum+1
-                    series[provincesInfo[i][2]]=(seriesCountry)
+                    series.append(seriesCountry)
                 seriesList.append(series)
             result["average"]=np.array(validData).sum()/validDataNum   #平均值
             result["counties"] = countryList        # 国家列表

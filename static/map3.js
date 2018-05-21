@@ -333,8 +333,8 @@ var initEchart=function(row){
                     hoverLink :false,
                     realtime :false,        //拖拽时，是否实时更新 。注意 ，如果设置为true，可能会出现一些bug，比如气泡隐藏后，鼠标放上去依然有效果
                     //align:'top',
-                    calculable: true,
-                    precision: 0.1,
+                    calculable: true,           //是否显示拖拽用的手柄
+                    precision: 0.1,                 //数据展示的小数精度，默认为0，无小数点
                     textGap: 30,
                     text:['Min','Max'],
                     textGap:5,

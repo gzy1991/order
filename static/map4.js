@@ -93,6 +93,9 @@ var nameMap={  //地图省份名字映射关系
 		"Hebei":"河北","Shaanxi":"陕西","Shandong":"山东","Sichuan":"四川","Taiwan":"台湾","Tianjin":"天津",
 		"Tibet":"西藏","Xinjiang":"新疆","Yunnan":"云南","Shanghai":"上海","Zhejiang":"浙江"
 	};
+var worldNameMap={ //世界地图名字映射
+
+};
 //提示框配置数据
 var itemStyle = {
     opacity: 0.7,
@@ -250,6 +253,22 @@ var initEchart2= function(row){
     myChart2 = echarts.init(dom2);
     option2={
         baseOption:{
+            visualMap: {
+                type: 'continuous',
+                max: 189,
+                min:1,
+                calculable: true,       //是否显示拖拽用的手柄
+                dimension: 0,                   //指定用数据的『哪个维度』,这个很重要，用这个来确定绑定关系
+                textStyle: {
+                        color: textColor,
+                        fontFamily:"Times New Roman"	//字体
+                    },
+                inRange: {
+                    color: ['#313695', '#4575b4', '#74add1', '#abd9e9',
+                        '#e0f3f8', '#ffffbf', '#fee090', '#fdae61',
+                        '#f46d43', '#d73027', '#a50026']
+                 }
+            },
             timeline: {
                 axisType: 'category',
                 orient: 'horizontal',
@@ -257,6 +276,8 @@ var initEchart2= function(row){
                 inverse: false,		//是否反向放置 timeline，反向则首位颠倒过来
 				rewind :false, 		//是否反向播放
                 playInterval: switchTime,	//播放速度
+                left: '10%',
+                right: '10%',
                 bottom :'3%',
                 label: {
                     normal: {           //轴效果
@@ -316,7 +337,6 @@ var initEchart2= function(row){
 					},
 				}
 			],
-
             animationDurationUpdate: switchTime			//数据更新动画的时长。
         },
         options: [
@@ -326,43 +346,26 @@ var initEchart2= function(row){
      for(var n=0;n<row.timeline.length;n++){
     	option2.baseOption.timeline.data.push(row.timeline[n]);
     	option2.options.push({
-            geo: {              //世界地图
-                show:true,
-                name: 'maps2',
-                type: 'map',
+    	    series  :{
+    	        id:"world"+row.timeline[n],
+    	        type: 'map',
+                name: '世界地图',
                 map: 'world',
-                aspectScale :1,//用于 scale 地图的长宽比。
                 roam: true,
-                silent:false,            //不响应鼠标点击事件
-                selectedMode:'false',      //只能选一个
-                //selected:true,//?
                 zoom:1.2,
                 scaleLimit:{//滚轮缩放的极限控制，通过min, max最小和最大的缩放值
                     min:0.8,
                     max:2
                 },
-                emphasis:{      //选中国家的颜色
-                    label:{
-                        show:false
-                    },
-                    itemStyle:{
-                        borderColor: borderColor,
-                        areaColor: emphasisAreaColor
-                    }
-                },
-                itemStyle: {
-                    borderColor: borderColor,
-                    areaColor: areaColor
-                },
-                regions:geoData2  //地图颜色信息
-            },
-        })
-
+                silent:true,            //不响应鼠标点击事件
+                //nameMap: worldNameMap
+                data:row.series[n]
+            }
+        });
 	}
     myChart2.setOption(option2,true);
     myChart2.on('click', function (params) {
         console.log(params)
-
     })
 
 }
