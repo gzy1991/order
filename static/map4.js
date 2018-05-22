@@ -257,8 +257,13 @@ var initEchart2= function(row){
                 type: 'continuous',
                 max: 189,
                 min:1,
+                orient :'vertical',           //垂直 。  水平：   horizontal
+                hoverLink :false,               //打开 hoverLink 功能时，鼠标悬浮到 visualMap 组件上时，鼠标位置对应的数值 在 图表中对应的图形元素，会高亮
+                realtime :false,            //拖拽时，是否实时更新
                 calculable: true,       //是否显示拖拽用的手柄
+                precision: 0.1,                 //数据展示的小数精度，默认为0，无小数点
                 dimension: 0,                   //指定用数据的『哪个维度』,这个很重要，用这个来确定绑定关系
+                text:['Min','Max'],
                 textStyle: {
                         color: textColor,
                         fontFamily:"Times New Roman"	//字体
@@ -336,9 +341,16 @@ var initEchart2= function(row){
 						color: textColor
 					},
 				}
-			],
-            animationDurationUpdate: switchTime			//数据更新动画的时长。
+			]
+            //animationDurationUpdate: switchTime			//数据更新动画的时长。
         },
+        series: [{
+            type: 'map',
+            name: '世界地图',
+            map: 'world',
+            roam: true,
+            data: []
+        }],
         options: [
         ]
 
@@ -347,7 +359,7 @@ var initEchart2= function(row){
     	option2.baseOption.timeline.data.push(row.timeline[n]);
     	option2.options.push({
     	    series  :{
-    	        id:"world"+row.timeline[n],
+    	        id:"world"+selectedRow.timeline[n],
     	        type: 'map',
                 name: '世界地图',
                 map: 'world',
@@ -358,15 +370,37 @@ var initEchart2= function(row){
                     max:2
                 },
                 silent:true,            //不响应鼠标点击事件
-                //nameMap: worldNameMap
-                data:row.series[n]
+                data:selectedRow.series[n][selectedPros]
             }
         });
 	}
     myChart2.setOption(option2,true);
-    myChart2.on('click', function (params) {
-        console.log(params)
-    })
+     //绑定年份timeline 切换事件
+    myChart2.on('timelinechanged', function (params) {
+        console.log(params);
+        curIndex = params.currentIndex;
+        if(selectedRow.emptySheets.indexOf(selectedRow.timeline[curIndex].toString())!=-1){//，如果点了空sheet这时直接跳过，切换到不是空的那年sheet数据
+            var allYears=selectedRow.timeline;
+            allYears=allYears.concat(allYears);
+            var emptyYears=selectedRow.emptySheets;
+            var index=curIndex+1;           //目标年的index
+            for( ; index<allYears.length ; index++){
+                if(emptyYears.indexOf(allYears[index]) ==-1){   //如果不是空，那么就是这年
+                    curIndex=index % (allYears.length/2); //求余
+                    myChart2.dispatchAction({
+                        type: 'timelineChange',
+                        // 时间点的 index
+                        currentIndex: curIndex
+                    });
+                    break; //跳出循环
+                }
+            }
+        }
+
+    });
+    // myChart2.on('click', function (params) {
+    //     console.log(params)
+    // })
 
 }
 

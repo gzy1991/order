@@ -102,6 +102,7 @@ var getGeoRegions = function(){
                 if(countrySwitch[counName]!=""){    //此时转换名字
                     counName=countrySwitch[counName];
                 }else{
+                    console.log(counName);
                     continue; //跳过，这些国家无法在echarts的geo地图上是无法显示的。因为echarts不存在这些国家
                 }
             }

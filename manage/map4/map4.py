@@ -13,6 +13,7 @@ import numpy as np
 import json
 import Tool.ExcelTool as ExcelTool
 import order.settings as Setting
+import Tool.country as CountrySwitchName
 
 
 #   关于本图中excel的格式规则
@@ -32,6 +33,7 @@ def getTableData():
                                                 "Countries.xlsx"), "country")
     countryList = []  # 国家名list，有序
     for i in range(countryNum):
+        #todo
         countryList.append(country_name[i, 0].encode("utf-8"))
     files = ExcelTool.listExcelFile(Setting.FILR_DIR["MAP4_DIR"])
     print files  # .xlsx结果文件列表
@@ -59,8 +61,9 @@ def getTableData():
                 sheetName = sheetName.encode("utf-8")  # sheet名转码
                  #处理（某sheet）的数据
                 timeline.append(int(sheetName))  # 年份加入timeline中,转为int
+                # timeline.append(sheetName)  # 年份加入timeline中,转为int
                 # series = {}  # 某sheet，所有省份的数据
-                series = []
+                series = {}     # 某sheet，所有省份的数据
                 sheetData = ExcelTool.getArrayFromSheet(excelData, sheetName, 'name',
                                                         row=countryNum,column=provinceNum)  # 获取某年（某sheet）的数据
                 sheetData.sum()/(countryNum*provinceNum)
@@ -70,7 +73,6 @@ def getTableData():
                     for i in range( provinceNum):
                         seriesCountry = []
                         for k in range(countryNum):  # 国家
-                            # seriesCountry.append(sheetData[j][i])
                             # countryInfo = []
                             # countryInfo.append(countryNum)      # 排序 #数据无效，排序都是189
                             # countryInfo.append(countryList[k])  # 国家名
@@ -79,10 +81,12 @@ def getTableData():
                             countryInfo = {}
                             countryInfo["rank"] = countryNum
                             countryInfo["name"] = countryList[k]
+                            countryInfo["data"] =0
                             countryInfo["value"] =0
-                            countryInfo["year"] = sheetName
+                            countryInfo["value"] =countryNum
+                            countryInfo["year"] = int(sheetName)
                             seriesCountry.append(countryInfo)
-                        series.append(seriesCountry)
+                        series[provincesInfo[i][2]]=(seriesCountry)
                     seriesList.append(series)
                     emptySheets.append(sheetName)   #记下空sheet
                     continue
@@ -95,13 +99,14 @@ def getTableData():
                     for j in range(countryNum):
                         sort[sheetDataSort[j][i]]=j+1     # 索引从0开始，排序从1开始。获取到此列（某省）的买个国家的排序
                     seriesCountry = []
-                    for k in range(countryNum):  #国家
-                        # seriesCountry.append(sheetData[j][i])
+                    for k in range(countryNum):  #遍历此列的所有国家
                         countryInfo = {}
                         countryInfo["rank"]=sort[k]
                         countryInfo["name"]=countryList[k]
+                        countryInfo["data"]=sheetData[k][i]
                         countryInfo["value"]=sheetData[k][i]
-                        countryInfo["year"]=sheetName
+                        countryInfo["value"]=sort[k]
+                        countryInfo["year"]=int(sheetName)
                         # countryInfo=[]
                         # countryInfo.append(sort[k])         #排序
                         # countryInfo.append(countryList[k])  #国家名
@@ -111,7 +116,7 @@ def getTableData():
                         if(sheetData[k][i]>0):              #记录下有效数据
                             validData.append(sheetData[k][i])
                             validDataNum=validDataNum+1
-                    series.append(seriesCountry)
+                        series[provincesInfo[i][2]] = (seriesCountry)
                 seriesList.append(series)
             result["average"]=np.array(validData).sum()/validDataNum   #平均值
             result["counties"] = countryList        # 国家列表
