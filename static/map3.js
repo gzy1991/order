@@ -432,7 +432,7 @@ var initTable = function(datas){
 		width:30,
 		onClickRow:function (row, $element, field) {/*表格的行点击事件*/
 			console.log("你点击了行："+row.fileName);
-			selectedPros=[];  //选中的省份,清空
+			selectedPros="Beijing";  //选中的省份,清空
 			geoData=[];       // option中的regions，对选中的省份设备背景色 ,清空
 			seriesData=[];    //  根据
 			selectedRow=row;

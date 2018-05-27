@@ -142,7 +142,7 @@ var initTable=function(datas){
 		width:30,
 		onClickRow:function (row, $element, field) {/*表格的行点击事件*/
 			console.log("你点击了行："+row.fileName);
-			selectedPros=[];        //选中的省份,改为默认身份  todo
+			selectedPros="Beijing";        //选中的省份,改为默认身份  todo
 			//geoData=[];             // option中的regions，对选中的省份设备背景色 ,清空
 			seriesData=[];          //
 			selectedRow=row;
@@ -252,29 +252,7 @@ var initEchart2= function(row){
     dom2 = document.getElementById("mapContainer2");
     myChart2 = echarts.init(dom2);
     option2={
-        baseOption:{
-            visualMap: {
-                type: 'continuous',
-                max: 189,
-                min:1,
-                orient :'vertical',           //垂直 。  水平：   horizontal
-                hoverLink :false,               //打开 hoverLink 功能时，鼠标悬浮到 visualMap 组件上时，鼠标位置对应的数值 在 图表中对应的图形元素，会高亮
-                realtime :false,            //拖拽时，是否实时更新
-                calculable: true,       //是否显示拖拽用的手柄
-                precision: 0.1,                 //数据展示的小数精度，默认为0，无小数点
-                dimension: 0,                   //指定用数据的『哪个维度』,这个很重要，用这个来确定绑定关系
-                text:['Min','Max'],
-                textStyle: {
-                        color: textColor,
-                        fontFamily:"Times New Roman"	//字体
-                    },
-                inRange: {
-                    color: ['#313695', '#4575b4', '#74add1', '#abd9e9',
-                        '#e0f3f8', '#ffffbf', '#fee090', '#fdae61',
-                        '#f46d43', '#d73027', '#a50026']
-                 }
-            },
-            timeline: {
+        timeline: {
                 axisType: 'category',
                 orient: 'horizontal',
                 autoPlay: false,		//是否自动播放
@@ -321,6 +299,57 @@ var initEchart2= function(row){
                         borderColor: emphasisColor
                     }
                 },
+                data: selectedRow.timeline
+            },
+        baseOption:{
+            // tooltip: {										//提示框组件
+            //     padding: 5,
+            //     backgroundColor: '#222',
+            //     borderColor: '#777',
+            //     borderWidth: 1,
+            //     formatter: function (obj) {
+            //         var value = obj.value;
+            //         if(value[3]<visualMapRange[0] || value[3]>visualMapRange[1]){           //未选中的范围，不显示提示框
+            //             return;
+            //         }
+            //         console.log(typeof(value));
+            //         if(typeof(value)!="object"){
+            //             return;
+            //         }
+            //         return schema[2].text + '：' + value[2] + '<br>'
+            //                 + schema[0].text + '：' + value[0].toFixed(2)   + '<br>'
+            //                 + schema[1].text + '：' + value[1].toFixed(2)  + '<br>'
+            //                 + schema[3].text + '：' + value[4].toFixed(2)  + '<br>'
+            //                 + schema[4].text + '：' + value[3]  + '<br>'
+            //                 ;
+            //     }
+            // },
+            visualMap: {
+                type: 'continuous',
+                max: 189,
+                min:1,
+                orient :'vertical',           //垂直 。  水平：   horizontal
+                hoverLink :false,               //打开 hoverLink 功能时，鼠标悬浮到 visualMap 组件上时，鼠标位置对应的数值 在 图表中对应的图形元素，会高亮
+                realtime :false,            //拖拽时，是否实时更新
+                calculable: true,       //是否显示拖拽用的手柄
+                precision: 0.1,                 //数据展示的小数精度，默认为0，无小数点
+                dimension: 0,                   //指定用数据的『哪个维度』,这个很重要，用这个来确定绑定关系
+                text:['Min','Max'],
+                textStyle: {
+                        color: textColor,
+                        fontFamily:"Times New Roman"	//字体
+                    },
+                inRange: {
+                    color: ['#313695', '#4575b4', '#74add1', '#abd9e9',
+                        '#e0f3f8', '#ffffbf', '#fee090', '#fdae61',
+                        '#f46d43', '#d73027', '#a50026']
+                 }
+            },
+            series:{
+                type: 'map',
+                name: '世界地图',
+                map: 'world',
+                roam: true,
                 data: []
             },
             backgroundColor:backgroundColor,				//背景
@@ -344,19 +373,13 @@ var initEchart2= function(row){
 			]
             //animationDurationUpdate: switchTime			//数据更新动画的时长。
         },
-        series: [{
-            type: 'map',
-            name: '世界地图',
-            map: 'world',
-            roam: true,
-            data: []
-        }],
+        // series: [],
         options: [
         ]
 
     };
      for(var n=0;n<row.timeline.length;n++){
-    	option2.baseOption.timeline.data.push(row.timeline[n]);
+    	//option2.timeline.data.push(row.timeline[n]);
     	option2.options.push({
     	    series  :{
     	        id:"world"+selectedRow.timeline[n],
@@ -369,15 +392,16 @@ var initEchart2= function(row){
                     min:0.8,
                     max:2
                 },
-                silent:true,            //不响应鼠标点击事件
-                data:selectedRow.series[n][selectedPros]
+                silent:false,            //不响应鼠标点击事件
+                data:selectedRow.series[selectedPros][n]
             }
         });
 	}
+	console.log(option2);
     myChart2.setOption(option2,true);
      //绑定年份timeline 切换事件
     myChart2.on('timelinechanged', function (params) {
-        console.log(params);
+        //console.log(params);
         curIndex = params.currentIndex;
         if(selectedRow.emptySheets.indexOf(selectedRow.timeline[curIndex].toString())!=-1){//，如果点了空sheet这时直接跳过，切换到不是空的那年sheet数据
             var allYears=selectedRow.timeline;
