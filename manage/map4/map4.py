@@ -32,9 +32,14 @@ def getTableData():
     country_name = ExcelTool.getArrayBySheetName(os.path.join(Setting.FILR_DIR["COMMON_DIR"],
                                                 "Countries.xlsx"), "country")
     countryList = []  # 国家名list，有序
+    countrySwitch=CountrySwitchName.getcountrySwitch()
     for i in range(countryNum):
-        #todo
-        countryList.append(country_name[i, 0].encode("utf-8"))
+        #替换一些国家的名字
+        countryName=country_name[i, 0].encode("utf-8")
+        if(countrySwitch.has_key(countryName)):
+            countryList.append(countrySwitch[countryName])
+        else:
+            countryList.append(countryName)
     files = ExcelTool.listExcelFile(Setting.FILR_DIR["MAP4_DIR"])
     print files  # .xlsx结果文件列表
     resultList = []  # 全部excel文件处理后的结果，容器

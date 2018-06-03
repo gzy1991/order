@@ -8,11 +8,10 @@ var textColor='#ccc';                   //文字颜色
 var textEmphasisColor="#fff";               //年份选中时颜色
 var emphasisColor='#aaa';;              //播放按钮颜色
 var visualMapColorOutOfRange='#4c5665'; //visualMap，范围外颜色
-var visualMapColor=[//visualMap颜色变化范围
-    "#33a5c6",
-    "#1BB116",
-    "#c67f58"
-];
+var visualMapColor=['#313695', '#4575b4', '#74add1', '#abd9e9',
+                        '#e0f3f8', '#ffffbf', '#fee090', '#fdae61',
+                        '#f46d43', '#d73027', '#a50026']
+    ;
 
 /*地图全局数据*/
 var datas ; 		 		//  容器，存储了表格的全部数据，
@@ -216,7 +215,7 @@ var initEchart = function(row){
     };
     myChart.setOption(option,true);
 
-    /*绑定身份点击事件*/
+    /*绑定省份点击事件*/
     myChart.on('click', function (params) {
         if("geo"!=params.componentType){  //如果点击的不是地图的省份，那么跳过，不处理
             return;
@@ -235,6 +234,7 @@ var initEchart = function(row){
         //var isSelected=selectedPros.indexOf(name) != -1; //省份是否已经被选中了，
         /*更新选中的省份*/
         myChart.setOption(option,true);
+        initEchart2();
     })
 
 
@@ -248,7 +248,7 @@ var initEchart2= function(row){
     if(myChart2&&myChart2.dispose){
         myChart2.dispose();
     }
-    unit=row.unit;
+    unit=selectedRow.unit;
     dom2 = document.getElementById("mapContainer2");
     myChart2 = echarts.init(dom2);
     option2={
@@ -302,32 +302,10 @@ var initEchart2= function(row){
                 data: selectedRow.timeline
             },
         baseOption:{
-            // tooltip: {										//提示框组件
-            //     padding: 5,
-            //     backgroundColor: '#222',
-            //     borderColor: '#777',
-            //     borderWidth: 1,
-            //     formatter: function (obj) {
-            //         var value = obj.value;
-            //         if(value[3]<visualMapRange[0] || value[3]>visualMapRange[1]){           //未选中的范围，不显示提示框
-            //             return;
-            //         }
-            //         console.log(typeof(value));
-            //         if(typeof(value)!="object"){
-            //             return;
-            //         }
-            //         return schema[2].text + '：' + value[2] + '<br>'
-            //                 + schema[0].text + '：' + value[0].toFixed(2)   + '<br>'
-            //                 + schema[1].text + '：' + value[1].toFixed(2)  + '<br>'
-            //                 + schema[3].text + '：' + value[4].toFixed(2)  + '<br>'
-            //                 + schema[4].text + '：' + value[3]  + '<br>'
-            //                 ;
-            //     }
-            // },
             visualMap: {
                 type: 'continuous',
-                max: 189,
-                min:1,
+                max: 190,
+                min:0,
                 orient :'vertical',           //垂直 。  水平：   horizontal
                 hoverLink :false,               //打开 hoverLink 功能时，鼠标悬浮到 visualMap 组件上时，鼠标位置对应的数值 在 图表中对应的图形元素，会高亮
                 realtime :false,            //拖拽时，是否实时更新
@@ -339,6 +317,7 @@ var initEchart2= function(row){
                         color: textColor,
                         fontFamily:"Times New Roman"	//字体
                     },
+                color:visualMapColor,
                 inRange: {
                     color: ['#313695', '#4575b4', '#74add1', '#abd9e9',
                         '#e0f3f8', '#ffffbf', '#fee090', '#fdae61',
@@ -346,16 +325,17 @@ var initEchart2= function(row){
                  }
             },
             series:{
+                //id:"worldMap",
                 type: 'map',
                 name: '世界地图',
                 map: 'world',
                 roam: true,
-                data: []
+                data: selectedRow.series[selectedPros][0]
             },
             backgroundColor:backgroundColor,				//背景
             title: [ 									//标题
 				{
-					text: row.fileName,
+					text: selectedRow.fileName,
 					left: 'center',
 					top: 10,
 					textStyle: {
@@ -364,35 +344,24 @@ var initEchart2= function(row){
 						fontWeight: 'normal',
 						fontSize: 20
 					},
-					subtext: 'Unit：'+row.unit,				//副标题
+					subtext: 'Unit：'+selectedRow.unit,				//副标题
 					subtextStyle : {  						//副标题
 						fontFamily:"Times New Roman",	//字体
 						color: textColor
 					},
 				}
-			]
-            //animationDurationUpdate: switchTime			//数据更新动画的时长。
+			],
+            animationDurationUpdate: switchTime			//数据更新动画的时长。
         },
         // series: [],
         options: [
         ]
 
     };
-     for(var n=0;n<row.timeline.length;n++){
+     for(var n=0;n<selectedRow.timeline.length;n++){
     	//option2.timeline.data.push(row.timeline[n]);
     	option2.options.push({
-    	    series  :{
-    	        id:"world"+selectedRow.timeline[n],
-    	        type: 'map',
-                name: '世界地图',
-                map: 'world',
-                roam: true,
-                zoom:1.2,
-                scaleLimit:{//滚轮缩放的极限控制，通过min, max最小和最大的缩放值
-                    min:0.8,
-                    max:2
-                },
-                silent:false,            //不响应鼠标点击事件
+            series:{
                 data:selectedRow.series[selectedPros][n]
             }
         });
@@ -548,9 +517,9 @@ var initEvent = function(){
         textColor='#ccc';
         emphasisColor='#aaa';
         visualMapColorOutOfRange='#4c5665';
-        visualMapColor=["#33a5c6",
-            "#1BB116",
-            "#c67f58"];
+        // visualMapColor=["#33a5c6",
+        //     "#1BB116",
+        //     "#c67f58"];
         emphasisAreaColor="#fff";
         areaColor="#404a59";
         textEmphasisColor="#fff";
@@ -564,7 +533,7 @@ var initEvent = function(){
         textColor='#444444';
         emphasisColor='#555555';
         visualMapColorOutOfRange='#B1B1B1';
-        visualMapColor=['orangered','yellow','lightskyblue'];
+        // visualMapColor=['orangered','yellow','lightskyblue'];
         emphasisAreaColor="#555555";
         areaColor="#C1C1C1";
         textEmphasisColor="#000000";

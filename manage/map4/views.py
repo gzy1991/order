@@ -11,7 +11,11 @@ sys.setdefaultencoding("utf-8")
 
 
 
-#获取图43页面
+#获取图4页面
+def getPage2(request):
+    return render(request, 'map4_test.html')
+
+#获取图4页面
 def getPage(request):
     return render(request, 'map4.html')
 

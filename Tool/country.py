@@ -8,8 +8,7 @@
 #需要转换
 def getcountrySwitch():
 
-    return
-    {
+    return {
         'Antigua':'Antigua and Barb.',
         'Aruba':'',
         'Bosnia and Herzegovina':'Bosnia and Herz.',
