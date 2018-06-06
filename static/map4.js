@@ -252,28 +252,30 @@ var initEchart2= function(row){
     dom2 = document.getElementById("mapContainer2");
     myChart2 = echarts.init(dom2);
     option2={
-        timeline: {
+
+        baseOption:{
+            timeline: {
                 axisType: 'category',
                 orient: 'horizontal',
-                autoPlay: false,		//是否自动播放
-                inverse: false,		//是否反向放置 timeline，反向则首位颠倒过来
-				rewind :false, 		//是否反向播放
-                playInterval: switchTime,	//播放速度
-                left: '10%',
-                right: '10%',
-                bottom :'3%',
+                autoPlay: false,
+                inverse: false,
+                playInterval: switchTime,
+                left: "10%",
+                right: "10%",
+                //top: 20,
+                bottom: "3%",
+                //width: 46,
+                //height: null,
                 label: {
-                    normal: {           //轴效果
+                    normal: {
                         textStyle: {
                             fontFamily:"Times New Roman",	//字体
                             color: textColor
                         }
                     },
-                    emphasis: {         //轴点击时效果
+                    emphasis: {
                         textStyle: {
                             fontFamily:"Times New Roman",	//字体
-                            //fontWeight :"bold",
-                            fontSize  :14,
                             color: textEmphasisColor
                         }
                     }
@@ -282,7 +284,7 @@ var initEchart2= function(row){
                 lineStyle: {
                     color: textColor
                 },
-                checkpointStyle: { //『当前项』（checkpoint）的图形样式。
+                checkpointStyle: {
                     color: textColor,
                     borderColor: '#777',
                     borderWidth: 2
@@ -296,46 +298,40 @@ var initEchart2= function(row){
                     },
                     emphasis: {
                         color: emphasisColor,
-                        borderColor: emphasisColor
+                        borderColor:emphasisColor
                     }
                 },
-                data: selectedRow.timeline
-            },
-        baseOption:{
-            visualMap: {
-                type: 'continuous',
-                max: 190,
-                min:0,
-                orient :'vertical',           //垂直 。  水平：   horizontal
-                hoverLink :false,               //打开 hoverLink 功能时，鼠标悬浮到 visualMap 组件上时，鼠标位置对应的数值 在 图表中对应的图形元素，会高亮
-                realtime :false,            //拖拽时，是否实时更新
-                calculable: true,       //是否显示拖拽用的手柄
-                precision: 0.1,                 //数据展示的小数精度，默认为0，无小数点
-                dimension: 0,                   //指定用数据的『哪个维度』,这个很重要，用这个来确定绑定关系
-                text:['Min','Max'],
-                textStyle: {
-                        color: textColor,
-                        fontFamily:"Times New Roman"	//字体
-                    },
-                color:visualMapColor,
-                inRange: {
-                    color: ['#313695', '#4575b4', '#74add1', '#abd9e9',
-                        '#e0f3f8', '#ffffbf', '#fee090', '#fdae61',
-                        '#f46d43', '#d73027', '#a50026']
-                 }
-            },
-            series:{
-                //id:"worldMap",
+                 // data: selectedRow.timeline
+                 data: []
+                // data: selectedRow.series[selectedPros].map(function(ele) {
+                //     return ele.time
+                // })
+
+        },
+
+            series:[{
+                id: 'map',
                 type: 'map',
-                name: '世界地图',
+                mapType: 'world',
                 map: 'world',
-                roam: true,
-                data: selectedRow.series[selectedPros][0]
-            },
+                itemStyle: {
+                    normal: {
+                        areaColor: areaColor,//地图区域的颜色。
+                        borderColor: '#404a59'
+                    },
+                    emphasis: {
+                        areaColor:emphasisAreaColor    //选中省份时，国家背景色
+                    }
+                },
+                data: []
+            }],
+                
+
             backgroundColor:backgroundColor,				//背景
             title: [ 									//标题
 				{
 					text: selectedRow.fileName,
+                    subtext: 'Unit：'+selectedRow.unit,				//副标题
 					left: 'center',
 					top: 10,
 					textStyle: {
@@ -344,13 +340,20 @@ var initEchart2= function(row){
 						fontWeight: 'normal',
 						fontSize: 20
 					},
-					subtext: 'Unit：'+selectedRow.unit,				//副标题
 					subtextStyle : {  						//副标题
 						fontFamily:"Times New Roman",	//字体
 						color: textColor
 					},
 				}
 			],
+            tooltip:{
+                formatter: function(params) {
+                if ('value' in params.data) {
+                    return params.data.value[2] + ': ' + params.data.value[0];
+                }
+            }
+            },
+            animationEasingUpdate: 'quinticInOut',
             animationDurationUpdate: switchTime			//数据更新动画的时长。
         },
         // series: [],
@@ -359,11 +362,35 @@ var initEchart2= function(row){
 
     };
      for(var n=0;n<selectedRow.timeline.length;n++){
-    	//option2.timeline.data.push(row.timeline[n]);
+    	option2.baseOption.timeline.data.push(row.timeline[n]);
     	option2.options.push({
-            series:{
-                data:selectedRow.series[selectedPros][n]
-            }
+    	    visualMap:[{
+    	        type: 'continuous',
+                dimension: 0,
+                max: 190,
+                min:0,
+                orient :'vertical',           //垂直 。  水平：   horizontal
+                itemWidth: 12,
+                hoverLink :false,               //打开 hoverLink 功能时，鼠标悬浮到 visualMap 组件上时，鼠标位置对应的数值 在 图表中对应的图形元素，会高亮
+                realtime :false,            //拖拽时，是否实时更新
+                calculable: true,       //是否显示拖拽用的手柄
+                text:['Low','High'],
+                textStyle: {
+                        color: textColor,
+                        fontFamily:"Times New Roman"	//字体
+                },
+                color:visualMapColor,
+                inRange: {
+                    color: ['#313695', '#4575b4', '#74add1', '#abd9e9',
+                        '#e0f3f8', '#ffffbf', '#fee090', '#fdae61',
+                        '#f46d43', '#d73027', '#a50026']
+                 }
+
+            }],
+            series:[{
+                id: 'map',
+                data:selectedRow.series[selectedPros][n].data
+            }]
         });
 	}
 	console.log(option2);
