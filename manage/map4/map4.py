@@ -119,18 +119,30 @@ def getTableData():
                         # countryInfo["value"]=sheetData[k][i]
                         # countryInfo["value"]=sort[k]
                         # countryInfo["year"]=int(sheetName)
-                        countryInfo=[]
-                        countryInfo.append(sort[k])         #排序
-                        countryInfo.append(countryList[k])  #国家名
-                        countryInfo.append(sheetData[k][i]) #数据
-                        countryInfo.append(sheetName)       #sheet名，滚动轴项名
-                        seriesCountry.append(countryInfo)
+                        # countryInfo=[]
+                        # countryInfo.append(sort[k])         #排序
+                        # countryInfo.append(countryList[k])  #国家名
+                        # countryInfo.append(sheetData[k][i]) #数据
+                        # countryInfo.append(sheetName)       #sheet名，滚动轴项名
+
+                        countryInfo = []
+                        countryInfo.append(sort[k])  # 排序
+                        countryInfo.append(sheetData[k][i])  # 数据
+                        #countryInfo.append(sheetName)  # sheet名，滚动轴项名
+                        countryInfo.append(countryList[k])  # 国家名
+                        seriesCountry.append({
+                            "name":countryList[k],
+                            "value":countryInfo
+                        })
                         if(sheetData[k][i]>0):              #记录下有效数据
                             validData.append(sheetData[k][i])
                             validDataNum=validDataNum+1
                     #series[provincesInfo[i][2]] = (seriesCountry)
 
-                    seriesList[provincesInfo[i][2]].append(seriesCountry)
+                    seriesList[provincesInfo[i][2]].append({
+                        "time":sheetName,
+                        "data":seriesCountry
+                    })
                 #seriesList.append(series)
             result["average"]=np.array(validData).sum()/validDataNum   #平均值
             result["counties"] = countryList        # 国家列表
