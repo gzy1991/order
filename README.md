@@ -18,7 +18,8 @@
 
 # 2.环境安装说明
 
-> Python版本：python 2.7，操作系统win10 X64（win7 64位也可以； 32位系统我测试过win7 32位，也可以正常运行，不过在1.4那里那里要挑选对应版本的pywin32 .）
+> Python版本：python 2.7，操作系统win10 X64（win7 64位也可以； 32位系统我测试过win7 32位，也可以正常运行，不过在1.4那里要挑选对应版本的pywin32 .）
+
 > 可能会遇到编码问题，Python2.7编码问题解决方案
 https://www.cnblogs.com/kevingrace/p/5893121.html
 > pip：参考这里[pip安装指南](https://www.cnblogs.com/rain124/p/6196053.html)
@@ -65,7 +66,7 @@ pip install xlwt
 |map1/matrix/matlab_33.m | 不带提示信息的.m文件|
 
 # 6 echarts版本说明
-> 图1使用了echarts3.7.3
-> 图2使用了echarts3.7.3
-> 图3使用了echarts4.0.1
-> 图4使用了echarts3.8.4
+- 图1使用了echarts3.7.3
+- 图2使用了echarts3.7.3
+- 图3使用了echarts4.0.1
+- 图4使用了echarts3.8.4
