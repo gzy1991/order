@@ -251,8 +251,8 @@ var initEchart2= function(row){
     unit=selectedRow.unit;
     dom2 = document.getElementById("mapContainer2");
     myChart2 = echarts.init(dom2);
+    option2={};
     option2={
-
         baseOption:{
             timeline: {
                 axisType: 'category',
@@ -317,7 +317,7 @@ var initEchart2= function(row){
                 itemStyle: {
                     normal: {
                         areaColor: areaColor,//地图区域的颜色。
-                        borderColor: '#404a59'
+                        borderColor: borderColor
                     },
                     emphasis: {
                         areaColor:emphasisAreaColor    //选中省份时，国家背景色
@@ -330,7 +330,7 @@ var initEchart2= function(row){
             backgroundColor:backgroundColor,				//背景
             title: [ 									//标题
 				{
-					text: selectedRow.fileName,
+					text: selectedRow.fileName+selectedPros,
                     subtext: 'Unit：'+selectedRow.unit,				//副标题
 					left: 'center',
 					top: 10,
@@ -346,10 +346,19 @@ var initEchart2= function(row){
 					},
 				}
 			],
-            tooltip:{
+            tooltip:{ //提示框
+                padding: 5,
+                backgroundColor: '#222',
+                borderColor: '#777',
+                borderWidth: 1,
+
                 formatter: function(params) {
                 if ('value' in params.data) {
-                    return params.data.value[2] + ': ' + params.data.value[0];
+                    return "country:"+params.data.value[2] + '<br>'
+
+                        +   "data   :"  + params.data.value[1]+'<br>'
+                        +   "sort   :"+params.data.value[0]
+                        ;
                 }
             }
             },
@@ -362,13 +371,19 @@ var initEchart2= function(row){
 
     };
      for(var n=0;n<selectedRow.timeline.length;n++){
-    	option2.baseOption.timeline.data.push(row.timeline[n]);
+    	option2.baseOption.timeline.data.push(selectedRow.timeline[n]);
     	option2.options.push({
     	    visualMap:[{
     	        type: 'continuous',
-                dimension: 0,
-                max: 190,
-                min:0,
+                dimension: 1,
+                precision: 0.000001,                 //数据展示的小数精度，默认为0，无小数点
+                // max: selectedRow.series[selectedPros][n].data[0].value[1],
+                // min:selectedRow.series[selectedPros][n].data[188].value[1],
+                // min:selectedRow.series[selectedPros][n].min*0.9,
+                // max:selectedRow.series[selectedPros][n].max*1.1,
+                min:selectedRow.maxMin[n][0],
+                max:selectedRow.maxMin[n][1],
+                range:[selectedRow.series[selectedPros][n].min,selectedRow.series[selectedPros][n].max],
                 orient :'vertical',           //垂直 。  水平：   horizontal
                 itemWidth: 12,
                 hoverLink :false,               //打开 hoverLink 功能时，鼠标悬浮到 visualMap 组件上时，鼠标位置对应的数值 在 图表中对应的图形元素，会高亮
@@ -379,12 +394,15 @@ var initEchart2= function(row){
                         color: textColor,
                         fontFamily:"Times New Roman"	//字体
                 },
-                color:visualMapColor,
+                //color:visualMapColor,
+                // inRange: {
+                //     color: ['#313695', '#4575b4', '#74add1', '#abd9e9',
+                //         '#e0f3f8', '#ffffbf', '#fee090', '#fdae61',
+                //         '#f46d43', '#d73027', '#a50026']
+                //  }
                 inRange: {
-                    color: ['#313695', '#4575b4', '#74add1', '#abd9e9',
-                        '#e0f3f8', '#ffffbf', '#fee090', '#fdae61',
-                        '#f46d43', '#d73027', '#a50026']
-                 }
+                color: ['lightskyblue', 'yellow', 'orangered', 'red']
+            }
 
             }],
             series:[{

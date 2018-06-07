@@ -66,8 +66,10 @@ def getTableData():
 
             validData = []     # sheet中 所有有效数据之和，
             validDataNum=0           #有效数据的个数，大于0的数据都是有效数据
+            maxMin=[]               #全部sheet，每个sheet的最大值和最小值
             for sheetName in sheetNameList:  # 遍历所有sheet
                 #处理某个sheet
+                sheetMaxMin = []  # 记录下每个sheet，每列的最大值，最小值
                 sheetName = sheetName.encode("utf-8")  # sheet名转码
                  #处理（某sheet）的数据
                 timeline.append(int(sheetName))  # 年份加入timeline中,转为int
@@ -79,6 +81,7 @@ def getTableData():
                 sheetData.sum()/(countryNum*provinceNum)
                 # 先处理空sheet
                 if (len(sheetData) == 0):
+                    maxMin.append([-1,1])  #给这个sheet设置个默认的最大最小值
                     #创建一个189*31的 零矩阵
                     for i in range( provinceNum):                   #遍历所有的列
                         seriesCountry = []                         #某列的数据，即某省在某年的数据
@@ -104,8 +107,17 @@ def getTableData():
                 #再处理非空sheet
                 #seriesProvince = []
                 sheetDataSort = np.argsort(-sheetData, axis=0)  # 排序，按列排序，降序
+                # _da=[]
+                # for m in range(provinceNum):
+                #     couData=[]
+                #     for n in range(countryNum):
+                #         couData.append(sheetData[sheetDataSort[n][m]][m])
+                #     _da.append(couData)
 
+                Tot_exportSort = np.argsort(-sheetData, axis=1)  # 按行排序，出口排序，降序
                 for i in range(provinceNum): #遍历省份，即每一列
+                    sheetMaxMin.append(sheetData[sheetDataSort[0][i]][i])
+                    sheetMaxMin.append(sheetData[sheetDataSort[provinceNum-1][i]][i])
                     #处理某一列的数据
                     sort={}
                     for j in range(countryNum):
@@ -141,8 +153,11 @@ def getTableData():
 
                     seriesList[provincesInfo[i][2]].append({
                         "time":sheetName,
+                        "min":sheetData[sheetDataSort[countryNum-1][i]][i],
+                        "max":sheetData[sheetDataSort[0][i]][i],
                         "data":seriesCountry
                     })
+                maxMin.append([min(sheetMaxMin),max(sheetMaxMin)])
                 #seriesList.append(series)
             result["average"]=np.array(validData).sum()/validDataNum   #平均值
             result["counties"] = countryList        # 国家列表
@@ -150,6 +165,7 @@ def getTableData():
             result["emptySheets"] = emptySheets    # 空数据sheet名集合
             result["series"] = seriesList
             result['unit'] = unit                   # 单位
+            result['maxMin'] = maxMin                   # 每个sheet的最大最小值
 
             resultList.append(result)
         except BaseException:
