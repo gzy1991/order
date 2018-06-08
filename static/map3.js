@@ -102,7 +102,7 @@ var getGeoRegions = function(){
                 if(countrySwitch[counName]!=""){    //此时转换名字
                     counName=countrySwitch[counName];
                 }else{
-                    console.log(counName);
+                    //console.log(counName);
                     continue; //跳过，这些国家无法在echarts的geo地图上是无法显示的。因为echarts不存在这些国家
                 }
             }
@@ -250,7 +250,7 @@ var initEchart=function(row){
                     if(value[3]<visualMapRange[0] || value[3]>visualMapRange[1]){           //未选中的范围，不显示提示框
                         return;
                     }
-                    console.log(typeof(value));
+                    //console.log(typeof(value));
                     if(typeof(value)!="object"){
                         return;
                     }
@@ -395,8 +395,10 @@ var initEchart=function(row){
             var emptyYears=selectedRow.emptySheets;
             var index=curIndex+1;           //目标年的index
             for( ; index<allYears.length ; index++){
-                if(emptyYears.indexOf(allYears[index]) ==-1){   //如果不是空，那么就是这年
+                if(emptyYears.indexOf(allYears[index].toString()) ==-1){   //如果不是空，那么就是这年
                     curIndex=index % (allYears.length/2); //求余
+                    console.log(curIndex)
+                    console.log(selectedRow.timeline[curIndex])
                     myChart.dispatchAction({
                         type: 'timelineChange',
                         // 时间点的 index

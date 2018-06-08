@@ -62,15 +62,7 @@ var  geoData2=[              //世界地图，颜色
         }
     }
 ];
-/*生成世界地图中，各国的颜色数据*/
-/* 根据 selectedPros 和 curIndex ，生成geoData2  */
-var generateColor=function(){
-    geoData2=[];//先清空
-    for(var i=0;i<189;i++){
 
-    }
-
-}
 
 var nameMap={  //地图省份名字映射关系
 		'南海诸岛':"NanHai",
@@ -414,28 +406,30 @@ var initEchart2= function(row){
 	console.log(option2);
     myChart2.setOption(option2,true);
      //绑定年份timeline 切换事件
-    myChart2.on('timelinechanged', function (params) {
-        //console.log(params);
-        curIndex = params.currentIndex;
-        if(selectedRow.emptySheets.indexOf(selectedRow.timeline[curIndex].toString())!=-1){//，如果点了空sheet这时直接跳过，切换到不是空的那年sheet数据
-            var allYears=selectedRow.timeline;
-            allYears=allYears.concat(allYears);
-            var emptyYears=selectedRow.emptySheets;
-            var index=curIndex+1;           //目标年的index
-            for( ; index<allYears.length ; index++){
-                if(emptyYears.indexOf(allYears[index]) ==-1){   //如果不是空，那么就是这年
-                    curIndex=index % (allYears.length/2); //求余
-                    myChart2.dispatchAction({
-                        type: 'timelineChange',
-                        // 时间点的 index
-                        currentIndex: curIndex
-                    });
-                    break; //跳出循环
-                }
-            }
-        }
-
-    });
+    // myChart2.on('timelinechanged', function (params) {
+    //     //console.log(params);
+    //     curIndex = params.currentIndex;
+    //     if(selectedRow.emptySheets.indexOf(selectedRow.timeline[curIndex].toString())!=-1){//，如果点了空sheet这时直接跳过，切换到不是空的那年sheet数据
+    //         var allYears=selectedRow.timeline;
+    //         allYears=allYears.concat(allYears);
+    //         var emptyYears=selectedRow.emptySheets;
+    //         var index=curIndex+1;           //目标年的index
+    //         for( ; index<allYears.length ; index++){
+    //             if(emptyYears.indexOf(allYears[index].toString()) ==-1){   //如果不是空，那么就是这年
+    //                 curIndex=index % (allYears.length/2); //求余
+    //                 console.log(curIndex)
+    //                 console.log(selectedRow.timeline[curIndex])
+    //                 myChart2.dispatchAction({
+    //                     type: 'timelineChange',
+    //                     // 时间点的 index
+    //                     currentIndex: curIndex
+    //                 });
+    //                 break; //跳出循环
+    //             }
+    //         }
+    //     }
+    //
+    // });
     // myChart2.on('click', function (params) {
     //     console.log(params)
     // })
