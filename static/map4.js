@@ -348,7 +348,7 @@ var initEchart2= function(row){
                 if ('value' in params.data) {
                     return "country:"+params.data.value[2] + '<br>'
 
-                        +   "data   :"  + params.data.value[1]+'<br>'
+                        +   "data   :"  + params.data.value[1].toFixed(4)+'<br>'
                         +   "sort   :"+params.data.value[0]
                         ;
                 }

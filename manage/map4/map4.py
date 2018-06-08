@@ -81,26 +81,27 @@ def getTableData():
                 sheetData.sum()/(countryNum*provinceNum)
                 # 先处理空sheet
                 if (len(sheetData) == 0):
-                    maxMin.append([-1,1])  #给这个sheet设置个默认的最大最小值
+                    maxMin.append([0,0])  #给这个sheet设置个默认的最大最小值
                     #创建一个189*31的 零矩阵
-                    for i in range( provinceNum):                   #遍历所有的列
+                    for i in range( provinceNum):                   #遍历省份，即每一列
                         seriesCountry = []                         #某列的数据，即某省在某年的数据
-                        # for k in range(countryNum):                 # 国家
-                            # countryInfo = []
-                            # countryInfo.append(countryNum)      # 排序 #数据无效，排序都是189
-                            # countryInfo.append(countryList[k])  # 国家名
-                            # countryInfo.append(0)               # 数据，全部是0
-                            # countryInfo.append(sheetName)  # sheet名，滚动轴项名
-                            # countryInfo = {}
-                            # countryInfo["rank"] = countryNum
-                            # countryInfo["name"] = countryList[k]
-                            # countryInfo["data"] =0
-                            # countryInfo["value"] =0
-                            # countryInfo["value"] =countryNum
-                            # countryInfo["year"] = int(sheetName)
-                            # seriesCountry.append(countryInfo)
-                        # series[provincesInfo[i][2]]=(seriesCountry)
-                        seriesList[provincesInfo[i][2]].append(seriesCountry)
+
+                        for k in range(countryNum):                 #遍历此列的所有国家
+                            countryInfo = []
+                            countryInfo.append(189)  # 排序
+                            countryInfo.append(0)  # 数据
+                            countryInfo.append(countryList[k])  # 国家名
+                            seriesCountry.append({
+                                "name": countryList[k],
+                                "value": countryInfo
+                            })
+                        seriesList[provincesInfo[i][2]].append({
+                            "time": sheetName,
+                            "min": 0,
+                            "max": 0,
+                            "data": seriesCountry
+                        })
+                        #seriesList[provincesInfo[i][2]].append(seriesCountry)
                     # seriesList.append(series)
                     emptySheets.append(sheetName)   #记下空sheet
                     continue
@@ -114,7 +115,7 @@ def getTableData():
                 #         couData.append(sheetData[sheetDataSort[n][m]][m])
                 #     _da.append(couData)
 
-                Tot_exportSort = np.argsort(-sheetData, axis=1)  # 按行排序，出口排序，降序
+               # Tot_exportSort = np.argsort(-sheetData, axis=1)  # 按行排序，出口排序，降序
                 for i in range(provinceNum): #遍历省份，即每一列
                     sheetMaxMin.append(sheetData[sheetDataSort[0][i]][i])
                     sheetMaxMin.append(sheetData[sheetDataSort[provinceNum-1][i]][i])
@@ -124,19 +125,6 @@ def getTableData():
                         sort[sheetDataSort[j][i]]=j+1     # 索引从0开始，排序从1开始。获取到此列（某省）的买个国家的排序
                     seriesCountry = []                    # 某列的数据，即某省在某年的数据
                     for k in range(countryNum):  #遍历此列的所有国家
-                        # countryInfo = {}
-                        # countryInfo["rank"]=sort[k]
-                        # countryInfo["name"]=countryList[k]
-                        # countryInfo["data"]=sheetData[k][i]
-                        # countryInfo["value"]=sheetData[k][i]
-                        # countryInfo["value"]=sort[k]
-                        # countryInfo["year"]=int(sheetName)
-                        # countryInfo=[]
-                        # countryInfo.append(sort[k])         #排序
-                        # countryInfo.append(countryList[k])  #国家名
-                        # countryInfo.append(sheetData[k][i]) #数据
-                        # countryInfo.append(sheetName)       #sheet名，滚动轴项名
-
                         countryInfo = []
                         countryInfo.append(sort[k])  # 排序
                         countryInfo.append(sheetData[k][i])  # 数据
