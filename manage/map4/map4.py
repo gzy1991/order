@@ -72,13 +72,13 @@ def getTableData():
                 sheetMaxMin = []  # 记录下每个sheet，每列的最大值，最小值
                 sheetName = sheetName.encode("utf-8")  # sheet名转码
                  #处理（某sheet）的数据
-                timeline.append(int(sheetName))  # 年份加入timeline中,转为int
-                # timeline.append(sheetName)  # 年份加入timeline中,转为int
+                #timeline.append(int(sheetName))  # 年份加入timeline中,转为int
+                timeline.append(sheetName)  # 年份加入timeline中,转为int
                 # series = {}  # 某sheet，所有省份的数据
                 series = {}     # 某sheet，所有省份的数据
                 sheetData = ExcelTool.getArrayFromSheet(excelData, sheetName, 'name',
                                                         row=countryNum,column=provinceNum)  # 获取某年（某sheet）的数据
-                sheetData.sum()/(countryNum*provinceNum)
+                #sheetData.sum()/(countryNum*provinceNum)
                 # 先处理空sheet
                 if (len(sheetData) == 0):
                     maxMin.append([0,0])  #给这个sheet设置个默认的最大最小值
@@ -105,9 +105,15 @@ def getTableData():
                     # seriesList.append(series)
                     emptySheets.append(sheetName)   #记下空sheet
                     continue
+
                 #再处理非空sheet
-                #seriesProvince = []
+                # 先遍历一遍，如果有负数，处理成0
+                for row in range(countryNum):
+                    for column in range(provinceNum):  #
+                        if (sheetData[row][column] < -100 or sheetData[row][column] > 100):  #大于100或者小于-100，处理成0
+                            sheetData[row][column] = 0
                 sheetDataSort = np.argsort(-sheetData, axis=0)  # 排序，按列排序，降序
+
                 # _da=[]
                 # for m in range(provinceNum):
                 #     couData=[]
@@ -118,7 +124,7 @@ def getTableData():
                # Tot_exportSort = np.argsort(-sheetData, axis=1)  # 按行排序，出口排序，降序
                 for i in range(provinceNum): #遍历省份，即每一列
                     sheetMaxMin.append(sheetData[sheetDataSort[0][i]][i])
-                    sheetMaxMin.append(sheetData[sheetDataSort[provinceNum-1][i]][i])
+                    sheetMaxMin.append(sheetData[sheetDataSort[countryNum-1][i]][i])
                     #处理某一列的数据
                     sort={}
                     for j in range(countryNum):

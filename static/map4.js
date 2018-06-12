@@ -45,24 +45,6 @@ var myChart2 = echarts.init(dom2);;
 var option2 = null;
 var seriesData =[]; //  容器，存储数据
 var curIndex=0;             //滚动轴当前项,默认是第一个
-var  geoData2=[              //世界地图，颜色
-    {
-        name:"China",
-        selected:true,
-        itemStyle:{
-            color:'#cc484a',
-            areaColor :{
-                color:'#cc484a'
-            }
-        },
-        emphasis:{
-            itemStyle:{
-                 color:'#cc484a'
-            }
-        }
-    }
-];
-
 
 var nameMap={  //地图省份名字映射关系
 		'南海诸岛':"NanHai",
@@ -84,9 +66,7 @@ var nameMap={  //地图省份名字映射关系
 		"Hebei":"河北","Shaanxi":"陕西","Shandong":"山东","Sichuan":"四川","Taiwan":"台湾","Tianjin":"天津",
 		"Tibet":"西藏","Xinjiang":"新疆","Yunnan":"云南","Shanghai":"上海","Zhejiang":"浙江"
 	};
-var worldNameMap={ //世界地图名字映射
 
-};
 //提示框配置数据
 var itemStyle = {
     opacity: 0.7,
@@ -95,13 +75,7 @@ var itemStyle = {
     shadowOffsetY: 0,
     shadowColor: 'rgba(0, 0, 0, 0.5)'
     };
-var schema = [
-    {name: 'Welfare per capita', index: 1, text: 'Welfare', unit: '美元'}
-    ,{name: 'GDP per capita', index: 0, text: 'GDP', unit: '美元'}
-    ,{name: 'Country', index: 2, text: 'Region', unit: ''}
-    ,{name: 'size', index: 3, text: ' Size', unit: ''}
-    ,{name: 'sort', index: 4, text: ' Rank', unit: ''}
-];
+
 
 //获取页面表格数据
 var initPageData=function(){
@@ -134,12 +108,10 @@ var initTable=function(datas){
 		onClickRow:function (row, $element, field) {/*表格的行点击事件*/
 			console.log("你点击了行："+row.fileName);
 			selectedPros="Beijing";        //选中的省份,改为默认身份  todo
-			//geoData=[];             // option中的regions，对选中的省份设备背景色 ,清空
 			seriesData=[];          //
 			selectedRow=row;
             initEchart(selectedRow);    //初始化中国地图
             initEchart2(selectedRow);   //初始化世界地图
-
 		},
 	    columns: [{
             checkbox: true
@@ -154,16 +126,13 @@ var initTable=function(datas){
 		selectedRow=datas[0];
 		initEchart(selectedRow);    //初始化中国地图
 		initEchart2(selectedRow);   //初始化世界地图
-
 	}
 	$('#loading').modal('hide');
-
 }
 
 /*初始化中国地图*/
 var initEchart = function(row){
     console.log("初始化中国地图echarts！");
-
     if(myChart&&myChart.dispose){
         myChart.dispose();
     }
@@ -293,11 +262,7 @@ var initEchart2= function(row){
                         borderColor:emphasisColor
                     }
                 },
-                 // data: selectedRow.timeline
                  data: []
-                // data: selectedRow.series[selectedPros].map(function(ele) {
-                //     return ele.time
-                // })
 
         },
 
@@ -305,6 +270,12 @@ var initEchart2= function(row){
                 id: 'map',
                 type: 'map',
                 mapType: 'world',
+                roam: true,
+                zoom:1.2,
+                scaleLimit:{//滚轮缩放的极限控制，通过min, max最小和最大的缩放值
+                    min:0.8,
+                    max:2
+                },
                 map: 'world',
                 itemStyle: {
                     normal: {
@@ -322,8 +293,8 @@ var initEchart2= function(row){
             backgroundColor:backgroundColor,				//背景
             title: [ 									//标题
 				{
-					text: selectedRow.fileName+selectedPros,
-                    subtext: 'Unit：'+selectedRow.unit,				//副标题
+					text: selectedRow.fileName,
+                    subtext:"Province:"+selectedPros+ '  Unit:'+selectedRow.unit,				//副标题
 					left: 'center',
 					top: 10,
 					textStyle: {
@@ -346,10 +317,9 @@ var initEchart2= function(row){
 
                 formatter: function(params) {
                 if ('value' in params.data) {
-                    return "country:"+params.data.value[2] + '<br>'
-
-                        +   "data   :"  + params.data.value[1].toFixed(4)+'<br>'
-                        +   "sort   :"+params.data.value[0]
+                    return "country："+params.data.value[2] + '<br>'
+                        +   "data   ："  + params.data.value[1].toFixed(4)+'<br>'
+                        +   "sort   ："+params.data.value[0]
                         ;
                 }
             }
@@ -369,10 +339,6 @@ var initEchart2= function(row){
     	        type: 'continuous',
                 dimension: 1,
                 precision: 0.000001,                 //数据展示的小数精度，默认为0，无小数点
-                // max: selectedRow.series[selectedPros][n].data[0].value[1],
-                // min:selectedRow.series[selectedPros][n].data[188].value[1],
-                // min:selectedRow.series[selectedPros][n].min*0.9,
-                // max:selectedRow.series[selectedPros][n].max*1.1,
                 min:selectedRow.maxMin[n][0],
                 max:selectedRow.maxMin[n][1],
                 range:[selectedRow.series[selectedPros][n].min,selectedRow.series[selectedPros][n].max],
@@ -405,34 +371,6 @@ var initEchart2= function(row){
 	}
 	console.log(option2);
     myChart2.setOption(option2,true);
-     //绑定年份timeline 切换事件
-    // myChart2.on('timelinechanged', function (params) {
-    //     //console.log(params);
-    //     curIndex = params.currentIndex;
-    //     if(selectedRow.emptySheets.indexOf(selectedRow.timeline[curIndex].toString())!=-1){//，如果点了空sheet这时直接跳过，切换到不是空的那年sheet数据
-    //         var allYears=selectedRow.timeline;
-    //         allYears=allYears.concat(allYears);
-    //         var emptyYears=selectedRow.emptySheets;
-    //         var index=curIndex+1;           //目标年的index
-    //         for( ; index<allYears.length ; index++){
-    //             if(emptyYears.indexOf(allYears[index].toString()) ==-1){   //如果不是空，那么就是这年
-    //                 curIndex=index % (allYears.length/2); //求余
-    //                 console.log(curIndex)
-    //                 console.log(selectedRow.timeline[curIndex])
-    //                 myChart2.dispatchAction({
-    //                     type: 'timelineChange',
-    //                     // 时间点的 index
-    //                     currentIndex: curIndex
-    //                 });
-    //                 break; //跳出循环
-    //             }
-    //         }
-    //     }
-    //
-    // });
-    // myChart2.on('click', function (params) {
-    //     console.log(params)
-    // })
 
 }
 
