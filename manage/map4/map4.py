@@ -14,7 +14,7 @@ import json
 import Tool.ExcelTool as ExcelTool
 import order.settings as Setting
 import Tool.country as CountrySwitchName
-
+import manage.map4.subCountrys  as SubCountrys
 
 #   关于本图中excel的格式规则
 #   sheet的名字作为timeline的内容来滚动
@@ -31,12 +31,14 @@ def getTableData():
     # #获取国家名 地址列表
     country_name = ExcelTool.getArrayBySheetName(os.path.join(Setting.FILR_DIR["COMMON_DIR"],
                                                 "Countries.xlsx"), "country")
+    # 国家子集合，包含63个国家名，或其别名
+    sunCountrys=SubCountrys.getSubCountrys()
     countryList = []  # 国家名list，有序
     countrySwitch=CountrySwitchName.getcountrySwitch()
     for i in range(countryNum):
         #替换一些国家的名字
         countryName=country_name[i, 0].encode("utf-8")
-        if(countrySwitch.has_key(countryName)):
+        if(countrySwitch.has_key(countryName) and  countrySwitch[countryName]!=""):
             countryList.append(countrySwitch[countryName])
         else:
             countryList.append(countryName)
@@ -72,10 +74,7 @@ def getTableData():
                 sheetMaxMin = []  # 记录下每个sheet，每列的最大值，最小值
                 sheetName = sheetName.encode("utf-8")  # sheet名转码
                  #处理（某sheet）的数据
-                #timeline.append(int(sheetName))  # 年份加入timeline中,转为int
                 timeline.append(sheetName)  # 年份加入timeline中,转为int
-                # series = {}  # 某sheet，所有省份的数据
-                series = {}     # 某sheet，所有省份的数据
                 sheetData = ExcelTool.getArrayFromSheet(excelData, sheetName, 'name',
                                                         row=countryNum,column=provinceNum)  # 获取某年（某sheet）的数据
                 #sheetData.sum()/(countryNum*provinceNum)
@@ -85,7 +84,7 @@ def getTableData():
                     #创建一个189*31的 零矩阵
                     for i in range( provinceNum):                   #遍历省份，即每一列
                         seriesCountry = []                         #某列的数据，即某省在某年的数据
-
+                        seriesCountrySub=[]                         # 某列的数据，即某省在某年的数据,只包含指定的63个国家
                         for k in range(countryNum):                 #遍历此列的所有国家
                             countryInfo = []
                             countryInfo.append(189)  # 排序
@@ -95,14 +94,18 @@ def getTableData():
                                 "name": countryList[k],
                                 "value": countryInfo
                             })
+                            if (countryList[k] in sunCountrys ):
+                                seriesCountrySub.append({
+                                    "name": countryList[k],
+                                    "value": countryInfo
+                            })
                         seriesList[provincesInfo[i][2]].append({
                             "time": sheetName,
                             "min": 0,
                             "max": 0,
-                            "data": seriesCountry
+                            "data": seriesCountry,
+                            "subData": seriesCountrySub
                         })
-                        #seriesList[provincesInfo[i][2]].append(seriesCountry)
-                    # seriesList.append(series)
                     emptySheets.append(sheetName)   #记下空sheet
                     continue
 
@@ -114,14 +117,7 @@ def getTableData():
                             sheetData[row][column] = 0
                 sheetDataSort = np.argsort(-sheetData, axis=0)  # 排序，按列排序，降序
 
-                # _da=[]
-                # for m in range(provinceNum):
-                #     couData=[]
-                #     for n in range(countryNum):
-                #         couData.append(sheetData[sheetDataSort[n][m]][m])
-                #     _da.append(couData)
 
-               # Tot_exportSort = np.argsort(-sheetData, axis=1)  # 按行排序，出口排序，降序
                 for i in range(provinceNum): #遍历省份，即每一列
                     sheetMaxMin.append(sheetData[sheetDataSort[0][i]][i])
                     sheetMaxMin.append(sheetData[sheetDataSort[countryNum-1][i]][i])
@@ -130,6 +126,7 @@ def getTableData():
                     for j in range(countryNum):
                         sort[sheetDataSort[j][i]]=j+1     # 索引从0开始，排序从1开始。获取到此列（某省）的买个国家的排序
                     seriesCountry = []                    # 某列的数据，即某省在某年的数据
+                    seriesCountrySub = []                    # 某列的数据，即某省在某年的数据,只包含指定的63个国家
                     for k in range(countryNum):  #遍历此列的所有国家
                         countryInfo = []
                         countryInfo.append(sort[k])  # 排序
@@ -140,19 +137,23 @@ def getTableData():
                             "name":countryList[k],
                             "value":countryInfo
                         })
+                        if(countryList[k] in sunCountrys ):
+                            seriesCountrySub.append({
+                                "name": countryList[k],
+                                "value": countryInfo
+                        })
                         if(sheetData[k][i]>0):              #记录下有效数据
                             validData.append(sheetData[k][i])
                             validDataNum=validDataNum+1
-                    #series[provincesInfo[i][2]] = (seriesCountry)
 
                     seriesList[provincesInfo[i][2]].append({
                         "time":sheetName,
                         "min":sheetData[sheetDataSort[countryNum-1][i]][i],
                         "max":sheetData[sheetDataSort[0][i]][i],
-                        "data":seriesCountry
+                        "data":seriesCountry,
+                        "subData":seriesCountrySub
                     })
                 maxMin.append([min(sheetMaxMin),max(sheetMaxMin)])
-                #seriesList.append(series)
             result["average"]=np.array(validData).sum()/validDataNum   #平均值
             result["counties"] = countryList        # 国家列表
             result["timeline"] = timeline           # 滚动轴，sheet名集合

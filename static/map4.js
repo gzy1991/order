@@ -12,6 +12,8 @@ var visualMapColor=['#313695', '#4575b4', '#74add1', '#abd9e9',
                         '#e0f3f8', '#ffffbf', '#fee090', '#fdae61',
                         '#f46d43', '#d73027', '#a50026']
     ;
+/*显示类型，，all:显示全部国家   ，sub:显示63国家  */
+var countryType="sub";
 
 /*地图全局数据*/
 var datas ; 		 		//  容器，存储了表格的全部数据，
@@ -347,7 +349,7 @@ var initEchart2= function(row){
                 hoverLink :false,               //打开 hoverLink 功能时，鼠标悬浮到 visualMap 组件上时，鼠标位置对应的数值 在 图表中对应的图形元素，会高亮
                 realtime :false,            //拖拽时，是否实时更新
                 calculable: true,       //是否显示拖拽用的手柄
-                text:['Low','High'],
+                text:['High','Low'],
                 textStyle: {
                         color: textColor,
                         fontFamily:"Times New Roman"	//字体
@@ -365,7 +367,9 @@ var initEchart2= function(row){
             }],
             series:[{
                 id: 'map',
-                data:selectedRow.series[selectedPros][n].data
+                //data:selectedRow.series[selectedPros][n].data
+                data:"sub"==countryType?selectedRow.series[selectedPros][n].subData:selectedRow.series[selectedPros][n].data
+
             }]
         });
 	}
@@ -486,23 +490,29 @@ var initEvent = function(){
 		}
    	 	adjustScrollPage();
 	});
+    /*显示全部国家*/
+    $("#all_li").bind("click",function() {
+        countryType="all";
+        initEchart2(selectedRow);//
+    })
 
-
+    /*显示部分国家*/
+    $("#sub_li").bind("click",function() {
+        countryType="sub";
+        initEchart2(selectedRow);//
+    })
     //切换背景色 :  黑色，白色  ，默认黑色
     $("#black_li").bind("click",function() {  //切换成黑色背景
         backgroundColor="#404a59";
         textColor='#ccc';
         emphasisColor='#aaa';
         visualMapColorOutOfRange='#4c5665';
-        // visualMapColor=["#33a5c6",
-        //     "#1BB116",
-        //     "#c67f58"];
         emphasisAreaColor="#fff";
         areaColor="#404a59";
         textEmphasisColor="#fff";
         borderColor="#aaa";
         initEchart(selectedRow);
-        initEchart2(selectedRow);//初始化小地图
+        initEchart2(selectedRow);//
     })
 
     $("#white_li").bind("click",function() {  //切换成白色背景
@@ -510,13 +520,12 @@ var initEvent = function(){
         textColor='#444444';
         emphasisColor='#555555';
         visualMapColorOutOfRange='#B1B1B1';
-        // visualMapColor=['orangered','yellow','lightskyblue'];
         emphasisAreaColor="#555555";
         areaColor="#C1C1C1";
         textEmphasisColor="#000000";
         borderColor="#555555";
         initEchart(selectedRow);
-        initEchart2(selectedRow);//初始化小地图
+        initEchart2(selectedRow);//
     })
     /*删除按钮*/
     $("#delBtn").bind("click",function(){
