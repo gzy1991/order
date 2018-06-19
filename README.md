@@ -17,7 +17,7 @@
 <img src="https://github.com/gzy1991/order/blob/master/file/img/map3.png"  alt="图片加载失败时，显示这段字"/>
 
 # 1.4 图4
-> 展示了一定程度内，中国GDP的变化率，对世界各国的影响程度.
+> 展示了一定程度内，中国某省的GDP变化率，对世界各国的影响程度.
 <img src="https://github.com/gzy1991/order/blob/master/file/img/map4.png"  alt="图片加载失败时，显示这段字"/>
 
 # 2.环境安装说明
