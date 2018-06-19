@@ -15,7 +15,7 @@ def getcountrySwitch():
         'British Virgin Islands':'U.S. Virgin Is.',
         'Cayman Islands':'Cayman Is.',
         'Central African Republic':'Central African Rep.',
-        'Czech Republic':'Central African Rep.',
+        'Czech Republic':'Czech Rep.',                          #捷克共和国
         'Cote dIvoire':"Côte d'Ivoire",
         'North Korea':'Dem. Rep. Korea',
         'DR Congo':'Dem. Rep. Congo',

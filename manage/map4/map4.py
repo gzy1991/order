@@ -170,7 +170,7 @@ def getTableData():
 
     resultListJson = json.dumps(resultList)
     print "Map4返回值 resultListJson :"
-    print   resultListJson
+    #print   resultListJson
     return  resultListJson
 
 
