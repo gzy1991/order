@@ -31,9 +31,15 @@ def getTableData():
 
     files = ExcelTool.listExcelFile(Setting.FILR_DIR["MAP3_DIR"])
     print files             # .xlsx结果文件列表
-    resultList = []
+    resultList = []         # 全部excel文件处理后的结果，容器
     errMsg = ""             #错误信息
     countryNum=189          #国家总数
+    # 获取国家名列表
+    country_name = ExcelTool.getArrayBySheetName(os.path.join(Setting.FILR_DIR["COMMON_DIR"], "Countries.xlsx"),
+                                                 "country")
+    countryList = []  # 国家名list，有序
+    for i in range(countryNum):
+        countryList.append(country_name[i, 0].encode("utf-8"))
 
     for file in files:      # 遍历每个excel文件
         try:
@@ -51,11 +57,7 @@ def getTableData():
             xAxis = []      # x轴最小值  最大值    人均消耗
             yAxis = []      # y轴最小值  最大值    人均gdp
             symbolSize=[]   # sheet中 气泡大小之和列表，
-            # 获取国家名列表
-            country_name = ExcelTool.getArrayBySheetName(os.path.join(Setting.FILR_DIR["COMMON_DIR"], "Countries.xlsx"),"country")
-            countryList=[]   #  国家名list，有序
-            for i in range(countryNum):
-                countryList.append(country_name[i,0].encode("utf-8"))
+
 
             timeline=[]                                         #timeline  ,年数的集合
             sheetNameList=excelData.sheet_names()               #获取此文件的全部sheet名
@@ -102,7 +104,7 @@ def getTableData():
                     unitY = excelData.sheet_by_name("Unit").cell_value(0, 1)    # Y轴单位
                     unitX= excelData.sheet_by_name("Unit").cell_value(0, 0)     # X轴单位
 
-            xMax=handleMaxMin(xAxis,"max",1,rate=0.8)
+            xMax=handleMaxMin(xAxis,"max",2,rate=1)
             xMin=handleMaxMin(xAxis,"min",2)
             yMax=handleMaxMin(yAxis,"max",1)
             yMin=handleMaxMin(yAxis,"min",2)
@@ -138,7 +140,7 @@ def getTableData():
 
 #对x或y轴的最大值或最小值做下处理：乘以0.9后，找最近的整数
 #type :max 或者 min
-#len: 精度，保留1位或2位
+#accuracy: 精度，保留1位或2位
 #rate :系数
 def handleMaxMin(list,type,accuracy=2,rate=0.9):
     if(type=="max"):

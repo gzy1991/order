@@ -113,7 +113,7 @@ var initEchart = function(row){
 					borderColor: '#404a59'
 		        },
 		        emphasis: {
-		            areaColor:emphasisAreaColor    //选中国家时，国家背景色
+		            areaColor:emphasisAreaColor    //选中省份时，国家背景色
 		        }
 	    	},
 		    label: {   //标签

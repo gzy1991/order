@@ -131,6 +131,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (os.path.join(os.path.dirname(__file__), '../static/').replace('\\','/'),)
 FILR_BASE_DIR=os.path.join(BASE_DIR,"file")  #文件路径
 FILR_DIR={                                    #各个图自己的路径
+    "MAP4_DIR":os.path.join(FILR_BASE_DIR,"map4"),  #
     "MAP3_DIR":os.path.join(FILR_BASE_DIR,"map3"),  #
     "COMMON_DIR":os.path.join(FILR_BASE_DIR,"common"),  #公共文件路径
     "MAP1_DIR":os.path.join(FILR_BASE_DIR,"map1_result_excel"),

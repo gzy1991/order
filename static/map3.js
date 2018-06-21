@@ -10,17 +10,21 @@ var textColor='#ccc';                   //文字颜色
 var textEmphasisColor="#fff";               //年份选中时颜色
 var emphasisColor='#aaa';;              //播放按钮颜色
 var visualMapColorOutOfRange='#4c5665'; //visualMap，范围外颜色
-var visualMapColor=['#565AB1','#7EB19A','#9CC63D'];//visualMap颜色变化范围
-var browserHeight=$(window).height() ; //浏览器高度
+var visualMapColor=[//visualMap颜色变化范围
+    "#33a5c6",
+    "#1BB116",
+    "#c67f58"
+];
+//var browserHeight=$(window).height() ; //浏览器高度
 
 
 //    echart      地图全局变量
 var dom2 = document.getElementById("mapContainer2");;//小地图
 var myChart2 = echarts.init(dom2);;
 var option2 = null;
-var geoRegions=[        ];//地图选中国家
-var visualMapRange = [1,50];    //visualMap 排序变化范围
-var curIndex=0;             //当前年,默认是第一年
+var geoRegions=[        ];              //地图选中国家
+var visualMapRange = [1,50];            //visualMap 排序变化范围
+var curIndex=0;                         //当前年,默认是第一年
 var emphasisAreaColor="#fff";         //选中国家的颜色
 var areaColor="#404a59";              //国家的颜色
 var borderColor="#aaa";                     //国家边界颜色
@@ -98,6 +102,7 @@ var getGeoRegions = function(){
                 if(countrySwitch[counName]!=""){    //此时转换名字
                     counName=countrySwitch[counName];
                 }else{
+                    //console.log(counName);
                     continue; //跳过，这些国家无法在echarts的geo地图上是无法显示的。因为echarts不存在这些国家
                 }
             }
@@ -113,11 +118,10 @@ var initEchart2 = function(row){
         myChart2.dispose();
     }
     curIndex=0;                 //初始化
-    visualMapRange=[0,50];     //初始化
     geoRegions=[];              //初始化
     dom2 = document.getElementById("mapContainer2");
     myChart2 = echarts.init(dom2);
-    getGeoRegions(0,visualMapRange[0],visualMapRange[1]);  //获取初始化时，需要获取选中的国家列表
+    getGeoRegions();  //获取初始化时，需要获取选中的国家列表
     option2={
         backgroundColor:backgroundColor,				//背景
         geo: {              //小地图
@@ -162,14 +166,13 @@ var initEchart=function(row){
     if(myChart&&myChart.dispose){
 		myChart.dispose();
 	}
-	unit='';  //单位
-    unit=row.unit;
+	var unit='%';  //单位
+    //unit=row.unit;
 	dom = document.getElementById("mapContainer");
     myChart = echarts.init(dom);
     curIndex=0;
     option={
-        baseOption:{
-            timeline: {
+        timeline: {
                 axisType: 'category',
                 orient: 'horizontal',
                 autoPlay: false,		//是否自动播放
@@ -216,6 +219,8 @@ var initEchart=function(row){
                 },
                 data: []
             },
+        baseOption:{
+
 			backgroundColor:backgroundColor,				//背景
 			title: [ 									//标题
 				{
@@ -245,7 +250,7 @@ var initEchart=function(row){
                     if(value[3]<visualMapRange[0] || value[3]>visualMapRange[1]){           //未选中的范围，不显示提示框
                         return;
                     }
-                    console.log(typeof(value));
+                    //console.log(typeof(value));
                     if(typeof(value)!="object"){
                         return;
                     }
@@ -267,7 +272,8 @@ var initEchart=function(row){
 			xAxis: {
                 type: 'value', 		//对数轴。适用于对数数据
                 name: 'Welfare per capita  ('+row.unitX+")",
-                max: parseInt(row.xMax),
+                //max: parseInt(row.xMax),
+                max: Math.round(row.xMax/Math.pow(10,row.xMax.toString().length-1)) * Math.pow(10,row.xMax.toString().length-1),
                 min: parseInt(row.xMin),
                 nameGap: 25,
                 nameLocation: 'middle',
@@ -328,8 +334,8 @@ var initEchart=function(row){
                     hoverLink :false,
                     realtime :false,        //拖拽时，是否实时更新 。注意 ，如果设置为true，可能会出现一些bug，比如气泡隐藏后，鼠标放上去依然有效果
                     //align:'top',
-                    calculable: true,
-                    precision: 0.1,
+                    calculable: true,           //是否显示拖拽用的手柄
+                    precision: 0.1,                 //数据展示的小数精度，默认为0，无小数点
                     textGap: 30,
                     text:['Min','Max'],
                     textGap:5,
@@ -365,7 +371,7 @@ var initEchart=function(row){
         ]
     };
     for(var n=0;n<row.timeline.length;n++){
-    	option.baseOption.timeline.data.push(row.timeline[n]);
+    	option.timeline.data.push(row.timeline[n]);
 		option.options.push({
             series: {
                 id: 'gridScatter',
@@ -389,8 +395,10 @@ var initEchart=function(row){
             var emptyYears=selectedRow.emptySheets;
             var index=curIndex+1;           //目标年的index
             for( ; index<allYears.length ; index++){
-                if(emptyYears.indexOf(allYears[index]) ==-1){   //如果不是空，那么就是这年
+                if(emptyYears.indexOf(allYears[index].toString()) ==-1){   //如果不是空，那么就是这年
                     curIndex=index % (allYears.length/2); //求余
+                    console.log(curIndex)
+                    console.log(selectedRow.timeline[curIndex])
                     myChart.dispatchAction({
                         type: 'timelineChange',
                         // 时间点的 index
@@ -426,9 +434,9 @@ var initTable = function(datas){
 		width:30,
 		onClickRow:function (row, $element, field) {/*表格的行点击事件*/
 			console.log("你点击了行："+row.fileName);
-			selectedPros=[];  //选中的省份,清空
+			selectedPros="Beijing";  //选中的省份,清空
 			geoData=[];       // option中的regions，对选中的省份设备背景色 ,清空
-			seriesData=[];    //  根据进出口类型和选中的省份画的线，清空
+			seriesData=[];    //  根据
 			selectedRow=row;
             initEchart(selectedRow);
             initEchart2(selectedRow);//初始化小地图
@@ -550,8 +558,10 @@ var initEvent = function() {
         textColor='#ccc';
         emphasisColor='#aaa';
         visualMapColorOutOfRange='#4c5665';
-        visualMapColor=['#565AB1','#7EB19A','#9CC63D'];
-        emphasisAreaColor="#727272";
+        visualMapColor=["#33a5c6",
+            "#1BB116",
+            "#c67f58"];
+        emphasisAreaColor="#fff";
         areaColor="#404a59";
         textEmphasisColor="#fff";
         borderColor="#aaa";
