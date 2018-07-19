@@ -296,7 +296,7 @@ var initEchart2= function(row){
             title: [ 									//标题
 				{
 					text: selectedRow.fileName,
-                    subtext:"Province:"+selectedPros+ '  Unit:'+selectedRow.unit,				//副标题
+                    subtext:  ' Unit: '+selectedRow.unit,				//副标题
 					left: 'center',
 					top: 10,
 					textStyle: {
