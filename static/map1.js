@@ -100,6 +100,7 @@ var initEchart=function(row){
 			data:legendNameList,
 			inactiveColor :'#6E8B3D',
 			textStyle: {
+				fontFamily:"Times New Roman",//字体
 				color: legendColor
 			},
 			selectedMode: 'false' 									//single    false  multiple
@@ -198,7 +199,7 @@ var initEchart=function(row){
 					normal: {
 						show: isShowSign,
 						position: 'right',      			//标签的位置。
-
+						fontFamily:"Times New Roman",//字体
 						formatter: '{b}'           			//标签内容格式器,支持字符串模板和回调函数两种形式,字符串模板与回调函数返回的字符串均支持用 \n 换行。
 															//模板变量有 {a}、{b}、{c},分别表示系列名,数据名,数据值。
 					}
@@ -208,6 +209,7 @@ var initEchart=function(row){
 				},
 				itemStyle: {
 					normal: {
+						fontFamily:"Times New Roman",//字体
 						color: color[i]
 					}
 				},

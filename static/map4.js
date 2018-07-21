@@ -30,7 +30,7 @@ var switchTime =2000;       //动画切换时间 2秒
 var dom = document.getElementById("mapContainer");;//
 var myChart = echarts.init(dom);;
 var option=null;
-var emphasisAreaColor="#fff";         //选中省份的颜色
+var emphasisAreaColor="#b7b7b7";         //选中省份的颜色
 var areaColor="#404a59";              //省份的颜色
 var borderColor="#aaa";                     //省份边界颜色
 var selectedPros= "Beijing";  	//图中选中的省份名，默认是北京
@@ -109,7 +109,8 @@ var initTable=function(datas){
 		width:30,
 		onClickRow:function (row, $element, field) {/*表格的行点击事件*/
 			console.log("你点击了行："+row.fileName);
-			selectedPros="Beijing";        //选中的省份,改为默认身份  todo
+			selectedPros="Beijing";        //选中的省份,改为默认身份
+            geoData=[{name:"Beijing",selected:true },{name:"北京",selected:true }  ];
 			seriesData=[];          //
 			selectedRow=row;
             initEchart(selectedRow);    //初始化中国地图
@@ -160,10 +161,16 @@ var initEchart = function(row){
                 max:2
             },
             regions:geoData,
-
+            label:{
+                emphasis: {  //选中省份的，省份名字的字体
+                    fontFamily : "Times New Roman" ,  //字体
+                    show: true,
+			    }
+            },
             emphasis:{      //选中国家的颜色
                 label:{
-                    show:false
+                    fontStyle :"Times New Roman",//字体
+                    show:true
                 },
                 itemStyle:{
                     borderColor: borderColor,
@@ -279,7 +286,16 @@ var initEchart2= function(row){
                     max:2
                 },
                 map: 'world',
+                label:{
+                    emphasis:{
+                        show:true,
+                        fontFamily : "Times New Roman",//字体
+                    },
+                    show:true,
+                    fontFamily : "Times New Roman",//字体
+                },
                 itemStyle: {
+
                     normal: {
                         areaColor: areaColor,//地图区域的颜色。
                         borderColor: borderColor
@@ -290,13 +306,11 @@ var initEchart2= function(row){
                 },
                 data: []
             }],
-                
-
             backgroundColor:backgroundColor,				//背景
             title: [ 									//标题
 				{
 					text: selectedRow.fileName,
-                    subtext:"Province:"+selectedPros+ '  Unit:'+selectedRow.unit,				//副标题
+                    subtext:  ' Unit: '+selectedRow.unit,				//副标题
 					left: 'center',
 					top: 10,
 					textStyle: {
@@ -336,6 +350,11 @@ var initEchart2= function(row){
     };
      for(var n=0;n<selectedRow.timeline.length;n++){
     	option2.baseOption.timeline.data.push(selectedRow.timeline[n]);
+    	var seriesData= "sub"==countryType?selectedRow.series[selectedPros][n].subData:selectedRow.series[selectedPros][n].data;  //series数据
+    	seriesData.push({name:"China",
+            selected:true}
+
+            );// 中国有个默认的颜色
     	option2.options.push({
     	    visualMap:[{
     	        type: 'continuous',
@@ -354,12 +373,6 @@ var initEchart2= function(row){
                         color: textColor,
                         fontFamily:"Times New Roman"	//字体
                 },
-                //color:visualMapColor,
-                // inRange: {
-                //     color: ['#313695', '#4575b4', '#74add1', '#abd9e9',
-                //         '#e0f3f8', '#ffffbf', '#fee090', '#fdae61',
-                //         '#f46d43', '#d73027', '#a50026']
-                //  }
                 inRange: {
                 color: ['lightskyblue', 'yellow', 'orangered', 'red']
             }
@@ -367,8 +380,7 @@ var initEchart2= function(row){
             }],
             series:[{
                 id: 'map',
-                //data:selectedRow.series[selectedPros][n].data
-                data:"sub"==countryType?selectedRow.series[selectedPros][n].subData:selectedRow.series[selectedPros][n].data
+                data:seriesData
 
             }]
         });
@@ -507,7 +519,7 @@ var initEvent = function(){
         textColor='#ccc';
         emphasisColor='#aaa';
         visualMapColorOutOfRange='#4c5665';
-        emphasisAreaColor="#fff";
+        emphasisAreaColor="#b7b7b7";
         areaColor="#404a59";
         textEmphasisColor="#fff";
         borderColor="#aaa";
@@ -520,7 +532,8 @@ var initEvent = function(){
         textColor='#444444';
         emphasisColor='#555555';
         visualMapColorOutOfRange='#B1B1B1';
-        emphasisAreaColor="#555555";
+        //emphasisAreaColor="#555555";
+        emphasisAreaColor="#909090";
         areaColor="#C1C1C1";
         textEmphasisColor="#000000";
         borderColor="#555555";
