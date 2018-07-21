@@ -30,7 +30,7 @@ var switchTime =2000;       //动画切换时间 2秒
 var dom = document.getElementById("mapContainer");;//
 var myChart = echarts.init(dom);;
 var option=null;
-var emphasisAreaColor="#fff";         //选中省份的颜色
+var emphasisAreaColor="#b7b7b7";         //选中省份的颜色
 var areaColor="#404a59";              //省份的颜色
 var borderColor="#aaa";                     //省份边界颜色
 var selectedPros= "Beijing";  	//图中选中的省份名，默认是北京
@@ -350,8 +350,11 @@ var initEchart2= function(row){
     };
      for(var n=0;n<selectedRow.timeline.length;n++){
     	option2.baseOption.timeline.data.push(selectedRow.timeline[n]);
-    	var seriesData= "sub"==countryType?selectedRow.series[selectedPros][n].subData:selectedRow.series[selectedPros][n].data;
-    	seriesData.push({name:"China",selected:true});
+    	var seriesData= "sub"==countryType?selectedRow.series[selectedPros][n].subData:selectedRow.series[selectedPros][n].data;  //series数据
+    	seriesData.push({name:"China",
+            selected:true}
+
+            );// 中国有个默认的颜色
     	option2.options.push({
     	    visualMap:[{
     	        type: 'continuous',
@@ -516,7 +519,7 @@ var initEvent = function(){
         textColor='#ccc';
         emphasisColor='#aaa';
         visualMapColorOutOfRange='#4c5665';
-        emphasisAreaColor="#fff";
+        emphasisAreaColor="#b7b7b7";
         areaColor="#404a59";
         textEmphasisColor="#fff";
         borderColor="#aaa";
@@ -529,7 +532,8 @@ var initEvent = function(){
         textColor='#444444';
         emphasisColor='#555555';
         visualMapColorOutOfRange='#B1B1B1';
-        emphasisAreaColor="#555555";
+        //emphasisAreaColor="#555555";
+        emphasisAreaColor="#909090";
         areaColor="#C1C1C1";
         textEmphasisColor="#000000";
         borderColor="#555555";
