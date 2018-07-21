@@ -543,7 +543,7 @@ var initEvent = function(){
     })
     /*删除按钮*/
     $("#delBtn").bind("click",function(){
-        delBtnFn("tableContainer","deleteResult","deleteModel","/deleteDataInMap3",initData());
+        delBtnFn("tableContainer","deleteResult","deleteModel","/deleteDataInMap3",initData);
     })
 
 }

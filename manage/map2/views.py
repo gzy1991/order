@@ -18,10 +18,10 @@ def getTableData(request):
 
 #图2 删除数据
 def deleteDataInMap2(request):
-    ViewsTool.deleteData(request,"MAP2_DIR")
+    return ViewsTool.deleteData(request,"MAP2_DIR")
 
 # 通过bootstrap fileinput 上传excel,保存到服务器上
 def uploadExcelInMap2 (request):
-    ViewsTool.uploadExcel(request,"MAP2_DIR")
+    return ViewsTool.uploadExcel(request,"MAP2_DIR")
 
 

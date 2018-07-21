@@ -74,7 +74,8 @@ def deleteFile(address,fileNameList ):
     resString=""
     for fileName in nameList:
         file_address=os.path.join(address,fileName)
-        os.remove(file_address)
+        if (os.path.exists(file_address)):
+            os.remove(file_address)
         resString=resString+",<br>"+fileName
     resString=resString[1:len(resString)]
     return "以下数据文件删除成功："+resString

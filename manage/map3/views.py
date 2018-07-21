@@ -28,8 +28,8 @@ def getTableData(request):
 
 #图3 删除数据
 def deleteData(request):
-    ViewsTool.deleteData(request, "MAP3_DIR")
+    return ViewsTool.deleteData(request, "MAP3_DIR")
 
 # 通过bootstrap fileinput 上传excel,保存到服务器上
 def uploadExcel (request):
-    ViewsTool.uploadExcel(request, "MAP3_DIR")
+    return ViewsTool.uploadExcel(request, "MAP3_DIR")
