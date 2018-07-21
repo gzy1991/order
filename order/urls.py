@@ -48,7 +48,7 @@ urlpatterns = [
     , url(r'^uploadExcelInMap3$/$',map3.uploadExcel)        #新增
 
     #图4
-    #, url(r'^map4test/$',map4.getPage2)                      #获取页面
+    , url(r'^map4test/$',map4.getPage2)                      #获取页面
     , url(r'^map4/$',map4.getPage)                      #获取页面
     , url(r'^initMap4/$',map4.getTableData)                  #获取页面数据，初始化页面
     , url(r'^deleteDataInMap4/$',map4.deleteData)          #删除

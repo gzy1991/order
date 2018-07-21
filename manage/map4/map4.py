@@ -84,7 +84,7 @@ def getTableData():
                     #创建一个189*31的 零矩阵
                     for i in range( provinceNum):                   #遍历省份，即每一列
                         seriesCountry = []                         #某列的数据，即某省在某年的数据
-                        seriesCountrySub=[]                         # 某列的数据，即某省在某年的数据,只包含指定的63个国家
+                        # seriesCountrySub=[]                         # 某列的数据，即某省在某年的数据,只包含指定的63个国家
                         for k in range(countryNum):                 #遍历此列的所有国家
                             countryInfo = []
                             countryInfo.append(189)  # 排序
@@ -94,17 +94,18 @@ def getTableData():
                                 "name": countryList[k],
                                 "value": countryInfo
                             })
-                            if (countryList[k] in sunCountrys ):
-                                seriesCountrySub.append({
-                                    "name": countryList[k],
-                                    "value": countryInfo
-                            })
+                            # if (countryList[k] in sunCountrys ):
+                            #     seriesCountrySub.append({
+                            #         "name": countryList[k],
+                            #         "value": countryInfo
+                            # })
                         seriesList[provincesInfo[i][2]].append({
                             "time": sheetName,
-                            "min": 0,
-                            "max": 0,
+                            "min": -1,#注意，这里设置的min和max，刚好可以使空sheet，在地图上展示的时候，不渲染任何颜色，min和max不能包括数据0
+                            "max": -0.1,
                             "data": seriesCountry,
-                            "subData": seriesCountrySub
+                            #"subData": seriesCountrySub
+                            "subData": []
                         })
                     emptySheets.append(sheetName)   #记下空sheet
                     continue
