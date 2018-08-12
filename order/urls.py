@@ -21,6 +21,7 @@ import  map1.views as map1
 import  manage.map2.views  as map2
 import  manage.map3.views  as map3
 import  manage.map4.views  as map4
+import  manage.map5.views  as map5
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -45,14 +46,21 @@ urlpatterns = [
     , url(r'^map3/$',map3.getPage)                      #获取页面
     , url(r'^initMap3/$',map3.getTableData)                  #获取页面数据，初始化页面
     , url(r'^deleteDataInMap3/$',map3.deleteData)          #删除
-    , url(r'^uploadExcelInMap3$/$',map3.uploadExcel)        #新增
+    , url(r'^uploadExcelInMap3/$',map3.uploadExcel)        #新增
 
     #图4
     , url(r'^map4test/$',map4.getPage2)                      #获取页面
     , url(r'^map4/$',map4.getPage)                      #获取页面
     , url(r'^initMap4/$',map4.getTableData)                  #获取页面数据，初始化页面
     , url(r'^deleteDataInMap4/$',map4.deleteData)          #删除
-    , url(r'^uploadExcelInMap4$/$',map4.uploadExcel)        #新增
+    , url(r'^uploadExcelInMap4/$',map4.uploadExcel)        #新增
+
+    #图5
+    , url(r'^map5test/$',map5.getPage2)                      #获取页面
+    , url(r'^map5/$',map5.getPage)                      #获取页面
+    , url(r'^initMap5/$',map5.getTableData)                  #获取页面数据，初始化页面
+    , url(r'^deleteDataInMap5/$',map5.deleteData)          #删除
+    , url(r'^uploadExcelInMap5/$',map5.uploadExcel)        #新增
 
 
 ]

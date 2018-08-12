@@ -29,9 +29,10 @@ def getArrayBySheetIndex(excelDir,index):
 #   excelData: excel数据
 #   type:      "name" 或"index"
 #   param   :sheet的索引或名称
-#   row     : 可以指定长度，相当于切片。默认是sheet的行
-#   column  : 可以指定长度，相当于切片。默认是sheet的列
-def getArrayFromSheet(excelData,param ,type,row=0,column=0):
+#   row     : 行，可以指定长度，相当于切片。默认是sheet的行
+#   column  : 列，可以指定长度，相当于切片。默认是sheet的列
+#   isAllowEmpty :是否允许cell是空的,默认允许:True。如果不允许的话，那么空cell处理成数字0，
+def getArrayFromSheet(excelData,param ,type,row=0,column=0,isAllowEmpty=True):
     if(type=='index'):
         sheet = excelData.sheet_by_index(param)
     elif(type=='name'):
@@ -44,7 +45,14 @@ def getArrayFromSheet(excelData,param ,type,row=0,column=0):
     for i in range(0,row):
         _row=[]
         for j in range(0, column):
-            _row.append(sheet.cell_value(i,j))
+            _row.append(sheet.cell_value(i, j))
+            # if(sheet.cell(i,j).value==""  ):
+            #     if (not isAllowEmpty):      #如果是空cell, 而又不允许空cell, 那么处理成0
+            #         _row.append(0)
+            #     else :
+            #         _row.append(sheet.cell_value(i, j))
+            # else:
+            #     _row.append(sheet.cell_value(i, j))
         _array.append(_row)
     np_array = np.array(_array)
     return np_array

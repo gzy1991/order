@@ -2,7 +2,8 @@
 #!/usr/bin/python
 
 #有些国家名需要切换，否则无法在echarts上正常映射数据
-# 以下面的数据为例，把USA改为United States后，那么就可以映射数据。echarts里面只有United States，没有USA
+# 以下面的数据为例，把USA改为United States后，那么就可以映射数据。
+# echarts里面只有 United States，没有USA
 
 #30个国家名对照表， 这30个国家名存在于countryExcel，但是不存在于counEchart中，
 #需要转换
