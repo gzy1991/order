@@ -124,6 +124,7 @@ var initEchart = function(){
         var max=selectedRow["sheetMax"][i]  - selectedRow["sheetMaxSource"][i] >0 ? selectedRow["sheetMax"][i] : selectedRow["sheetMaxSource"][i];
         max=parseInt(max);
         indicatorData.push({
+            color:"#72ACD1",
             text:selectedRow["middleNameList"][i],      // 名字
             max:max       //这个指标的最大值
         })
@@ -148,7 +149,7 @@ var initEchart = function(){
             symbol: 'rect',     //单个数据标记的图形。
             symbolSize: 5,      //单个数据标记的大小
             lineStyle: {
-                color:"#1ed1ac",
+                color:"#c95ad1",
                 normal: {
                     type: 'dashed'
                 }
@@ -168,7 +169,6 @@ var initEchart = function(){
         var middleData2=[];          //第二个雷达图的原始数据-中间数据
         oringinalData1.forEach(function(item,i){//处理第一个雷达图的数据
             originalData1.push(item);
-            //var sheetName = middleNameList[i];
             var sheetData = selectedRow["middle"][i];
             middleData1.push(item -  sheetData[index1][index2])//
         })
@@ -214,7 +214,6 @@ var initEchart = function(){
                 }
             }
         );
-
     }
     option={
         title: {
@@ -225,7 +224,7 @@ var initEchart = function(){
                 id:"1",
                 indicator:indicatorData, //雷达图的指示器，用来指定雷达图中的多个变量（维度）
                 center: ['25%', '50%'],             //圆心位置，
-                radius: '45%',                        //半径
+                radius: '50%',                        //半径
                 startAngle: 90,           //坐标系起始角度，也就是第一个指示器轴的角度
                 splitNumber: 4,           // 指示器轴的分割段数，默认是5
                 shape: 'circle',          //雷达图绘制类型，支持 'polygon' 和 'circle'
@@ -297,7 +296,6 @@ var initEchart = function(){
                 type: 'radar',
                 itemStyle: {            //折线拐点标志的样式。
                     emphasis: {
-                        // color: 各异,
                         lineStyle: {
                             width: 4
                         }
@@ -305,7 +303,7 @@ var initEchart = function(){
                 },
                 data:radarData1     //雷达图的数据是多变量（维度）的
             },{
-                name:"雷达图1",
+                name:"雷达图2",
                 type: 'radar',
                 radarIndex:1,
                 itemStyle: {            //折线拐点标志的样式。
@@ -616,7 +614,7 @@ var initEvent = function(){
         textColor='#ccc';
         emphasisColor='#aaa';
         visualMapColorOutOfRange='#4c5665';
-        emphasisAreaColor="#FFFFFF";
+        emphasisAreaColor="#2a333d";
         areaColor="#404a59";
         textEmphasisColor="#fff";
         borderColor="#aaa";
