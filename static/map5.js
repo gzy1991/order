@@ -3,7 +3,6 @@
  *
  */
 
-
 /*背景切换所需的数据*/
 var backgroundColor ='#404a59';     //echart背景色
 var textColor='#ccc';                   //文字颜色
@@ -11,7 +10,7 @@ var areaColor ='#404a59'; //地图区域的颜色
 var emphasisAreaColor='#2a333d';   //选中国家时，背景色
 var lineColor ="#FF3030";					//线和线上标签的颜色
 var geoTextColor="#fff";            //地图上，选中国家时，国家名的颜色
-
+var lineEffectColor = "#fff";   //线上特效点的颜色
 
 /*显示类型，，all:显示全部国家   ，sub:显示63个BR国家  */
 var countryType="sub";
@@ -19,11 +18,7 @@ var countryType="sub";
 /*全局数据*/
 var datas ; 		 		//  容器，存储了表格的全部数据，
 var selectedRow;   		//  table中选中的那一行 的行数据
-var widewsPercentage=[30,30];       //窗体左右比例    初始化,左边是 30%  。记录两个30，是因为点击缩放按钮的时候，需要记录点击之前的比例和点击之后的比例。
-var isShowSign=true;  	//是否显示标签 ，默认显示
-
-//滚动轴 数据
-var switchTime =2000;       //动画切换时间 2秒
+var widewsPercentage=[35,35];       //窗体左右比例    初始化,左边是 30%  。记录两个30，是因为点击缩放按钮的时候，需要记录点击之前的比例和点击之后的比例。
 
 /*雷达图*/
 var dom = document.getElementById("mapContainer");;//
@@ -41,7 +36,6 @@ var selectedCountrys= [];  	//图中选中的国家名集合,存储的是echarts
 var geoData=[]        ;     //选中的国家
 var lines=[] ;                 //线数据  ，数据容器
 var borderColor="#aaa";                     //省份边界颜色
-
 
 //提示框配置数据
 var itemStyle = {
@@ -125,7 +119,7 @@ var initEchart = function(){
         max=parseInt(max);
         indicatorData.push({
             color:"#72ACD1",
-            text:selectedRow["middleNameList"][i],      // 名字
+            name:selectedRow["middleNameList"][i],      // 名字
             max:max       //这个指标的最大值
         })
     })
@@ -146,13 +140,11 @@ var initEchart = function(){
         })
         radarData1.push({           //第一个雷达图的 原始数据
             value:tempData,
+            name:"原始数据",
             symbol: 'rect',     //单个数据标记的图形。
             symbolSize: 5,      //单个数据标记的大小
             lineStyle: {
-                color:"#c95ad1",
-                normal: {
-                    type: 'dashed'
-                }
+                color:"rgb(0, 255, 50)"//原始数据，绿色、实线
             }
         });
     }else {
@@ -180,37 +172,39 @@ var initEchart = function(){
 
         radarData1.push({           //第一个雷达图的 原始数据
             value:originalData1,
+            name:"原始数据",
             symbol: 'rect',     //单个数据标记的图形。
-            symbolSize: 5,      //单个数据标记的大小
+            symbolSize: 5,     //单个数据标记的大小
             lineStyle: {
-                normal: {
-                    type: 'dashed'
-                }
+                color:"rgb(0, 255, 50)"//原始数据，绿色、实线
             }
             },{ //第一个雷达图的原始数据+中间数据
                 value:middleData1,
-                areaStyle: {
-                        normal: {
-                            color: 'rgba(255, 255, 255, 0.5)'
-                        }
+                name:"处理后的数据",
+                lineStyle: {
+                    color:"rgb(255, 150, 0)",// 处理后的数据，虚线、橙色
+                    normal: {
+                        type: 'dashed'
+                    }
                 }
             }
         );
         radarData2.push({           //第二个雷达图的 原始数据
             value:originalData2,
-            symbol: 'rect',     //单个数据标记的图形。
+            name:"原始数据",
+            symbol: 'rect',     //单个数据标记的图形
             symbolSize: 5,      //单个数据标记的大小
             lineStyle: {
-                normal: {
-                    type: 'dashed'
-                }
+                color:"rgb(0, 255, 50)"//原始数据，绿色、实线
             }
             },{                 //第二个雷达图的原始数据 - 中间数据
                 value:middleData2,
-                areaStyle: {
-                        normal: {
-                            color: 'rgba(255, 255, 255, 0.5)'
-                        }
+                name:"处理后的数据",
+                lineStyle: {
+                    color:"rgb(255, 150, 0)",// 处理后的数据，虚线、橙色
+                    normal: {
+                        type: 'dashed'
+                    }
                 }
             }
         );
@@ -219,20 +213,21 @@ var initEchart = function(){
         title: {
             text: '雷达图'
         },
+        tooltip: {},
         radar:[
             {
                 id:"1",
                 indicator:indicatorData, //雷达图的指示器，用来指定雷达图中的多个变量（维度）
                 center: ['25%', '50%'],             //圆心位置，
-                radius: '50%',                        //半径
+                radius: '70%',                        //半径
                 startAngle: 90,           //坐标系起始角度，也就是第一个指示器轴的角度
                 splitNumber: 4,           // 指示器轴的分割段数，默认是5
                 shape: 'circle',          //雷达图绘制类型，支持 'polygon' 和 'circle'
                 name: {                     //雷达图每个指示器名称的配置项
-                    formatter:'【{value}】',
-                    textStyle: {
-                        color:'#72ACD1'
-                    }
+                    formatter:'{value}',
+                    fontSize :15,
+                    fontWeight :"bold",
+                    fontFamily :"Times New Roman"
                 },
                 splitArea: {                //坐标轴在 grid 区域中的分隔区域，默认不显示
                     areaStyle: {
@@ -258,15 +253,15 @@ var initEchart = function(){
                 id:"2",
                 indicator:indicatorData, //雷达图的指示器，用来指定雷达图中的多个变量（维度）
                 center: ['75%', '50%'],             //圆心位置，
-                radius:'50%',                        //半径
+                radius:'70%',                        //半径
                 startAngle: 90,           //坐标系起始角度，也就是第一个指示器轴的角度
                 splitNumber: 4,           // 指示器轴的分割段数，默认是5
                 shape: 'circle',          //雷达图绘制类型，支持 'polygon' 和 'circle'
                 name: {                     //雷达图每个指示器名称的配置项
-                    formatter:'【{value}】',
-                    textStyle: {
-                        color:'#72ACD1'
-                    }
+                    formatter:'{value}',
+                    fontSize :15,
+                    fontWeight :"bold",
+                    fontFamily :"Times New Roman"
                 },
                 splitArea: {                //坐标轴在 grid 区域中的分隔区域，默认不显示
                     areaStyle: {
@@ -301,18 +296,50 @@ var initEchart = function(){
                         }
                     },
                 },
+                tooltip:{ //标签
+                    padding: 5,
+                    backgroundColor: '#222',
+                    borderColor: '#777',
+                    borderWidth: 1,
+                    formatter :function(params){
+                        var value=params.data.value;//值
+                        var units=selectedRow.unit;//单位
+                        var names=selectedRow.middleNameList;//指标名
+                        var res="原始数据:<br>";
+                        for(var i=0;i<units.length;i++){
+                            res+= names[i]+": "+value[i]+" "+units[i]+ '<br>';
+                        }
+                        return res;
+                    }
+                },
                 data:radarData1     //雷达图的数据是多变量（维度）的
             },{
                 name:"雷达图2",
                 type: 'radar',
                 radarIndex:1,
-                itemStyle: {            //折线拐点标志的样式。
+                itemStyle: {            //折线拐点标志的样式
                     emphasis: {
                         // color: 各异,
                         lineStyle: {
                             width: 4
                         }
                     },
+                },
+                tooltip:{ //标签
+                    padding: 5,
+                    backgroundColor: '#222',
+                    borderColor: '#777',
+                    borderWidth: 1,
+                    formatter :function(params){
+                        var value=params.data.value;//值
+                        var units=selectedRow.unit;//单位
+                        var names=selectedRow.middleNameList;//指标名
+                        var res="处理数据:<br>";
+                        for(var i=0;i<units.length;i++){
+                            res+= names[i]+": "+value[i]+" "+units[i]+ '<br>';
+                        }
+                        return res;
+                    }
                 },
                 data:radarData2     //雷达图的数据是多变量（维度）的
              }
@@ -332,6 +359,7 @@ var initEchart2= function(row){
     }
     dom2 = document.getElementById("mapContainer2");
     myChart2 = echarts.init(dom2);
+    generateSeries();//线数据 更新
     option2= {
         tooltip: {
             trigger: 'item',
@@ -371,18 +399,20 @@ var initEchart2= function(row){
                     areaColor: emphasisAreaColor    //选中省份时，背景色
                 }
             },
-            label: {   //标签
+            label: {   // 国家名 标签
                 position: 'left',
                 show: false,
                 normal: {
                     show: false
                 },
-                emphasis: {
+                emphasis: {         //选中国家的颜色
                     fontFamily: "Times New Roman",//字体
                     color: geoTextColor,
-                    show: false
+                    fontSize :14,
+                    show: true
                 }
             },
+
             regions: geoData
         },
         series: seriesData
@@ -414,6 +444,7 @@ var initEchart2= function(row){
             }else{                  //添加这个国家
                 selectedCountrys.push(name);
                 generateSeries();  //这时候，需要生成series线数据, 用来划线
+
             }
         }else{//已经选中了两个国家，
             if(isSelected){ //，删除这个国家
@@ -437,12 +468,32 @@ var initEchart2= function(row){
 
 /* 根据当前选中的国家，生成线数据series */
 var generateSeries=function(){
+     seriesData=[];
     if(selectedCountrys.length!=2){
         return;
     }
-    seriesData=[];
-    seriesData.push({   //选中的国家的名字，以及圆圈动画效果
-        name:selectedCountrys[0]+"_"+selectedCountrys[1]+"_line",
+    seriesData.push(
+        {   //动画效果，移动的亮点
+            name:"point_light",
+            type:"lines",
+            zlevel: 1,
+            effect: {              							//线特效的配置
+                show: true,
+                period: 1,              					//特效动画的时间,单位为 s。
+                color: lineEffectColor,						//特效颜色
+                symbolSize: 4          						//特效标记的大小,可以设置成诸如 10 这样单一的数字,也可以用数组分开表示高和宽,例如 [20, 10] 表示标记宽为20,高为10。
+            },
+            lineStyle: {            						//对线的各种设置 ：颜色,形状,曲度
+                normal: {
+                    color: lineEffectColor,                   //
+                    width: 0,           					//线宽
+                    curveness: 0.2  						//边的曲度,支持从 0 到 1 的值,值越大曲度越大。0代表直线,1代表圆
+                }
+            },
+            data:convertData2()  //坐标关系
+        },{
+            //线 +  箭头
+            name:selectedCountrys[0]+"_"+selectedCountrys[1]+"_line",
             type:"lines",
             zlevel: 2,
             symbol: ['none', 'arrow'],
@@ -450,11 +501,32 @@ var generateSeries=function(){
                 normal: {
                     color: lineColor,
                     opacity: 0.6,    						//图形透明度。支持从 0 到 1 的数字,为 0 时不绘制该图形。
-                    curveness: 0.4                          //边的曲度,支持从 0 到 1 的值,值越大曲度越大。0代表直线,1代表圆
+                    curveness: 0.2                          //边的曲度,支持从 0 到 1 的值,值越大曲度越大。0代表直线,1代表圆
                 }
             },
             data:convertData()  //坐标关系
     });
+}
+
+/*
+*	生成动画效果线的 坐标关系
+*   直接调用convertData() ，然后获取里面的坐标信息即可
+* */
+var convertData2=function(){
+	var coords=[];
+	var tempData =convertData();//坐标关系
+	tempData.forEach(function(item,i){
+		coords.push({
+			coords:item.coords,
+			effect: {
+				show: true,
+				period: 4,
+				color: lineEffectColor,						//特效颜色
+				symbolSize: 7
+			}
+		});
+	});
+	return coords;
 }
 
 /*生成线的 坐标关系
@@ -479,7 +551,7 @@ var convertData = function(){
                     width: 2.5,   //线宽
                     //width: 8-dataItem.sort*1.4,   //线宽
                     opacity: 0.6,    // 图形透明度。支持从 0 到 1 的数字,为 0 时不绘制该图形。
-                    curveness: 0
+                    curveness:  0.2 //边的曲度, 支持从 0 到 1 的值,值越大曲度越大。0代表直线,1代表圆
                 }
             }
         });
@@ -548,7 +620,7 @@ var setSplitPosition = function(percentage){
     if(gb.lock){
         return;     //锁未开，不允许设置
     }
-    percentage = Math.min(0.50, Math.max(0.25, percentage));  // 比例极限区间是 [25,50]
+    percentage = Math.min(0.50, Math.max(0.30, percentage));  // 比例极限区间是 [30,50]
     widewsPercentage =[ percentage * 100, percentage * 100];
     adjustScrollPage();
 }
@@ -618,6 +690,8 @@ var initEvent = function(){
         areaColor="#404a59";
         textEmphasisColor="#fff";
         borderColor="#aaa";
+        geoTextColor="#fff";
+        lineEffectColor="#fff";
 
         initEchart(selectedRow);
         initEchart2(selectedRow);//
@@ -632,6 +706,8 @@ var initEvent = function(){
         areaColor="#C1C1C1";
         textEmphasisColor="#000000";
         borderColor="#555555";
+        lineEffectColor="#0c15ff";
+        geoTextColor="#2a333d";
 
         initEchart(selectedRow);
         initEchart2(selectedRow);//
