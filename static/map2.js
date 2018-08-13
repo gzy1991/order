@@ -113,7 +113,7 @@ var initEchart = function(row){
 					borderColor: '#404a59'
 		        },
 		        emphasis: {
-		            areaColor:emphasisAreaColor    //选中省份时，国家背景色
+		            areaColor:emphasisAreaColor    //选中省份时，背景色
 		        }
 	    	},
 		    label: {   //标签
@@ -226,7 +226,7 @@ var generateProName = function(province,isSelected){
 	if(!flag){
 		return;
 	}
-	seriesData.push({  //选中的省份的名字，以及圆圈动画效果
+	seriesData.push({  //生成选中的省份的名字，以及圆圈动画效果
 		name:province,
 		type:"effectScatter",
 		coordinateSystem: 'geo',

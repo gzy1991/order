@@ -2,10 +2,10 @@
 #!/usr/bin/python
 import Tool.country as CountrySwitchName
 
-# 63个国家
+#  BR地区：63个国家
 # 入参：
-# 出参：国家子集合
-def getSubCountrys():
+# 出参：63个国家的集合
+def getBrCountryList():
     countrys= [
     "Albania",
     "Belarus",

@@ -523,7 +523,7 @@ var initEvent = function(){
         initEchart2(selectedRow);//
     })
 
-    /*显示部分国家*/
+    /*显示BR国家*/
     $("#sub_li").bind("click",function() {
         countryType="sub";
         initEchart2(selectedRow);//

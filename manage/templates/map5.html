@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 
-<title>Regional Nexus</title>
+<title>Map5</title>
 <style>
 
 {#  td{#}
@@ -67,7 +67,8 @@
 
   </div>
 
-  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
     <div class="modal-dialog" role="document" style ="height:600px">
         <div class="modal-content">
             <div class="modal-header">
@@ -167,13 +168,14 @@
     <link href="/static/resource/bootstrap-fileinput/fileinput.min.css" rel="stylesheet" />
     <script type="text/javascript" src="/static/common/js/uploadFile.js"></script>
     <script type="text/javascript" src="/static/common/js/gridTool.js"></script>
-    <script type="text/javascript" src="/static/map4.js"></script>
+    <script type="text/javascript" src="/static/map5.js"></script>
     <script type="text/javascript">
             // 初始化header 导航栏
             $(document).ready(function(){
                 $("#headerContainer").load("/static/html/header.html");
+                $("#toolDomContainer").load("/static/html/toolDom.html");
                 //初始化上传组件
-                initUpload("excelFile","/uploadExcelInMap4");
+                initUpload("excelFile","/uploadExcelInMap5");
                 initEvent();//初始化事件绑定,缩进/展开功能
                 initEventHandler("h-handler"); //绑定缩放功能
                 initPageData();  //   调用初始化页面

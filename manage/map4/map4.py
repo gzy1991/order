@@ -14,7 +14,7 @@ import json
 import Tool.ExcelTool as ExcelTool
 import order.settings as Setting
 import Tool.country as CountrySwitchName
-import manage.map4.subCountrys  as SubCountrys
+import Tool.BrRegion  as SubCountrys
 
 #   关于本图中excel的格式规则
 #   sheet的名字作为timeline的内容来滚动
@@ -31,12 +31,12 @@ def getTableData():
     # #获取国家名 地址列表
     country_name = ExcelTool.getArrayBySheetName(os.path.join(Setting.FILR_DIR["COMMON_DIR"],
                                                 "Countries.xlsx"), "country")
-    # 国家子集合，包含63个国家名，或其别名
-    sunCountrys=SubCountrys.getSubCountrys()
+    # BR国家子集合，包含63个国家名，或其别名
+    sunCountrys=SubCountrys.getBrCountryList()
     countryList = []  # 国家名list，有序
     countrySwitch=CountrySwitchName.getcountrySwitch()
+    # 替换一些国家的名字
     for i in range(countryNum):
-        #替换一些国家的名字
         countryName=country_name[i, 0].encode("utf-8")
         if(countrySwitch.has_key(countryName) and  countrySwitch[countryName]!=""):
             countryList.append(countrySwitch[countryName])
@@ -104,7 +104,6 @@ def getTableData():
                             "min": -1,#注意，这里设置的min和max，刚好可以使空sheet，在地图上展示的时候，不渲染任何颜色，min和max不能包括数据0
                             "max": -0.1,
                             "data": seriesCountry,
-                            #"subData": seriesCountrySub
                             "subData": []
                         })
                     emptySheets.append(sheetName)   #记下空sheet
