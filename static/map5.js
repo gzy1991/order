@@ -7,7 +7,8 @@
 var backgroundColor ='#404a59';     //echart背景色
 var textColor='#ccc';                   //文字颜色
 var areaColor ='#404a59'; //地图区域的颜色
-var emphasisAreaColor='#2a333d';   //选中国家时，背景色
+var emphasisAreaColor='#485963';   //选中国家时，背景色
+var BRCountryColor="#ffbb2d";                  //BR国家的背景颜色
 var lineColor ="#FF3030";					//线和线上提示框的颜色
 var geoTextColor="#fff";            //地图上，选中国家时，国家名的颜色
 var lineEffectColor = "#fff";   //线上特效点的颜色
@@ -132,15 +133,14 @@ var initEchart = function(){
         var oringinalData=original[index]           //第一个国家的原始数据
         var tempData=[];
         oringinalData.forEach(function(item,i){
-            tempData.push(item);
+            tempData.push(item.toFixed(2));
         })
         radarData1.push({           //第一个雷达图的 原始数据
             value:tempData,
             name:"原始数据",
-            symbol: 'rect',     //单个数据标记的图形
             symbolSize: 5,      //单个数据标记的大小
             lineStyle: {
-                color:"rgb(0, 255, 50)"//原始数据，绿色、实线
+                color:"#ffbb2d"//原始数据，橙色、实线、白色圆点
             }
         });
     }else {
@@ -156,29 +156,30 @@ var initEchart = function(){
         var originalData2=[];        //第二个雷达图的 原始数据
         var middleData2=[];          //第二个雷达图的原始数据-中间数据
         oringinalData1.forEach(function(item,i){//处理第一个雷达图的数据
-            originalData1.push(item);
+            originalData1.push(item.toFixed(2));
             var sheetData = selectedRow["middle"][i];
-            middleData1.push(item -  sheetData[index1][index2])//
+            middleData1.push((item -  sheetData[index1][index2]).toFixed(2))//
         })
         oringinalData2.forEach(function(item,i){//处理第二个雷达图的数据
-            originalData2.push(item);
+            originalData2.push(item.toFixed(2));
             var sheetData = selectedRow["middle"][i];
-            middleData2.push(item + sheetData[index1][index2]) //
+            middleData2.push(  (item + sheetData[index1][index2]).toFixed(2)) //
         })
+        console.log(originalData2);
+        console.log(middleData2);
 
         radarData1.push({           //第一个雷达图的 原始数据
             value:originalData1,
             name:"原始数据",
-            symbol: 'rect',     //单个数据标记的图形。
             symbolSize: 5,     //单个数据标记的大小
             lineStyle: {
-                color:"rgb(0, 255, 50)"//原始数据，绿色、实线
+                color:"#ffbb2d"//原始数据，橙色、实线、白色圆点
             }
             },{ //第一个雷达图的原始数据+中间数据
                 value:middleData1,
                 name:"处理后的数据",
                 lineStyle: {
-                    color:"rgb(255, 150, 0)",// 处理后的数据，虚线、橙色
+                    color:"#00ff00",// 处理后的数据，虚线、绿色，白色圆点
                     normal: {
                         type: 'dashed'
                     }
@@ -188,22 +189,20 @@ var initEchart = function(){
         radarData2.push({           //第二个雷达图的 原始数据
             value:originalData2,
             name:"原始数据",
-            symbol: 'rect',     //单个数据标记的图形
             symbolSize: 5,      //单个数据标记的大小
             lineStyle: {
-                color:"rgb(0, 255, 50)"//原始数据，绿色、实线
+                color:"#ffbb2d"//原始数据，橙色、实线、白色圆点
             }
-            },{                 //第二个雷达图的原始数据 - 中间数据
-                value:middleData2,
-                name:"处理后的数据",
-                lineStyle: {
-                    color:"rgb(255, 150, 0)",// 处理后的数据，虚线、橙色
-                    normal: {
-                        type: 'dashed'
-                    }
+        },{                 //第二个雷达图的原始数据 - 中间数据
+            value:middleData2,
+            name:"处理后的数据",
+            lineStyle: {
+                color:"#00ff00",// 处理后的数据，虚线、橙色
+                normal: {
+                    type: 'dashed'
                 }
             }
-        );
+        });
     }
     option={
         title: {
@@ -316,7 +315,6 @@ var initEchart = function(){
                 radarIndex:1,
                 itemStyle: {            //折线拐点标志的样式
                     emphasis: {
-                        // color: 各异,
                         lineStyle: {
                             width: 4
                         }
@@ -505,6 +503,7 @@ var  generateMapDate = function(){
     }else{                       // 如果区域类型是BR国家
         var counList=selectedRow["countryList"];//国家列表，有序
         var counInfo=selectedRow["countryInfo"];//国家详细信息
+
         counList.forEach(function(item,i){//遍历所有国家
             if(counInfo[item].isBrRegion){  //如果是BR地区
                 var isSelected=false;
@@ -516,7 +515,7 @@ var  generateMapDate = function(){
                         name: counInfo[item].EchartName,
                         selected :true,
                         itemStyle:{
-                            areaColor :"#ff4143",
+                            areaColor :"#ff4143", //  BR国家，选中时候的颜色
                             opacity :0.5
                         }
                     })
@@ -525,7 +524,7 @@ var  generateMapDate = function(){
                         name: counInfo[item].EchartName,
                         selected :false,
                         itemStyle:{
-                            areaColor :"#f0ff73",
+                            areaColor :BRCountryColor,//BR国家，没选中时的黑色背景：#ffbb2d
                             opacity :0.5
                         }
                     })
@@ -764,12 +763,13 @@ var initEvent = function(){
         textColor='#ccc';
         emphasisColor='#aaa';
         visualMapColorOutOfRange='#4c5665';
-        emphasisAreaColor="#2a333d";
+        emphasisAreaColor="#485963";
         areaColor="#404a59";
         textEmphasisColor="#fff";
         borderColor="#aaa";
         geoTextColor="#fff";
         lineEffectColor="#fff";
+        BRCountryColor="#ffbb2d";
         initEchart(selectedRow);
         initEchart2(selectedRow);//
     })
@@ -783,8 +783,9 @@ var initEvent = function(){
         areaColor="#C1C1C1";
         textEmphasisColor="#000000";
         borderColor="#555555";
-        lineEffectColor="#0c15ff";
+        lineEffectColor="#fff";
         geoTextColor="#2a333d";
+        BRCountryColor="#f0ff73";
 
         initEchart(selectedRow);
         initEchart2(selectedRow);//
