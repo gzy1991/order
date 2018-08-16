@@ -137,7 +137,7 @@ def getTableData():
                             "name":countryList[k],
                             "value":countryInfo
                         })
-                        if(countryList[k] in sunCountrys ):
+                        if(countryList[k] in sunCountrys and countryList[k]!="China"):
                             seriesCountrySub.append({
                                 "name": countryList[k],
                                 "value": countryInfo

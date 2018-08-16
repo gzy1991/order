@@ -8,6 +8,7 @@ import Tool.country as CountrySwitchName
 def getBrCountryList():
     countrys= [
     "Albania",
+    "China",
     "Belarus",
     "Bosnia and Herzegovina",
     "Bulgaria",

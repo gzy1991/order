@@ -27,7 +27,7 @@ import Tool.BrRegion  as SubCountrys
 #获得table数据 ，json格式,。所有的excel都处理成json格式数据，返回给前台、
 
 def getTableData():
-    countryNum = 189  # 全部国家总数
+    countryNum = 189  # 全部国家总数  189个国家
     #countryNum = 100  # 国家总数，100个国家
     # 获取省份名列表，包括 ： 中文名、英文名、纬度、经度
     # #获取国家名 地址列表
@@ -41,12 +41,16 @@ def getTableData():
     # 替换一些国家的名字
     for i in range(countryNum):
         countryName=country_name[i, 0].encode("utf-8")
+        flag= False;                        #是否是BR国家，默认不是
+        if (countryName in sunCountrys or
+                (countrySwitch.has_key(countryName)  and  countrySwitch[countryName] in sunCountrys)):
+            flag = True
         if(countrySwitch.has_key(countryName) and  countrySwitch[countryName]!=""):
             countryList.append(countrySwitch[countryName])
-            countryInfo[countrySwitch[countryName]] = {"EchartName":countrySwitch[countryName],"SourceName":countryName,"sort":i}
+            countryInfo[countrySwitch[countryName]] = {"EchartName":countrySwitch[countryName],"SourceName":countryName,"sort":i,"isBrRegion":flag}
         else:
             countryList.append(countryName)
-            countryInfo[countryName] = {"EchartName": countryName,"SourceName":countryName, "sort": i}
+            countryInfo[countryName] = {"EchartName": countryName,"SourceName":countryName, "sort": i,"isBrRegion":flag}
 
     files = ExcelTool.listExcelFile(Setting.FILR_DIR["MAP5_DIR"])
     print files  # .xlsx结果文件列表
