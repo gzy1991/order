@@ -178,6 +178,11 @@ var initEchart = function(){
             },{ //第一个雷达图的原始数据+中间数据
                 value:middleData1,
                 name:"处理后的数据",
+                areaStyle: {                    //围起来的，白色区域
+                        normal: {
+                            color: 'rgba(255, 255, 255, 0.5)'
+                        }
+                },
                 lineStyle: {
                     color:"#00ff00",// 处理后的数据，虚线、绿色，白色圆点
                     normal: {
@@ -196,6 +201,11 @@ var initEchart = function(){
         },{                 //第二个雷达图的原始数据 - 中间数据
             value:middleData2,
             name:"处理后的数据",
+            areaStyle: {                    //围起来的，白色区域
+                        normal: {
+                            color: 'rgba(255, 255, 255, 0.5)'
+                        }
+                },
             lineStyle: {
                 color:"#00ff00",// 处理后的数据，虚线、橙色
                 normal: {
