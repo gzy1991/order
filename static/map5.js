@@ -8,7 +8,7 @@ var backgroundColor ='#404a59';     //echart背景色
 var textColor='#ccc';                   //文字颜色
 var areaColor ='#404a59'; //地图区域的颜色
 var emphasisAreaColor='#485963';   //选中国家时，背景色
-var BRCountryColor="#ffbb2d";                  //BR国家的背景颜色
+var BRCountryColor="#75ffef";                  //BR国家的背景颜色
 var lineColor ="#FF3030";					//线和线上提示框的颜色
 var geoTextColor="#fff";            //地图上，选中国家时，国家名的颜色
 var lineEffectColor = "#fff";   //线上特效点的颜色
@@ -139,6 +139,9 @@ var initEchart = function(){
             value:tempData,
             name:"原始数据",
             symbolSize: 5,      //单个数据标记的大小
+            itemStyle:{         //拐点的颜色
+                    color:"#ffbb2d"
+            },
             lineStyle: {
                 color:"#ffbb2d"//原始数据，橙色、实线、白色圆点
             }
@@ -172,6 +175,9 @@ var initEchart = function(){
             value:originalData1,
             name:"原始数据",
             symbolSize: 5,     //单个数据标记的大小
+            itemStyle:{         //拐点的颜色
+                    color:"#ffbb2d"
+            },
             lineStyle: {
                 color:"#ffbb2d"//原始数据，橙色、实线、白色圆点
             }
@@ -183,6 +189,7 @@ var initEchart = function(){
                             color: 'rgba(255, 255, 255, 0.5)'
                         }
                 },
+
                 lineStyle: {
                     color:"#00ff00",// 处理后的数据，虚线、绿色，白色圆点
                     normal: {
@@ -195,6 +202,9 @@ var initEchart = function(){
             value:originalData2,
             name:"原始数据",
             symbolSize: 5,      //单个数据标记的大小
+            itemStyle:{         //拐点的颜色
+                    color:"#ffbb2d"
+            },
             lineStyle: {
                 color:"#ffbb2d"//原始数据，橙色、实线、白色圆点
             }
@@ -294,13 +304,6 @@ var initEchart = function(){
             {
                 name:"雷达图1",
                 type: 'radar',
-                itemStyle: {            //折线拐点标志的样式。
-                    emphasis: {
-                        lineStyle: {
-                            width: 4
-                        }
-                    },
-                },
                 tooltip:{ //提示框
                     padding: 5,
                     backgroundColor: '#222',
@@ -323,13 +326,6 @@ var initEchart = function(){
                 name:"雷达图2",
                 type: 'radar',
                 radarIndex:1,
-                itemStyle: {            //折线拐点标志的样式
-                    emphasis: {
-                        lineStyle: {
-                            width: 4
-                        }
-                    },
-                },
                 tooltip:{ //提示框
                     padding: 5,
                     backgroundColor: '#222',
@@ -779,7 +775,7 @@ var initEvent = function(){
         borderColor="#aaa";
         geoTextColor="#fff";
         lineEffectColor="#fff";
-        BRCountryColor="#ffbb2d";
+        BRCountryColor="#75ffef";
         initEchart(selectedRow);
         initEchart2(selectedRow);//
     })
