@@ -46,7 +46,7 @@ var initPageData=function(){
         async:false,
         url:"/initMap5",
         success:function (data) {
-	        console.log(" initMap4 扫描成功");
+	        console.log(" initMap5 扫描成功");
 	        datas=JSON.parse(data);
 	        initTable(datas);
 	        adjustScrollPage(); //页面自适应

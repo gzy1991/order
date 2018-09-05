@@ -2,29 +2,26 @@
 #!/usr/bin/python
 from django.shortcuts import render,render_to_response
 from django.http import HttpResponse,JsonResponse
-import map5
+import map6
 
 import manage.viewsTool as ViewsTool
 import sys
 reload(sys)
 sys.setdefaultencoding("utf-8")
 
-
-
-
-#获取图5页面
+#获取图6页面
 def getPage(request):
-    return render(request, 'map5.html')
+    return render(request, 'map6.html')
 
-#图5 获取表格数据  json格式
+#图6 获取表格数据  json格式
 def getTableData(request):
-    result = map5.getTableData()
+    result = map6.getTableData()
     return HttpResponse(result)
 
-#图5 删除数据
+#图6 删除数据
 def deleteData(request):
-    return ViewsTool.deleteData(request, "MAP5_DIR")
+    return ViewsTool.deleteData(request, "MAP6_DIR")
 
 # 通过bootstrap fileinput 上传excel,保存到服务器上
 def uploadExcel (request):
-    return ViewsTool.uploadExcel(request, "MAP5_DIR")
+    return ViewsTool.uploadExcel(request, "MAP6_DIR")
