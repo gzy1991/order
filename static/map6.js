@@ -1,7 +1,6 @@
 
 /**
  * Created  on 2018/9/06.
- *
  */
 
 /*背景切换所需的数据*/
@@ -28,7 +27,7 @@ var dom= document.getElementById("mapContainer");;//
 var myChart ;
 var option ;
 var seriesData =[]; //  容器，存储线数据
-var selectedCountrys= [];  	//图中选中的国家名集合,存储的是echarts中的国家名
+var selectedCountrys= [];  	//图中选中的国家名集合,存储的是echarts中的国家名,本图中，最多只能选中一个国家
 var geoData=[]        ;     //选中的国家
 var lines=[] ;                 //线数据  ，数据容器
 var borderColor="#aaa";                     //省份边界颜色
@@ -101,19 +100,123 @@ var initEchart= function(){
     generateSeries();//生成线数据
     generateMapDate();//生成地图上 国家的选中数据，和BR国家的颜色数据
     option= {
+        tooltip: {
+            trigger: 'item',
+            formatter: '{b}'
+        },
+        backgroundColor: backgroundColor,
+        title: {
+            text: selectedRow.fileName,
+            left: 'center',
+            subtextStyle: {		//副标题
+                fontFamily: "Times New Roman",//字体
+                color: textColor
+            },
+            textStyle: {
+                fontFamily: "Times New Roman",//字体
+                color: textColor
+            }
+        },
+        //地图
+        geo: {
+            show: true,
+            map: 'world',
+            selectedMode: 'single',
+            roam: true, //允许缩放和平移
+            selected: false,
+            zoom: 1.2,
+            scaleLimit: {//滚轮缩放的极限控制，通过min, max最小和最大的缩放值
+                min: 0.8,
+                max: 2
+            },
+            itemStyle: {
+                normal: {
+                    areaColor: areaColor,//地图区域的颜色
+                    borderColor: borderColor
+                },
+                emphasis: {
+                    areaColor: emphasisAreaColor    //选中省份时，背景色
+                }
+            },
+            label: {   // 国家名 标签
+                position: 'left',
+                show: false,
+                normal: {
+                    show: false
+                },
+                emphasis: {         //选中国家的颜色
+                    fontFamily: "Times New Roman",//字体
+                    color: geoTextColor,
+                    fontSize :14,
+                    show: true
+                }
+            },
+
+            regions: geoData  //地图上，国家的选中数据，BR国家的颜色数据
+        },
+        series: seriesData  //线数据
 
     }
     ;
-    // myChart.setOption(option, true);
+    myChart.setOption(option, true);
     // //绑定国家的点击事件
-    // myChart.on("click",function(params){
-    //
-    // })
+    myChart.on("click",function(params){
+
+    })
 }
 
+/*
+*  根据目前选中的国家，生成线数据 series
+* */
+var generateSeries =function(){
 
 
+}
 
+/*      生成全部地区或者BR地区的地图数据
+*       主要是选中国家的数据 geoData
+*       当类型是BR的时候，还要生成BR过埃及的特殊颜色数据
+* */
+
+var generateMapDate =function(){
+    geoData=[];
+    if("BR"!= countryType){     // 如果区域类型是全部国家
+        selectedCountrys.forEach(function(item,i){
+            geoData.push({name: selectedCountrys[i] ,selected:true});
+        })
+    }else{                      // 如果区域类型是BR国家
+        var counList=selectedRow["countryList"];//国家列表，有序
+        var counInfo=selectedRow["countryInfo"];//国家详细信息
+        counList.forEach(function(item,i){//遍历所有国家
+            if(counInfo[item].isBrRegion){  //如果是BR地区
+                var isSelected=false;
+                if( selectedCountrys.indexOf(  counInfo[item].EchartName)!=-1  ){
+                    isSelected=true;
+                }
+                if(isSelected){ //如果选中了
+                    geoData.push({
+                        name: counInfo[item].EchartName,
+                        selected :true,
+                        itemStyle:{
+                            areaColor :"#ff4143", //  BR国家，选中时候的颜色
+                            opacity :0.5
+                        }
+                    })
+                }else{//如果没选中
+                    geoData.push({
+                        name: counInfo[item].EchartName,
+                        selected :false,
+                        itemStyle:{
+                            areaColor :BRCountryColor,//BR国家，没选中时的黑色背景：#ffbb2d
+                            opacity :0.5
+                        }
+                    })
+                }
+            }
+        })
+    }
+
+}
 
 //页面自适应
 var adjustScrollPage = function() {
@@ -131,13 +234,8 @@ var adjustScrollPage = function() {
     $('#h-handler').css('left', widewsPercentage[0] + '%');
 
     setTimeout(function(){/*世界地图*/
-         dom2.style.height = (window.innerHeight - 55)+'px';
-         myChart2.resize();
-    },100);
-    setTimeout(function(){/*中国地图*/
-        dom.style.width = $("#table-container").width()+'px';
-		 dom.style.height = $("#table-container").height()*0.4+'px';
-    	myChart.resize();
+         dom.style.height = (window.innerHeight - 55)+'px';
+         myChart.resize();
     },100);
 }
 /*数据区*/
@@ -228,7 +326,6 @@ var initEvent = function(){
         countryType="all";
         selectedCountrys=[];//清空选中的国家
         geoData=[];//清空地图上选中的国家
-        initEchart2();//
         initEchart();//
     })
 
@@ -237,7 +334,6 @@ var initEvent = function(){
         countryType="BR";
         selectedCountrys=[];//清空选中的国家
         geoData=[];//清空地图上选中的国家
-        initEchart2();//
         initEchart();
     })
 
@@ -255,7 +351,6 @@ var initEvent = function(){
         lineEffectColor="#fff";
         BRCountryColor="#75ffef";
         initEchart(selectedRow);
-        initEchart2(selectedRow);//
     })
 
     $("#white_li").bind("click",function() {  //切换成白色背景
@@ -272,7 +367,6 @@ var initEvent = function(){
         BRCountryColor="#f0ff73";
 
         initEchart(selectedRow);
-        initEchart2(selectedRow);//
     })
     /*删除按钮*/
     $("#delBtn").bind("click",function(){

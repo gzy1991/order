@@ -100,9 +100,10 @@ def getTableData():
                     for row in range(countryNum):
                         middleRowSort = []  # 此sheet中，某行的数据容器
                         for column in range(countryNum):
-                            middleRowSort.append(sheetDataSort[row][column])
+                            middleRowSort.append(int(sheetDataSort[row][column]))       #这里要吧int64转换成int，不然下面的json.dumps会报错
                         middleSheetSort.append(middleRowSort)
                     middleDataSort.append(middleSheetSort)
+
 
             result["middle"]=middleData                      #数据
             result["middleDataSort"]=middleDataSort         #数据的排序
