@@ -626,7 +626,6 @@ var convertData = function(){
             lineStyle:{
                 normal:{
                     width: 2.5,   //线宽
-                    //width: 8-dataItem.sort*1.4,   //线宽
                     opacity: 0.6,    // 图形透明度。支持从 0 到 1 的数字,为 0 时不绘制该图形。
                     curveness:  0.2 //边的曲度, 支持从 0 到 1 的值,值越大曲度越大。0代表直线,1代表圆
                 }

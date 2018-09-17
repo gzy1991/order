@@ -38,7 +38,7 @@ def getTableData():
     countryList = []  # 国家名list，有序
     countryInfo = {}  # 国家信息，带序号
     countrySwitch = CountrySwitchName.getcountrySwitch()
-    # 替换一些国家的名字
+    # 替换一些国家的名字, echarts中，有些国家的名字与excel中的国家名对不上
     for i in range(countryNum):
         countryName=country_name[i, 0].encode("utf-8")
         flag= False;                        #是否是BR国家，默认不是
@@ -49,8 +49,8 @@ def getTableData():
             countryList.append(countrySwitch[countryName])
             countryInfo[countrySwitch[countryName]] = {"EchartName":countrySwitch[countryName],"SourceName":countryName,"sort":i,"isBrRegion":flag}
         else:
-            countryList.append(countryName)
-            countryInfo[countryName] = {"EchartName": countryName,"SourceName":countryName, "sort": i,"isBrRegion":flag}
+            countryList.append(countryName)     #其中countryName是EchartName
+            countryInfo[countryName] = {"EchartName": countryName,"SourceName":countryName, "sort": i,"isBrRegion":flag}#其中countryName是EchartName
 
     files = ExcelTool.listExcelFile(Setting.FILR_DIR["MAP6_DIR"])
     print files                             # .xlsx结果文件列表
@@ -107,7 +107,8 @@ def getTableData():
 
             result["middle"]=middleData                      #数据
             result["middleDataSort"]=middleDataSort         #数据的排序
-            result["level"]=n                                 #层级
+            result["level"]=n                                 #层级, 等于sheet的个数-1
+            # result["curLevel"]=0                             #当前所在层级,默认是0，这个属性，主要用在前台的逻辑控制
             result["DataNameList"] = DataNameList            # 数据 sheet名称，也就是指标名称,有序
             result["countryList"] = countryList  # 国家列表  有序列表
             result["countryInfo"] = countryInfo  # 国家字典  带序号
