@@ -368,7 +368,7 @@ var convertData = function(province,tradeData,type){
 	var proData = selectedSheet[province];//当前图的全部数据，即当前选中的行数据
 	for(var i=0;i<tradeData.length;i++){
 		var fromCoord = [proData.longitude, proData.latitude];
-		var toCoord=[ tradeData[iv].longitude,tradeData[i].latitude  ];
+		var toCoord=[ tradeData[i].longitude,tradeData[i].latitude  ];
 		var tagPosition="middle";  //标签的位置，
 		if("import"===type){//如果是进口  ,转换箭头方向
 			var temp =fromCoord;

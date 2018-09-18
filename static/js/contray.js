@@ -185,7 +185,7 @@ var countrytInfo={
 'Bahamas': {'chineseName': '巴哈马','latitude': 25, 'longitude': -77, 'code': 'Bah', 'name': 'Bahamas'},
 'Aruba': {'chineseName': '阿鲁巴','latitude': 12, 'longitude': -70, 'code': 'Ar', 'name': 'Aruba'},
 'Antigua': {'chineseName': '安提瓜和巴布达','latitude': 17, 'longitude': -61, 'code': 'An', 'name': 'Antigua'},
-'Antigua and Barb': {'chineseName': '安提瓜和巴布达','latitude': 17, 'longitude': -61, 'code': 'An', 'name': 'Antigua'},
+'Antigua and Barb.': {'chineseName': '安提瓜和巴布达','latitude': 17, 'longitude': -61, 'code': 'An', 'name': 'Antigua'},
 'Andorra': {'chineseName': '安道尔','latitude': 42, 'longitude': 1, 'code': 'An', 'name': 'Andorra'},
 'Bermuda': {'chineseName': '百慕大','latitude': 32, 'longitude': -64, 'code': 'Be', 'name': 'Bermuda'},
 'British Virgin Islands': {'chineseName': '英属维尔京群岛','latitude': 18, 'longitude': -64, 'code': 'Bvi', 'name': 'British Virgin Islands'},

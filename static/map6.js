@@ -31,7 +31,7 @@ var seriesData =[]; //  容器，存储线数据
 * {
 *   name:,
 *   level:,   //最小是0，最大是n，即sheet的个数-1 ,selectedRow["level"]
-*   isHandle:   //是否已经处理过
+*   isHandle:   //是否已经处理过  ,这个字段后来没用上
 * }
 * */
 var selectedCountrys= [];  	//图中选中的国家名集合,存储的是echarts中的国家名,本图中，最多只能选中一个国家
@@ -149,7 +149,10 @@ var initEchart= function(){
                     title: '下一层',
                     icon: 'path://M832 160.128c0-17.664-14.336-32-32-32S768 142.464 768 160.128l0 282.88L214.592 134.592c-18.176-10.112-39.936-10.048-58.112 0C138.24 144.768 127.424 162.88 127.424 183.168l0 656.64c0 20.224 10.816 38.464 29.056 48.576C165.568 893.44 175.488 896 185.472 896s19.968-2.56 29.056-7.616L768 579.968l0 284.096c0 17.664 14.336 32 32 32s32-14.336 32-32L832 160.128zM191.808 829.248 188.672 192l573.312 319.488L191.808 829.248z',
                     onclick: function (){
-                        alert('下一层');
+                        generateLineSeries();
+                        option.series=seriesData;
+                        myChart.setOption(option,true);
+
                     }
                 },
                 mytool2: {
@@ -157,11 +160,20 @@ var initEchart= function(){
                     title: '刷新',
                     icon: 'path://M911.40249 607.60166c-21.244813-4.248963-46.738589 8.497925-50.987552 29.742738-42.489627 174.207469-195.452282 293.178423-373.908714 293.178424-212.448133 0-386.655602-174.207469-386.655602-386.655602s174.207469-386.655602 386.655602-386.655602c97.726141 0 195.452282 38.240664 263.435685 106.224067h-178.456432c-21.244813 0-42.489627 16.995851-42.489626 42.489626 0 21.244813 16.995851 42.489627 42.489626 42.489627h263.435685c21.244813 0 42.489627-16.995851 42.489626-42.489627v-263.435684c0-21.244813-16.995851-42.489627-42.489626-42.489627-21.244813 0-42.489627 16.995851-42.489627 42.489627v148.713693c-84.979253-76.481328-195.452282-118.970954-310.174274-118.970955-259.186722 0-471.634855 212.448133-471.634854 471.634855s212.448133 471.634855 471.634854 471.634855c216.697095 0 403.651452-148.713693 458.887967-356.912863 4.248963-21.244813-8.497925-42.489627-29.742738-50.987552z',
                     onclick: function (){
-                        alert('刷新');
+                        seriesData=[];                                      //清空线数据
+                        selectedRow.curLevel=0;                             //重置“当前等级”
+                        selectedCountrys=[{                         /*只保存第一个国家*/
+                            name:selectedCountrys[0].name,      //EchartName
+                            isHandle:false,
+                            level:0
+                        }]
+                        generateLineSeries();       //生成线
+                        option.series=seriesData;
+                        myChart.setOption(option,true);
                     }
                 }
             }
-    },
+        },
         //地图
         geo: {
             show: true,
@@ -213,7 +225,6 @@ var initEchart= function(){
         if(selectedCountrys.length>0 && selectedCountrys[0].name == name ){       //如果重复点击一个国家,那么清空
             selectedCountrys=[];     //清空选中国家
             seriesData=[];            //清空线数据
-            //generateLineSeries();
             generateMapDate();          //生成BR国家效果
             option.series=seriesData;
             option.geo.regions=geoData;
@@ -234,8 +245,6 @@ var initEchart= function(){
         option.series=seriesData;
         option.geo.regions=geoData;
         myChart.setOption(option,true);
-
-
     })
 }
 
@@ -262,7 +271,7 @@ var generateLineSeries =function() {
     }else if ( curLevel < maxLevel  ) {                          /*  等级+1  */
         for (var i = 0; i < len; i++) {
             var item = selectedCountrys[i];                     /*处理这个国家*/
-            if(!item.isHandle &&  item.level==curLevel ){
+            if(  item.level==curLevel ){
                 /*待处理国家的信息*/
                 var name=item.name;//名字
                 var index = selectedRow.countryInfo[name].sort;     //待处理国家的索引号
@@ -315,6 +324,17 @@ var generateLineSeries =function() {
 var convertData = function(fName,tName){
     var res=[];
     //countrytInfo中既有SourceName的坐标数据 ，又有EchartName的坐标数据
+        if(countrytInfo[fName] == undefined ||countrytInfo[fName].latitude == undefined   ||countrytInfo[fName].longitude == undefined  ){
+            console.log(fName);
+            debugger;
+
+        }
+        if(countrytInfo[tName] == undefined ||countrytInfo[tName].latitude == undefined   ||countrytInfo[tName].longitude == undefined  ){
+             console.log(fName);
+             debugger;
+
+        }
+
     var fromCoord = [countrytInfo[fName]["longitude"],  countrytInfo[fName]["latitude"]];
     var toCoord = [countrytInfo[tName]["longitude"],  countrytInfo[tName]["latitude"]];
     if(fromCoord && toCoord){
