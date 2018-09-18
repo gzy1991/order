@@ -169,7 +169,7 @@ var initEchart= function(){
             map: 'world',
             selectedMode: 'single',
             roam: true, //允许缩放和平移
-            selected: false,
+            selected: true,
             zoom: 1.2,
             scaleLimit: {//滚轮缩放的极限控制，通过min, max最小和最大的缩放值
                 min: 0.8,
@@ -205,29 +205,32 @@ var initEchart= function(){
     myChart.setOption(option, true);
     // //绑定国家的点击事件
     myChart.on("click",function(params){
+        if(params.componentType!="geo"){return} //点击了线，那么跳过
         var name =  params.region.name;  //国家名  英文名
         if(selectedRow["countryList"].indexOf(name)==-1){//如果点击的国家不是那189个国家之一，那么不处理
-            myChart2.setOption(option2,true);
             return;
         }
         if(selectedCountrys.length>0 && selectedCountrys[0].name == name ){       //如果重复点击一个国家,那么清空
-            selectedCountrys=[];
-            generateLineSeries();
-            generateMapDate();
+            selectedCountrys=[];     //清空选中国家
+            seriesData=[];            //清空线数据
+            //generateLineSeries();
+            generateMapDate();          //生成BR国家效果
             option.series=seriesData;
             option.geo.regions=geoData;
             myChart.setOption(option,true);
             return;
         }
-        //选中省份
-        geoData.push({name: name ,selected:true});
+        /*如果选中了其他国家*/
+        //选中国家
         selectedCountrys=[{
             name:name,      //EchartName
             isHandle:false,
             level:0
         }];
-        generateLineSeries();
-        generateMapDate();
+        seriesData=[];          //清空线数据
+        selectedRow.curLevel=0; //重置“当前等级”
+        generateLineSeries();       //生成线
+        generateMapDate();          //生成地图选中效果，和br国家效果
         option.series=seriesData;
         option.geo.regions=geoData;
         myChart.setOption(option,true);
@@ -266,7 +269,7 @@ var generateLineSeries =function() {
                 for (var j = 0; j < lineNumOfLevel; j++) {
                     var tIndex=selectedRow.middleDataSort[curLevel][index][j];          /*目标国家的索引号*/
                     var tName = selectedRow.countryList[tIndex]                         /*目标国家的名字 EchartName*/
-                    tName=selectedRow.countryInfo[tName].SourceName                     /*目标国家的SourceName名字*/
+                    tName=selectedRow.countryInfo[tName].EchartName                     /*目标国家的 EchartName 名字*/
                     /*记录选中国家*/
                     selectedCountrys.push({
                         name:tName,
@@ -311,18 +314,18 @@ var generateLineSeries =function() {
      */
 var convertData = function(fName,tName){
     var res=[];
-    var ffname=selectedRow.countryInfo[fName].SourceName;       //起始国家的SourceName
-    var ttName=selectedRow.countryInfo[tName].SourceName;       //目标国家的SourceName
-    var fromCoord = [countrytInfo[ffname]["longitude"],  countrytInfo[ffname]["latitude"]];
-    var toCoord = [countrytInfo[ttName]["longitude"],  countrytInfo[ttName]["latitude"]];
+    //countrytInfo中既有SourceName的坐标数据 ，又有EchartName的坐标数据
+    var fromCoord = [countrytInfo[fName]["longitude"],  countrytInfo[fName]["latitude"]];
+    var toCoord = [countrytInfo[tName]["longitude"],  countrytInfo[tName]["latitude"]];
     if(fromCoord && toCoord){
         res.push({
-            fromName:ffname,
-            toName: ttName,
+            fromName:fName,
+            toName: tName,
             coords: [fromCoord, toCoord],
             symbolSize :15, //箭头大小
             lineStyle:{
                 normal:{
+                    width: 2.5,   //线宽
                     opacity: 0.6,    // 图形透明度。支持从 0 到 1 的数字,为 0 时不绘制该图形。
                     curveness:  0.2 //边的曲度, 支持从 0 到 1 的值,值越大曲度越大。0代表直线,1代表圆
                 }
@@ -330,8 +333,6 @@ var convertData = function(fName,tName){
         });
     }
     return res;
-
-
 
 }
 
@@ -378,6 +379,14 @@ var generateMapDate =function(){
             }
         })
     }
+    /*处理选中国家 , 只有第一个选中的国家才有选中效果*/
+    if(selectedCountrys.length>0  ){
+        geoData.push({
+             name: selectedCountrys[0].name,
+             selected :true
+        })
+    }
+
 
 }
 
