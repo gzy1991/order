@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 
-<title>Regional Relations</title>
+<title>Map6</title>
     <link href="/static/resource/bootstrap/css/bootstrap.css" rel="stylesheet" />
   <link href="/static/resource/bootstrap-table/bootstrap-table.css" rel="stylesheet" />
   <link href="/static/resource/css/map3.css" rel="stylesheet" />
@@ -44,29 +44,16 @@
                   </ul>
                 </div>
 
-              <div class="btn-group hiddenClass">
-                  <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-top:2px;margin-left:5px;float:left;">
-                    区域 <span class="caret"></span>
-                  </button>
-                  <ul class="dropdown-menu">
-                    <li id ="all_li"><a href="#">全部地区</a></li>
-                    <li id ="br_li"><a href="#">BR地区</a></li>
-                  </ul>
-                </div>
 </div>
                 <span id="hideList" style="float:right;cursor: pointer;"><img src="/static/img/left.png" title="缩进"/></span>
                 <table id="tableContainer" ></table>
 
                 </div>
-              <div class="hiddenClass" style="height: 45%;" style="padding-right: 20px;"> {% comment %}   小地图 中国     {% endcomment %}
-                  <div  id ="mapContainer" ></div>
-
-              </div>
 
           </div>
           <div id="h-handler" class="handler" style="left: 40%;"></div>
           <div  id="mapDiv" class = "right-container" style="width: 60%;left: 40%;  ">
-              <div id="mapContainer2" style="height: 30%;weight:100%;">  {% comment %} 主图 世界{% endcomment %}
+              <div id="mapContainer" style="height: 30%;weight:100%;">
               </div>
 
           </div>
@@ -172,13 +159,13 @@
     <script type="text/javascript" src="/static/resource/bootstrap-fileinput/locales/zh.js"></script>
     <script type="text/javascript" src="/static/common/js/uploadFile.js"></script>
     <script type="text/javascript" src="/static/common/js/gridTool.js"></script>
-    <script type="text/javascript" src="/static/map5.js"></script>
+    <script type="text/javascript" src="/static/map6.js"></script>
     <script type="text/javascript">
             // 初始化header 导航栏
             $(document).ready(function(){
                 $("#headerContainer").load("/static/html/header.html");
                 //初始化上传组件
-                initUpload("excelFile","/uploadExcelInMap5");
+                initUpload("excelFile","/uploadExcelInMap6");
                 initEvent();//初始化事件绑定,缩进/展开功能
                 initEventHandler("h-handler"); //绑定缩放功能
                 initPageData();  //   调用初始化页面

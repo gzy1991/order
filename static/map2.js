@@ -376,7 +376,7 @@ var convertData = function(province,tradeData,type){
 			toCoord=temp;
 			tagPosition="start";
 		}
-		tagPosition="middle";  //标签的位置,仙豆设置成中间，
+		tagPosition="middle";  //标签的位置,设置成中间，
 		if(fromCoord && toCoord){
 			res.push({
 				sort:tradeData[i].sort,  //排序数据

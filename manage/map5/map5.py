@@ -1,7 +1,7 @@
 #coding:utf-8
 #!/usr/bin/python
 
-#  图4
+#  图5
 #  获得table数据， json格式,
 #
 import traceback
@@ -83,9 +83,6 @@ def getTableData():
                         unit.append(sheetData[0][i].encode("utf-8"))
                 elif (sheetName == "Index"):        #源数据sheet   189*n矩阵
                     sheetData = ExcelTool.getArrayFromSheet(excelData,sheetName,"name",countryNum,n)
-                    # sheetDataSort = np.argsort(-sheetData, axis=0)  # 排序，按列排序，降序
-                    # for column in range(n):  #列，先记录下每列的最大值，
-                    #     sheetMaxSource.append(sheetData[sheetDataSort[0][n]][n])
                     for row in range(countryNum):
                         originalRow=[]
                         for column in range(n):
@@ -102,8 +99,6 @@ def getTableData():
                     middleNameList.append(sheetName.encode("utf-8"))            #中间数据的sheet名，有序
                     sheetData = ExcelTool.getArrayFromSheet(excelData, sheetName, "name", countryNum, countryNum)
                     sheetMax.append(np.max(sheetData)     )      #此sheet的最大值
-                    #排序
-                    #sheetDataSort=np.argsort(-sheetData,axis=1)  #排序，按行排序，降序
 
                     #遍历整个sheet
                     middleSheet=[] #此sheet的数据容器
