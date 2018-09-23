@@ -19,7 +19,7 @@ var countryType="BR";
 /*全局数据*/
 var datas ; 		 		//  容器，存储了表格的全部数据，
 var selectedRow;   		//  table中选中的那一行 的行数据
-var widewsPercentage=[35,35];       //窗体左右比例    初始化,左边是 30%  。记录两个30，是因为点击缩放按钮的时候，需要记录点击之前的比例和点击之后的比例。
+var widewsPercentage=[30,30];       //窗体左右比例    初始化,左边是 30%  。记录两个30，是因为点击缩放按钮的时候，需要记录点击之前的比例和点击之后的比例。
 
 /*世界地图*/
 var dom= document.getElementById("mapContainer");;//
@@ -111,18 +111,35 @@ var initEchart= function(){
     }
     dom= document.getElementById("mapContainer");
     myChart = echarts.init(dom);
-    selectedRow.curLevel=0;//当前所在层级,默认是0，这个属性，主要用在前台的逻辑控制
+    selectedRow.curLevel=0;        //当前所在层级,默认是0，这个属性，主要用在前台的逻辑控制
+    if(selectedCountrys.length>0){  //重置选中构架
+        selectedCountrys=[{                         /*只保存第一个国家*/
+            name:selectedCountrys[0].name,      //EchartName
+            isHandle:false,
+            level:0
+        }]
+    }
+
     seriesData=[];                  //清空线数据
     generateLineSeries();               //生成线数据
     generateMapDate();              //生成地图上 国家的选中数据，和BR国家的颜色数据
     option= {
-        tooltip: {
-            trigger: 'item',
-            formatter: '{b}'
+        tooltip: {                  //提示框组件
+            padding: 5,
+            backgroundColor: '#222',
+            borderColor: '#777',
+            borderWidth: 1,
+            formatter: function(obj){
+                if(obj!=null && obj.componentType=="series" && obj.componentSubType =="lines" && obj.seriesType=="lines"){
+                    var data = obj.data;
+                    return data.level+" : "+data.lineData.toFixed(2)
+                }
+            }
         },
         backgroundColor: backgroundColor,
         title: {
             text: selectedRow.fileName,
+            subtext:' Unit: '+selectedRow.unit,				//副标题
             left: 'center',
             subtextStyle: {		//副标题
                 fontFamily: "Times New Roman",//字体
@@ -136,9 +153,9 @@ var initEchart= function(){
         /*自定义按钮*/
         toolbox: {
             zlevel :3,
-            left:'5%',
-            bottom:'5%',
-            itemSize :35,//工具栏 icon 的大小。
+            left:'1.5%',
+            bottom:'1.5%',
+            itemSize :20,//工具栏 icon 的大小。
             iconStyle :{
                 color:geoTextColor,
             },
@@ -146,7 +163,7 @@ var initEchart= function(){
             feature: {
                 mytool1: {
                     show: true,
-                    title: '下一层',
+                    title: 'Next',
                     icon: 'path://M832 160.128c0-17.664-14.336-32-32-32S768 142.464 768 160.128l0 282.88L214.592 134.592c-18.176-10.112-39.936-10.048-58.112 0C138.24 144.768 127.424 162.88 127.424 183.168l0 656.64c0 20.224 10.816 38.464 29.056 48.576C165.568 893.44 175.488 896 185.472 896s19.968-2.56 29.056-7.616L768 579.968l0 284.096c0 17.664 14.336 32 32 32s32-14.336 32-32L832 160.128zM191.808 829.248 188.672 192l573.312 319.488L191.808 829.248z',
                     onclick: function (){
                         generateLineSeries();
@@ -157,8 +174,8 @@ var initEchart= function(){
                 },
                 mytool2: {
                     show: true,
-                    title: '刷新',
-                    icon: 'path://M911.40249 607.60166c-21.244813-4.248963-46.738589 8.497925-50.987552 29.742738-42.489627 174.207469-195.452282 293.178423-373.908714 293.178424-212.448133 0-386.655602-174.207469-386.655602-386.655602s174.207469-386.655602 386.655602-386.655602c97.726141 0 195.452282 38.240664 263.435685 106.224067h-178.456432c-21.244813 0-42.489627 16.995851-42.489626 42.489626 0 21.244813 16.995851 42.489627 42.489626 42.489627h263.435685c21.244813 0 42.489627-16.995851 42.489626-42.489627v-263.435684c0-21.244813-16.995851-42.489627-42.489626-42.489627-21.244813 0-42.489627 16.995851-42.489627 42.489627v148.713693c-84.979253-76.481328-195.452282-118.970954-310.174274-118.970955-259.186722 0-471.634855 212.448133-471.634854 471.634855s212.448133 471.634855 471.634854 471.634855c216.697095 0 403.651452-148.713693 458.887967-356.912863 4.248963-21.244813-8.497925-42.489627-29.742738-50.987552z',
+                    title: 'Refresh',
+                    icon:'path://d="M909.1 209.3l-56.4 44.1C775.8 155.1 656.2 92 521.9 92 290 92 102.3 279.5 102 511.5 101.7 743.7 289.8 932 521.9 932c181.3 0 335.8-115 394.6-276.1 1.5-4.2-0.7-8.9-4.9-10.3l-56.7-19.5c-4.1-1.4-8.6 0.7-10.1 4.8-1.8 5-3.8 10-5.9 14.9-17.3 41-42.1 77.8-73.7 109.4-31.6 31.6-68.4 56.4-109.3 73.8-42.3 17.9-87.4 27-133.8 27-46.5 0-91.5-9.1-133.8-27-40.9-17.3-77.7-42.1-109.3-73.8-31.6-31.6-56.4-68.4-73.7-109.4-17.9-42.4-27-87.4-27-133.9s9.1-91.5 27-133.9c17.3-41 42.1-77.8 73.7-109.4 31.6-31.6 68.4-56.4 109.3-73.8 42.3-17.9 87.4-27 133.8-27 46.5 0 91.5 9.1 133.8 27 40.9 17.3 77.7 42.1 109.3 73.8 9.9 9.9 19.2 20.4 27.8 31.4l-60.2 47c-5.3 4.1-3.5 12.5 3 14.1l175.6 43c5 1.2 9.9-2.6 9.9-7.7l0.8-180.9c-0.1-6.6-7.8-10.3-13-6.2z" p-id="6383" fill="#ffffff"',
                     onclick: function (){
                         seriesData=[];                                      //清空线数据
                         selectedRow.curLevel=0;                             //重置“当前等级”
@@ -261,7 +278,7 @@ var generateLineSeries =function() {
     var curLevel = selectedRow.curLevel;
     /*当前的等级，curLevel最大是maxLevel-1，最小是0*/
     var len = selectedCountrys.length;
-    if (curLevel == maxLevel - 1) {                         //如果已经最最大level，那么清空线和选中数据
+    if (curLevel == maxLevel ) {                         //如果已经最最大level，那么清空线和选中数据
         curLevel = 0
         selectedRow.curLevel = curLevel;
         seriesData=[];                                      /*清空线数据*/
@@ -287,6 +304,26 @@ var generateLineSeries =function() {
                     })
                     /*生成线*/
                     seriesData.push(
+                        /*线上的动画效果*/
+                        {
+                            name:name+"_"+tName+"point_light",
+                            type:"lines",
+                            zlevel: 1,
+                            effect: {              							//线特效的配置
+                                show: true,
+                                period: 1,              					//特效动画的时间,单位为 s。
+                                color: lineEffectColor,						//特效颜色
+                                symbolSize: 4          						//特效标记的大小,可以设置成诸如 10 这样单一的数字,也可以用数组分开表示高和宽,例如 [20, 10] 表示标记宽为20,高为10。
+                            },
+                            lineStyle: {            						//对线的各种设置 ：颜色,形状,曲度
+                                normal: {
+                                    color: lineEffectColor,                   //
+                                    width: 0,           					//线宽
+                                    curveness: 0.2  						//边的曲度,支持从 0 到 1 的值,值越大曲度越大。0代表直线,1代表圆
+                                }
+                            },
+                            data:convertData2(name,tName,selectedRow.curLevel+1,selectedRow.middleData[curLevel][index][tIndex])  //坐标关系
+                        },
                         /* 线  +  箭头*/
                         {
                             name:name+"_"+tName+"_line",
@@ -302,13 +339,9 @@ var generateLineSeries =function() {
                                     curveness: 0.2  						//边的曲度,支持从 0 到 1 的值,值越大曲度越大。0代表直线,1代表圆
                                 }
                             },
-                            data:convertData(name,tName)
+                            data:convertData(name,tName,selectedRow.curLevel+1,selectedRow.middleData[curLevel][index][tIndex])
                         }
-                        /*生成选中国家的名字，以及圆圈动画效果*/
-
                     )
-
-                    /**/
                 }
             }
         }
@@ -317,35 +350,55 @@ var generateLineSeries =function() {
     }
 }
 
+/*
+*	生成动画效果线的 坐标关系
+*   直接调用convertData() ，然后获取里面的坐标信息即可
+* */
+var convertData2 = function(fname,tName,level,lineData){
+    var coords=[];
+    var tempData = convertData(fname,tName,level,lineData);//坐标关系
+    tempData.forEach(function(item,i){
+		coords.push({
+			coords:item.coords,         //坐标关系
+			effect: {
+				show: true,
+				period: 4,
+				color: lineEffectColor,						//特效颜色
+				symbolSize: selectedRow.curLevel < 7 ? 7-selectedRow.curLevel*1 : 1
+			}
+		});
+	});
+    return coords;
+}
+
     /**生成线坐标
      * fName: 起始国家的EchartName
      * tNAme: 目标国家的EchartName
      */
-var convertData = function(fName,tName){
+var convertData = function(fName,tName,level,lineData){
     var res=[];
     //countrytInfo中既有SourceName的坐标数据 ，又有EchartName的坐标数据
-        if(countrytInfo[fName] == undefined ||countrytInfo[fName].latitude == undefined   ||countrytInfo[fName].longitude == undefined  ){
-            console.log(fName);
-            debugger;
-
-        }
-        if(countrytInfo[tName] == undefined ||countrytInfo[tName].latitude == undefined   ||countrytInfo[tName].longitude == undefined  ){
-             console.log(fName);
-             debugger;
-
-        }
-
+    if(countrytInfo[fName] == undefined ||countrytInfo[fName].latitude == undefined   ||countrytInfo[fName].longitude == undefined  ){
+        console.log(fName);
+        //debugger;
+    }
+    if(countrytInfo[tName] == undefined ||countrytInfo[tName].latitude == undefined   ||countrytInfo[tName].longitude == undefined  ){
+         console.log(fName);
+         //debugger;
+    }
     var fromCoord = [countrytInfo[fName]["longitude"],  countrytInfo[fName]["latitude"]];
     var toCoord = [countrytInfo[tName]["longitude"],  countrytInfo[tName]["latitude"]];
     if(fromCoord && toCoord){
         res.push({
+            level:level,//线所处层级， 最小是1，最大是sheet的个数减1
+            lineData:lineData,          //值
             fromName:fName,
             toName: tName,
             coords: [fromCoord, toCoord],
-            symbolSize :15, //箭头大小
+            symbolSize : selectedRow.curLevel < 7  ?  15-selectedRow.curLevel*1.3 : 5, //箭头大小
             lineStyle:{
                 normal:{
-                    width: 2.5,   //线宽
+                    width: selectedRow.curLevel < 7 ? 5-selectedRow.curLevel*0.8 : 0.2,   //线宽
                     opacity: 0.6,    // 图形透明度。支持从 0 到 1 的数字,为 0 时不绘制该图形。
                     curveness:  0.2 //边的曲度, 支持从 0 到 1 的值,值越大曲度越大。0代表直线,1代表圆
                 }
@@ -406,15 +459,12 @@ var generateMapDate =function(){
              selected :true
         })
     }
-
-
 }
 
 //页面自适应
 var adjustScrollPage = function() {
 	var windowEl = $(window);
 	var windowH = windowEl.height()-50-17; //减去导航栏的那个高度 50px
-    //var windowW = windowEl.width();
     $('#main-container').css('height', windowH);
     $("#table-container").css("height", windowH);
     $("#h-handler").css("height", windowH);
@@ -544,6 +594,20 @@ var initEvent = function(){
 
         initEchart(selectedRow);
     })
+
+    $("#one_li").bind("click",function() {
+        lineNumOfLevel=1;
+        initEchart();
+    })
+    $("#two_li").bind("click",function() {
+        lineNumOfLevel=2;
+        initEchart();
+    })
+    $("#three_li").bind("click",function() {
+        lineNumOfLevel=3;
+        initEchart();
+    })
+
     /*删除按钮*/
     $("#delBtn").bind("click",function(){
         delBtnFn("tableContainer","deleteResult","deleteModel","/deleteDataInMap6",refBtnFn);
