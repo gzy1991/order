@@ -64,8 +64,8 @@ def getTableData():
             original = []               # 原始数据
             middleData = []             # 中间数据
             middleDataSort = []         # 中间数据   的  排序数据
-            DataNameList = []         # 中间数据的sheet名，有序
-            unit = []  # 单位
+            DataNameList = []           # 中间数据的sheet名，有序
+            unit = []                   # 单位
             sheetMaxSource = []         # 原始数据，每个指标的最大值,也就是每个中间数据shet的最大值
             sheetMax = []               # 中间数据，每个指标的最大值,也就是每个中间数据shet的最大值
             fullFileName = file.split("\\")[len(file.split("\\")) - 1]
@@ -79,9 +79,8 @@ def getTableData():
 
             for sheetName in sheetNameList:                                 # 遍历所有sheet
                 if (sheetName == "Unit"):                                   # 单位sheet    1*n矩阵
-                    sheetData = ExcelTool.getArrayFromSheet(excelData, sheetName, "name")
-                    for i in range(n):
-                        unit.append(sheetData[0][i].encode("utf-8"))
+                    sheetData = ExcelTool.getArrayFromSheet(excelData, sheetName, "name",1,1)
+                    unit=sheetData[0][0].encode("utf-8")
                 else:                                                       #中间数据sheet   189*189矩阵
                     DataNameList.append(sheetName.encode("utf-8"))        # 中间数据的sheet名，有序
                     sheetData = ExcelTool.getArrayFromSheet(excelData, sheetName, "name", countryNum, countryNum)
@@ -105,13 +104,14 @@ def getTableData():
                     middleDataSort.append(middleSheetSort)
 
 
-            result["middle"]=middleData                      #数据
+            result["middleData"]=middleData                      #数据
             result["middleDataSort"]=middleDataSort         #数据的排序
             result["level"]=n                                 #层级, 等于sheet的个数-1
             # result["curLevel"]=0                             #当前所在层级,默认是0，这个属性，主要用在前台的逻辑控制
             result["DataNameList"] = DataNameList            # 数据 sheet名称，也就是指标名称,有序
             result["countryList"] = countryList  # 国家列表  有序列表
             result["countryInfo"] = countryInfo  # 国家字典  带序号
+            result["unit"] = unit  # 国家字典  带序号
 
             resultList.append(result)
 
