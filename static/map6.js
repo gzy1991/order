@@ -20,6 +20,15 @@ var countryType="BR";
 var datas ; 		 		//  容器，存储了表格的全部数据，
 var selectedRow;   		//  table中选中的那一行 的行数据
 var widewsPercentage=[30,30];       //窗体左右比例    初始化,左边是 30%  。记录两个30，是因为点击缩放按钮的时候，需要记录点击之前的比例和点击之后的比例。
+var leftMinWidth = $("#buttonArea").width()+$("#hideList").width()+$("#h-handler").width();//左侧按钮区的最小宽度
+var MinPercentage = 0.3 ;//窗体左右比例的最小值，默认是0.3，打开页面的时候，要初始化
+var MaxPercentage = 0.5 ;//窗体左右比例的最大值，默认是0.5，
+/*计算窗体左右比例的最小值*/
+var calculateMinPercentage = function(){
+    //  比例= 左边按钮区的宽度/整体宽度
+    MinPercentage = leftMinWidth/$(window).width() ;
+    MinPercentage = Math.ceil(MinPercentage*100)/100 ;//舍去小数点后两位后面的数据
+}
 
 /*世界地图*/
 var dom= document.getElementById("mapContainer");;//
@@ -63,6 +72,8 @@ var initPageData=function(){
 				$(".fixed-table-body").css("overflow", "hidden");
 				$("#tableContainer > tbody > tr > td").css("cursor", "pointer");
             });
+            calculateMinPercentage();//计算窗体左右比例的最小值
+            setSplitPosition(MinPercentage);//根据窗体左右比例的最小值，设置窗口比例
         }
 	})
 }
@@ -132,7 +143,7 @@ var initEchart= function(){
             formatter: function(obj){
                 if(obj!=null && obj.componentType=="series" && obj.componentSubType =="lines" && obj.seriesType=="lines"){
                     var data = obj.data;
-                    return data.level+" : "+data.lineData.toFixed(2)
+                    return "L"+data.level+" : "+data.lineData.toFixed(2)
                 }
             }
         },
@@ -379,11 +390,11 @@ var convertData = function(fName,tName,level,lineData){
     var res=[];
     //countrytInfo中既有SourceName的坐标数据 ，又有EchartName的坐标数据
     if(countrytInfo[fName] == undefined ||countrytInfo[fName].latitude == undefined   ||countrytInfo[fName].longitude == undefined  ){
-        console.log(fName);
+        console.log("map data error:"+fName);//地图数据有误
         //debugger;
     }
     if(countrytInfo[tName] == undefined ||countrytInfo[tName].latitude == undefined   ||countrytInfo[tName].longitude == undefined  ){
-         console.log(fName);
+         console.log("map data error:"+fName);//地图数据有误
          //debugger;
     }
     var fromCoord = [countrytInfo[fName]["longitude"],  countrytInfo[fName]["latitude"]];
@@ -512,19 +523,25 @@ var initEventHandler = function(handler){
 //  set splitter position by percentage, left should be between 0 to 1
 //设置 左右两侧新的比例
 var setSplitPosition = function(percentage){
+    if(percentage == undefined){
+        percentage=0;
+    }
     if(gb.lock){
         return;     //锁未开，不允许设置
     }
-    percentage = Math.min(0.50, Math.max(0.30, percentage));  // 比例极限区间是 [30,50]
+    percentage = Math.min(MaxPercentage, Math.max(MinPercentage, percentage));  // 比例极限区间是 [0.3,0.5]
     widewsPercentage =[ percentage * 100, percentage * 100];
     adjustScrollPage();
 }
 
 //窗体改变时触发
 window.onresize = function(){
+
     if(gb.lock){            //这种情况下，要重新计算比例，否则会出现大量空白，影响效果
         widewsPercentage[0]=100*28/$(window).width();
     }
+    calculateMinPercentage();/*重新计算最小比例*/
+    setSplitPosition(MinPercentage);//重新设置 左右两侧新的比例
     adjustScrollPage();
 }
 
