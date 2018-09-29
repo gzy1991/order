@@ -527,7 +527,10 @@ var setSplitPosition = function(percentage){
     if(gb.lock){
         return;     //锁未开，不允许设置
     }
-
+    if(percentage == undefined){
+        percentage=0;
+    }
+    percentage = Math.min(MaxPercentage, Math.max(MinPercentage, percentage));  // 比例极限区间是 [MinPercentage,MaxPercentage]
     widewsPercentage =[ percentage * 100, percentage * 100];
     adjustScrollPage();
 }
