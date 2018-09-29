@@ -19,7 +19,7 @@ var countryType="BR";
 /*全局数据*/
 var datas ; 		 		//  容器，存储了表格的全部数据，
 var selectedRow;   		//  table中选中的那一行 的行数据
-var widewsPercentage=[30,30];       //窗体左右比例    初始化,左边是 30%  。记录两个30，是因为点击缩放按钮的时候，需要记录点击之前的比例和点击之后的比例。
+var widewsPercentage=[30,30];       //存储窗体当前的左右比例    初始化,左边是 30%  。记录两个30，是因为点击缩放按钮的时候，需要记录点击之前的比例和点击之后的比例。
 var leftMinWidth = $("#buttonArea").width()+$("#hideList").width()+$("#h-handler").width();//左侧按钮区的最小宽度
 var MinPercentage = 0.3 ;//窗体左右比例的最小值，默认是0.3，打开页面的时候，要初始化
 var MaxPercentage = 0.5 ;//窗体左右比例的最大值，默认是0.5，
@@ -523,13 +523,11 @@ var initEventHandler = function(handler){
 //  set splitter position by percentage, left should be between 0 to 1
 //设置 左右两侧新的比例
 var setSplitPosition = function(percentage){
-    if(percentage == undefined){
-        percentage=0;
-    }
+
     if(gb.lock){
         return;     //锁未开，不允许设置
     }
-    percentage = Math.min(MaxPercentage, Math.max(MinPercentage, percentage));  // 比例极限区间是 [0.3,0.5]
+
     widewsPercentage =[ percentage * 100, percentage * 100];
     adjustScrollPage();
 }
