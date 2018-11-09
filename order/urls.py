@@ -23,6 +23,7 @@ import  manage.map3.views  as map3
 import  manage.map4.views  as map4
 import  manage.map5.views  as map5
 import  manage.map6.views  as map6
+import  manage.map7.views  as map7
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -68,4 +69,6 @@ urlpatterns = [
     , url(r'^deleteDataInMap6/$', map6.deleteData)  # 删除
     , url(r'^uploadExcelInMap6/$', map6.uploadExcel)  # 新增
 
+    #图7
+    ,url(r'^map7test/$', map7.getPageTest)  # 获取页面
 ]
