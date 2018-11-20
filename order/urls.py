@@ -17,6 +17,7 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 
+import  manage.home.views as home
 import  map1.views as map1
 import  manage.map2.views  as map2
 import  manage.map3.views  as map3
@@ -29,6 +30,9 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     #公共资源
     #url(r'^header/$',map1.getHeader),  # 获取导航栏 header.html
+
+    #首页 home
+    url(r'^home/$',home.getPage),
 
     #图1
     url(r'^matrix/$',map1.map1),  #图1 页面

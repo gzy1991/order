@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Home</title>
+
+        <script type="text/javascript" src="/static/resource/jquery/jquery.min.js"></script>
+
+        <link href="/static/app/homePage/css.css" rel="stylesheet" />
+        <link href="/static/app/homePage/iconfont.css" rel="stylesheet" />
+        <link href="/static/app/homePage/swiper.min.css" rel="stylesheet" />
+
+        <link href="/static/resource/bootstrap/css/bootstrap.css" rel="stylesheet" />
+        <link href="/static/resource/bootstrap-table/bootstrap-table.css" rel="stylesheet" />
+        <link href="/static/js/bootstrapValidator.min.css" rel="stylesheet" />
+        <link href="/static/js/popup.css" rel="stylesheet" />
+        <link href="/static/resource/bootstrap-fileinput/fileinput.min.css" rel="stylesheet" />
+        <link href="/static/resource/css/handler.css" rel="stylesheet" />
+
+    </head>
+    {% comment %}导航栏{% endcomment %}
+    <header class="navbar navbar-fixed-top navbar-inverse" id = "headerContainer"></header>
+
+    <body>
+        <div class="container">
+            <!-- 导航 -->
+
+            <!-- 内容 -->
+            <div class="content">
+                <div class="zy">
+                    <div class="tit1">Database<span></span></div>
+
+                    <div class="con">
+                        The matrixspace.org is a space for the working group mainly focusing on regional studies, macroeconomics, economic geography, resource sciences, environmental studies, and systems ecology, which attempts to conduct on economic, environment, and sociology issues from a nexus perspective. <br>
+    The intensity inventory is quantified combined with basic economic data derived from Eora, WIOD, and GTAP and basic resource data derived from World Bank, FAO, and IEA. The quantification method can be referred to the studies presented in the Research Page. The matrix space is free for academic (university or grant-funded) work at degree-granting institutions. All the uses require a data license for the shared results and databases.
+                    </div>
+                    <div class="link3">
+                        <div class="tit">THEMES:</div>
+                        <ul>
+                                        <li><a href="/matrix" target="_blank">Global Matrix</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|</li>
+                                        <li><a href="/map2/" target="_blank">China Matrix</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|</li>
+                                        <li><a href="/map3" target="_blank">Global Welfare</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|</li>
+                                        <li><a href="/map4" target="_blank">Regional Nexus</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|</li>
+                                        <li><a href="/map5" target="_blank">Regional Relations</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|</li>
+                                        <li><a href="/map6" target="_blank">Structural Path</a></li>
+                        </ul>
+                    </div>
+                </div>
+ 		    </div>
+
+        </div>
+
+    </body>
+
+
+    <script type="text/javascript">
+            // 初始化 header 导航栏
+            $(document).ready(function(){
+                $("#headerContainer").load("/static/common/html/header.html");
+            });
+
+    </script>
+</html>
