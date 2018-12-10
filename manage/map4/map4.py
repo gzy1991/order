@@ -6,9 +6,7 @@
 #
 
 import os
-import  sys
 import xlrd
-import xlwt
 import numpy as np
 import json
 import Tool.ExcelTool as ExcelTool

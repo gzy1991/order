@@ -9,24 +9,23 @@ import sys
 reload(sys)
 sys.setdefaultencoding("utf-8")
 
-
 #获取页面
 def getPageTest(request):
     return render(request, 'map7/map7test.html')
 
 #获取页面
 def getPage(request):
-    return render(request, 'map6.html')
+    return render(request, 'map7.html')
 
 #7 获取表格数据  json格式
 def getTableData(request):
     result = map7.getTableData()
     return HttpResponse(result)
 
-#7删除数据
+# 删除数据
 def deleteData(request):
-    return ViewsTool.deleteData(request, "MAP6_DIR")
+    return ViewsTool.deleteData(request, "MAP7_DIR")
 
-# 通过bootstrap fileinput 上传excel,保存到服务器上
+# 新增数据：通过bootstrap fileinput 上传excel,保存到服务器上
 def uploadExcel (request):
-    return ViewsTool.uploadExcel(request, "MAP6_DIR")
+    return ViewsTool.uploadExcel(request, "MAP7_DIR")
