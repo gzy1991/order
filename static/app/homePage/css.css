@@ -19,7 +19,7 @@ textarea{resize:none;}
 .container .top{width: 1150px;height: 80px; margin: 0 auto;padding-top: 10px;background-color: white; padding-left:40px;}
 .container .top .logo{float: left; margin-top: 5px;}
 .container .top .logo a{font-size:50px;font-weight: bold;color: #414142;}
-.container .top .nav{width: 850px; float: right;position: relative;padding-top: 15px;box-sizing:border-box;}
+.container .top .nav{/*width: 850px;*/ float: right;position: relative;padding-top: 15px;box-sizing:border-box;}
 .container .top .nav ul li{width: 120px;height:40px;float: left;text-align: center;line-height:40px; margin-left: 20px;}  
 .container .top .nav ul li a{color: #414142;font-size:20px;}
 .container .top .nav ul li ul{width: 830px;display: none;position: absolute;top: 55px;left: 10px;background-color: #1a212b;padding:5px 0;z-index: 2;}
