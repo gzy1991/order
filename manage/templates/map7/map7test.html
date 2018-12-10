@@ -29,8 +29,14 @@
     var _trace_page_logid = 1849139847;
 
     var uploadedDataURL = "/static/data/map7/data-1498994055008-rJJ5SUU4W.csv";
+    {% comment %}
+        d3.stratify()  :
+    {% endcomment %}
     var stratify = d3.stratify()
         .parentId(function(d) { return d.id.substring(0, d.id.lastIndexOf(".")); });
+    {% comment %}
+        d3.csv()  请求一个CSV（逗号分隔值）的文件
+    {% endcomment %}
     d3.csv(uploadedDataURL, function(error, rawData) {
         if (error) throw error;
 
@@ -56,7 +62,13 @@
         }
         function renderItem(params, api) {
             var context = params.context;
-            if (!context.layout) {
+            if (!context.layout) {  //第一次，需要初始化一下 。 这段代码只执行一次
+                /*  d3.
+                pack()用递归的圆环表现一个多层级布局.
+                size() 设置整个布局画布的 宽 and 高
+                padding()    指定相邻结点之点的间距(近似值).
+                value() - 获取或设置一个函数, 用来计算圆环的大小(近似值).
+                */
                 d3.pack()
                     .size([api.getWidth() - 2, api.getHeight() - 2])
                     .padding(3)(root);
