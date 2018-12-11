@@ -213,7 +213,7 @@ textarea{resize:none;}
 
 .container .content .zy{width: 100%;float: left;margin-top: 10px;}
 .container .content .zy .tit1{font-size: 36px;font-weight: bold;color: #011432;margin-bottom: 30px; padding-top:35px;}
-.container .content .zy span{width: 83%;height: 10px;background-color: #e4e4e4;display: inline-block;float: right;margin-top:20px;}
+.container .content .zy span{width:75%;height: 10px;background-color: #e4e4e4;display: inline-block;float: right;margin-top:20px;}
 .container .content .zy .con{width: 100%;font-size: 20px;color: #282828;line-height: 30px;margin-bottom: 20px;}
 .container .content .zy .link3{width: 100%;float: left;}
 .container .content .zy .link3 .tit{font-size: 24px;font-weight: bold;color: #282828;width: 100%;margin-top: 20px;}

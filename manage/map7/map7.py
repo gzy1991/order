@@ -24,15 +24,17 @@ import Tool.BrRegion  as SubCountrys
 #   注意：不同的excel里面，n可能是不同的，n要动态获取
 
 def getTableData():
-    countryNum = 189  # 全部国家总数  189个国家
-    provinceNum = 31  # 中国的31个省市自治区，不处理港澳台
+    countryNum = 189    # 全部国家总数  189个国家
+    provinceNum = 31    # 中国的31个省市自治区，不处理港澳台
+    countryShowNum =10  #对于每个省份，只要展示其进口前10名和出口前10名
     # 获取省份名列表，包括 ： 中文名、英文名、纬度、经度
     provincesInfo = ExcelTool.getArrayBySheetName(os.path.join(Setting.FILR_DIR["COMMON_DIR"],
                                                                "Province.xlsx"), "province")
     # #获取国家名 地址列表
     country_name = ExcelTool.getArrayBySheetName(os.path.join(Setting.FILR_DIR["COMMON_DIR"],
                                                               "Countries.xlsx"), "country")
-
+    # BR国家子集合，包含63个国家名，或其别名
+    sunCountrys = SubCountrys.getBrCountryList()
     countryList = []  # 国家名list，有序
     countrySwitch = CountrySwitchName.getcountrySwitch()
     # 替换一些国家的名字
@@ -56,13 +58,69 @@ def getTableData():
             result["fileName"] = fullFileName.split(".")[0]  # 文件全名 （不带后缀）
             print file + " start"
 
+            excelData = xlrd.open_workbook(file, "rb") #excel的全部数据
+            emptySheets = []  # 空数据的sheet
 
+            timeline = []  # timeline  滚动轴 的 数据集合
+            sheetNameList = excelData.sheet_names()  # 获取此文件的全部sheet名
+            seriesList = {}  # series数据，，所有省份对国家的数据,
+            #初始化seriesList,每个省份数据都会空的list
+            for i in range(provinceNum*2):
+                seriesList[provincesInfo[i][2]]=[]
 
+            # 遍历所有sheet
+            for sheetName in sheetNameList:
+                #处理某个sheet
+                sheetName = sheetName.encode("utf-8")  # sheet名转码
+                # 处理（某sheet）的数据
+                timeline.append(int(sheetName)) #年份加入timeline中,转为int
+                sheetData = ExcelTool.getArrayFromSheet(excelData, sheetName, 'name',
+                                                        row=countryNum,column=2*provinceNum)  # 获取某年（某sheet）的数据
+                #先处理空sheet
+                if(len(sheetData)==0):
+                    emptySheets.append(sheetName)  # 记下空sheet
+                    continue  #直接跳出，不显示空sheet的数据
+
+                #再处理非空sheet
+                #先遍历一遍，如果有负数，处理成0
+                for row in range(countryNum):
+                    for column in range(provinceNum*2):  #
+                        if (sheetData[row][column] < 0 ):  #大于100或者小于-100，处理成0
+                            sheetData[row][column] = 0
+
+                # 排序，按列排序，降序
+                sheetDataSort = np.argsort(-sheetData, axis=0)
+                # 遍历省份，即每一列  ,前31列是进口数据，后31列是出口数据
+                for i in range(provinceNum*2):
+                    # 处理某一列的数据
+                    sort = {} #每列排序的序号
+                    for j in range(countryShowNum): #每列都只要前10个
+                        sort[sheetDataSort[j][i]]=j+1     # 索引从0开始，排序从1开始。获取到此列（某省）的买个国家的排序
+                    seriesCountry = []                    # 某列的数据，即某省在某年的数据
+                    for k in range(countryShowNum) :#遍历此列的排序前10的国家
+                        kCoun=sheetDataSort[k][i]     #此列排第k个国家的国家序号
+                        #sheetData[kCoun][i] # 值
+                        isBr = 0  #是否是BR国家,默认不是
+                        if (countryList[kCoun] in sunCountrys and countryList[k] != "China"):
+                            isBr = 1
+                        seriesCountry.append({
+                            "name": countryList[kCoun],  #国家名
+                            "value":sheetData[kCoun][i], #值
+                            "isBr":isBr #是否是BR国家
+                        })
+                seriesList[provincesInfo[i][2]].append({
+                    "data": seriesCountry
+                })
+            result["counties"] = countryList  # 国家列表
+            result["timeline"] = timeline           # 滚动轴，sheet名集合
+            result["emptySheets"] = emptySheets    # 空数据sheet名集合
+            result["series"] = seriesList
+            result['unit'] = unit  # 单位
+            resultList.append(result)
         except BaseException :
             print "Error: 文件有问题: " + file
             print BaseException
             errMsg += file + "<br/>"
-
 
     resultListJson = json.dumps(resultList)
     print "Map7返回值 resultListJson :"
