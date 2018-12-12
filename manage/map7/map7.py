@@ -18,9 +18,8 @@ import Tool.country as CountrySwitchName
 import Tool.BrRegion  as SubCountrys
 
 #   关于本图中excel的格式规则
-#   n个 189*189 矩阵   ，记录的是中间数据
-#   1个sheet ，sheet名字是"Unit"，记录的是单位，里面有n个单位
-#
+#   n个 189*62 矩阵   ，其中的数据，前31列是31省的进口数据，后31列是31省的出口数据
+#   1个sheet ，sheet名字是"Unit"，记录的是单位，里面有1个单位
 #   注意：不同的excel里面，n可能是不同的，n要动态获取
 
 def getTableData():
@@ -38,8 +37,8 @@ def getTableData():
     countryList = []  # 国家名list，有序
     countrySwitch = CountrySwitchName.getcountrySwitch()
     # 替换一些国家的名字
-    for i in range(countryNum):
-        countryName=country_name[i, 0].encode("utf-8")
+    for ii in range(countryNum):
+        countryName=country_name[ii, 0].encode("utf-8")
         if(countrySwitch.has_key(countryName) and  countrySwitch[countryName]!=""):
             countryList.append(countrySwitch[countryName])
         else:
@@ -65,17 +64,28 @@ def getTableData():
             sheetNameList = excelData.sheet_names()  # 获取此文件的全部sheet名
             seriesList = {}  # series数据，，所有省份对国家的数据,
             #初始化seriesList,每个省份数据都会空的list
-            for i in range(provinceNum*2):
-                seriesList[provincesInfo[i][2]]=[]
+            for m in range(provinceNum):
+                seriesList[provincesInfo[m][2]]=[]
 
             # 遍历所有sheet
-            for sheetName in sheetNameList:
-                #处理某个sheet
+            for n in range(len(sheetNameList)):
+                #开始处理某个sheet
+                sheetName = sheetNameList[n]
                 sheetName = sheetName.encode("utf-8")  # sheet名转码
-                # 处理（某sheet）的数据
+
+                #处理单位
+                if sheetName == 'Unit':
+                    unit = excelData.sheet_by_name("Unit").cell_value(0, 0)
+                    continue
+
+                # 处理（某sheet）数据
                 timeline.append(int(sheetName)) #年份加入timeline中,转为int
                 sheetData = ExcelTool.getArrayFromSheet(excelData, sheetName, 'name',
                                                         row=countryNum,column=2*provinceNum)  # 获取某年（某sheet）的数据
+                if(sheetData.shape[1]!=62 or sheetData.shape[0]!=189):
+                    #跳过这个sheet
+                    print(fullFileName+" 的sheet有问题: "+sheetName)
+                    continue;
                 #先处理空sheet
                 if(len(sheetData)==0):
                     emptySheets.append(sheetName)  # 记下空sheet
@@ -85,7 +95,7 @@ def getTableData():
                 #先遍历一遍，如果有负数，处理成0
                 for row in range(countryNum):
                     for column in range(provinceNum*2):  #
-                        if (sheetData[row][column] < 0 ):  #大于100或者小于-100，处理成0
+                        if (sheetData[row][column] < 0 ):  #小于0，处理成0
                             sheetData[row][column] = 0
 
                 # 排序，按列排序，降序
@@ -93,11 +103,8 @@ def getTableData():
                 # 遍历省份，即每一列  ,前31列是进口数据，后31列是出口数据
                 for i in range(provinceNum*2):
                     # 处理某一列的数据
-                    sort = {} #每列排序的序号
-                    for j in range(countryShowNum): #每列都只要前10个
-                        sort[sheetDataSort[j][i]]=j+1     # 索引从0开始，排序从1开始。获取到此列（某省）的买个国家的排序
                     seriesCountry = []                    # 某列的数据，即某省在某年的数据
-                    for k in range(countryShowNum) :#遍历此列的排序前10的国家
+                    for k in range(countryShowNum) :#遍历前31列中，每列的排序前10的国家，进口
                         kCoun=sheetDataSort[k][i]     #此列排第k个国家的国家序号
                         #sheetData[kCoun][i] # 值
                         isBr = 0  #是否是BR国家,默认不是
@@ -108,9 +115,14 @@ def getTableData():
                             "value":sheetData[kCoun][i], #值
                             "isBr":isBr #是否是BR国家
                         })
-                seriesList[provincesInfo[i][2]].append({
-                    "data": seriesCountry
-                })
+                    #对于每个省份的seriesList，前10个是进口数据，后10个是出口数据
+                    if i<provinceNum:
+                        seriesList[provincesInfo[i][2]].append({
+                            "data": seriesCountry
+                        })
+                    else :
+                        for seriesCountryInfo in seriesCountry:        #把10个出口数据，放到进口数据后面
+                            seriesList[provincesInfo[i - provinceNum][2]][n]["data"].append(seriesCountryInfo)
             result["counties"] = countryList  # 国家列表
             result["timeline"] = timeline           # 滚动轴，sheet名集合
             result["emptySheets"] = emptySheets    # 空数据sheet名集合

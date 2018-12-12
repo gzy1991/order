@@ -11,6 +11,7 @@ sys.setdefaultencoding("utf-8")
 
 #获取页面
 def getPageTest(request):
+    result = map7.getTableData()
     return render(request, 'map7/map7test.html')
 
 #获取页面
