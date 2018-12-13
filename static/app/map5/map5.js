@@ -666,7 +666,7 @@ var adjustScrollPage = function() {
          dom2.style.height = (window.innerHeight - 55)+'px';
          myChart2.resize();
     },100);
-    setTimeout(function(){/*中国地图*/
+    setTimeout(function(){/*雷达图*/
         dom.style.width = $("#table-container").width()+'px';
 		 dom.style.height = $("#table-container").height()*0.4+'px';
     	myChart.resize();

@@ -75,4 +75,8 @@ urlpatterns = [
 
     #图7
     ,url(r'^map7test/$', map7.getPageTest)  # 获取页面
+    , url(r'^map7/$', map7.getPage)  # 获取页面
+    , url(r'^initMap7/$', map7.getTableData)  # 获取页面数据，初始化页面
+    , url(r'^deleteDataInMap7/$', map7.deleteData)  # 删除
+    , url(r'^uploadExcelInMap7/$', map7.uploadExcel)  # 新增
 ]

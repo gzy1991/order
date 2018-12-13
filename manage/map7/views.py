@@ -16,7 +16,7 @@ def getPageTest(request):
 
 #获取页面
 def getPage(request):
-    return render(request, 'map7.html')
+    return render(request, 'map7/map7.html')
 
 #7 获取表格数据  json格式
 def getTableData(request):
