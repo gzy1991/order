@@ -7,17 +7,27 @@
 /*地图全局数据*/
 var datas ; 		 		//  容器，存储了表格的全部数据，
 var selectedRow;   		//  table中选中的那一行 的行数据
-var widewsPercentage=[40,40];       //窗体左右比例    初始化,左边是 40%  。记录两个40，是因为点击缩放按钮的时候，需要记录点击之前的比例和点击之后的比例
+var widewsPercentage=[30,30];       //存储窗体当前的左右比例    初始化,左边是 30%  。记录两个30，是因为点击缩放按钮的时候，需要记录点击之前的比例和点击之后的比例。
+var leftMinWidth = $("#buttonArea").width()+$("#hideList").width()+$("#h-handler").width();//左侧按钮区的最小宽度
+var MinPercentage = 0.3 ;//窗体左右比例的最小值，默认是0.3，打开页面的时候，要初始化
+var MaxPercentage = 0.5 ;//窗体左右比例的最大值，默认是0.5，
+/*计算窗体左右比例的最小值*/
+var calculateMinPercentage = function(){
+    //  比例= 左边按钮区的宽度/整体宽度
+    MinPercentage = leftMinWidth/$(window).width() ;
+    MinPercentage = Math.ceil(MinPercentage*100)/100 ;//舍去小数点后两位后面的数据
+}
+
 //滚动轴 数据
 var switchTime =2000;       //动画切换时间 2秒
 
 /*背景切换所需的数据*/
-var backgroundColor ='#404a59';  //echart背景色
-var areaColor ='#323c48'; //地图区域的颜色
-var emphasisAreaColor='#2a333d';   //选中省份时，背景色
+var backgroundColor ='#404a59';         //echart背景色
+var areaColor ='#323c48';               //地图区域的颜色
+var emphasisAreaColor='#2a333d';        //选中省份时，背景色
 var textColor='#fff';					//标题与副标题的颜色
 var lineColor ="#FF3030";					//线和线上标签的颜色
-var lineeffectColor = "#fff";   //线上特效点的颜色
+var lineeffectColor = "#fff";               //线上特效点的颜色
 var textEmphasisColor="#fff";               //年份选中时颜色
 var emphasisColor='#aaa';;              //播放按钮颜色
 
@@ -49,6 +59,24 @@ var unit='';  //单位
 /* 初始化echart  ,第一次打开页面时或者点击表格行事件时，调用本函数
 *  入参：表格的行数据  */
 var initEchart = function(row){
+    console.log("初始化中国地图echarts!");
+    if(myChart&&myChart.dispose){
+        myChart.dispose();
+    }
+    dom= document.getElementById("mapContainer");
+    myChart = echarts.init(dom);
+
+    seriesData=[];                  //清空线数据
+    generateLineSeries();               //生成线数据
+    generateMapDate();              //生成地图上 省份的选中数据，
+    option={
+        tooltip:{
+
+        }
+
+
+    }
+
 
 }
 
@@ -70,6 +98,8 @@ var initPageData=function(){
 				$(".fixed-table-body").css("overflow", "hidden");
 				$("#tableContainer > tbody > tr > td").css("cursor", "pointer");
             });
+            calculateMinPercentage();//计算窗体左右比例的最小值
+            setSplitPosition(MinPercentage);//根据窗体左右比例的最小值，设置窗口比例
         }
 	})
 }
@@ -185,6 +215,8 @@ window.onresize = function(){
     if(gb.lock){            //这种情况下，要重新计算比例，否则会出现大量空白，影响效果
         widewsPercentage[0]=100*28/$(window).width();
     }
+    calculateMinPercentage();/*重新计算最小比例*/
+    setSplitPosition(MinPercentage);//重新设置 左右两侧新的比例
     adjustScrollPage();
 }
 
