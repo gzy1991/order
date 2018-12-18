@@ -227,10 +227,7 @@ var initEchart2= function(row){
                 playInterval: switchTime,
                 left: "10%",
                 right: "10%",
-                //top: 20,
                 bottom: "3%",
-                //width: 46,
-                //height: null,
                 label: {
                     normal: {
                         textStyle: {

@@ -70,9 +70,27 @@ var initEchart = function(row){
     generateLineSeries();               //生成线数据
     generateMapDate();              //生成地图上 省份的选中数据，
     option={
-        tooltip:{
+        baseOption:{
+            backgroundColor:backgroundColor,				//背景
+            /*  时间轴 */
+            timeline:{
+                
+            },
+            
+            series:[
+                /*中国I地图*/
+                {
+                    
+                },
+                /**/
+                {
 
-        }
+                }
+            ]
+            
+            
+        },
+        
 
 
     }
