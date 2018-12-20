@@ -74,19 +74,126 @@ var initEchart = function(row){
             backgroundColor:backgroundColor,				//背景
             /*  时间轴 */
             timeline:{
-                
+                axisType: 'category',   //类目轴，适用于离散的类目数据。
+                orient: 'horizontal',   //水平放置
+                autoPlay: false,
+                inverse: false,
+                playInterval: switchTime,//播放的速度（跳动的间隔），单位毫秒（ms）
+                left: "10%",
+                right: "10%",
+                bottom: "3%",
+                label: {
+                    normal: {
+                        textStyle: {
+                            fontFamily:"Times New Roman",	//字体
+                            color: textColor
+                        }
+                    },
+                    emphasis: {
+                        textStyle: {
+                            fontFamily:"Times New Roman",	//字体
+                            color: textEmphasisColor
+                        }
+                    }
+                },
+                symbol: 'none',     //timeline标记的图形
+                lineStyle: {        //轴线
+                    color: textColor
+                },
+                checkpointStyle: {      //『当前项』（checkpoint）的图形样式
+                    color: textColor,
+                    borderColor: '#777',
+                    borderWidth: 2
+                },
+                controlStyle: { //播放按钮
+                    showNextBtn: false,
+                    showPrevBtn: false,
+                    normal: {
+                        color: textColor,
+                        borderColor: textColor
+                    },
+                    emphasis: {
+                        color: emphasisColor,
+                        borderColor:emphasisColor
+                    }
+                },
+                data: []
+            },
+            geo:{
+                show: true,
+                zlevel :1,
+                map: 'china',
+                //selectedMode: 'single',//'single'表示单选，或者'multiple'表示多选
+                roam: true, //允许缩放和平移
+                selected: false,
+                zoom: 1.2,//当前视角的缩放比例。
+                scaleLimit: {//滚轮缩放的极限控制，通过min, max最小和最大的缩放值
+                    min: 0.8,
+                    max: 2
+                },
+                label: {   // 国家名 标签
+                    position: 'left',
+                    show: false,
+                    normal: {
+                        show: false
+                    },
+                    emphasis: {         //选中国家的颜色
+                        fontFamily: "Times New Roman",//字体
+                        color: geoTextColor,
+                        fontSize :14,
+                        show: true
+                    }
+                }
+
+
             },
             
             series:[
                 /*中国I地图*/
-                {
-                    
-                },
+                /*{
+                    id:"map",
+                    type: 'map',
+                    mapType: 'china',
+                    roam: true,        // 是否开启鼠标缩放和平移漫游
+                    zoom:1.2,
+                    scaleLimit:{//滚轮缩放的极限控制，通过min, max最小和最大的缩放值
+                        min:0.8,
+                        max:2
+                    },
+                    map: 'world',
+                    label:{
+                        emphasis:{
+                            show:true,
+                            fontFamily : "Times New Roman",//字体
+                        },
+                        show:true,
+                        fontFamily : "Times New Roman",//字体
+                    },
+                    itemStyle: {
+
+                        normal: {
+                            areaColor: areaColor,//地图区域的颜色。
+                            borderColor: borderColor
+                        },
+                        emphasis: {
+                            areaColor:emphasisAreaColor    //选中省份时，国家背景色
+                        }
+                    },
+                    data: []
+
+                },*/
                 /**/
                 {
-
+                    type:"lines"
                 }
-            ]
+            ],
+            title:[//标题
+
+            ],
+            /*提示框*/
+
+            animationEasingUpdate: 'quinticInOut',
+            animationDurationUpdate: switchTime			//数据更新动画的时长。
             
             
         },
