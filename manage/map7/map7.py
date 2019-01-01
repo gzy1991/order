@@ -29,6 +29,17 @@ def getTableData():
     # 获取省份名列表，包括 ： 中文名、英文名、纬度、经度
     provincesInfo = ExcelTool.getArrayBySheetName(os.path.join(Setting.FILR_DIR["COMMON_DIR"],
                                                                "Province.xlsx"), "province")
+    proInfoList = {} #省份的经纬度信息
+    for iii in range(provinceNum):
+        proName = provincesInfo[iii, 2].encode("utf-8")   # 省份名字
+        proLatitude = provincesInfo[iii, 4].encode("utf-8")   # 省份纬度
+        proLongitude=provincesInfo[iii, 5].encode("utf-8")   # 省份经度
+        proInfoList[proName]={
+            "name":proName,
+            "latitude":proLatitude,
+            "longitude":proLongitude
+        }
+
     # #获取国家名 地址列表
     country_name = ExcelTool.getArrayBySheetName(os.path.join(Setting.FILR_DIR["COMMON_DIR"],
                                                               "Countries.xlsx"), "country")
@@ -128,6 +139,7 @@ def getTableData():
             result["emptySheets"] = emptySheets    # 空数据sheet名集合
             result["series"] = seriesList
             result['unit'] = unit  # 单位
+            result['proInfoList'] = proInfoList  # 省份的经纬度信息
             resultList.append(result)
         except BaseException :
             print "Error: 文件有问题: " + file
