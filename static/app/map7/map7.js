@@ -197,7 +197,6 @@ var initEchart = function(row){
 					    }
                     },*/
                     data: convertData(n)  //生成线的坐标关系
-
                 }
 
             ]
@@ -236,7 +235,7 @@ var importCoordinatePoint = [
     {"longitude":70,"latitude":30,"color":"#33a5c6"}
 ]
 /*出口，终点的10个坐标*/
-var importCoordinatePoint = [
+var exportCoordinatePoint = [
     {"longitude":140,"latitude":48,"color":"#a6c84c"},
     {"longitude":140,"latitude":46,"color":"#ffa022"},
     {"longitude":140,"latitude":44,"color":"#EE82EE"},
@@ -258,17 +257,47 @@ var convertData = function(n){
     var res=[];
     var proData = selectedRow.series[selectedPro][n];   //当前时间轴节点下，所选中省份对应的10个进口数据和10个出口数据
     /* 选中的省份 ： selectedPro  */
-    latitude=selectedRow.proInfoList[selectedPro].latitude  //省份纬度
-    longitude=selectedRow.proInfoList[selectedPro].longitude//省份经度
+    var proLatitude=selectedRow.proInfoList[selectedPro].latitude  //选中的省份纬度
+    var proLongitude=selectedRow.proInfoList[selectedPro].longitude//选中的省份经度
     /*前10个是进口数据*/
     for(var i=0; i<10 ;i++){
-
-        var toCoord=[  ];
-
+        var data = selectedRow.series[selectedPro][n].data[i] ;
+        var value = data.value ;
+        var isBr = data.isBr ;
+        var name = data.name ;
+        var fromCoord=[importCoordinatePoint[i].longitude,importCoordinatePoint[i].latitude]
+        var toCoord=[ proLongitude, proLatitude];
+        res.push({
+            sort:i,  //排序数据
+            coords: [fromCoord, toCoord],
+            value:value,
+            lineStyle:{
+                color: importCoordinatePoint[i].color,
+                width:2,  //线宽
+                opacity: 0.6,    // 图形透明度。支持从 0 到 1 的数字,为 0 时不绘制该图形。
+                curveness:0    //线的弯曲程度
+            }
+        })
     }
     /*后10个是出口数据*/
     for(var i=10; i<20 ;i++){
-
+        var data = selectedRow.series[selectedPro][n].data[i] ;
+        var value = data.value ;
+        var isBr = data.isBr ;
+        var name = data.name ;
+        var toCoord=[exportCoordinatePoint[i-10].longitude,exportCoordinatePoint[i-10].latitude]
+        var fromCoord=[ proLongitude, proLatitude];
+        res.push({
+            sort:i,  //排序数据
+            coords: [fromCoord, toCoord],
+            value:value,
+            lineStyle:{
+                color: exportCoordinatePoint[i-10].color,
+                width:2,  //线宽
+                opacity: 0.6,    // 图形透明度。支持从 0 到 1 的数字,为 0 时不绘制该图形。
+                curveness:0    //线的弯曲程度
+            }
+        })
     }
 
     return res;
