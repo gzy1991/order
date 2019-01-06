@@ -30,6 +30,8 @@ var lineColor ="#FF3030";					//线和线上标签的颜色
 var lineeffectColor = "#fff";               //线上特效点的颜色
 var textEmphasisColor="#fff";               //年份选中时颜色
 var emphasisColor='#aaa';;              //播放按钮颜色
+var geoTextColor="#fff";            //地图上，选中省份时，省份名的颜色
+
 
 var browserHeight=$(window).height() ; //浏览器高度
 $("#tableDiv").height(browserHeight+"px");
@@ -65,8 +67,8 @@ var initEchart = function(row){
     myChart = echarts.init(dom);
 
     seriesData=[];                  //清空线数据
-    generateLineSeries();               //生成线数据
-    generateMapDate();              //生成地图上 省份的选中数据，
+    //generateLineSeries();               //生成线数据
+    //generateMapDate();              //生成地图上 省份的选中数据，
     option={
         baseOption:{
             backgroundColor:backgroundColor,				//背景
@@ -175,13 +177,13 @@ var initEchart = function(row){
         },
         options:[ ]
     }
+
+    /*生成线数据*/
     for(var n=0;n<selectedRow.timeline.length;n++){
         option.baseOption.timeline.data.push(selectedRow.timeline[n]);//时间轴
-        /*生成线数据*/
-        /*选中的省份*/
-
+        /*生成线数据 */
+        /*选中的省份 selectedPro */
         //var selectedProvince =selectedPro;
-        var optionSeriesLine =[]
         option.options.push({
             series:[
                 /* 线  +  箭头*/
@@ -198,11 +200,8 @@ var initEchart = function(row){
                     },*/
                     data: convertData(n)  //生成线的坐标关系
                 }
-
             ]
         })
-
-
     }
     console.log(option);
     myChart.setOption(option,true);
@@ -217,7 +216,23 @@ var initEchart = function(row){
 			myChart.setOption(option,true);
 			return;
 		}
-
+		selectedPro = name;/*更新选中的省份*/
+        option.options=[];
+        for(var n=0;n<selectedRow.timeline.length;n++){
+            option.options.push({
+                series:[
+                    /* 线  +  箭头*/
+                    {
+                        name: selectedPro+"_line"  ,
+                        type: 'lines',
+                        zlevel: 2,
+                        symbol: ['none', 'arrow'],
+                        data: convertData(n)  //生成线的坐标关系
+                    }
+                ]
+            })
+        }
+         myChart.setOption(option,true);
     })
 }
 
@@ -328,7 +343,6 @@ var initPageData=function(){
 
 /*初始化渲染表格*/
 var initTable=function(datas){
-    //$("#tableDiv").css("padding-right", 0);
 	$('#tableContainer').bootstrapTable('destroy');//先销毁表格
     $('#tableContainer').bootstrapTable({
 		striped: true,
@@ -358,7 +372,7 @@ var initTable=function(datas){
 	$('#loading').modal('hide');
 }
 
-/*初始化中国地图*/
+/*/!*初始化中国地图*!/
 var initEchart = function(row){
      console.log("初始化中国地图echarts！");
      if(myChart&&myChart.dispose){
@@ -368,8 +382,7 @@ var initEchart = function(row){
     dom = document.getElementById("mapContainer");
     myChart = echarts.init(dom);
 
-
-}
+}*/
 //页面自适应
 var adjustScrollPage = function() {
 	var windowEl = $(window);
