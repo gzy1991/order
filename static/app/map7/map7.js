@@ -54,7 +54,26 @@ var  geoData=[
 var curIndex=0;             //滚动轴当前项,默认是第一个
 var seriesData =[];         //  容器，存储 数据
 var unit='';  //单位
+var nameMap={  //地图省份名字映射关系
+		'南海诸岛':"NanHai",
+		'河南': "Henan",'山西': "Shanxi",
+		'安徽': "Anhui",		'北京': "Beijing",		'甘肃': "Gansu",		'重庆': "Chongqing",
+		'福建': "Fujian",		'广东': "Guangdong",		'广西': "Guangxi",		'贵州': "Guizhou",
+		'黑龙江': "Heilongjiang",		'香港': "Hong Kong",		'湖北': "Hubei",
+		'湖南': "Hunan",		'江苏': "Jiangsu",		'辽宁': "Liaoning",
+		'江西': "Jiangxi",		'吉林': "Jilin",		'海南': "Hainan",
+		'澳门': "Macau",		'内蒙古': "Inner mongolia",		'宁夏': "Ningxia",
+		'青海': "Qinghai",		'河北': "Hebei",		'陕西': "Shaanxi",		'山东': "Shandong",
+		'四川': "Sichuan",		'台湾': "Taiwan",		'天津': "Tianjin",		'西藏': "Tibet",
+		'新疆': "Xinjiang",		'云南': "Yunnan",		'上海': "Shanghai",				'浙江': "Zhejiang"	,
 
+	 	"Henan":"河南","Shanxi":"山西","Anhui":"安徽","Beijing":"北京","Gansu":"甘肃","Chongqing":"重庆",
+		"Fujian":"福建","Guangdong":"广东","Guangxi":"广西","Guizhou":"贵州","Heilongjiang":"黑龙江",
+		"Hong Kong":"香港","Hubei":"湖北","Hunan":"湖南","Jiangsu":"江苏","Liaoning":"辽宁","Jiangxi":"江西",
+		"Jilin":"吉林","Hainan":"海南","Macau":"澳门","Inner mongolia":"内蒙古","Ningxia":"宁夏","Qinghai":"青海",
+		"Hebei":"河北","Shaanxi":"陕西","Shandong":"山东","Sichuan":"四川","Taiwan":"台湾","Tianjin":"天津",
+		"Tibet":"西藏","Xinjiang":"新疆","Yunnan":"云南","Shanghai":"上海","Zhejiang":"浙江"
+	};
 
 /* 初始化echart  ,第一次打开页面时或者点击表格行事件时，调用本函数
 *  入参：表格的行数据  */
@@ -127,6 +146,7 @@ var initEchart = function(row){
                 //selectedMode: 'single',//'single'表示单选，或者'multiple'表示多选
                 roam: true, //允许缩放和平移
                 selected: false,
+                nameMap: nameMap,  //省份显示英文
                 zoom: 1.2,//当前视角的缩放比例。
                 scaleLimit: {//滚轮缩放的极限控制，通过min, max最小和最大的缩放值
                     min: 0.8,
@@ -212,6 +232,7 @@ var initEchart = function(row){
 			return;
 		}
 		var name =  params.region.name;  //省份名  英文名
+		//var name =  nameMap[CNname];  //省份名  英文名
         if("Hong Kong,Macau,Taiwan,香港,澳门,台湾".indexOf(name)!=-1 || name ==undefined){  //有几个省份是忽略的
 			myChart.setOption(option,true);
 			return;
@@ -238,29 +259,30 @@ var initEchart = function(row){
 
 /*进口，起点的10个坐标*/
 var importCoordinatePoint = [
-    {"longitude":70,"latitude":48,"color":"#a6c84c"},
-    {"longitude":70,"latitude":46,"color":"#ffa022"},
-    {"longitude":70,"latitude":44,"color":"#EE82EE"},
-    {"longitude":70,"latitude":42,"color":"#7CFC00"},
-    {"longitude":70,"latitude":43,"color":"#43CD80"},
-    {"longitude":70,"latitude":38,"color":"#46bee9"},
+
+    {"longitude":70,"latitude":51,"color":"#ffa022"},
+    {"longitude":70,"latitude":48,"color":"#EE82EE"},
+    {"longitude":70,"latitude":45,"color":"#7CFC00"},
+    {"longitude":70,"latitude":42,"color":"#43CD80"},
+    {"longitude":70,"latitude":39,"color":"#46bee9"},
     {"longitude":70,"latitude":36,"color":"#CDCD00"},
-    {"longitude":70,"latitude":34,"color":"#FF3030"},
-    {"longitude":70,"latitude":32,"color":"#1BB116"},
-    {"longitude":70,"latitude":30,"color":"#33a5c6"}
+    {"longitude":70,"latitude":33,"color":"#FF3030"},
+    {"longitude":70,"latitude":30,"color":"#1BB116"},
+    {"longitude":70,"latitude":27,"color":"#33a5c6"},
+    {"longitude":70,"latitude":24,"color":"#a6c84c"}
 ]
 /*出口，终点的10个坐标*/
 var exportCoordinatePoint = [
-    {"longitude":140,"latitude":48,"color":"#a6c84c"},
-    {"longitude":140,"latitude":46,"color":"#ffa022"},
-    {"longitude":140,"latitude":44,"color":"#EE82EE"},
-    {"longitude":140,"latitude":42,"color":"#7CFC00"},
-    {"longitude":140,"latitude":43,"color":"#43CD80"},
-    {"longitude":140,"latitude":38,"color":"#46bee9"},
-    {"longitude":140,"latitude":36,"color":"#CDCD00"},
-    {"longitude":140,"latitude":34,"color":"#FF3030"},
-    {"longitude":140,"latitude":32,"color":"#1BB116"},
-    {"longitude":140,"latitude":30,"color":"#33a5c6"}
+    {"longitude":136,"latitude":51,"color":"#a6c84c"},
+    {"longitude":136,"latitude":48,"color":"#ffa022"},
+    {"longitude":136,"latitude":45,"color":"#EE82EE"},
+    {"longitude":136,"latitude":42,"color":"#7CFC00"},
+    {"longitude":136,"latitude":39,"color":"#43CD80"},
+    {"longitude":136,"latitude":36,"color":"#46bee9"},
+    {"longitude":136,"latitude":33,"color":"#CDCD00"},
+    {"longitude":136,"latitude":30,"color":"#FF3030"},
+    {"longitude":136,"latitude":27,"color":"#1BB116"},
+    {"longitude":136,"latitude":24,"color":"#33a5c6"}
 ]
 
 /*
