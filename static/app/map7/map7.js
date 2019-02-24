@@ -41,8 +41,8 @@ $("#tableDiv").height(browserHeight+"px");
 var dom = document.getElementById("mapContainer");
 var myChart = echarts.init(dom);;
 var option = null;
-var emphasisAreaColor="#ffffff";         //选中省份的颜色
-var areaColor="#404a59";              //省份的颜色
+var emphasisAreaColor="#2a333d";         //选中省份的颜色
+var areaColor="#323c48";              //省份的颜色
 var borderColor="#aaa";                     //省份边界颜色
 var selectedPro= "Beijing";  	//图中选中的省份名，默认是北京
 //地图选中省份，  选中的省份,初始化的时候是空.当点击省份时，更新这个数据。.
@@ -145,12 +145,22 @@ var initEchart = function(row){
                 map: 'china',
                 //selectedMode: 'single',//'single'表示单选，或者'multiple'表示多选
                 roam: true, //允许缩放和平移
-                selected: false,
+                selected: true,
+                selectedMode:"single",
                 nameMap: nameMap,  //省份显示英文
                 zoom: 1.2,//当前视角的缩放比例。
                 scaleLimit: {//滚轮缩放的极限控制，通过min, max最小和最大的缩放值
                     min: 0.8,
                     max: 2
+                },
+                itemStyle: {
+                    normal: {
+                        areaColor: areaColor,//地图区域的颜色。
+                        borderColor: '#404a59'
+                    },
+                    emphasis: {
+                        areaColor:emphasisAreaColor    //选中省份时，背景色
+                    }
                 },
                 label: {   // 国家名 标签
                     position: 'left',
@@ -212,20 +222,47 @@ var initEchart = function(row){
                     type: 'lines',
                     zlevel: 2,
 				    symbol: ['none', 'arrow'],
-                    /*lineStyle: {
-					    normal: {
-                            //color:provinceColor[province],
-                            opacity: 0.6,    						//图形透明度。支持从 0 到 1 的数字,为 0 时不绘制该图形。
-					    }
-                    },*/
                     data: convertData(n)  //生成线的坐标关系
+                },
+                /*生成国家名，以及圆圈效果*/
+                {
+                    name:selectedPro+"_effectScatter",
+                    type:"effectScatter",
+                    coordinateSystem: 'geo',
+                    zlevel: 3,
+                    rippleEffect: {                     		//涟漪特效相关配置
+                        scale:2,
+                        brushType: 'stroke'             		//波纹的绘制方式   可选 'stroke' 和 'fill'
+                    },
+                    label:{								//图形上的文本标签,可用于说明图形的一些数据信息
+                        normal: {
+                            show: true,
+                            fontFamily : "Times New Roman" ,  //字体
+                            position: [10, 10],      			//标签的位置。
+                            formatter: function(params){
+                               return "";
+                            }
+                        }
+		            },
+                    symbolSize: function (val) {            	//标记的大小,可以设置成诸如 10 这样单一的数字,也可以用数组分开表示宽和高
+                        return 5 ;
+                    },
+                    itemStyle: {
+                        normal: {
+                            //color: geoTextColor
+                            color: "#FF3030"
+                        }
+                    },
+                    data:convertData2(n)
+
                 }
+
+
             ]
         })
     }
     console.log(option);
     myChart.setOption(option,true);
-
     /*绑定省份点击事件*/
     myChart.on("click",function(params){
         if("geo"!=params.componentType){  //如果点击的不是地图的省份，那么跳过，不处理
@@ -286,6 +323,17 @@ var exportCoordinatePoint = [
 ]
 
 /*
+*   生成带有涟漪特效动画的散点（气泡）图
+*   params ： n(当前timeline的序号)
+* */
+var convertData2 = function(n){
+    var res = [];
+    /*前10个是进口数据的国家*/
+
+}
+
+
+/*
 * 根据时间轴和选中的省份来生成线，
 * 包括进口的线和出口的线
 * params ： n(当前timeline的序号)
@@ -306,13 +354,17 @@ var convertData = function(n){
         var toCoord=[ proLongitude, proLatitude];
         res.push({
             sort:i,  //排序数据
+            name:name+"_"+i,
             coords: [fromCoord, toCoord],
             value:value,
             lineStyle:{
-                color: importCoordinatePoint[i].color,
-                width:2,  //线宽
-                opacity: 0.6,    // 图形透明度。支持从 0 到 1 的数字,为 0 时不绘制该图形。
-                curveness:0    //线的弯曲程度
+                normal:{
+                    color: importCoordinatePoint[i].color,
+                    width:3,  //线宽
+                    type:"solid",
+                    opacity: 0.6,    // 图形透明度。支持从 0 到 1 的数字,为 0 时不绘制该图形。
+                    curveness:0    //线的弯曲程度
+                }
             }
         })
     }
@@ -329,10 +381,13 @@ var convertData = function(n){
             coords: [fromCoord, toCoord],
             value:value,
             lineStyle:{
-                color: exportCoordinatePoint[i-10].color,
-                width:2,  //线宽
-                opacity: 0.6,    // 图形透明度。支持从 0 到 1 的数字,为 0 时不绘制该图形。
-                curveness:0    //线的弯曲程度
+                normal:{
+                    color: exportCoordinatePoint[i-10].color,
+                    width:3,  //线宽
+                    opacity: 0.6,    // 图形透明度。支持从 0 到 1 的数字,为 0 时不绘制该图形。
+                    curveness:0    //线的弯曲程度
+                }
+
             }
         })
     }
@@ -520,8 +575,8 @@ var initEvent = function(){
         textColor='#ccc';
         emphasisColor='#aaa';
         visualMapColorOutOfRange='#4c5665';
-        emphasisAreaColor="#FFFFFF";
-        areaColor="#404a59";
+        emphasisAreaColor="#2a333d";
+        areaColor="#323c48";
         textEmphasisColor="#fff";
         borderColor="#aaa";
         initEchart(selectedRow);
@@ -532,8 +587,8 @@ var initEvent = function(){
         textColor='#444444';
         emphasisColor='#555555';
         visualMapColorOutOfRange='#B1B1B1';
-        emphasisAreaColor="#FFFFFF";
-        areaColor="#C1C1C1";
+        emphasisAreaColor="#C1C1C1";
+        areaColor="#DCDCDC";
         textEmphasisColor="#000000";
         borderColor="#555555";
         initEchart(selectedRow);
