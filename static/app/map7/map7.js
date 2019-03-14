@@ -222,6 +222,7 @@ var initEchart = function(row){
                     type: 'lines',
                     zlevel: 2,
 				    symbol: ['none', 'arrow'],
+                    symbolSize :14,
                     data: convertData(n)  //生成线的坐标关系
                 },
                 /*生成国家名，以及圆圈效果*/
@@ -230,34 +231,8 @@ var initEchart = function(row){
                     type:"effectScatter",
                     coordinateSystem: 'geo',
                     zlevel: 3,
-                    rippleEffect: {                     		//涟漪特效相关配置
-                        scale:2,
-                        brushType: 'stroke'             		//波纹的绘制方式   可选 'stroke' 和 'fill'
-                    },
-                    label:{								//图形上的文本标签,可用于说明图形的一些数据信息
-                        normal: {
-                            show: true,
-                            fontFamily : "Times New Roman" ,  //字体
-                            position: [10, 10],      			//标签的位置。
-                            formatter: function(params){
-                               return "";
-                            }
-                        }
-		            },
-                    symbolSize: function (val) {            	//标记的大小,可以设置成诸如 10 这样单一的数字,也可以用数组分开表示宽和高
-                        return 5 ;
-                    },
-                    itemStyle: {
-                        normal: {
-                            //color: geoTextColor
-                            color: "#FF3030"
-                        }
-                    },
                     data:convertData2(n)
-
                 }
-
-
             ]
         })
     }
@@ -285,7 +260,16 @@ var initEchart = function(row){
                         type: 'lines',
                         zlevel: 2,
                         symbol: ['none', 'arrow'],
-                        data: convertData(n)  //生成线的坐标关系
+                        symbolSize :14,
+                        data: convertData(n)  ,//生成线的坐标关系,
+                    },
+                    /*生成国家名，以及圆圈效果*/
+                    {
+                        name:selectedPro+"_effectScatter",
+                        type:"effectScatter",
+                        coordinateSystem: 'geo',
+                        zlevel: 3,
+                        data:convertData2(n)
                     }
                 ]
             })
@@ -296,17 +280,16 @@ var initEchart = function(row){
 
 /*进口，起点的10个坐标*/
 var importCoordinatePoint = [
-
-    {"longitude":70,"latitude":51,"color":"#ffa022"},
-    {"longitude":70,"latitude":48,"color":"#EE82EE"},
-    {"longitude":70,"latitude":45,"color":"#7CFC00"},
-    {"longitude":70,"latitude":42,"color":"#43CD80"},
-    {"longitude":70,"latitude":39,"color":"#46bee9"},
-    {"longitude":70,"latitude":36,"color":"#CDCD00"},
-    {"longitude":70,"latitude":33,"color":"#FF3030"},
-    {"longitude":70,"latitude":30,"color":"#1BB116"},
-    {"longitude":70,"latitude":27,"color":"#33a5c6"},
-    {"longitude":70,"latitude":24,"color":"#a6c84c"}
+    {"longitude":73,"latitude":51,"color":"#ffa022"},
+    {"longitude":73,"latitude":48,"color":"#EE82EE"},
+    {"longitude":73,"latitude":45,"color":"#7CFC00"},
+    {"longitude":73,"latitude":42,"color":"#43CD80"},
+    {"longitude":73,"latitude":39,"color":"#46bee9"},
+    {"longitude":73,"latitude":36,"color":"#CDCD00"},
+    {"longitude":73,"latitude":33,"color":"#FF3030"},
+    {"longitude":73,"latitude":30,"color":"#1BB116"},
+    {"longitude":73,"latitude":27,"color":"#33a5c6"},
+    {"longitude":73,"latitude":24,"color":"#a6c84c"}
 ]
 /*出口，终点的10个坐标*/
 var exportCoordinatePoint = [
@@ -328,8 +311,75 @@ var exportCoordinatePoint = [
 * */
 var convertData2 = function(n){
     var res = [];
+    var proData = selectedRow.series[selectedPro][n];   //当前时间轴节点下，所选中省份对应的10个进口数据和10个出口数据
     /*前10个是进口数据的国家*/
-
+    for(var i=0;i<10;i++){
+        var  countryInfo =proData.data[i]; //第i个国家的数据
+        //   countryInfo.name;   //国家名
+        //   countryInfo.value;  //进口或出口数据
+        //   countryInfo.isBr;   //是否是BR国家
+        res.push({
+            name:countryInfo.name,
+            value:[
+                importCoordinatePoint[i].longitude,
+                importCoordinatePoint[i].latitude,
+                countryInfo.value
+            ],
+            label:{								// 文本标签,可用于说明图形的一些数据信息
+                normal: {
+                    show: true,
+                    fontFamily : "Times New Roman" ,  //字体
+                    position: 'right',      			//标签的位置。
+                    distance :10,
+                    formatter: function(params){
+                        var name  = params.data.name;
+                        var val  = params.data.value;
+                        return name  + ":"+val[2].toFixed(3)
+                    },
+                    fontSize:15,
+                    color:importCoordinatePoint[i].color
+                }
+            },
+            itemStyle :{ // 散点图的颜色
+                normal:{
+                    color:importCoordinatePoint[i].color
+                }
+            }
+        })
+    }
+    /* 后10个是出口数据的国家*/
+    for(i=10;i<20;i++){
+        var  countryInfo =proData.data[i]; //第i个国家的数据
+        res.push({
+            name:countryInfo.name,
+            value:[
+                exportCoordinatePoint[i-10].longitude,
+                exportCoordinatePoint[i-10].latitude,
+                countryInfo.value
+            ],
+            label:{								// 文本标签,可用于说明图形的一些数据信息
+                normal: {
+                    show: true,
+                    fontFamily : "Times New Roman" ,  //字体
+                    position: 'left',      			//标签的位置。
+                    distance :10,
+                    formatter: function(params){
+                        var name  = params.data.name;
+                        var val  = params.data.value;
+                        return name  + ":"+val[2].toFixed(3)
+                    },
+                    fontSize:15,
+                    color:exportCoordinatePoint[i-10].color
+                }
+            },
+            itemStyle :{ // 散点图的颜色
+                normal:{
+                    color:exportCoordinatePoint[i-10].color
+                }
+            }
+        })
+    }
+    return res;
 }
 
 
