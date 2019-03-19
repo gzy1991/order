@@ -139,6 +139,7 @@ def getTableData():
             result["emptySheets"] = emptySheets    # 空数据sheet名集合
             result["series"] = seriesList
             result['unit'] = unit  # 单位
+            result['title'] = result["fileName"]  # 标题
             result['proInfoList'] = proInfoList  # 省份的经纬度信息
             resultList.append(result)
         except BaseException :
