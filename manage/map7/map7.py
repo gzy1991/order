@@ -19,7 +19,7 @@ import Tool.BrRegion  as SubCountrys
 
 #   关于本图中excel的格式规则
 #   n个 189*62 矩阵   ，其中的数据，前31列是31省的进口数据，后31列是31省的出口数据
-#   1个sheet ，sheet名字是"Unit"，记录的是单位，里面有1个单位
+#   1个sheet ，sheet名字是"Unit"，第一个记录的是单位， ,第二个是标题
 #   注意：不同的excel里面，n可能是不同的，n要动态获取
 
 def getTableData():
@@ -87,6 +87,7 @@ def getTableData():
                 #处理单位
                 if sheetName == 'Unit':
                     unit = excelData.sheet_by_name("Unit").cell_value(0, 0)
+                    title = excelData.sheet_by_name("Unit").cell_value(0, 1)
                     continue
 
                 # 处理（某sheet）数据
@@ -139,7 +140,7 @@ def getTableData():
             result["emptySheets"] = emptySheets    # 空数据sheet名集合
             result["series"] = seriesList
             result['unit'] = unit  # 单位
-            result['title'] = result["fileName"]  # 标题
+            result['title'] = title # 标题
             result['proInfoList'] = proInfoList  # 省份的经纬度信息
             resultList.append(result)
         except BaseException :
