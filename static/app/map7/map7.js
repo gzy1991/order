@@ -381,7 +381,7 @@ var convertData2 = function(n,isBr){
                         var val  = params.data.value;
                         return name  + ":"+val[2].toFixed(2)
                     },
-                    fontSize:15,
+                    fontSize:13,
                     color:importCoordinatePoint[i].color
                 }
             },
@@ -417,7 +417,7 @@ var convertData2 = function(n,isBr){
                         var val  = params.data.value;
                         return name  + ":"+val[2].toFixed(2)
                     },
-                    fontSize:15,
+                    fontSize:13,
                     color:exportCoordinatePoint[i-10].color
                 }
             },
