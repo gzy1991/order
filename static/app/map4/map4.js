@@ -8,9 +8,6 @@ var textColor='#ccc';                   //文字颜色
 var textEmphasisColor="#fff";               //年份选中时颜色
 var emphasisColor='#aaa';;              //播放按钮颜色
 var visualMapColorOutOfRange='#4c5665'; //visualMap，范围外颜色
-var visualMapColor=['#313695', '#4575b4', '#74add1', '#abd9e9',
-                        '#e0f3f8', '#ffffbf', '#fee090', '#fdae61',
-                        '#f46d43', '#d73027', '#a50026']
     ;
 /*显示类型，，all:显示全部国家   ，sub:显示63国家  */
 var countryType="sub";
@@ -22,8 +19,6 @@ var widewsPercentage=[40,40];       //窗体左右比例    初始化,左边是 
 
 
 //滚动轴 数据
-var visualMapRange = [1,50];    //visualMap 排序变化范围
-var curIndex=0;             //滚动轴当前项,默认是第一年项
 var switchTime =2000;       //动画切换时间 2秒
 
 /*中国地图*/
@@ -109,7 +104,7 @@ var initTable=function(datas){
 		width:30,
 		onClickRow:function (row, $element, field) {/*表格的行点击事件*/
 			console.log("你点击了行："+row.fileName);
-			selectedPros="Beijing";        //选中的省份,改为默认身份
+			selectedPros="Beijing";        //选中的省份,改为默认省份
             geoData=[{name:"Beijing",selected:true },{name:"北京",selected:true }  ];
 			seriesData=[];          //
 			selectedRow=row;
@@ -232,10 +227,7 @@ var initEchart2= function(row){
                 playInterval: switchTime,
                 left: "10%",
                 right: "10%",
-                //top: 20,
                 bottom: "3%",
-                //width: 46,
-                //height: null,
                 label: {
                     normal: {
                         textStyle: {

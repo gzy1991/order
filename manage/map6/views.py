@@ -11,7 +11,8 @@ sys.setdefaultencoding("utf-8")
 
 #获取图6页面
 def getPage(request):
-    return render(request, 'map6.html')
+    return render(request, 'map6\map6.html')
+
 
 #图6 获取表格数据  json格式
 def getTableData(request):

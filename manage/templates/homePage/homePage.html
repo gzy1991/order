@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+	<title>Matrix</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+	<link rel="stylesheet" href="/static/app/homePage/css.css">
+	<link rel="stylesheet" href="/static/app/homePage/iconfont.css">
+	<link rel="stylesheet" href="/static/app/homePage/swiper.min.css">
+</head>
+<body>
+	<div class="container">
+		<div class="ti">
+			<div class="top1">
+				<div class="top">
+				<!-- logo -->
+					<div class="logo"><a href="http://matrixspace.org/index.html">Matrix</a></div>
+
+				<!-- 导航 -->
+					<div class="nav">
+						<ul>
+							<li><a href="http://matrixspace.org/index.html">Home</a></li>
+							<li><a href="http://matrixspace.org/Insight.html">Insight</a>
+								<ul>
+									<li><a href="http://matrixspace.org/Insight/Globalization/">Globalization</a></li>
+									<li><a href="http://matrixspace.org/Insight/Multi%20Scale/">Multi Scale</a></li>
+									<li><a href="http://matrixspace.org/Insight/Nexus/">Nexus</a></li>
+									<li><a href="http://matrixspace.org/Insight/Inequity/">Inequity and Imbalance</a></li>
+
+								</ul>
+							</li>
+							<li><a href="http://matrixspace.org/Research.html">Research</a>
+								<ul>
+									<li><a href="http://matrixspace.org/Research/Multi%20Scale/">Multi Scale</a></li>
+									<li><a href="http://matrixspace.org/Research/Input/">Input-Output Analysis</a></li>
+									<li><a href="http://matrixspace.org/Research/System/">System Accounting</a></li>
+								</ul>
+							</li>
+                            <li><a href="/home.html">Demo</a>
+								<ul>
+									<li><a href="/matrix">Global Matrix</a></li>
+									<li><a href="/map2">China Matrix</a></li>
+									<li><a href="/map3">Global Welfare</a></li>
+									<li><a href="/map4">Regional Nexus</a></li>
+									<li><a href="/map5">Regional Relations</a></li>
+									<li><a href="/map6">Structural Path</a></li>
+									<li><a href="/map7">map7</a></li>
+								</ul>
+							</li>
+							<li><a href="http://matrixspace.org/Database.html">Database</a>
+								<ul>
+									<li><a href="http://matrixspace.org/Database/Embodied/">Embodied Energy</a></li>
+									<li><a href="http://matrixspace.org/Database/Emb/">Embodied Emission</a></li>
+									<li><a href="http://matrixspace.org/Database/Wat">Embodied Water</a></li>
+									<li><a href="http://matrixspace.org/Database/Lan">Embodied Land</a></li>
+								</ul>
+							</li>
+							<li><a href="http://matrixspace.org/Publication.html">Publication</a>
+								<ul>
+									<li><a href="http://matrixspace.org/Publication/Global/">Global Scale</a></li>
+									<li><a href="http://matrixspace.org/Publication/Regional/">Regional Scale</a></li>
+									<li><a href="http://matrixspace.org/Publication/Urban/">Urban Scale</a></li>
+									<li><a href="http://matrixspace.org/Publication/Multi/">Multi Scale</a></li>
+								</ul>
+							</li>
+							<li><a href="javascript:;">Help</a>
+								<ul>
+									<li><a href="http://matrixspace.org/Help/Terms/46.html">Terms of Use</a></li>
+									<li><a href="http://matrixspace.org/Help/Privacy/47.html">Privacy Policy</a></li>
+									<li><a href="http://matrixspace.org/Help/Contact%20Us/45.html">Contact Us</a></li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+
+			<!-- 标题栏 -->
+				<div class="title">
+				<div class="content3">
+					<div class="left"><a href="http://matrixspace.org/index.html" style="color:#FFFFFF;">Home</a>  &gt; Database</div>
+					<div class="right">
+						{% comment %}<div class="link1">
+	<script src="./Matrix_files/loginjs.php"></script><a href="http://matrixspace.org/e/member/login/">Login</a><a href="http://matrixspace.org/e/member/register/index.php?tobind=0&amp;groupid=1">Register</a>
+						</div>
+						<div class="sousuo">
+<script src="./Matrix_files/search_news1.js.下载"></script><form name="search_js1" method="post" action="http://matrixspace.org/e/search/index.php" onsubmit="return search_check(document.search_js1);"> <select name="show" style="display:none;"><option value="title">标题</option><option value="smalltext">简介</option><option value="newstext">内容</option><option value="writer">作者</option><option value="title,smalltext,newstext,writer">搜索全部</option></select><select name="classid" style="display:none;"><option value="0">所有栏目</option><option value="1">|-Insight</option><option value="2" style="background:#99C4E3">&nbsp;&nbsp;|-Globalization</option><option value="3" style="background:#99C4E3">&nbsp;&nbsp;|-Multi Scale</option><option value="4" style="background:#99C4E3">&nbsp;&nbsp;|-Nexus</option><option value="5" style="background:#99C4E3">&nbsp;&nbsp;|-Inequity and Imbalance</option><option value="6" style="background:#99C4E3">&nbsp;&nbsp;|-Belt and Road</option><option value="7" style="background:#99C4E3">&nbsp;&nbsp;|-Macro Economic Geography</option><option value="8">|-Research</option><option value="9" style="background:#99C4E3">&nbsp;&nbsp;|-Multi Scale</option><option value="10" style="background:#99C4E3">&nbsp;&nbsp;|-Input-Output Analysis</option><option value="11" style="background:#99C4E3">&nbsp;&nbsp;|-System Accounting</option><option value="12">|-Database</option><option value="13" style="background:#99C4E3">&nbsp;&nbsp;|-Embodied Energy</option><option value="30" style="background:#99C4E3">&nbsp;&nbsp;|-Embodied Emission</option><option value="31" style="background:#99C4E3">&nbsp;&nbsp;|-Embodied Water</option><option value="32" style="background:#99C4E3">&nbsp;&nbsp;|-Embodied Land</option><option value="17">|-Publication</option><option value="18" style="background:#99C4E3">&nbsp;&nbsp;|-Global Scale</option><option value="19" style="background:#99C4E3">&nbsp;&nbsp;|-National Scale</option><option value="20" style="background:#99C4E3">&nbsp;&nbsp;|-Regional Scale</option><option value="21" style="background:#99C4E3">&nbsp;&nbsp;|-Urban Scale</option><option value="22" style="background:#99C4E3">&nbsp;&nbsp;|-Multi Scale</option><option value="23" style="background:#99C4E3">&nbsp;&nbsp;|-Case Study</option><option value="24">|-Help</option><option value="25" style="background:#99C4E3">&nbsp;&nbsp;|-Terms of Use</option><option value="26" style="background:#99C4E3">&nbsp;&nbsp;|-Privacy Policy</option><option value="27" style="background:#99C4E3">&nbsp;&nbsp;|-Contact Us</option><option value="28" style="background:#99C4E3">|-banner</option></select><input name="keyboard" type="text" class="search_box" style="width: 200px;height:30px;line-height: 30px;border-radius:5px;background-color: white;position: absolute;top: 0;left: 0;border:none;text-indent: 8px;"><input type="image" name="Submit" class="button" src="./Matrix_files/ss.png" width="24" style="font-size: 20px;background-color: white;position: absolute;right:1%; border:0; margin-top:2px;"></form>
+						</div>{% endcomment %}
+					</div>
+
+
+				</div>
+			</div>
+		</div>
+
+<!-- 内容 -->
+ 		<div class="content">
+ 			<div class="zy">
+ 				<div class="tit1">Demonstration<span></span></div>
+
+ 				<div class="con">
+ 					The matrixspace.org is a space for the working group mainly focusing on regional studies, macroeconomics, economic geography, resource sciences, environmental studies, and systems ecology, which attempts to conduct on economic, environment, and sociology issues from a nexus perspective. <br>
+The intensity inventory is quantified combined with basic economic data derived from Eora, WIOD, and GTAP and basic resource data derived from World Bank, FAO, and IEA. The quantification method can be referred to the studies presented in the Research Page. The matrix space is free for academic (university or grant-funded) work at degree-granting institutions. All the uses require a data license for the shared results and databases.
+ 				</div>
+ 				<div class="link3">
+ 					<div class="tit">THEMES:</div>
+ 					<ul>
+                        			<li><a href="/matrix">Global Matrix</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|</li>
+									<li><a href="/map2">China Matrix</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|</li>
+									<li><a href="/map3">Global Welfare</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|</li>
+									<li><a href="/map4">Regional Nexus</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|</li>
+									<li><a href="/map5">Regional Relations</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|</li>
+									<li><a href="/map6">Structural Path</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|</li>
+									<li><a href="/map7">map7</a></li>
+  					</ul>
+ 				</div>
+ 			</div>
+ 		</div>
+
+<!-- 底部 -->
+<div class="link2">
+				<div class="content3">
+					<div class="a1">
+						<a href="http://matrixspace.org/Help/Contact%20Us/45.html">Get Help</a>
+					</div>
+					<div class="a2">
+						<a href="http://matrixspace.org/Help/Contact%20Us/45.html">Contact Us</a>
+					</div>
+				</div>
+			</div>
+
+<!-- 版权 -->
+			<div class="bottom">
+				<div class="b1">
+					For all requests, comments and questions regarding the Matrix Space, please contact geomatrix@yeah.net
+				</div>
+				<div class="b2">
+					Copyright © 2017     Matrix
+				</div>
+			</div>
+	</div>
+
+</body></html>

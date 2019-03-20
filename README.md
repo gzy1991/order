@@ -20,6 +20,14 @@
 > 展示了一定程度内，中国某省的GDP变化率，对世界各国的影响程度.
 <img src="https://github.com/gzy1991/order/blob/master/file/img/map4.png"  alt="图片加载失败时，显示这段字"/>
 
+# 1.5 图5
+> 在世界地图上，展示了任意2个国家之间，n个方面的互相影响的关系
+<img src="https://github.com/gzy1991/order/blob/master/file/img/map5.png"  alt="图片加载失败时，显示这段字"/>
+
+# 1.6 图6
+> 在世界地图上，展示各个国家的贸易关系
+<img src="https://github.com/gzy1991/order/blob/master/file/img/map6.png"  alt="图片加载失败时，显示这段字"/>
+
 # 2.环境安装说明
 
 > Python版本：python 2.7，操作系统win10 X64（win7 64位也可以； 32位系统我测试过win7 32位，也可以正常运行，不过在1.4那里要挑选对应版本的pywin32 .）
