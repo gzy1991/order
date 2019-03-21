@@ -145,7 +145,8 @@ var initEchart = function(row){
                 selected: true,
                 selectedMode:"single",
                 nameMap: nameMap,  //省份显示英文
-                zoom: 1.2,//当前视角的缩放比例。
+                //zoom: 1.2,//当前视角的缩放比例。
+                zoom: 1,//当前视角的缩放比例。
                 scaleLimit: {//滚轮缩放的极限控制，通过min, max最小和最大的缩放值
                     min: 0.8,
                     max: 2
