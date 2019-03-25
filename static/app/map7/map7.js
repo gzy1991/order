@@ -145,7 +145,8 @@ var initEchart = function(row){
                 selected: true,
                 selectedMode:"single",
                 nameMap: nameMap,  //省份显示英文
-                zoom: 1.2,//当前视角的缩放比例。
+                //zoom: 1.2,//当前视角的缩放比例。
+                zoom: 1,//当前视角的缩放比例。
                 scaleLimit: {//滚轮缩放的极限控制，通过min, max最小和最大的缩放值
                     min: 0.8,
                     max: 2
@@ -154,7 +155,7 @@ var initEchart = function(row){
                     emphasis: {         //选中省份的颜色
                         fontFamily: "Times New Roman",//字体
                         color: geoTextColor,
-                        fontSize :15,
+                        fontSize :13,
                         offset:[30, 40],
                         show: true
                     }
@@ -175,6 +176,10 @@ var initEchart = function(row){
             series:[
                 {
                     type:"lines",
+                    animation :false,
+                    effect:{
+                        delay :0
+                    }
                 }
             ],
             /*标题*/
@@ -211,15 +216,6 @@ var initEchart = function(row){
         //var selectedProvince =selectedPro;
         option.options.push({
             geo:{
-                // label: {   // 省份名 标签
-                //     emphasis: {         //选中省份的颜色
-                //         fontFamily: "Times New Roman",//字体
-                //         color: geoTextColor,
-                //         fontSize :15,
-                //         offset:[30, 40],
-                //         show: true
-                //     }
-                // },
                 regions:geoData
             },
             series:[
@@ -322,29 +318,29 @@ var initEchart = function(row){
 
 /*进口，起点的10个坐标*/
 var importCoordinatePoint = [
-    {"longitude":73,"latitude":51,"color":"#ffa022"},  //2个颜色，分别对应两种背景
-    {"longitude":73,"latitude":48,"color":"#EE82EE"},
-    {"longitude":73,"latitude":45,"color":"#7CFC00"},
-    {"longitude":73,"latitude":42,"color":"#43CD80"},
-    {"longitude":73,"latitude":39,"color":"#46bee9"},
-    {"longitude":73,"latitude":36,"color":"#CDCD00"},
-    {"longitude":73,"latitude":33,"color":"#FF3030"},
-    {"longitude":73,"latitude":30,"color":"#1BB116"},
-    {"longitude":73,"latitude":27,"color":"#33a5c6"},
-    {"longitude":73,"latitude":24,"color":"#a6c84c"}
+    {"longitude":67,"latitude":51,"color":"#ffa022"},  //2个颜色，分别对应两种背景
+    {"longitude":67,"latitude":48,"color":"#EE82EE"},
+    {"longitude":67,"latitude":45,"color":"#7CFC00"},
+    {"longitude":67,"latitude":42,"color":"#43CD80"},
+    {"longitude":67,"latitude":39,"color":"#46bee9"},
+    {"longitude":67,"latitude":36,"color":"#CDCD00"},
+    {"longitude":67,"latitude":33,"color":"#FF3030"},
+    {"longitude":67,"latitude":30,"color":"#1BB116"},
+    {"longitude":67,"latitude":27,"color":"#33a5c6"},
+    {"longitude":67,"latitude":24,"color":"#a6c84c"}
 ]
 /*出口，终点的10个坐标*/
 var exportCoordinatePoint = [
-    {"longitude":136,"latitude":51,"color":"#a6c84c"},
-    {"longitude":136,"latitude":48,"color":"#ffa022"},
-    {"longitude":136,"latitude":45,"color":"#EE82EE"},
-    {"longitude":136,"latitude":42,"color":"#7CFC00"},
-    {"longitude":136,"latitude":39,"color":"#43CD80"},
-    {"longitude":136,"latitude":36,"color":"#46bee9"},
-    {"longitude":136,"latitude":33,"color":"#CDCD00"},
-    {"longitude":136,"latitude":30,"color":"#FF3030"},
-    {"longitude":136,"latitude":27,"color":"#1BB116"},
-    {"longitude":136,"latitude":24,"color":"#33a5c6"}
+    {"longitude":142,"latitude":51,"color":"#a6c84c"},
+    {"longitude":142,"latitude":48,"color":"#ffa022"},
+    {"longitude":142,"latitude":45,"color":"#EE82EE"},
+    {"longitude":142,"latitude":42,"color":"#7CFC00"},
+    {"longitude":142,"latitude":39,"color":"#43CD80"},
+    {"longitude":142,"latitude":36,"color":"#46bee9"},
+    {"longitude":142,"latitude":33,"color":"#CDCD00"},
+    {"longitude":142,"latitude":30,"color":"#FF3030"},
+    {"longitude":142,"latitude":27,"color":"#1BB116"},
+    {"longitude":142,"latitude":24,"color":"#33a5c6"}
 ]
 
 /*
@@ -386,7 +382,7 @@ var convertData2 = function(n,isBr){
                         var val  = params.data.value;
                         return name  + ":"+val[2].toFixed(2)
                     },
-                    fontSize:15,
+                    fontSize:13,
                     color:importCoordinatePoint[i].color
                 }
             },
@@ -422,7 +418,7 @@ var convertData2 = function(n,isBr){
                         var val  = params.data.value;
                         return name  + ":"+val[2].toFixed(2)
                     },
-                    fontSize:15,
+                    fontSize:13,
                     color:exportCoordinatePoint[i-10].color
                 }
             },
