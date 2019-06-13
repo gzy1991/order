@@ -40,12 +40,14 @@ def getTableData():
     countrySwitch = CountrySwitchName.getcountrySwitch()
     # 替换一些国家的名字, echarts中，有些国家的名字与excel中的国家名对不上
     for i in range(countryNum):
-        countryName=country_name[i, 0].encode("utf-8")
+        countryName=country_name[i, 0]
         flag= False;                        #是否是BR国家，默认不是
         if (countryName in sunCountrys or
-                (countrySwitch.has_key(countryName)  and  countrySwitch[countryName] in sunCountrys)):
+                # (countrySwitch.has_key(countryName)  and  countrySwitch[countryName] in sunCountrys)):
+                (countryName in  countrySwitch and  countrySwitch[countryName] in sunCountrys)):
             flag = True
-        if(countrySwitch.has_key(countryName) and  countrySwitch[countryName]!=""):
+        # if(countrySwitch.has_key(countryName) and  countrySwitch[countryName]!=""):
+        if(countryName in countrySwitch and  countrySwitch[countryName]!=""):
             countryList.append(countrySwitch[countryName])
             countryInfo[countrySwitch[countryName]] = {"EchartName":countrySwitch[countryName],"SourceName":countryName,"sort":i,"isBrRegion":flag}
         else:
@@ -53,7 +55,7 @@ def getTableData():
             countryInfo[countryName] = {"EchartName": countryName,"SourceName":countryName, "sort": i,"isBrRegion":flag}#其中countryName是EchartName
 
     files = ExcelTool.listExcelFile(Setting.FILR_DIR["MAP6_DIR"])
-    print files                             # .xlsx结果文件列表
+    print (files )                      # .xlsx结果文件列表
     resultList = []                          # 全部excel文件处理后的结果，容器
     errMsg = ""                              # 错误信息
     # 单位 默认undefined
@@ -71,7 +73,7 @@ def getTableData():
             fullFileName = file.split("\\")[len(file.split("\\")) - 1]
             result["fullFileName"] = fullFileName                       # 文件全名 （带后缀）
             result["fileName"] = fullFileName.split(".")[0]                 # 文件全名 （不带后缀）
-            print file + " start"
+            print (file + " start")
 
             excelData = xlrd.open_workbook(file, "rb")
             sheetNameList = excelData.sheet_names()                    # 获取此文件的全部sheet名
@@ -80,9 +82,9 @@ def getTableData():
             for sheetName in sheetNameList:                                 # 遍历所有sheet
                 if (sheetName == "Unit"):                                   # 单位sheet    1*n矩阵
                     sheetData = ExcelTool.getArrayFromSheet(excelData, sheetName, "name",1,1)
-                    unit=sheetData[0][0].encode("utf-8")
+                    unit=sheetData[0][0]
                 else:                                                       #中间数据sheet   189*189矩阵
-                    DataNameList.append(sheetName.encode("utf-8"))        # 中间数据的sheet名，有序
+                    DataNameList.append(sheetName)        # 中间数据的sheet名，有序
                     sheetData = ExcelTool.getArrayFromSheet(excelData, sheetName, "name", countryNum, countryNum)
                     # 遍历整个sheet
                     middleSheet = []  # 此sheet的数据容器
@@ -114,14 +116,15 @@ def getTableData():
             result["unit"] = unit  # 国家字典  带序号
 
             resultList.append(result)
-
-        except BaseException,e:
-            print "############################################ "
-            print "Error: 文件有问题: " + file
-            print traceback.format_exc()
+            print(file + " end")
+        except BaseException as e:
+            print ("############################################ ")
+            print ("Error: 文件有问题: " + file)
+            import traceback
+            traceback.print_exc()
             errMsg += file + "<br/>"
-            print "############################################ "
+            print ("############################################ ")
 
     resultListJson = json.dumps(resultList)
-    print "Map6返回值 resultListJson :"
+    print ("Map6返回值 resultListJson :")
     return resultListJson

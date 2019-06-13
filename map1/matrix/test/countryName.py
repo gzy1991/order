@@ -244,14 +244,15 @@ Country_array = getArrayFromSheet(excelData,u'country')
 
 size=Country_array.shape[0]
 for i in range( 0,size):
-    country_name=Country_array[i][0].encode("utf-8")
+    # country_name=Country_array[i][0].encode("utf-8")
+    country_name=Country_array[i][0]
     flag=False
     # for j in range(0,len(countrytInfo)):
 
     if country_name in countrytInfo:
         del countrytInfo[country_name]
     else:
-        print country_name
+        print (country_name)
 
-print "*************************"
-print countrytInfo.keys()
+print ("*************************")
+print (countrytInfo.keys())

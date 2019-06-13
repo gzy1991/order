@@ -176,7 +176,7 @@
             $(document).ready(function(){
                 $("#headerContainer").load("/static/common/html/header.html");
                 //初始化上传组件
-                initUpload("excelFile","/uploadExcelInMap6");
+                initUpload("excelFile","/uploadExcelInMap6/","",refBtnFn);
                 initEvent();//初始化事件绑定,缩进/展开功能
                 initEventHandler("h-handler"); //绑定缩放功能
                 initPageData();  //   调用初始化页面

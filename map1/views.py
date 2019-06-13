@@ -4,24 +4,24 @@ from django.shortcuts import render
 
 from django.shortcuts import render,render_to_response
 from django.http import HttpResponse
-from matrix.python_matlab import calculate as cal
-from matrix.rank import rank_result as rank_result
-from matrix.deleteData import deleteData as deletefile
+from map1.matrix.python_matlab import calculate as cal
+from map1.matrix.rank import rank_result as rank_result
+from map1.matrix.deleteData import deleteData as deletefile
 
 #图1 页面
 def map1(request):
     return render(request, 'map1.html')
 #图1  计算
 def calculate(request):
-    title=request.GET.get("title").encode("utf-8")
-    fd_address=request.GET.get("fd_address").encode("utf-8")
-    e_address=request.GET.get("e_address").encode("utf-8")
-    t_address=request.GET.get("t_address").encode("utf-8")
-    unit=request.GET.get("unit").encode("utf-8")
+    title=request.GET.get("title")
+    fd_address=request.GET.get("fd_address")
+    e_address=request.GET.get("e_address")
+    t_address=request.GET.get("t_address")
+    unit=request.GET.get("unit")
     resultString= cal(fd_address, e_address, t_address,
                               title, unit)
-    print "resultString:" + resultString
-    if resultString.find("失败") !=-1:
+    print("resultString:"+resultString)
+    if(resultString.find("失败") !=-1):
         resultString="<p>  "+resultString+"</p>"
     else:
         resultString="<p> 计算成功，导出文件路径为： "+resultString+"</p>"
@@ -37,7 +37,7 @@ def index(request):
 
 #图1 删除数据
 def deleteData(request):
-    fileNameList = request.GET.get("fileNameList").encode("utf-8")
+    fileNameList = request.GET.get("fileNameList")
     res=deletefile(fileNameList)
     return HttpResponse("<p>"+res+"</p>")
 

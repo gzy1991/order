@@ -20,14 +20,16 @@ var initUpload = function(ctrlName, uploadUrl,addButtonResult,refreshFun){
 		uploadUrl:uploadUrl,  //上传的地址
 		showUpload: true,
 		maxFileCount: 1,
-		maxFileSize:1000,  //单位为kb，如果为0表示不限制文件大小
+		maxFileSize:10000,  //单位为kb，如果为0表示不限制文件大小
 		enctype: 'multipart/form-data',
 		mainClass: "input-group-lg"
 	 }).on("fileuploaded",function(event, data, previewId, index){  //上传结果处理
 		console.log(data);
 		$("#"+addButtonResult).append("<p>"+data.response.message+"<p>");
 		if("true"==data.response.result){ //刷新表格
-			refreshFun();
+		    if(typeof (refreshFun) == 'function'){
+		        refreshFun()
+            }
 		}else if ("false"==data.response.result){
 			//不操作
 		}

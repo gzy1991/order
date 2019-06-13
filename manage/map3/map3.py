@@ -30,7 +30,7 @@ import order.settings as Setting
 def getTableData():
 
     files = ExcelTool.listExcelFile(Setting.FILR_DIR["MAP3_DIR"])
-    print files             # .xlsx结果文件列表
+    print(files)              # .xlsx结果文件列表
     resultList = []         # 全部excel文件处理后的结果，容器
     errMsg = ""             #错误信息
     countryNum=189          #国家总数
@@ -39,7 +39,7 @@ def getTableData():
                                                  "country")
     countryList = []  # 国家名list，有序
     for i in range(countryNum):
-        countryList.append(country_name[i, 0].encode("utf-8"))
+        countryList.append(country_name[i, 0])
 
     for file in files:      # 遍历每个excel文件
         try:
@@ -47,7 +47,7 @@ def getTableData():
             fullFileName = file.split("\\")[len(file.split("\\")) - 1]
             result["fullFileName"] = fullFileName               # 文件全名 （带后缀）
             result["fileName"] = fullFileName.split(".")[0]     # 文件全名 （不带后缀）
-            print file + " start"
+            print( file + " start")
 
             excelData = xlrd.open_workbook(file, "rb")
             unit = 'undefined'  # 单位 默认undefined
@@ -63,7 +63,6 @@ def getTableData():
             sheetNameList=excelData.sheet_names()               #获取此文件的全部sheet名
             seriesList=[]                                       # series数据，所有年份，所有国家的数据
             for sheetName in sheetNameList:                     #遍历sheet
-                sheetName=sheetName.encode("utf-8")             #转码
                 if sheetName != 'Unit':                         #处理某年（某sheet）的数据
                     timeline.append(int(sheetName))  # 年份加入timeline中,转为int
                     series = []  # 某年，所有国家的数据
@@ -109,9 +108,9 @@ def getTableData():
             yMax=handleMaxMin(yAxis,"max",1)
             yMin=handleMaxMin(yAxis,"min",2)
 
-            result['unit'] = unit.encode("utf-8")                           # 单位
-            result['unitX'] = unitX.encode("utf-8")                         # 单位X轴
-            result['unitY'] = unitY.encode("utf-8")                         # 单位Y轴
+            result['unit'] = unit                           # 单位
+            result['unitX'] = unitX                         # 单位X轴
+            result['unitY'] = unitY                         # 单位Y轴
             result["xAxisMax"] = np.array(xAxis).max()      #x轴最小值  最大值 人均消耗
             result["xMax"] = xMax                           #x轴最大值 人均消耗
             result["xMin"] = xMin                           #x轴最小值 人均消耗
@@ -127,14 +126,17 @@ def getTableData():
             result["averageSize"]=np.array(symbolSize).sum()/ (countryNum *len(timeline))                # 气泡大小平均值
 
             resultList.append(result)
+            print(file + " end")
         except BaseException:
-            print "Error: 文件有问题: " + file
-            print BaseException
+            print ("Error: 文件有问题: " + file)
+            import traceback
+            traceback.print_exc()
+            print( BaseException)
             errMsg += file + "<br/>"
 
     resultListJson = json.dumps(resultList)
-    print "Map3返回值 resultListJson :"
-    print   resultListJson
+    print ("Map3返回值 resultListJson :")
+    print( resultListJson)
     return resultListJson
 
 

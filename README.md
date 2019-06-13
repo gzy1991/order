@@ -30,7 +30,7 @@
 
 # 2.环境安装说明
 
-> Python版本：python 2.7，操作系统win10 X64（win7 64位也可以； 32位系统我测试过win7 32位，也可以正常运行，不过在1.4那里要挑选对应版本的pywin32 .）
+> Python版本：python 3.5 64位，操作系统win10 X64
 
 > 可能会遇到编码问题，Python2.7编码问题解决方案
 https://www.cnblogs.com/kevingrace/p/5893121.html
@@ -41,8 +41,14 @@ https://www.cnblogs.com/kevingrace/p/5893121.html
 pip install django==1.11
 ```
 ## 2.2 安装 mlab和 numpy
-> 参考这里[mlab安装指南](http://blog.csdn.net/sunny_xsc1994/article/details/70197168)
+> 参考这里[mlab安装指南](https://blog.csdn.net/sunny_xsc1994/article/details/79254196)
+或者https://ww2.mathworks.cn/help/matlab/matlab_external/install-the-matlab-engine-for-python.html?ue
 
+注意 matlab2016b 只支持python 2.7、3.3、3.4、3.5
+
+```
+pip install numpy
+```
 ## 2.3 安装 xlrd 和 xlwt
 ```
 pip install xlrd

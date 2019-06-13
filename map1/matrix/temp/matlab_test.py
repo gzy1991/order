@@ -75,19 +75,19 @@ import win32com.client
 from win32com.client import Dispatch
 
 def calculate(FD_add,E_add,T_add,result_name,unit):
-    print '调用开始！', time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
+    print ('调用开始！', time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())))
     pythoncom.CoInitialize()
-    print matlabroot()
+    print (matlabroot())
     pwd = os.getcwd()
     matlab.path(matlab.path(), pwd)  # 设置路径
-    print matlab.path()
+    print (matlab.path())
     T_addList = T_add.split('\\')
     T_add_index = T_add.replace(T_addList[len(T_addList) - 1], '')
     result_name = T_add_index + result_name + '.xls'  # 结果数据的名字
     h = Dispatch("Matlab.application")
     h.execute("test8('"+FD_add+"','"+E_add+"','"+T_add+"','"+result_name+"')")
     #h.execute("matlab_3('"+FD_add+"','"+E_add+"','"+T_add+"','"+result_name+"')")
-    print '调用结束！', time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
+    print ('调用结束！', time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())))
     return result_name
 resultString = calculate("G:\work\matlab\FD.csv", "G:\work\matlab\E_1.csv", "G:\work\matlab\data.csv","temp_-176000_1127","")
 print('计算成功'+resultString)

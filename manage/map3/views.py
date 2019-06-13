@@ -3,15 +3,18 @@
 
 from django.shortcuts import render,render_to_response
 from django.http import HttpResponse,JsonResponse
-import map3
+import  manage.map3.map3 as map3
 import Tool.ExcelTool as ExcelTool
 import order.settings as Setting
 import os
 import json
 import manage.viewsTool as ViewsTool
-import sys
-reload(sys)
-sys.setdefaultencoding("utf-8")
+
+import importlib,sys
+importlib.reload(sys)
+
+
+
 
 
 def nengyuanju(request):

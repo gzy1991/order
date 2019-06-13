@@ -9,7 +9,7 @@ import  sys
 import xlrd
 import xlwt
 import numpy as np
-
+import types
 
 
 #   从根目录下读取指定的excel数据
@@ -32,10 +32,12 @@ def getArrayBySheetIndex(excelDir,index):
 #   row     : 行，可以指定长度，相当于切片。默认是sheet的行
 #   column  : 列，可以指定长度，相当于切片。默认是sheet的列
 #   isAllowEmpty :是否允许cell是空的,默认允许:True。如果不允许的话，那么空cell处理成数字0，
-def getArrayFromSheet(excelData,param ,type,row=0,column=0,isAllowEmpty=True):
-    if(type=='index'):
+def getArrayFromSheet(excelData,param ,paramsType,row=0,column=0,isAllowEmpty=True):
+    if(isinstance(param,bytes)):
+        param=str(param,encoding='utf-8') #如果是bytes ，则bytes转为str
+    if(paramsType=='index'):
         sheet = excelData.sheet_by_index(param)
-    elif(type=='name'):
+    elif(paramsType=='name'):
         sheet=excelData.sheet_by_name(param)
     if not (row!=0 and row<sheet.nrows):            # 行是否切片
         row=sheet.nrows
@@ -69,7 +71,7 @@ def listExcelFile( dir ):
                 if os.path.splitext(file)[1] == '.xlsx' or  os.path.splitext(file)[1] == '.xls':
                     res.append(os.path.join(root, file))
             except BaseException:
-                print "Error:！文件读取失败：" + file
+                print ("Error:！文件读取失败：" + file)
     return res
 
 
