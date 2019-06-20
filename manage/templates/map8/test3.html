@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>map8-test2</title>
+</head>
+<body>
+<div id="mapContainer" style="height: 400px;weight:800px;">
+              </div>
+</body>
+
+
+    <script type="text/javascript" src="/static/js/echarts2.2.7/echarts-all.js"></script>
+    <script type="text/javascript" src="/static/resource/jquery/jquery.min.js"></script>
+
+
+{# layui #}
+<!--layui-->
+ <script type="text/javascript" src="/static/layui2.5.4/layui.all.min.js"></script>
+    <link href="/static/layui2.5.4/css/layui.css" rel="stylesheet" />
+
+<!--获取json-->
+ <script type="text/javascript" src="/static/app/map8/data.js"></script>
+<!--<script type="text/javascript" src="./datamap1.json"></script>-->
+<!--<script type="text/javascript" src="/static/app/map8/datamap1.json"></script>-->
+<script>
+var idx = 1;
+
+/*demo*/
+option = {
+    timeline : {
+        data : [
+            '2013-01-01', '2013-02-01', '2013-03-01', '2013-04-01', '2013-05-01',
+            { name:'2013-06-01', symbol:'emptyStar6', symbolSize:8 },
+            '2013-07-01', '2013-08-01', '2013-09-01', '2013-10-01', '2013-11-01',
+            { name:'2013-12-01', symbol:'star6', symbolSize:8 }
+        ],
+        label : {
+            formatter : function(s) {
+                return s.slice(0, 7);
+            }
+        }
+    },
+
+
+
+};
+//demo2
+option = {
+    timeline:{
+        data:[
+            '2002-01-01','2003-01-01','2004-01-01','2005-01-01','2006-01-01',
+            '2007-01-01','2008-01-01','2009-01-01','2010-01-01','2011-01-01'
+        ],
+        label : {
+            formatter : function(s) {
+                return s.slice(0, 4);
+            }
+        },
+        autoPlay : true,
+        playInterval : 1000
+    },
+    options:[
+        {
+            title : {
+                'text':'2002全国宏观经济指标',
+                'subtext':'数据来自国家统计局'
+            },
+            tooltip : {'trigger':'axis'},
+            legend : {
+                x:'right',
+                'data':['GDP','金融','房地产','第一产业','第二产业','第三产业'],
+                'selected':{
+                    'GDP':true,
+                    '金融':false,
+                    '房地产':true,
+                    '第一产业':false,
+                    '第二产业':false,
+                    '第三产业':false
+                }
+            },
+            toolbox : {
+                'show':true,
+                orient : 'vertical',
+                x: 'right',
+                y: 'center',
+                'feature':{
+                    'mark':{'show':true},
+                    'dataView':{'show':true,'readOnly':false},
+                    'magicType':{'show':true,'type':['line','bar','stack','tiled']},
+                    'restore':{'show':true},
+                    'saveAsImage':{'show':true}
+                }
+            },
+            calculable : true,
+            grid : {'y':80,'y2':100},
+            xAxis : [{
+                'type':'category',
+                'axisLabel':{'interval':0},
+                'data':[
+                    '北京','\n天津','河北','\n山西','内蒙古','\n辽宁','吉林','\n黑龙江',
+                    '上海','\n江苏','浙江','\n安徽','福建','\n江西','山东','\n河南',
+                    '湖北','\n湖南','广东','\n广西','海南','\n重庆','四川','\n贵州',
+                    '云南','\n西藏','陕西','\n甘肃','青海','\n宁夏','新疆'
+                ]
+            }],
+            yAxis : [
+                {
+                    'type':'value',
+                    'name':'GDP（亿元）',
+                    'max':53500
+                },
+                {
+                    'type':'value',
+                    'name':'其他（亿元）'
+                }
+            ],
+            series : [
+                {
+                    'name':'GDP',
+                    'type':'bar',
+                    'markLine':{
+                        symbol : ['arrow','none'],
+                        symbolSize : [4, 2],
+                        itemStyle : {
+                            normal: {
+                                lineStyle: {color:'orange'},
+                                barBorderColor:'orange',
+                                label:{
+                                    position:'left',
+                                    formatter:function(params){
+                                        return Math.round(params.value);
+                                    },
+                                    textStyle:{color:'orange'}
+                                }
+                            }
+                        },
+                        'data':[{'type':'average','name':'平均值'}]
+                    },
+                    'data': dataMap.dataGDP['2002']
+                },
+                {
+                    'name':'金融','yAxisIndex':1,'type':'bar',
+                    'data': dataMap.dataFinancial['2002']
+                },
+                {
+                    'name':'房地产','yAxisIndex':1,'type':'bar',
+                    'data': dataMap.dataEstate['2002']
+                },
+                {
+                    'name':'第一产业','yAxisIndex':1,'type':'bar',
+                    'data': dataMap.dataPI['2002']
+                },
+                {
+                    'name':'第二产业','yAxisIndex':1,'type':'bar',
+                    'data': dataMap.dataSI['2002']
+                },
+                {
+                    'name':'第三产业','yAxisIndex':1,'type':'bar',
+                    'data': dataMap.dataTI['2002']
+                }
+            ]
+        },
+        {
+            title : {'text':'2003全国宏观经济指标'},
+            series : [
+                {'data': dataMap.dataGDP['2003']},
+                {'data': dataMap.dataFinancial['2003']},
+                {'data': dataMap.dataEstate['2003']},
+                {'data': dataMap.dataPI['2003']},
+                {'data': dataMap.dataSI['2003']},
+                {'data': dataMap.dataTI['2003']}
+            ]
+        },
+        {
+            title : {'text':'2004全国宏观经济指标'},
+            series : [
+                {'data': dataMap.dataGDP['2004']},
+                {'data': dataMap.dataFinancial['2004']},
+                {'data': dataMap.dataEstate['2004']},
+                {'data': dataMap.dataPI['2004']},
+                {'data': dataMap.dataSI['2004']},
+                {'data': dataMap.dataTI['2004']}
+            ]
+        },
+        {
+            title : {'text':'2005全国宏观经济指标'},
+            series : [
+                {'data': dataMap.dataGDP['2005']},
+                {'data': dataMap.dataFinancial['2005']},
+                {'data': dataMap.dataEstate['2005']},
+                {'data': dataMap.dataPI['2005']},
+                {'data': dataMap.dataSI['2005']},
+                {'data': dataMap.dataTI['2005']}
+            ]
+        },
+        {
+            title : {'text':'2006全国宏观经济指标'},
+            series : [
+                {'data': dataMap.dataGDP['2006']},
+                {'data': dataMap.dataFinancial['2006']},
+                {'data': dataMap.dataEstate['2006']},
+                {'data': dataMap.dataPI['2006']},
+                {'data': dataMap.dataSI['2006']},
+                {'data': dataMap.dataTI['2006']}
+            ]
+        },
+        {
+            title : {'text':'2007全国宏观经济指标'},
+            series : [
+                {'data': dataMap.dataGDP['2007']},
+                {'data': dataMap.dataFinancial['2007']},
+                {'data': dataMap.dataEstate['2007']},
+                {'data': dataMap.dataPI['2007']},
+                {'data': dataMap.dataSI['2007']},
+                {'data': dataMap.dataTI['2007']}
+            ]
+        },
+        {
+            title : {'text':'2008全国宏观经济指标'},
+            series : [
+                {'data': dataMap.dataGDP['2008']},
+                {'data': dataMap.dataFinancial['2008']},
+                {'data': dataMap.dataEstate['2008']},
+                {'data': dataMap.dataPI['2008']},
+                {'data': dataMap.dataSI['2008']},
+                {'data': dataMap.dataTI['2008']}
+            ]
+        },
+        {
+            title : {'text':'2009全国宏观经济指标'},
+            series : [
+                {'data': dataMap.dataGDP['2009']},
+                {'data': dataMap.dataFinancial['2009']},
+                {'data': dataMap.dataEstate['2009']},
+                {'data': dataMap.dataPI['2009']},
+                {'data': dataMap.dataSI['2009']},
+                {'data': dataMap.dataTI['2009']}
+            ]
+        },
+        {
+            title : {'text':'2010全国宏观经济指标'},
+            series : [
+                {'data': dataMap.dataGDP['2010']},
+                {'data': dataMap.dataFinancial['2010']},
+                {'data': dataMap.dataEstate['2010']},
+                {'data': dataMap.dataPI['2010']},
+                {'data': dataMap.dataSI['2010']},
+                {'data': dataMap.dataTI['2010']}
+            ]
+        },
+        {
+            title : {'text':'2011全国宏观经济指标'},
+            series : [
+                {'data': dataMap.dataGDP['2011']},
+                {'data': dataMap.dataFinancial['2011']},
+                {'data': dataMap.dataEstate['2011']},
+                {'data': dataMap.dataPI['2011']},
+                {'data': dataMap.dataSI['2011']},
+                {'data': dataMap.dataTI['2011']}
+            ]
+        }
+    ]
+};
+
+/*demo3*/
+option = {
+    timeline:{
+        data:[
+            '2002-01-01','2003-01-01','2004-01-01','2005-01-01','2006-01-01',
+            '2007-01-01','2008-01-01','2009-01-01','2010-01-01','2011-01-01'
+        ],
+        label : {
+            formatter : function(s) {
+                return s.slice(0, 4);
+            }
+        },
+        autoPlay : true,
+        playInterval : 1000
+    },
+    options:[
+        {
+            title : {
+                'text':'2002全国宏观经济关联分析（GDP vs 房地产）',
+                'subtext':'数据来自国家统计局'
+            },
+            tooltip : {
+                trigger: 'axis',
+                showDelay : 0,
+                axisPointer:{
+                    show: true,
+                    type : 'cross',
+                    lineStyle: {
+                        type : 'dashed',
+                        width : 1
+                    }
+                }
+            },
+            toolbox : {
+                'show':true,
+                orient : 'vertical',
+                x: 'right',
+                y: 'center',
+                'feature':{
+                    'mark':{'show':true},
+                    'dataView':{'show':true,'readOnly':false},
+                    'restore':{'show':true},
+                    'saveAsImage':{'show':true}
+                }
+            },
+            grid : {'y':80,'y2':100},
+            xAxis : [{
+                'type':'value',
+                'name':'房地产（亿元）',
+                'max':3400
+            }],
+            yAxis : [{
+                'type':'value',
+                'name':'GDP（亿元）',
+                'max':53500
+            }],
+            series : [
+                {
+                    'name':'GDP',
+                    'type':'scatter',
+                    markLine : {
+                        data : [
+                            {type : 'average', name: 'y平均值', itemStyle:{normal:{borderColor:'red'}}},
+                            {type : 'average', name: 'x平均值', valueIndex : 0, itemStyle:{normal:{borderColor:'red'}}}
+                        ]
+                    },
+                    symbolSize : 5,
+                    itemStyle: {
+                        normal : {
+                            label : {
+                                show: true,
+                                formatter : '{b}'
+                            }
+                        }
+                    },
+                    'data': dataMap.dataGDP_Estate['2002']
+                }
+            ]
+        },
+        {
+            title : {'text':'2003全国宏观经济关联分析（GDP vs 房地产）'},
+            series : [
+                {'data': dataMap.dataGDP_Estate['2003']}
+            ]
+        },
+        {
+            title : {'text':'2004全国宏观经济关联分析（GDP vs 房地产）'},
+            series : [
+                {'data': dataMap.dataGDP_Estate['2004']}
+            ]
+        },
+        {
+            title : {'text':'2005全国宏观经济关联分析（GDP vs 房地产）'},
+            series : [
+                {'data': dataMap.dataGDP_Estate['2005']}
+            ]
+        },
+        {
+            title : {'text':'2006全国宏观经济关联分析（GDP vs 房地产）'},
+            series : [
+                {'data': dataMap.dataGDP_Estate['2006']}
+            ]
+        },
+        {
+            title : {'text':'2007全国宏观经济关联分析（GDP vs 房地产）'},
+            series : [
+                {'data': dataMap.dataGDP_Estate['2007']}
+            ]
+        },
+        {
+            title : {'text':'2008全国宏观经济关联分析（GDP vs 房地产）'},
+            series : [
+                {'data': dataMap.dataGDP_Estate['2008']}
+            ]
+        },
+        {
+            title : {'text':'2009全国宏观经济关联分析（GDP vs 房地产）'},
+            series : [
+                {'data': dataMap.dataGDP_Estate['2009']}
+            ]
+        },
+        {
+            title : {'text':'2010全国宏观经济关联分析（GDP vs 房地产）'},
+            series : [
+                {'data': dataMap.dataGDP_Estate['2010']}
+            ]
+        },
+        {
+            title : {'text':'2011全国宏观经济关联分析（GDP vs 房地产）'},
+            series : [
+                {'data': dataMap.dataGDP_Estate['2011']}
+            ]
+        }
+    ]
+};
+
+/*demo3*/
+option = {
+    title : {
+        text: '德国队效力联盟',
+        x:'right',
+        y:'bottom'
+    },
+    tooltip : {
+        trigger: 'item',
+        formatter: function (params) {
+            if (params.indicator2) {    // is edge
+                return params.indicator2 + ' ' + params.name + ' ' + params.indicator;
+            } else {    // is node
+                return params.name
+            }
+        }
+    },
+    toolbox: {
+        show : true,
+        feature : {
+            restore : {show: true},
+            magicType: {show: true, type: ['force', 'chord']},
+            saveAsImage : {show: true}
+        }
+    },
+    legend: {
+        x: 'left',
+        data:['阿森纳', '拜仁慕尼黑', '多特蒙德']
+    },
+    series : [
+        {
+            type:'chord',
+            sort : 'ascending',
+            sortSub : 'descending',
+            showScale : false,
+            itemStyle : {
+                normal : {
+                    label : {
+                        rotate : true
+                    }
+                }
+            },
+            // 使用 nodes links 表达和弦图
+            nodes: [
+                {name:'默特萨克'},
+                {name:'厄齐尔'},
+                {name:'波多尔斯基'},
+                {name:'诺伊尔'},
+                {name:'博阿滕'},
+                {name:'施魏因施泰格'},
+                {name:'拉姆'},
+                {name:'克罗斯'},
+                {name:'穆勒'},
+                {name:'格策'},
+                {name:'胡梅尔斯'},
+                {name:'魏登费勒'},
+                {name:'杜尔姆'},
+                {name:'格罗斯克罗伊茨'},
+                {name:'阿森纳'},
+                {name:'拜仁慕尼黑'},
+                {name:'多特蒙德'}
+            ],
+            links: [
+                {source: '阿森纳', target: '默特萨克', weight: 0.9, name: '效力'},
+                {source: '阿森纳', target: '厄齐尔', weight: 0.9, name: '效力'},
+                {source: '阿森纳', target: '波多尔斯基', weight: 0.9, name: '效力'},
+                {source: '拜仁慕尼黑', target: '诺伊尔', weight: 0.9, name: '效力'},
+                {source: '拜仁慕尼黑', target: '博阿滕', weight: 0.9, name: '效力'},
+                {source: '拜仁慕尼黑', target: '施魏因施泰格', weight: 0.9, name: '效力'},
+                {source: '拜仁慕尼黑', target: '拉姆', weight: 0.9, name: '效力'},
+                {source: '拜仁慕尼黑', target: '克罗斯', weight: 0.9, name: '效力'},
+                {source: '拜仁慕尼黑', target: '穆勒', weight: 0.9, name: '效力'},
+                {source: '拜仁慕尼黑', target: '格策', weight: 0.9, name: '效力'},
+                {source: '多特蒙德', target: '胡梅尔斯', weight: 0.9, name: '效力'},
+                {source: '多特蒙德', target: '魏登费勒', weight: 0.9, name: '效力'},
+                {source: '多特蒙德', target: '杜尔姆', weight: 0.9, name: '效力'},
+                {source: '多特蒙德', target: '格罗斯克罗伊茨', weight: 0.9, name: '效力'},
+
+                // Ribbon Type 的和弦图每一对节点之间必须是双向边
+                {target: '阿森纳', source: '默特萨克', weight: 1},
+                {target: '阿森纳', source: '厄齐尔', weight: 1},
+                {target: '阿森纳', source: '波多尔斯基', weight: 1},
+                {target: '拜仁慕尼黑', source: '诺伊尔', weight: 1},
+                {target: '拜仁慕尼黑', source: '博阿滕', weight: 1},
+                {target: '拜仁慕尼黑', source: '施魏因施泰格', weight: 1},
+                {target: '拜仁慕尼黑', source: '拉姆', weight: 1},
+                {target: '拜仁慕尼黑', source: '克罗斯', weight: 1},
+                {target: '拜仁慕尼黑', source: '穆勒', weight: 1},
+                {target: '拜仁慕尼黑', source: '格策', weight: 1},
+                {target: '多特蒙德', source: '胡梅尔斯', weight: 1},
+                {target: '多特蒙德', source: '魏登费勒', weight: 1},
+                {target: '多特蒙德', source: '杜尔姆', weight: 1},
+                {target: '多特蒙德', source: '格罗斯克罗伊茨', weight: 1}
+            ]
+        }
+    ]
+};
+
+
+var dom = document.getElementById("mapContainer");
+var myChart = echarts.init(dom);;
+myChart.setOption(option);
+
+
+</script>
+</html>
