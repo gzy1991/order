@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>map8-test2</title>
+</head>
+<body>
+<div id="mapContainer" style="height: 500px;weight:800px;">
+              </div>
+</body>
+
+
+    <script type="text/javascript" src="/static/js/echarts2.2.7/echarts-all.js"></script>
+    <script type="text/javascript" src="/static/resource/jquery/jquery.min.js"></script>
+
+
+{# layui #}
+<!--layui-->
+ <script type="text/javascript" src="/static/layui2.5.4/layui.all.min.js"></script>
+    <link href="/static/layui2.5.4/css/layui.css" rel="stylesheet" />
+
+<!--获取json-->
+ <script type="text/javascript" src="/static/app/map8/data.js"></script>
+<!--<script type="text/javascript" src="./datamap1.json"></script>-->
+<!--<script type="text/javascript" src="/static/app/map8/datamap1.json"></script>-->
+<script>
+
+    var colors=[
+    "#da70d6",
+    "#32cd32",
+    "#6495ed",
+    "#ff69b4",
+    "#ba55d3",
+    "#cd5c5c",
+    "#ffa500",
+    "#40e0d0",
+    "#1e90ff",
+    "#ff6347",
+    "#7b68ee",
+    "#00fa9a",
+    "#ffd700",
+    "#6699FF",
+    "#ff6666",
+    "#3cb371",
+    "#b8860b",
+    "#30e0e0"
+];
+     colors=
+    [   '#c23531',
+        '#d24541',
+        '#e25551',
+        '#2f4554',
+        '#61a0a8',
+        '#d48265',
+        '#91c7ae',
+        '#749f83',
+        '#ca8622',
+        '#bda29a',
+        '#6e7074',
+        '#546570',
+        '#c4ccd3'];
+var option ;
+option = {
+
+    timeline:{
+        data:[
+            '2002','2003','2004','2005'
+        ],
+        label : {
+            formatter : function(s) {
+                return s.slice(0, 4);
+            },
+            textStyle:{
+                fontSize:15,
+                fontFamily:"Times New Roman"//字体
+            }
+        },
+        autoPlay : true,
+        playInterval : 2000
+    },
+    options:[
+        {
+             color:colors,
+            title : {
+                text:'2002 测试数据1',
+                subtext:'单位:百万',
+                textStyle:{
+                    fontFamily:"Times New Roman"//字体
+                },
+                subtextStyle:{
+                    fontFamily:"Times New Roman"//字体
+                },
+                x:'50',
+                y:'50'
+            },
+            tooltip : {
+                trigger: 'item',
+                formatter: function (params) {
+                    console.log(JSON.stringify(params))
+                    if (params.indicator2) { // is edge
+                        return params.name+":"+params.value.weight;
+                    } else {// is node
+                        return params.name
+                    }
+                }
+            },
+            legend: {
+                x: '50',
+                y:'150',
+                orient:'vertical',
+                data:['city1','city2','city3','city4'],
+                textStyle:{
+                    color:"auto",
+                    fontSize:15,
+                    fontFamily:"Times New Roman"//字体
+                }
+            },
+            series : [
+                {
+                    type:'chord',
+                    sortSub : 'ascending',
+                    top:20,
+                    symbolSize:10,
+                    nodes : [
+                        {name : 'city1'},
+                        {name : 'city2'},
+                        {name : 'city3'},
+                        {name : 'city4'}
+                    ],
+                    itemStyle : {
+                        normal : {
+                            label : {
+                                show : true,
+                                textStyle:{
+                                    fontFamily:"Times New Roman",//字体
+                                    //color:"red",
+                                    fontSize:20
+                                }
+                            }
+                        }
+                    },
+                    matrix : [
+                        [11975,  5871, 8916, 2868],
+                        [ 1951, 10048, 2060, 6171],
+                        [ 8010, 16145, 8090, 8045],
+                        [ 1013,   990,  940, 6907]
+                    ]
+                }
+            ]
+        },
+        {
+            title : {'text':'2003 测试数据1'},
+            series : [
+                {'matrix': [
+                        [11975,  5871, 8916, 2868],
+                        [ 3951, 10048, 2060, 6171],
+                        [ 3010, 16145, 8090, 8045],
+                        [ 3013,   990,  940, 6907]
+                    ]}
+            ]
+        },
+        {
+            title : {'text':'2004 测试数据1'},
+            series : [
+                {'matrix': [
+                        [11975,  5871, 8916, 2868],
+                        [ 1951, 4048, 2060, 6171],
+                        [ 8010, 46145, 8090, 8045],
+                        [ 1013,   4490,  940, 6907]
+                    ]}
+            ]
+        },
+        {
+            title : {'text':'2005 测试数据1'},
+            series : [
+                {'matrix': [
+                        [11975,  5871, 8916, 2868],
+                        [ 1951, 10048, 460, 6171],
+                        [ 8010, 16145, 4090, 8045],
+                        [ 1013,   990,  4440, 6907]
+                    ]}
+            ]
+        }
+    ]
+};
+
+
+
+var dom = document.getElementById("mapContainer");
+var myChart = echarts.init(dom);;
+myChart.setOption(option);
+
+
+</script>
+</html>

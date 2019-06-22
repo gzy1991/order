@@ -24,3 +24,8 @@ def getPageTest2(request):
 def getPageTest3(request):
     # result = map8.getTableData()
     return render(request, 'map8/test3.html')
+
+#获取测试页面
+def getPageTest4(request):
+    # result = map8.getTableData()
+    return render(request, 'map8/test4.html')
