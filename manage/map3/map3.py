@@ -66,7 +66,7 @@ def getTableData():
                 if sheetName != 'Unit':                         #处理某年（某sheet）的数据
                     timeline.append(int(sheetName))  # 年份加入timeline中,转为int
                     series = []  # 某年，所有国家的数据
-                    sheetData = ExcelTool.getArrayFromSheet(excelData, sheetName, 'name',row=countryNum)   #获取某年（某sheet）的数据
+                    sheetData = ExcelTool.getNpArrayFromSheet(excelData, sheetName, 'name',row=countryNum)   #获取某年（某sheet）的数据
                     #先处理空sheet
                     if (len(sheetData)==0):
                         seriesList.append(series)

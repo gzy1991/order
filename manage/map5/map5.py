@@ -79,12 +79,12 @@ def getTableData():
             n = len(sheetNameList)-2    # n是中间数据sheet的个数，也就是雷达图中indicator指标的个数。sheets中有一个Index，一个unit，其余的都是中间数据
 
             for sheetName in sheetNameList:  # 遍历所有sheet
-                if(sheetName == "Unit"):            # 单位sheet     1*n矩阵
-                    sheetData = ExcelTool.getArrayFromSheet(excelData,sheetName,"name")
+                if(sheetName.lower() == "unit"):            # 单位sheet     1*n矩阵
+                    sheetData = ExcelTool.getNpArrayFromSheet(excelData,sheetName,"name")
                     for i in range(n):
                         unit.append(sheetData[0][i])
-                elif (sheetName == "Index"):        #源数据sheet   189*n矩阵
-                    sheetData = ExcelTool.getArrayFromSheet(excelData,sheetName,"name",countryNum,n)
+                elif (sheetName.lower() == "index"):        #源数据sheet   189*n矩阵
+                    sheetData = ExcelTool.getNpArrayFromSheet(excelData,sheetName,"name",countryNum,n)
                     for row in range(countryNum):
                         originalRow=[]
                         for column in range(n):
@@ -99,7 +99,7 @@ def getTableData():
                         sheetMaxSource.append(original[sheetDataSort[0][column]][column])
                 else:                               #中间数据sheet   189*189矩阵
                     middleNameList.append(sheetName)            #中间数据的sheet名，有序
-                    sheetData = ExcelTool.getArrayFromSheet(excelData, sheetName, "name", countryNum, countryNum)
+                    sheetData = ExcelTool.getNpArrayFromSheet(excelData, sheetName, "name", countryNum, countryNum)
                     sheetMax.append(np.max(sheetData)     )      #此sheet的最大值
 
                     #遍历整个sheet

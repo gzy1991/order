@@ -80,12 +80,12 @@ def getTableData():
             n = len(sheetNameList)-1                                   # n是中间数据sheet的个数，一个unit，其余的都是中间数据
 
             for sheetName in sheetNameList:                                 # 遍历所有sheet
-                if (sheetName == "Unit"):                                   # 单位sheet    1*n矩阵
-                    sheetData = ExcelTool.getArrayFromSheet(excelData, sheetName, "name",1,1)
+                if (sheetName.lower() == "unit"):                                   # 单位sheet    1*n矩阵
+                    sheetData = ExcelTool.getNpArrayFromSheet(excelData, sheetName, "name",1,1)
                     unit=sheetData[0][0]
                 else:                                                       #中间数据sheet   189*189矩阵
                     DataNameList.append(sheetName)        # 中间数据的sheet名，有序
-                    sheetData = ExcelTool.getArrayFromSheet(excelData, sheetName, "name", countryNum, countryNum)
+                    sheetData = ExcelTool.getNpArrayFromSheet(excelData, sheetName, "name", countryNum, countryNum)
                     # 遍历整个sheet
                     middleSheet = []  # 此sheet的数据容器
                     for row in range(countryNum):

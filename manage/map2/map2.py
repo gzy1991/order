@@ -35,8 +35,8 @@ def getTableData():
             excelData = xlrd.open_workbook(file, "rb")
 
             # 从excel获取sheet， 转化成numpy.array
-            Tra = ExcelTool.getArrayFromSheet(excelData, u'Tra','name')
-            Tot = ExcelTool.getArrayFromSheet(excelData, u'Tot','name')
+            Tra = ExcelTool.getNpArrayFromSheet(excelData, u'Tra','name')
+            Tot = ExcelTool.getNpArrayFromSheet(excelData, u'Tot','name')
 
             unit = ''  # 单位
             try:

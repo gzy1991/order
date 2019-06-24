@@ -39,11 +39,11 @@ def rank_result():
             excelData = xlrd.open_workbook(file,"rb")
 
             #从excel获取sheet， 转化成numpy.array
-            Tot = ExcelTool.getArrayFromSheet(excelData, u'Tot','name')
-            FD_ = ExcelTool.getArrayFromSheet(excelData, u'FD_S','name')
-            Tra = ExcelTool.getArrayFromSheet(excelData, u'Tra','name')
-            FD4 = ExcelTool.getArrayFromSheet(excelData, u'FD4','name')
-            T4 = ExcelTool.getArrayFromSheet(excelData, u'T4','name')
+            Tot = ExcelTool.getNpArrayFromSheet(excelData, u'Tot','name')
+            FD_ = ExcelTool.getNpArrayFromSheet(excelData, u'FD_S','name')
+            Tra = ExcelTool.getNpArrayFromSheet(excelData, u'Tra','name')
+            FD4 = ExcelTool.getNpArrayFromSheet(excelData, u'FD4','name')
+            T4 = ExcelTool.getNpArrayFromSheet(excelData, u'T4','name')
 
             unit=''  #单位
             try:

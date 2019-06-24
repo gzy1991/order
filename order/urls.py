@@ -82,10 +82,15 @@ urlpatterns = [
     , url(r'^uploadExcelInMap7/$', map7.uploadExcel)  # 新增
 
     #图8
+    ,url(r'^map8/$', map8.getPage)  # 获取页面
     ,url(r'^map8test/$', map8.getPageTest)  # 获取页面
     ,url(r'^map8test2/$', map8.getPageTest2)  # 获取页面
     ,url(r'^map8test3/$', map8.getPageTest3)  # 获取页面
     ,url(r'^map8test4/$', map8.getPageTest4)  # 获取页面
+    , url(r'^initMap8/$', map8.getTableData)  # 获取页面数据，初始化页面
+
+
+
     # , url(r'^map7/$', map7.getPage)  # 获取页面
     # , url(r'^initMap7/$', map7.getTableData)  # 获取页面数据，初始化页面
     # , url(r'^deleteDataInMap7/$', map7.deleteData)  # 删除

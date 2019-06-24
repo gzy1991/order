@@ -74,7 +74,7 @@ def getTableData():
                 #sheetName = sheetName  # sheet名转码
                  #处理（某sheet）的数据
                 timeline.append(sheetName)  # 年份加入timeline中,转为int
-                sheetData = ExcelTool.getArrayFromSheet(excelData, sheetName, 'name',
+                sheetData = ExcelTool.getNpArrayFromSheet(excelData, sheetName, 'name',
                                                         row=countryNum,column=provinceNum)  # 获取某年（某sheet）的数据
                 #sheetData.sum()/(countryNum*provinceNum)
                 # 先处理空sheet

@@ -223,7 +223,7 @@ countrytInfo={
 
 
 # 从excel获取sheet， 转化成 numpy.array
-def getArrayFromSheet(excelData,sheetName ):
+def getNpArrayFromSheet(excelData,sheetName ):
     sheet=excelData.sheet_by_name(sheetName)
     row=sheet.nrows
     column = sheet.ncols  # 列
@@ -240,7 +240,7 @@ root_add = os.getcwd()
 country_dir = root_add + "\\country_excel\\Countries.xlsx"  # 结果excel所在目
 country_dir='G:\\work\\github\\order\\country_excel\\Countries.xlsx'# 录
 excelData = xlrd.open_workbook(country_dir, "rb")
-Country_array = getArrayFromSheet(excelData,u'country')
+Country_array = getNpArrayFromSheet(excelData,u'country')
 
 size=Country_array.shape[0]
 for i in range( 0,size):
