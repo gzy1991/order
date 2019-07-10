@@ -15,30 +15,16 @@ var calculateMinPercentage = function(){
     MinPercentage = Math.ceil(MinPercentage*100)/100 ;//舍去小数点后两位后面的数据
 }
 
+initFrame(
+    "mainContainer",
+    "tableContainer",
+    "operationBtnGroup",
+    "hideBtn",
+    "dataTable",
+    "h-handler",
+    "echartsContainer",
+    "dataEcharts"
+);
 
 
 
-
-//增加缩进/展开功能
-	$("#hideList").bind("click", function(){
-	     var windowW = $(window).width();
-		if($(".bootstrap-table").css("display") == 'none') { //显示
-            gb.lock=false;          //开放 缩放功能
-			$(".bootstrap-table").show();
-			$("#hideList > img").attr("src", "/static/img/left.png").attr("title", "缩进");
-			$("#button").show();
-			$("#delBtn").show();
-			$("#refBtn").show();
-			$(".hiddenClass").show();
-			widewsPercentage[0]=widewsPercentage[1];
-		}else {                                             //隐藏
-            gb.lock=true;           //关闭缩放功能
-			$(".bootstrap-table").hide();
-			$("#hideList > img").attr("src", "/static/img/right.png").attr("title", "展开");
-			$("#button").hide();
-			$("#delBtn").hide();
-			$("#refBtn").hide();
-			$(".hiddenClass").hide();
-			widewsPercentage[0]=100*28/windowW;     //计算一个合适的比例，使缩放按钮可以正常显示
-		}
-	});

@@ -1,26 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!--    <meta charset="UTF-8">-->
+    <!--    <meta charset="UTF-8">-->
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>map8</title>
 
     <script type="text/javascript" src="/static/js/echarts2.2.7/echarts-all.js"></script>
     <script type="text/javascript" src="/static/resource/jquery/jquery.min.js"></script>
     <!--layui-->
-    <script type="text/javascript" src="/static/layui2.5.4/layui.all.min.js"></script>
-    <link href="/static/layui2.5.4/css/layui.css" rel="stylesheet" />
-    <link href="/static/resource/bootstrap/css/bootstrap.css" rel="stylesheet" />
-    <link href="/static/resource/css/handler.css" rel="stylesheet" />
+
+    <link href="/static/layui2.5.4/css/layui.css" rel="stylesheet"/>
+    <link href="/static/resource/bootstrap/css/bootstrap.css" rel="stylesheet"/>
+    <link href="/static/resource/css/frame.css" rel="stylesheet"/>
+
+    <!---->
+    <link href="/static/resource/css/handler.css" rel="stylesheet"/>
+    <style>
+        .layui-form-onswitch {
+            border-color: #333;
+            background-color: #333
+        }
+
+        .layui-form-switch {
+            /*margin-bottom: 10px;*/
+        }
+
+
+
+    </style>
 </head>
- <header class="navbar navbar-fixed-top navbar-inverse" id = "headerContainer">
-  </header>
+<header class="navbar navbar-fixed-top navbar-inverse" id="headerContainer">
+</header>
 <body>
-<div id="main-container">
-    <div class="" id="table-container" style="width: 40%; ">
-        <div style="height: 60%;weight:100%;overflow:auto;background:#e8e8e8;">
-            <div class="btn-group">
-                <button id="button" type="button" class="layui-btn layui-btn-radius" data-toggle="modal" data-target="#myModal"
+<div id="mainContainer">
+    <div class="" id="tableContainer" style="width: 40%; ">
+        <div style="weight:100%;overflow:auto;background:#e8e8e8;">
+            <div id="operationBtnGroup">
+                <button id="addBtn" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal"
                         style="margin-top:2px;margin-left:5px;float:left;">新增
                 </button>
                 <button id="delBtn" type="button" class="btn btn-danger"
@@ -30,43 +46,23 @@
                         style="margin-top:2px;margin-left:5px;float:left;" onclick="refBtnFn()">刷新
                 </button>
 
-                <div class="btn-group hiddenClass">
-                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false"
-                            style="margin-top:2px;margin-left:5px;float:left;">
-                        背景 <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu">
-                        <li id="black_li"><a href="#">黑色</a></li>
-                        <li id="white_li"><a href="#">白色</a></li>
-                    </ul>
+                <div style="margin-left:5px;float: left;" class="  layui-form ">
+                    <input type="checkbox" name="zzz" lay-skin="switch" lay-text="黑色|白色">
                 </div>
-
+                <span id="hideBtn" style="float:right;cursor: pointer;"><img src="/static/img/left.png"
+                                                                             title="缩进"/></span>
             </div>
-            <span id="hideList" style="float:right;cursor: pointer;"><img src="/static/img/left.png" title="缩进"/></span>
-            <table id="tableContainer"></table>
+            <table id="dataTable"></table>
         </div>
     </div>
     <div id="h-handler" class="handler" style="left: 40%;"></div>
-    <div id="mapDiv" class="right-container" style="width: 60%;left: 40%;  ">
-        <div id="echartsContainer" style="height: 30%;weight:100%;">  <!--  echarts容器  -->
+    <div id="echartsContainer" class="right-container" style="width: 60%;left: 40%;  ">
+        <div id="dataEcharts" style="height: 30%;weight:100%;">  <!--  echarts容器  -->
         </div>
     </div>
 </div>
-
-</body>
-
-
+<script type="text/javascript" src="/static/layui2.5.4/layui.all.js"></script>
+<script type="text/javascript" src="/static/common/js/frame.js"></script>
 <script type="text/javascript" src="/static/app/map8/map8.js"></script>
- <script type="text/javascript">
-            // 初始化header 导航栏
-            $(document).ready(function(){
-                $("#headerContainer").load("/static/common/html/header.html");
-                //初始化上传组件
-                // initUpload("excelFile","/uploadExcelInMap7");
-                // initEvent();//初始化事件绑定,缩进/展开功能
-                // initEventHandler("h-handler"); //绑定缩放功能
-                // initPageData();  //   调用初始化页面
-            });
-    </script>
+</body>
 </html>

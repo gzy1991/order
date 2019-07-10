@@ -1,6 +1,6 @@
 
 /**
- * Created by gzy on 2018/12/13
+ * Created by gzy on
  */
 
 
@@ -51,7 +51,6 @@ var  geoData=[
     {name:"Beijing",selected:true }
     ,{name:"北京",selected:true }
 ];
-var curIndex=0;             //滚动轴当前项,默认是第一个
 var seriesData =[];         //  容器，存储 数据
 var unit='';  //单位
 var nameMap={  //地图省份名字映射关系
@@ -503,7 +502,7 @@ var convertData = function(n){
 
 }
 
-//获取页面表格数据
+// 获取页面表格数据
 var initPageData=function(){
 	$.ajax({
         type:"GET",
