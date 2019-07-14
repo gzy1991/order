@@ -4,15 +4,12 @@
     <!--    <meta charset="UTF-8">-->
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>map8</title>
-
     <script type="text/javascript" src="/static/js/echarts2.2.7/echarts-all.js"></script>
     <script type="text/javascript" src="/static/resource/jquery/jquery.min.js"></script>
     <!--layui-->
-
     <link href="/static/layui2.5.4/css/layui.css" rel="stylesheet"/>
     <link href="/static/resource/bootstrap/css/bootstrap.css" rel="stylesheet"/>
     <link href="/static/resource/css/frame.css" rel="stylesheet"/>
-
     <!---->
     <link href="/static/resource/css/handler.css" rel="stylesheet"/>
     <style>
@@ -33,34 +30,38 @@
 </header>
 <body>
 <div id="mainContainer">
-    <div class="" id="tableContainer" style="width: 40%; ">
+    <div class="" id="tableContainer" style="width: 30%; ">
         <div style="weight:100%;overflow:auto;background:#e8e8e8;">
-            <div id="operationBtnGroup">
-                <button id="addBtn" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal"
+            <div id="operationBtnGroup" >
+                <!--data-toggle="modal" data-target="#myModal"-->
+                <button id="addBtn" type="button" class="btn btn-primary"
                         style="margin-top:2px;margin-left:5px;float:left;">新增
                 </button>
                 <button id="delBtn" type="button" class="btn btn-danger"
                         style="margin-top:2px;margin-left:5px;float:left;">删除
                 </button>
                 <button id="refBtn" type="button" class="btn btn-success"
-                        style="margin-top:2px;margin-left:5px;float:left;" onclick="refBtnFn()">刷新
+                        style="margin-top:2px;margin-left:5px;float:left;" >刷新
                 </button>
 
                 <div style="margin-left:5px;float: left;" class="  layui-form ">
                     <input type="checkbox" name="zzz" lay-skin="switch" lay-text="黑色|白色">
                 </div>
-                <span id="hideBtn" style="float:right;cursor: pointer;"><img src="/static/img/left.png"
-                                                                             title="缩进"/></span>
+
             </div>
+            <span id="hideBtn" style="float:right;cursor: pointer;"><img src="/static/img/left.png"
+                                                                             title="缩进"/></span>
             <table id="dataTable"></table>
         </div>
     </div>
-    <div id="h-handler" class="handler" style="left: 40%;"></div>
-    <div id="echartsContainer" class="right-container" style="width: 60%;left: 40%;  ">
+    <div id="h-handler" class="handler" style="left: 30%;"></div>
+    <div id="echartsContainer" class="right-container" style="width: 70%;left: 30%;  ">
         <div id="dataEcharts" style="height: 30%;weight:100%;">  <!--  echarts容器  -->
         </div>
     </div>
 </div>
+<script type="text/javascript" src="/static/resource/bootstrap-table/bootstrap-table.js"></script>
+<link href="/static/resource/bootstrap-table/bootstrap-table.css" rel="stylesheet" />
 <script type="text/javascript" src="/static/layui2.5.4/layui.all.js"></script>
 <script type="text/javascript" src="/static/common/js/frame.js"></script>
 <script type="text/javascript" src="/static/app/map8/map8.js"></script>

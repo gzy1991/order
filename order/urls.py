@@ -26,11 +26,15 @@ import  manage.map5.views  as map5
 import  manage.map6.views  as map6
 import  manage.map7.views  as map7
 import  manage.map8.views  as map8
+import  manage.common.commonViews  as commonView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     #公共资源
     #url(r'^header/$',map1.getHeader),  # 获取导航栏 header.html
+
+    # 公共方法
+    url(r'^deleteDataByDirAndName/$',commonView.deleteData),  #删除数据
 
     #首页 home
     url(r'^home/$',home.getPage),
