@@ -38,6 +38,10 @@ var _initTable = null;
 *   mainContainer ：页面容器id
 *   tableContainer ：左侧 容器id
 *   operationBtnGroup ：操作按钮 容器id
+*   addBtn ：新增按钮 容器id
+*   delBtn ：删除按钮 容器id
+*   refBtn ：刷新按钮 容器id
+*   backgroundSwitch ：背景切换按钮 容器id
 *   hideBtn ：缩放按钮 id
 *   dataTable : 左侧表格id
 *   handler : 分割线的 id
@@ -55,6 +59,7 @@ var initFrame = function (
     addBtn,
     delBtn,
     refBtn,
+    backgroundSwitch,
     hideBtn,
     dataTable,
     handler,
@@ -68,6 +73,7 @@ var initFrame = function (
     _config.mainContainer = mainContainer;
     _config.tableContainer = tableContainer;
     _config.operationBtnGroup = operationBtnGroup;
+    _config.backgroundSwitch = backgroundSwitch;
     _config.hideBtn = hideBtn;
     _config.dataTable = dataTable;
     _config.handler = handler;
@@ -76,31 +82,31 @@ var initFrame = function (
     _config.echartsObjId = echartsObjId; //echarts实例的id
     _initEchart = initEchart;
 
-    leftMinWidth = $("#" + operationBtnGroup).width()
-        + $("#" + hideBtn).width()
-        + $("#" + handler).width();//左侧按钮区的最小宽度
+    leftMinWidth = $("#" + _config.operationBtnGroup).width()
+        + $("#" + _config.hideBtn).width()
+        + $("#" + _config.handler).width();//左侧按钮区的最小宽度
 
     _dom = document.getElementById(echartId);
     /*  缩进/展开功能   */
-    $("#" + hideBtn).bind("click", function () {
+    $("#" + _config.hideBtn).bind("click", function () {
         var windowW = $(window).width();
         if (!gb.showFlag) { //显示
             gb.lock = false;          //开放 缩放功能
             gb.showFlag = true;
-            $("#" + tableContainer).show();
+            $("#" + _config.tableContainer).show();
             $(".bootstrap-table").show();
-            $("#" + hideBtn + " > img").attr("src", "/static/img/left.png").attr("title", "缩进");
-            $("#" + operationBtnGroup + " button").show();
-            $("#" + operationBtnGroup + " div").show();
+            $("#" + _config.hideBtn + " > img").attr("src", "/static/img/left.png").attr("title", "缩进");
+            $("#" + _config.operationBtnGroup + " button").show();
+            $("#" + _config.operationBtnGroup + " div").show();
             widewsPercentage[0] = widewsPercentage[1];
         } else {                                             //隐藏
             gb.lock = true;           //关闭缩放功能
             gb.showFlag = false;
-            $("#" + hideBtn + " > img").attr("src", "/static/img/right.png").attr("title", "展开");
+            $("#" + _config.hideBtn + " > img").attr("src", "/static/img/right.png").attr("title", "展开");
             $(".bootstrap-table").hide();
-            $("#" + operationBtnGroup + " button").hide();
-            $("#" + operationBtnGroup + " div").hide();
-            $("#" + hideBtn).show();
+            $("#" + _config.operationBtnGroup + " button").hide();
+            $("#" + _config.operationBtnGroup + " div").hide();
+            $("#" + _config.hideBtn).show();
             widewsPercentage[0] = 100 * 28 / windowW;     //计算一个合适的比例，使缩放按钮可以正常显示
         }
         adjustScrollPage();
@@ -135,23 +141,21 @@ var initFrame = function (
     }
 
     /*新增功能*/
-    $("#" + addBtn).bind("click", function () {
+    $("#" + _config.addBtn).bind("click", function () {
         //页面层
         layer.open({
             id: "uploadData",
             type: 1,
             title: "新增数据",
             resize: false,
-            shade: 0.5,//遮罩层
-            skin: 'layui-layer-rim', //加上边框
-            area: ['580px', '550px'], //宽 高
+            shade: 0.5,                 //遮罩层 灰度
+            skin: 'layui-layer-rim',    //加上边框
+            area: ['580px', '550px'],   //宽  ， 高
             content: '' +
                 '<div class="modal-body"> ' +
-                //'    <a   class="form-control" style="border:none;">选择要上传的excel文件</a> ' +
                 '    <input type="file" name="excelFile" id="excelFile" multiple class="file-loading" /> ' +
                 '</div> ',
             success: function (layero, index) {
-                console.log("layer.open success");
                 var control = $('#' + "excelFile");
                 $("#excelFile").fileinput({
                     language: 'zh', //设置语言
@@ -187,7 +191,7 @@ var initFrame = function (
     })
 
     /*删除功能*/
-    $("#" + delBtn).bind("click", function () {
+    $("#" + _config.delBtn).bind("click", function () {
         //delBtnFn("tableContainer","deleteResult","deleteModel","/deleteDataInMap7",refBtnFn);
         var selectedData = $('#' + _config.dataTable).bootstrapTable('getSelections');
         if (typeof selectedData === null || selectedData.length == 0) {
@@ -235,10 +239,27 @@ var initFrame = function (
     })
 
     /*刷新功能*/
-    $("#" + refBtn).bind("click", function () {
+    $("#" + _config.refBtn).bind("click", function () {
         layer.msg("正在刷新");
         initPageData(_config.url, "正在刷新...");/*刷新左侧表格*/
     })
+
+    /*背景切换*/
+    var form = layui.form;
+    form.on('switch(backgroundSwitch)', function (data) { //监听指定开关
+        var value= this.checked;
+        if(value){      //切换成黑色
+
+        }else{          //切换成白色
+
+        }
+
+        layer.msg('开关checked：' + (this.checked ? 'true' : 'false'), {
+            offset: '6px'
+        });
+        // layer.tips('温馨提示：请注意开关状态的文字可以随意定义，而不仅仅是ON|OFF', data.othis)
+    });
+
 }
 
 //页面自适应

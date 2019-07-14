@@ -245,6 +245,7 @@ initFrame(
     "addBtn",
     "delBtn",
     "refBtn",
+    "backgroundSwitch",
     "hideBtn",
     "dataTable",
     "h-handler",

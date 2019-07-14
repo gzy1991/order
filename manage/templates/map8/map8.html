@@ -25,12 +25,12 @@
         .layui-layer .layui-layer-title{/* 新增按钮 ，弹出框，title的字体大小*/
             font-size:18px
         }
-/*
-        .layui-layer-btn .layui-layer-btn0{
-            background-color:#d9534f ;
-            border-color:#d9534f
-        }
-*/
+        /*
+                .layui-layer-btn .layui-layer-btn0{
+                    background-color:#d9534f ;
+                    border-color:#d9534f
+                }
+        */
 
     </style>
 </head>
@@ -53,12 +53,12 @@
                 </button>
 
                 <div style="margin-left:5px;float: left;" class="  layui-form ">
-                    <input type="checkbox" name="zzz" lay-skin="switch" lay-text="黑色|白色">
+                    <input id="backgroundSwitch" type="checkbox" name="open" lay-skin="switch" lay-filter="backgroundSwitch" lay-text="黑色|白色">
                 </div>
 
             </div>
             <span id="hideBtn" style="float:right;cursor: pointer;"><img src="/static/img/left.png"
-                                                                             title="缩进"/></span>
+                                                                         title="缩进"/></span>
             <table id="dataTable"></table>
         </div>
     </div>
