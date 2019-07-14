@@ -35,6 +35,7 @@ urlpatterns = [
 
     # 公共方法
     url(r'^deleteDataByDirAndName/$',commonView.deleteData),  #删除数据
+    url(r'^uploadDataByDirAndName/$',commonView.uploadData),  #新增数据
 
     #首页 home
     url(r'^home/$',home.getPage),

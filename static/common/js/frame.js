@@ -136,6 +136,53 @@ var initFrame = function (
 
     /*新增功能*/
     $("#" + addBtn).bind("click", function () {
+        //页面层
+        layer.open({
+            id: "uploadData",
+            type: 1,
+            title: "新增数据",
+            resize: false,
+            shade: 0.5,//遮罩层
+            skin: 'layui-layer-rim', //加上边框
+            area: ['580px', '550px'], //宽 高
+            content: '' +
+                '<div class="modal-body"> ' +
+                //'    <a   class="form-control" style="border:none;">选择要上传的excel文件</a> ' +
+                '    <input type="file" name="excelFile" id="excelFile" multiple class="file-loading" /> ' +
+                '</div> ',
+            success: function (layero, index) {
+                console.log("layer.open success");
+                var control = $('#' + "excelFile");
+                $("#excelFile").fileinput({
+                    language: 'zh', //设置语言
+                    uploadUrl: "/uploadDataByDirAndName/",  //上传的地址
+                    showUpload: true,
+                    maxFileCount: 1,
+                    maxFileSize: 10000,  //单位为kb，如果为0表示不限制文件大小
+                    enctype: 'multipart/form-data',
+                    allowedFileExtensions: ['xlsx', 'xls'],//接收的文件后缀
+                    mainClass: "input-group-lg",
+                    uploadExtraData: function () {////传参
+                        var data = { //此处自定义传参
+                            mapDir: _config.mapDir
+                        };
+                        return data;
+                    }
+                }).on("fileuploaded", function (event, data, previewId, index) {
+                    //上传结果处理
+                    layer.open({  /*  展示处理结果信息  */
+                        title: '上传结果',
+                        content: data.response.message
+                    });
+                    if ("true" == data.response.result) { //刷新表格
+                        initPageData(_config.url, "正在刷新...");/*刷新左侧表格*/
+                    } else if ("false" == data.response.result) {
+                        //不操作
+                    }
+                })
+            },
+            btn: ['关闭'] //可以无限个按钮
+        });
 
     })
 
@@ -165,7 +212,7 @@ var initFrame = function (
                     url: "/deleteDataByDirAndName",
                     data: {
                         fileNameList: data,
-                        mapDir:_config.mapDir
+                        mapDir: _config.mapDir
                     },
                     success: function (data) {
                         layer.close(index);  //关闭loading
@@ -174,7 +221,7 @@ var initFrame = function (
                             content: data
                         });
                         layer.msg("正在刷新");
-                        initPageData(_config.url,"正在刷新...");/*刷新左侧表格*/
+                        initPageData(_config.url, "正在刷新...");/*刷新左侧表格*/
                         layer.close(index); //关闭confir弹出框
                     }
 
@@ -190,7 +237,7 @@ var initFrame = function (
     /*刷新功能*/
     $("#" + refBtn).bind("click", function () {
         layer.msg("正在刷新");
-        initPageData(_config.url,"正在刷新...");/*刷新左侧表格*/
+        initPageData(_config.url, "正在刷新...");/*刷新左侧表格*/
     })
 }
 
@@ -237,12 +284,12 @@ var calculateMinPercentage = function () {
 *   url: 数据url
 *
 *   */
-var initPageData = function (url,msg) {
-    if(_config.url == undefined){
+var initPageData = function (url, msg) {
+    if (_config.url == undefined) {
         _config.url = url;
     }
-    if(msg==undefined){
-        msg="数据加载中"
+    if (msg == undefined) {
+        msg = "数据加载中"
     }
     //layer.msg(msg);
     var index = layer.load(1); //打开loading
@@ -253,18 +300,16 @@ var initPageData = function (url,msg) {
         success: function (data) {
             console.log(_config.url + "  扫描成功");
             tableDatas = JSON.parse(data);
-            // setTimeout(function () {
-                layer.close(index);  //关闭loading
-                initTable(tableDatas);
-                calculateMinPercentage();//计算窗体左右比例的最小值
-                setSplitPosition(MinPercentage);//根据窗体左右比例的最小值，设置窗口比例
-                adjustScrollPage(); //页面自适应
-                //页面加载完
-                $(function () {
-                    $(".fixed-table-body").css("overflow", "hidden");
-                    $("#" + _config.dataTable + " > tbody > tr > td").css("cursor", "pointer");
-                });
-            // }, 200)
+            layer.close(index);  //关闭loading
+            initTable(tableDatas);
+            calculateMinPercentage();//计算窗体左右比例的最小值
+            setSplitPosition(MinPercentage);//根据窗体左右比例的最小值，设置窗口比例
+            adjustScrollPage(); //页面自适应
+            //页面加载完
+            $(function () {
+                $(".fixed-table-body").css("overflow", "hidden");
+                $("#" + _config.dataTable + " > tbody > tr > td").css("cursor", "pointer");
+            });
         }
     })
 }
