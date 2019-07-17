@@ -75,6 +75,9 @@ var initFrame = function (
     _config.tableContainer = tableContainer;
     _config.operationBtnGroup = operationBtnGroup;
     _config.backgroundSwitch = backgroundSwitch;
+    _config.addBtn = addBtn;
+    _config.delBtn = delBtn;
+    _config.refBtn = refBtn;
     _config.hideBtn = hideBtn;
     _config.dataTable = dataTable;
     _config.handler = handler;
@@ -251,17 +254,64 @@ var initFrame = function (
         _echart = echarts.getInstanceById(_config.echartsObjId);
         //_echart.resize();
         if(value){      //切换成黑色
+            textColor='#ccc'
+            backgroundColor="#404a59"
+            emphasisColor='#aaa'
+            textEmphasisColor ='#fff'
             //_echart.setTheme("dark");
-            _echart.setOption({
-                backgroundColor: '#1b1b1b',
-            })
-        }else{          //切换成白色
-            //_echart.setTheme("red");
 
+        }else{          //切换成白色
+            textColor='#444444'
+            backgroundColor="#C1C1C1"
+            emphasisColor='#555555'
+            textEmphasisColor = "#000000"
         }
-        layer.msg('开关checked：' + (this.checked ? 'true' : 'false'), {
+         _echart.setOption({
+                backgroundColor: backgroundColor,
+                /*timeline:{
+                    lineStyle: {        //轴线
+                        color: textColor
+                    },
+                    label: {
+                        normal: {
+                            textStyle: {
+                                fontFamily:"Times New Roman",	//字体
+                                color: textColor
+                            }
+                        },
+                        emphasis: {
+                            textStyle: {
+                                fontFamily:"Times New Roman",	//字体
+                                color: textEmphasisColor
+                            }
+                        }
+                    },
+                    symbol: 'none',     //timeline标记的图形
+                    lineStyle: {        //轴线
+                        color: textColor
+                    },
+                    checkpointStyle: {      //『当前项』（checkpoint）的图形样式
+                        color: textColor,
+                        borderColor: '#777',
+                        borderWidth: 2
+                    },
+                    controlStyle: { //播放按钮
+                        showNextBtn: false,
+                        showPrevBtn: false,
+                        normal: {
+                            color: textColor,
+                            borderColor: textColor
+                        },
+                        emphasis: {
+                            color: emphasisColor,
+                            borderColor:emphasisColor
+                        }
+                    }
+                }*/
+            })
+        /*layer.msg('开关checked：' + (this.checked ? 'true' : 'false'), {
             offset: '6px'
-        });
+        });*/
         // layer.tips('温馨提示：请注意开关状态的文字可以随意定义，而不仅仅是ON|OFF', data.othis)
     });
 

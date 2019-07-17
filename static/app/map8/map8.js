@@ -10,7 +10,7 @@ var unit = '';  //单位
 
 /*      echarts数据       */
 var dom = document.getElementById("dataEcharts");
-var myChart = echarts.init(dom,"red");
+ var myChart = echarts.init(dom);
 var option = null,
     baseColors = [
         //'rgb(194,53,49)',
@@ -135,13 +135,14 @@ var initEchart = function (row) {
         myChart.dispose();
     }
     dom = document.getElementById("dataEcharts");
-    myChart = echarts.init(dom,"red");
+    myChart = echarts.init(dom);
     var nodesList = [];
     $.each(row.cityList, function (i, item) {
         nodesList.push({name: item})
     })
     generateColors(row.cityInfo);
     option = {
+        /*backgroundColor:"#C1C1C1",*/
         timeline: {
             data: row.timeline,
             label: {
@@ -158,6 +159,7 @@ var initEchart = function (row) {
         },
         options: [
             {
+                backgroundColor:"#C1C1C1",
                 color: colors,
                 title: {
                     // text:'2002 测试数据1',
@@ -233,7 +235,7 @@ var initEchart = function (row) {
         })
     }
     myChart.setOption(option);
-    myChart.setTheme("red");
+    /*myChart.setTheme("red");*/
 }
 
 /*初始化页面框架*/
