@@ -10,7 +10,7 @@ var unit = '';  //单位
 
 /*      echarts数据       */
 var dom = document.getElementById("dataEcharts");
-var myChart = echarts.init(dom);
+var myChart = echarts.init(dom,"red");
 var option = null,
     baseColors = [
         //'rgb(194,53,49)',
@@ -135,8 +135,7 @@ var initEchart = function (row) {
         myChart.dispose();
     }
     dom = document.getElementById("dataEcharts");
-    myChart = echarts.init(dom);
-    ;
+    myChart = echarts.init(dom,"red");
     var nodesList = [];
     $.each(row.cityList, function (i, item) {
         nodesList.push({name: item})
@@ -234,6 +233,7 @@ var initEchart = function (row) {
         })
     }
     myChart.setOption(option);
+    myChart.setTheme("red");
 }
 
 /*初始化页面框架*/

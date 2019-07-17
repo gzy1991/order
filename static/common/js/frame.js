@@ -35,6 +35,7 @@ var gb = {
 var _initTable = null;
 
 /* 页面框架  初始化
+*   mapDir ：词实例，对应的 标记，在settings.py中，存储了对应的路径
 *   mainContainer ：页面容器id
 *   tableContainer ：左侧 容器id
 *   operationBtnGroup ：操作按钮 容器id
@@ -192,7 +193,6 @@ var initFrame = function (
 
     /*删除功能*/
     $("#" + _config.delBtn).bind("click", function () {
-        //delBtnFn("tableContainer","deleteResult","deleteModel","/deleteDataInMap7",refBtnFn);
         var selectedData = $('#' + _config.dataTable).bootstrapTable('getSelections');
         if (typeof selectedData === null || selectedData.length == 0) {
             layer.open({
@@ -248,12 +248,17 @@ var initFrame = function (
     var form = layui.form;
     form.on('switch(backgroundSwitch)', function (data) { //监听指定开关
         var value= this.checked;
+        _echart = echarts.getInstanceById(_config.echartsObjId);
+        //_echart.resize();
         if(value){      //切换成黑色
-
+            //_echart.setTheme("dark");
+            _echart.setOption({
+                backgroundColor: '#1b1b1b',
+            })
         }else{          //切换成白色
+            //_echart.setTheme("red");
 
         }
-
         layer.msg('开关checked：' + (this.checked ? 'true' : 'false'), {
             offset: '6px'
         });
