@@ -4,52 +4,36 @@
 
 /*地图全局数据*/
 var datas; 		 		//  容器，存储了表格的全部数据，
-var selectedRow;   		//  table中选中的那一行 的行数据
 var seriesData = [];         //  容器，存储 数据
 var unit = '';  //单位
 
 /*      echarts数据       */
 var dom = document.getElementById("dataEcharts");
  var myChart = echarts.init(dom);
+ /*echarts 颜色数据*/
+var backgroundColor="#eaeaea";// #404a59 #C1C1C1
+var textColor="#444444";//  #ccc
+var emphasisColor="#555555";//  #aaa
+
+
 var option = null,
     baseColors = [
         //'rgb(194,53,49)',
         '#c23531',
-        '#2f4554',
-        '#61a0a8',
+        '#7b68ee',//2f4554
         '#d48265',
-        '#749f83',
+        '#32cd32',//61a0a8
+        '#6495ed',//
         '#ca8622',
         '#bda29a',
         '#6e7074',
         '#c4ccd3',
-        "#32cd32",
-        "#6495ed",
+        "#61a0a8",
+        "#749f83",//6495ed
         "#40e0d0",
-        "#7b68ee",
+        "#2f4554",
     ],
     colors = [
-        /* "#C23531",
-         "#ff7f50",
-         "#87cefa",
-         "#da70d6",
-         "#32cd32",
-         "#6495ed",
-         "#ff69b4",
-         "#ba55d3",
-         "#cd5c5c",
-         "#ffa500",
-         "#40e0d0",
-         "#1e90ff",
-         "#ff6347",
-         "#7b68ee",
-         "#00fa9a",
-         "#ffd700",
-         "#6699FF",
-         "#ff6666",
-         "#3cb371",
-         "#b8860b",
-         "#30e0e0"*/
     ],
     curColors = [];
 
@@ -76,8 +60,8 @@ function colorRGBtoHex(color) {
 }
 
 /* 通过基础色，生成相近的颜色
-*  baseColor : 例如:"#23ff45"
-*  index:同类型内，第几个   ，index>0
+*  baseColor : 基础色 例如:"#23ff45"
+*  index:同类型内，第几个   ，注意：index>0  最小是1
 * */
 function gengerateColorByBaseColor(baseColor, index) {
     var rgbColor = hexToRgb(baseColor);
@@ -142,7 +126,6 @@ var initEchart = function (row) {
     })
     generateColors(row.cityInfo);
     option = {
-        /*backgroundColor:"#C1C1C1",*/
         timeline: {
             data: row.timeline,
             label: {
@@ -150,8 +133,25 @@ var initEchart = function (row) {
                     return s.slice(0, 4);
                 },
                 textStyle: {
+                    color:textColor,
                     fontSize: 15,
                     fontFamily: "Times New Roman"//字体
+                }
+            },
+            lineStyle: {        //轴线
+                    color: textColor
+            },
+            checkpointStyle: {      //『当前项』（checkpoint）的图形样式
+                color: textColor,
+                borderColor: '#777',
+                borderWidth: 2
+            },
+            controlStyle: { //播放按钮
+                normal: {
+                    color: textColor
+                },
+                emphasis: {
+                    color: emphasisColor
                 }
             },
             autoPlay: true,
@@ -159,24 +159,30 @@ var initEchart = function (row) {
         },
         options: [
             {
-                backgroundColor:"#C1C1C1",
+                backgroundColor:backgroundColor, /*背景*/
                 color: colors,
                 title: {
-                    // text:'2002 测试数据1',
                     text: row.timeline[0] + "年" + row.title,
-                    // subtext:'单位:百万',
                     subtext: '单位:' + row.unit,
                     textStyle: {
+                        color:textColor,
                         fontFamily: "Times New Roman"//字体
                     },
                     subtextStyle: {
+                        color:textColor,
                         fontFamily: "Times New Roman"//字体
                     },
                     x: '50',
                     y: '50'
                 },
-                tooltip: {
+                tooltip: {  /*提示框*/
                     trigger: 'item',
+                    backgroundColor:textColor,
+                    textStyle: {
+                        color:backgroundColor,
+                        fontWeight:"bold",
+                        fontFamily: "Times New Roman"//字体
+                    },
                     formatter: function (params) {
                         if (params.indicator2) { // is edge
                             return params.name + ":" + params.value.weight;
@@ -185,11 +191,10 @@ var initEchart = function (row) {
                         }
                     }
                 },
-                legend: {
+                legend: { /*图例*/
                     x: '50',
                     y: '150',
                     orient: 'vertical',
-                    // data:['city1','city2','city3','city4'],
                     data: row.cityList,
                     textStyle: {
                         color: "auto",
@@ -210,7 +215,7 @@ var initEchart = function (row) {
                                     show: true,
                                     textStyle: {
                                         fontFamily: "Times New Roman",//字体
-                                        //color:"red",
+                                        color:textColor,
                                         fontSize: 20
                                     }
                                 }
@@ -238,6 +243,21 @@ var initEchart = function (row) {
     /*myChart.setTheme("red");*/
 }
 
+/*设置背景色
+*
+* type:  white:白色背景    dark：黑色背景
+* */
+var setBackGroundColor = function(type){
+    if(type=="white"){   /*设置为白色背景*/
+        backgroundColor="#eaeaea";//
+        textColor="#444444";//
+        emphasisColor="#555555";//
+    }else if(type="dark"){  /*设置为黑色背景*/
+        backgroundColor="#404a59";//
+        textColor="#ccc";//
+        emphasisColor="#aaa";//
+    }
+
 /*初始化页面框架*/
 initFrame(
     "MAP8_DIR",
@@ -254,7 +274,8 @@ initFrame(
     "echartsContainer",
     "dataEcharts",
     myChart.id,
-    initEchart
+    initEchart,
+    setBackGroundColor
 );
 
 /*初始化页面数据  左侧表格数据*/

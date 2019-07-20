@@ -14,6 +14,8 @@ $(document).ready(function () {
 });
 /*  页面全局 参数   */
 var tableDatas; /* 页面 左侧表格的数据  */
+var selectedRow;   		//  table中选中的那一行 的行数据
+
 var widewsPercentage = [30, 30];       //存储窗体当前的左右比例    初始化,左边是 30%  。记录两个30，是因为点击缩放按钮的时候，需要记录点击之前的比例和点击之后的比例。
 var leftMinWidth;//左侧按钮区的最小宽度
 var MinPercentage = 0.3;//窗体左右比例的最小值，默认是0.3，打开页面的时候，要初始化
@@ -22,6 +24,8 @@ var _config = {};            /*配置信息，存储页面上 各id， 以及ech
 /*echarts 数据*/
 var _dom;
 var _echart;
+var _initEchart;                 /*函数：根据一行数据，初始化echarts*/
+var _setBackGroundColor;        /*函数：设置背景颜色*/
 /* 锁 数据区 */
 var gb = {
     handler: {          //一个锁
@@ -50,6 +54,7 @@ var _initTable = null;
 *   echartId ： echarts 容器id
 *   echartsObjId: echarts实例对象id
 *   initEchart: echarts绘制函数
+*   setBackGroundColor: echarts的背景等颜色设置
 * */
 
 var initFrame = function (
@@ -67,7 +72,8 @@ var initFrame = function (
     echartsContainer,
     echartId,
     echartsObjId,
-    initEchart   //函数：根据表格的一行数据，绘制echarts
+    initEchart,   //函数：根据表格的一行数据，绘制echarts
+    setBackGroundColor
 ) {
     /*记录参数*/
     _config.mapDir = mapDir;
@@ -85,6 +91,7 @@ var initFrame = function (
     _config.echartId = echartId;     //echarts div的id
     _config.echartsObjId = echartsObjId; //echarts实例的id
     _initEchart = initEchart;
+    _setBackGroundColor = setBackGroundColor;
 
     leftMinWidth = $("#" + _config.operationBtnGroup).width()
         + $("#" + _config.hideBtn).width()
@@ -254,67 +261,18 @@ var initFrame = function (
         _echart = echarts.getInstanceById(_config.echartsObjId);
         //_echart.resize();
         if(value){      //切换成黑色
-            textColor='#ccc'
-            backgroundColor="#404a59"
-            emphasisColor='#aaa'
-            textEmphasisColor ='#fff'
-            //_echart.setTheme("dark");
-
+            if (typeof (_setBackGroundColor) == "function") {
+                _setBackGroundColor("dark");
+            }
         }else{          //切换成白色
-            textColor='#444444'
-            backgroundColor="#C1C1C1"
-            emphasisColor='#555555'
-            textEmphasisColor = "#000000"
+            if (typeof (_setBackGroundColor) == "function") {
+                _setBackGroundColor("white");
+            }
         }
-         _echart.setOption({
-                backgroundColor: backgroundColor,
-                /*timeline:{
-                    lineStyle: {        //轴线
-                        color: textColor
-                    },
-                    label: {
-                        normal: {
-                            textStyle: {
-                                fontFamily:"Times New Roman",	//字体
-                                color: textColor
-                            }
-                        },
-                        emphasis: {
-                            textStyle: {
-                                fontFamily:"Times New Roman",	//字体
-                                color: textEmphasisColor
-                            }
-                        }
-                    },
-                    symbol: 'none',     //timeline标记的图形
-                    lineStyle: {        //轴线
-                        color: textColor
-                    },
-                    checkpointStyle: {      //『当前项』（checkpoint）的图形样式
-                        color: textColor,
-                        borderColor: '#777',
-                        borderWidth: 2
-                    },
-                    controlStyle: { //播放按钮
-                        showNextBtn: false,
-                        showPrevBtn: false,
-                        normal: {
-                            color: textColor,
-                            borderColor: textColor
-                        },
-                        emphasis: {
-                            color: emphasisColor,
-                            borderColor:emphasisColor
-                        }
-                    }
-                }*/
-            })
-        /*layer.msg('开关checked：' + (this.checked ? 'true' : 'false'), {
-            offset: '6px'
-        });*/
-        // layer.tips('温馨提示：请注意开关状态的文字可以随意定义，而不仅仅是ON|OFF', data.othis)
+        if (typeof (_initEchart) == "function") {
+            _initEchart(selectedRow);    //初始化右侧echarts
+        }
     });
-
 }
 
 //页面自适应
