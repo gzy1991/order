@@ -9,11 +9,11 @@ var unit = '';  //单位
 
 /*      echarts数据       */
 var dom = document.getElementById("dataEcharts");
- var myChart = echarts.init(dom);
- /*echarts 颜色数据*/
-var backgroundColor="#eaeaea";// #404a59 #C1C1C1
-var textColor="#444444";//  #ccc
-var emphasisColor="#555555";//  #aaa
+var myChart = echarts.init(dom);
+/*echarts 颜色数据*/
+var backgroundColor = "#eaeaea";// #404a59 #C1C1C1
+var textColor = "#444444";//  #ccc
+var emphasisColor = "#555555";//  #aaa
 
 
 var option = null,
@@ -33,8 +33,7 @@ var option = null,
         "#40e0d0",
         "#2f4554",
     ],
-    colors = [
-    ],
+    colors = [],
     curColors = [];
 
 /**
@@ -69,15 +68,15 @@ function gengerateColorByBaseColor(baseColor, index) {
     var r = parseInt(rgb[0].split('(')[1]);
     var g = parseInt(rgb[1]);
     var b = parseInt(rgb[2].split(')')[0]);
-    if(r>=g && r>=b ){          /*修改 g和b*/
-        g= g+15*index <=255 ? g+15*index    :   g-15*(index-  parseInt((255-g)/15 ));
-        b= b+15*index <=255 ? b+15*index    :   b-15*(index-  parseInt((255-g)/15 ));
-    }else if(g>=r && g>=b){     /*修改 r和b*/
-        r= r+15*index <=255 ? r+15*index    :   r-15*(index-  parseInt((255-g)/15 ));
-        b= b+15*index <=255 ? b+15*index    :   b-15*(index-  parseInt((255-g)/15 ));
-    }else {                     /*修改 r和g*/
-        r= r+15*index <=255 ? r+15*index    :   r-15*(index-  parseInt((255-g)/15 ));
-        g= g+15*index <=255 ? g+15*index    :   g-15*(index-  parseInt((255-g)/15 ));
+    if (r >= g && r >= b) {          /*修改 g和b*/
+        g = g + 15 * index <= 255 ? g + 15 * index : g - 15 * (index - parseInt((255 - g) / 15));
+        b = b + 15 * index <= 255 ? b + 15 * index : b - 15 * (index - parseInt((255 - g) / 15));
+    } else if (g >= r && g >= b) {     /*修改 r和b*/
+        r = r + 15 * index <= 255 ? r + 15 * index : r - 15 * (index - parseInt((255 - g) / 15));
+        b = b + 15 * index <= 255 ? b + 15 * index : b - 15 * (index - parseInt((255 - g) / 15));
+    } else {                     /*修改 r和g*/
+        r = r + 15 * index <= 255 ? r + 15 * index : r - 15 * (index - parseInt((255 - g) / 15));
+        g = g + 15 * index <= 255 ? g + 15 * index : g - 15 * (index - parseInt((255 - g) / 15));
     }
     var hex = "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
     return hex;
@@ -106,7 +105,7 @@ function generateColors(cityInfos) {
         } else {
             baseColor = colorDivide[cityType];
             cityDivide[cityType].push(cityName);
-            var newColor = gengerateColorByBaseColor(baseColor,cityDivide[cityType].length);
+            var newColor = gengerateColorByBaseColor(baseColor, cityDivide[cityType].length);
             colors.push(newColor);  //同类型，其余的，用生成的颜色
         }
     })
@@ -133,13 +132,13 @@ var initEchart = function (row) {
                     return s.slice(0, 4);
                 },
                 textStyle: {
-                    color:textColor,
+                    color: textColor,
                     fontSize: 15,
                     fontFamily: "Times New Roman"//字体
                 }
             },
             lineStyle: {        //轴线
-                    color: textColor
+                color: textColor
             },
             checkpointStyle: {      //『当前项』（checkpoint）的图形样式
                 color: textColor,
@@ -159,17 +158,17 @@ var initEchart = function (row) {
         },
         options: [
             {
-                backgroundColor:backgroundColor, /*背景*/
+                backgroundColor: backgroundColor, /*背景*/
                 color: colors,
                 title: {
                     text: row.timeline[0] + "年" + row.title,
                     subtext: '单位:' + row.unit,
                     textStyle: {
-                        color:textColor,
+                        color: textColor,
                         fontFamily: "Times New Roman"//字体
                     },
                     subtextStyle: {
-                        color:textColor,
+                        color: textColor,
                         fontFamily: "Times New Roman"//字体
                     },
                     x: '50',
@@ -177,10 +176,10 @@ var initEchart = function (row) {
                 },
                 tooltip: {  /*提示框*/
                     trigger: 'item',
-                    backgroundColor:textColor,
+                    backgroundColor: textColor,
                     textStyle: {
-                        color:backgroundColor,
-                        fontWeight:"bold",
+                        color: backgroundColor,
+                        fontWeight: "bold",
                         fontFamily: "Times New Roman"//字体
                     },
                     formatter: function (params) {
@@ -215,7 +214,7 @@ var initEchart = function (row) {
                                     show: true,
                                     textStyle: {
                                         fontFamily: "Times New Roman",//字体
-                                        color:textColor,
+                                        color: textColor,
                                         fontSize: 20
                                     }
                                 }
@@ -247,17 +246,17 @@ var initEchart = function (row) {
 *
 * type:  white:白色背景    dark：黑色背景
 * */
-var setBackGroundColor = function(type){
-    if(type=="white"){   /*设置为白色背景*/
-        backgroundColor="#eaeaea";//
-        textColor="#444444";//
-        emphasisColor="#555555";//
-    }else if(type="dark"){  /*设置为黑色背景*/
-        backgroundColor="#404a59";//
-        textColor="#ccc";//
-        emphasisColor="#aaa";//
+var setBackGroundColor = function (type) {
+    if (type == "white") {   /*设置为白色背景*/
+        backgroundColor = "#eaeaea";//
+        textColor = "#444444";//
+        emphasisColor = "#555555";//
+    } else if (type = "dark") {  /*设置为黑色背景*/
+        backgroundColor = "#404a59";//
+        textColor = "#ccc";//
+        emphasisColor = "#aaa";//
     }
-
+}
 /*初始化页面框架*/
 initFrame(
     "MAP8_DIR",

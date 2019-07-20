@@ -257,14 +257,14 @@ var initFrame = function (
     /*背景切换*/
     var form = layui.form;
     form.on('switch(backgroundSwitch)', function (data) { //监听指定开关
-        var value= this.checked;
+        var value = this.checked;
         _echart = echarts.getInstanceById(_config.echartsObjId);
         //_echart.resize();
-        if(value){      //切换成黑色
+        if (value) {      //切换成黑色
             if (typeof (_setBackGroundColor) == "function") {
                 _setBackGroundColor("dark");
             }
-        }else{          //切换成白色
+        } else {          //切换成白色
             if (typeof (_setBackGroundColor) == "function") {
                 _setBackGroundColor("white");
             }
