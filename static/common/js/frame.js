@@ -13,8 +13,8 @@ $(document).ready(function () {
     $("#headerContainer").load("/static/common/html/header.html");
 });
 /*  页面全局 参数   */
-var tableDatas; /* 页面 左侧表格的数据  */
-var selectedRow;   		//  table中选中的那一行 的行数据
+var _tableDatas; /* 页面 左侧表格的数据  */
+var _selectedRow;   		//  table中选中的那一行 的行数据
 
 var widewsPercentage = [30, 30];       //存储窗体当前的左右比例    初始化,左边是 30%  。记录两个30，是因为点击缩放按钮的时候，需要记录点击之前的比例和点击之后的比例。
 var leftMinWidth;//左侧按钮区的最小宽度
@@ -270,7 +270,7 @@ var initFrame = function (
             }
         }
         if (typeof (_initEchart) == "function") {
-            _initEchart(selectedRow);    //初始化右侧echarts
+            _initEchart(_selectedRow);    //初始化右侧echarts
         }
     });
 }
@@ -333,9 +333,9 @@ var initPageData = function (url, msg) {
         url: _config.url,
         success: function (data) {
             console.log(_config.url + "  扫描成功");
-            tableDatas = JSON.parse(data);
+            _tableDatas = JSON.parse(data);
             layer.close(index);  //关闭loading
-            initTable(tableDatas);
+            initTable(_tableDatas);
             calculateMinPercentage();//计算窗体左右比例的最小值
             setSplitPosition(MinPercentage);//根据窗体左右比例的最小值，设置窗口比例
             adjustScrollPage(); //页面自适应
@@ -361,9 +361,9 @@ var initTable = function () {
             $('.info').removeClass('info');//移除class
             $($element).addClass('info');//添加class
             console.log("你点击了行：" + row.fileName);
-            selectedRow = row;
+            _selectedRow = row;
             if (typeof (_initEchart) == "function") {
-                _initEchart(selectedRow);    //初始化右侧echarts
+                _initEchart(_selectedRow);    //初始化右侧echarts
             }
         },
         columns: [{
@@ -372,14 +372,14 @@ var initTable = function () {
             field: 'fileName',
             title: '<span class="tabldTitle">Data List</span>'
         }],
-        data: tableDatas
+        data: _tableDatas
     });
     /*默认根据第一行数据  绘制 echarts图 */
-    if (tableDatas && tableDatas.length > 0) {
-        console.log("第一次初始化echart: " + tableDatas[0].fileName);
-        selectedRow = tableDatas[0];
+    if (_tableDatas && _tableDatas.length > 0) {
+        console.log("第一次初始化echart: " + _tableDatas[0].fileName);
+        _selectedRow = _tableDatas[0];
         if (typeof (_initEchart) == "function") {
-            _initEchart(selectedRow);    //初始化中国地图
+            _initEchart(_selectedRow);    //初始化中国地图
         }
     }
 

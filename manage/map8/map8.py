@@ -53,16 +53,26 @@ def getTableData():
                 print("Error: 文件有问题: " + file)
                 break
             else :      # 读取“item”
-                sheetData = ExcelTool.getNpArrayFromSheet(excelData,"item","name",0,2) #只有两列
+                sheetData = ExcelTool.getNpArrayFromSheet(excelData,"item","name",0,6) #只有6列
                 cityNum = sheetData.shape[0]  #   城市的数目
-                result['cityNum'] = cityNum  # 城市的数目
+                result['cityNum'] = cityNum     # 城市的数目
                 cityList = []
                 cityInfo=[]
                 for row in range(cityNum):
                     cityList.append(sheetData[row][0])  # 城市列表，有序
+                    # 第2行到第6行 可能会有数字，处理成字符串
+                    if(sheetData[row][1][ -2:] == ".0"):  sheetData[row][1]= sheetData[row][1][ 0:-2]
+                    if(sheetData[row][2][ -2:] == ".0"):  sheetData[row][2]= sheetData[row][2][ 0:-2]
+                    if(sheetData[row][3][ -2:] == ".0"):  sheetData[row][3]= sheetData[row][3][ 0:-2]
+                    if(sheetData[row][4][ -2:] == ".0"):  sheetData[row][4]= sheetData[row][4][ 0:-2]
+                    if(sheetData[row][5][ -2:] == ".0"):  sheetData[row][5]= sheetData[row][5][ 0:-2]
                     cityInfo.append([
                         sheetData[row][0],
-                        int(float(str(sheetData[row][1])))
+                        sheetData[row][1],
+                        sheetData[row][2],
+                        sheetData[row][3],
+                        sheetData[row][4],
+                        sheetData[row][5],
                     ])
                 result['cityList'] = cityList
                 result['cityInfo'] = cityInfo

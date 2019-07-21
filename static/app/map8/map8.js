@@ -171,22 +171,33 @@ var initEchart = function (row) {
                         color: textColor,
                         fontFamily: "Times New Roman"//字体
                     },
-                    x: '50',
-                    y: '50'
+                    x: 'center',
+                    y: 'top'
                 },
                 tooltip: {  /*提示框*/
                     trigger: 'item',
-                    backgroundColor: textColor,
+                    backgroundColor: backgroundColor ,
+                    // backgroundColor: gengerateColorByBaseColor(backgroundColor,2) ,
+                    borderColor:textColor,
+                    borderWidth:0,
+                    padding:10,//内边距
                     textStyle: {
-                        color: backgroundColor,
+                        color:  textColor,
                         fontWeight: "bold",
                         fontFamily: "Times New Roman"//字体
                     },
                     formatter: function (params) {
                         if (params.indicator2) { // is edge
-                            return params.name + ":" + params.value.weight;
+                            return params.name + ":" +  Math.floor(params.value.weight * 100) / 100 ;
                         } else {// is node
-                            return params.name
+                            debugger
+                            var cityInfo=_selectedRow.cityInfo;
+                            var cityList=_selectedRow.cityList;
+                            var index = cityList.indexOf(params.name);
+                            var info=cityInfo[index];
+                            return params.name+"， "+info[1]+"<br>"
+                            +"Inflow: "+info[2]+", OutFlow: "+info[3]+"<br>"
+                            +"Import: "+info[4]+", Export: "+info[5]+"<br>"
                         }
                     }
                 },
@@ -194,6 +205,8 @@ var initEchart = function (row) {
                     x: '50',
                     y: '150',
                     orient: 'vertical',
+                    itemWidth:27,   //图例图形宽度
+                    itemHeight:18,  //图例图形高度
                     data: row.cityList,
                     textStyle: {
                         color: "auto",
@@ -206,10 +219,12 @@ var initEchart = function (row) {
                         type: 'chord',
                         sortSub: 'ascending',
                         top: 20,
-                        symbolSize: 10,
                         nodes: nodesList,
                         itemStyle: {
                             normal: {
+                                /*chordStyle:{
+                                    borderWidth:1
+                                },*/
                                 label: {
                                     show: true,
                                     textStyle: {
