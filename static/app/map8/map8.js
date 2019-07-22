@@ -176,8 +176,8 @@ var initEchart = function (row) {
                 },
                 tooltip: {  /*提示框*/
                     trigger: 'item',
-                    backgroundColor: backgroundColor ,
-                    // backgroundColor: gengerateColorByBaseColor(backgroundColor,2) ,
+                    //backgroundColor: backgroundColor ,
+                    backgroundColor: gengerateColorByBaseColor(backgroundColor,1) ,
                     borderColor:textColor,
                     borderWidth:0,
                     padding:10,//内边距
@@ -188,7 +188,13 @@ var initEchart = function (row) {
                     },
                     formatter: function (params) {
                         if (params.indicator2) { // is edge
-                            return params.name + ":" +  Math.floor(params.value.weight * 100) / 100 ;
+                            var matrixData= params.series.matrix;
+                            var city1=params.indicator
+                            var city2=params.indicator2
+                            var index1 = row.cityList.indexOf(city1);
+                            var index2 = row.cityList.indexOf(city2);
+                            return params.name + ":" +  Math.floor(params.value.weight * 100) / 100 + "<br>" +
+                                city2+"-"+city1+":"+matrixData[index2][index1];
                         } else {// is node
                             debugger
                             var cityInfo=_selectedRow.cityInfo;
