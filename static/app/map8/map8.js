@@ -14,7 +14,7 @@ var myChart = echarts.init(dom);
 var backgroundColor = "#eaeaea";// #404a59 #C1C1C1
 var textColor = "#444444";//  #ccc
 var emphasisColor = "#555555";//  #aaa
-
+var toolTipBackgroundColor ="#C1C1C1";
 
 var option = null,
     baseColors = [
@@ -177,7 +177,7 @@ var initEchart = function (row) {
                 tooltip: {  /*提示框*/
                     trigger: 'item',
                     //backgroundColor: backgroundColor ,
-                    backgroundColor: gengerateColorByBaseColor(backgroundColor,1) ,
+                    backgroundColor: toolTipBackgroundColor,
                     borderColor:textColor,
                     borderWidth:0,
                     padding:10,//内边距
@@ -272,10 +272,13 @@ var setBackGroundColor = function (type) {
         backgroundColor = "#eaeaea";//
         textColor = "#444444";//
         emphasisColor = "#555555";//
+        toolTipBackgroundColor ="#C1C1C1";
+        toolTipBackgroundColor ="#C1C1C1";
     } else if (type = "dark") {  /*设置为黑色背景*/
         backgroundColor = "#404a59";//
         textColor = "#ccc";//
         emphasisColor = "#aaa";//
+        toolTipBackgroundColor ="#4f5959";
     }
 }
 /*初始化页面框架*/
