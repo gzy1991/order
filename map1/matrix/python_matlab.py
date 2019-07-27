@@ -23,7 +23,7 @@ def calculate(FD_add,E_add,T_add,result_name,unit):
     if os.path.exists(result_name):
         return "计算失败，主题重复，请修改主题！"
 
-    print '调用开始！', time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
+    print( '调用开始！', time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())))
     pythoncom.CoInitialize()
     matlab.path(matlab.path(), os.path.join(Setting.BASE_DIR,"map1","matrix"))  # 设置路径
     T_addList = T_add.split('\\')
@@ -32,7 +32,7 @@ def calculate(FD_add,E_add,T_add,result_name,unit):
 
     h = Dispatch("Matlab.application")
     h.execute("matlab_3('" + FD_add + "','" + E_add + "','" + T_add + "','" + result_name + "','"+ unit+"')")
-    print '调用结束！', time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
+    print( '调用结束！', time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())))
     return result_name
 
 

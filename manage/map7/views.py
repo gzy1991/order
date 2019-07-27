@@ -2,12 +2,12 @@
 #!/usr/bin/python
 from django.shortcuts import render,render_to_response
 from django.http import HttpResponse,JsonResponse
-import map7
+import  manage.map7.map7 as map7
 
 import manage.viewsTool as ViewsTool
-import sys
-reload(sys)
-sys.setdefaultencoding("utf-8")
+import importlib,sys
+importlib.reload(sys)
+
 
 #获取页面
 def getPageTest(request):

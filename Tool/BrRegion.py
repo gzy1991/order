@@ -76,7 +76,8 @@ def getBrCountryList():
     newCountrys=[]
     for coun in countrys:
 
-        if(countrySwitch.has_key(coun) and countrySwitch[coun] !=""):
+        # if(countrySwitch.has_key(coun) and countrySwitch[coun] !=""):
+        if((coun in countrySwitch)  and countrySwitch[coun] !=""):
             newCountrys.append(countrySwitch[coun])
         else:
             newCountrys.append(coun)

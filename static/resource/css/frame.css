@@ -1,0 +1,57 @@
+/*handle*/
+
+
+#mainContainer {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 51px
+}
+
+#mainContainer .handler {
+
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 5px;
+    cursor: col-resize;
+    z-index: 100;
+    /*background-color: transparent;*/
+    /*background-color: #00FFFF;*/
+    background-color: rgba(0, 0, 0, .075);
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+}
+
+#mainContainer.no-top {
+    top: 0
+}
+
+/**/
+#tableContainer {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    top: 0;
+    width: 50%
+}
+
+/**/
+.right-container {
+    position: absolute;
+    right: 0;
+    width: 50%;
+    height: 100%;
+    padding: 0;
+    padding-left: 5px;
+    border: none;
+    z-index: 30;
+    background: #f3f3f3
+}
+
+.right-container .right-panel {
+    padding: 10px;
+    padding-left: 15px
+}

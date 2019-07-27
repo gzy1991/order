@@ -29,14 +29,14 @@
     var _trace_page_logid = 1849139847;
 
     var uploadedDataURL = "/static/data/map7/data-1498994055008-rJJ5SUU4W.csv";
-    {% comment %}
+    <!--
         d3.stratify()  :
-    {% endcomment %}
+     -->
     var stratify = d3.stratify()
         .parentId(function(d) { return d.id.substring(0, d.id.lastIndexOf(".")); });
-    {% comment %}
+    <!--
         d3.csv()  请求一个CSV（逗号分隔值）的文件
-    {% endcomment %}
+     -->
     d3.csv(uploadedDataURL, function(error, rawData) {
         if (error) throw error;
 

@@ -2,12 +2,12 @@
 #!/usr/bin/python
 from django.shortcuts import render,render_to_response
 from django.http import HttpResponse,JsonResponse
-import map4
+import  manage.map4.map4 as map4
 
 import manage.viewsTool as ViewsTool
-import sys
-reload(sys)
-sys.setdefaultencoding("utf-8")
+import importlib,sys
+importlib.reload(sys)
+
 
 
 

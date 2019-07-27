@@ -2,12 +2,12 @@
 #!/usr/bin/python
 from django.shortcuts import render,render_to_response
 from django.http import HttpResponse,JsonResponse
-import map6
+import  manage.map6.map6 as map6
 
 import manage.viewsTool as ViewsTool
-import sys
-reload(sys)
-sys.setdefaultencoding("utf-8")
+import importlib,sys
+importlib.reload(sys)
+
 
 #获取图6页面
 def getPage(request):

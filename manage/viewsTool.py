@@ -15,7 +15,7 @@ import json
 #   公共工具：删除数据
 #   dir : 文件所在的路径
 def deleteData(request,dir):
-    fileNameList = request.GET.get("fileNameList").encode("utf-8")
+    fileNameList = request.GET.get("fileNameList")
     res=ExcelTool.deleteFile(Setting.FILR_DIR[dir],fileNameList)
     return HttpResponse("<p>"+res+"</p>")
 
@@ -26,10 +26,10 @@ def uploadExcel (request,dir):
     excelDir=Setting.FILR_DIR[dir]
     try:
         response = HttpResponse()
-        if request.FILES.has_key("excelFile"):
+        # if request.FILES.has_key("excelFile"):
+        if "excelFile" in  request.FILES :
             ExcelUpload = request.FILES['excelFile']
-            name=ExcelUpload.name.encode("utf-8") #文件名
-            #name=ExcelUpload.name.encode("gbk") #文件名
+            name=ExcelUpload.name #文件名
             result["message"]= name+"上传成功!"
             excelAddress=os.path.join(excelDir,name) #
             if os.path.exists(excelAddress):  #重名
@@ -39,7 +39,7 @@ def uploadExcel (request,dir):
                 with open(excelAddress,'wb+') as destination:  #保存excel到对应位置
                     for chunk in ExcelUpload.chunks():
                         destination.write(chunk)
-        print result
+        print (result)
         return  HttpResponse(json.dumps(result))
     except Exception:
         result["result"]="false"

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!--    <meta charset="UTF-8">-->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Regional Clusters</title>
+    <script type="text/javascript" src="/static/js/echarts2.2.7/echarts-all.js"></script>
+    <script type="text/javascript" src="/static/resource/jquery/jquery.min.js"></script>
+    <!--主题-->
+<!--    <script type="text/javascript" src="/static/resource/echarts2/theme/dark.js"></script>-->
+    <!--<script type="text/javascript" src="/static/resource/echarts2/theme/red.js"></script>-->
+<!--    <script type="text/javascript" src="/static/resource/echarts2/theme/roma.js"></script>-->
+    <!--layui-->
+    <link href="/static/layui2.5.4/css/layui.css" rel="stylesheet"/>
+    <link href="/static/resource/bootstrap/css/bootstrap.css" rel="stylesheet"/>
+    <link href="/static/resource/css/frame.css" rel="stylesheet"/>
+    <!---->
+    <link href="/static/resource/css/handler.css" rel="stylesheet"/>
+    <style>
+        .layui-form-onswitch {
+            border-color: #333;
+            background-color: #333
+        }
+
+        .layui-form-switch {
+            /*margin-bottom: 10px;*/
+        }
+
+        .layui-layer .layui-layer-title{/* 新增按钮 ，弹出框，title的字体大小*/
+            font-size:18px
+        }
+        /*
+                .layui-layer-btn .layui-layer-btn0{
+                    background-color:#d9534f ;
+                    border-color:#d9534f
+                }
+        */
+
+    </style>
+</head>
+<header class="navbar navbar-fixed-top navbar-inverse" id="headerContainer">
+</header>
+<body>
+<div id="mainContainer">
+    <div class="" id="tableContainer" style="width: 30%; ">
+        <div style="weight:100%;overflow:auto;background:#e8e8e8;">
+            <div id="operationBtnGroup" >
+                <!--data-toggle="modal" data-target="#myModal"-->
+                <button id="addBtn" type="button" class="btn btn-primary"
+                        style="margin-top:2px;margin-left:5px;float:left;">新增
+                </button>
+                <button id="delBtn" type="button" class="btn btn-danger"
+                        style="margin-top:2px;margin-left:5px;float:left;">删除
+                </button>
+                <button id="refBtn" type="button" class="btn btn-success"
+                        style="margin-top:2px;margin-left:5px;float:left;" >刷新
+                </button>
+
+                <div style="margin-left:5px;float: left;" class="  layui-form ">
+                    <input id="backgroundSwitch" type="checkbox" name="open" lay-skin="switch" lay-filter="backgroundSwitch" lay-text="黑色|白色">
+                </div>
+
+            </div>
+            <span id="hideBtn" style="float:right;cursor: pointer;"><img src="/static/img/left.png"
+                                                                         title="缩进"/></span>
+            <table id="dataTable"></table>
+        </div>
+    </div>
+    <div id="h-handler" class="handler" style="left: 30%;"></div>
+    <div id="echartsContainer" class="right-container" style="width: 70%;left: 30%;  ">
+        <div id="dataEcharts" style="height: 30%;weight:100%;">  <!--  echarts容器  -->
+        </div>
+    </div>
+</div>
+<!--table组件-->
+<script type="text/javascript" src="/static/resource/bootstrap-table/bootstrap-table.js"></script>
+<link href="/static/resource/bootstrap-table/bootstrap-table.css" rel="stylesheet" />
+<!--layui-->
+<script type="text/javascript" src="/static/layui2.5.4/layui.all.js"></script>
+<!--上传组件-->
+<script type="text/javascript" src="/static/resource/bootstrap-fileinput/fileinput.min.js"></script>
+<script type="text/javascript" src="/static/resource/bootstrap-fileinput/locales/zh.js"></script>
+<link href="/static/resource/bootstrap-fileinput/fileinput.min.css" rel="stylesheet" />
+<!--公共框架j-->
+<script type="text/javascript" src="/static/common/js/frame.js"></script>
+<!--绘图js-->
+<script type="text/javascript" src="/static/app/map8/map8.js"></script>
+</body>
+</html>

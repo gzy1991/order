@@ -7,9 +7,7 @@
 
 import traceback
 import os
-import  sys
 import xlrd
-import xlwt
 import numpy as np
 import json
 import Tool.ExcelTool as ExcelTool
@@ -31,9 +29,9 @@ def getTableData():
                                                                "Province.xlsx"), "province")
     proInfoList = {} #省份的经纬度信息
     for iii in range(provinceNum):
-        proName = provincesInfo[iii, 2].encode("utf-8")   # 省份名字
-        proLatitude = provincesInfo[iii, 4].encode("utf-8")   # 省份纬度
-        proLongitude=provincesInfo[iii, 5].encode("utf-8")   # 省份经度
+        proName = provincesInfo[iii, 2]   # 省份名字
+        proLatitude = provincesInfo[iii, 4]   # 省份纬度
+        proLongitude=provincesInfo[iii, 5]   # 省份经度
         proInfoList[proName]={
             "name":proName,
             "latitude":proLatitude,
@@ -49,16 +47,16 @@ def getTableData():
     countrySwitch = CountrySwitchName.getcountrySwitch()
     # 替换一些国家的名字
     for ii in range(countryNum):
-        countryName=country_name[ii, 0].encode("utf-8")
-        if(countrySwitch.has_key(countryName) and  countrySwitch[countryName]!=""):
+        countryName=country_name[ii, 0]
+        # if(countrySwitch.has_key(countryName) and  countrySwitch[countryName]!=""):
+        if(countryName in countrySwitch and  countrySwitch[countryName]!=""):
             countryList.append(countrySwitch[countryName])
         else:
             countryList.append(countryName)
 
     files = ExcelTool.listExcelFile(Setting.FILR_DIR["MAP7_DIR"])
-    print files  # .xlsx结果文件列表
+    print (files)  # .xlsx结果文件列表
     resultList = []  # 全部excel文件处理后的结果，容器
-    errMsg = ""  # 错误信息
     unit = '%'  # 单位 默认undefined
     for file in files:  # 遍历每个excel文件
         try:
@@ -66,7 +64,7 @@ def getTableData():
             fullFileName = file.split("\\")[len(file.split("\\")) - 1]
             result["fullFileName"] = fullFileName  # 文件全名 （带后缀）
             result["fileName"] = fullFileName.split(".")[0]  # 文件全名 （不带后缀）
-            print file + " start"
+            print(file + " start")
 
             excelData = xlrd.open_workbook(file, "rb") #excel的全部数据
             emptySheets = []  # 空数据的sheet
@@ -82,17 +80,18 @@ def getTableData():
             for n in range(len(sheetNameList)):
                 #开始处理某个sheet
                 sheetName = sheetNameList[n]
-                sheetName = sheetName.encode("utf-8")  # sheet名转码
+                #sheetName = sheetName  # sheet名转码
+
 
                 #处理单位
-                if sheetName == 'Unit':
-                    unit = excelData.sheet_by_name("Unit").cell_value(0, 0)
-                    title = excelData.sheet_by_name("Unit").cell_value(0, 1)
+                if sheetName == 'Unit' or  sheetName.lower() == 'unit':
+                    unit = excelData.sheet_by_name(sheetName).cell_value(0, 0)
+                    title = excelData.sheet_by_name(sheetName).cell_value(0, 1)
                     continue
 
                 # 处理（某sheet）数据
                 timeline.append(int(sheetName)) #年份加入timeline中,转为int
-                sheetData = ExcelTool.getArrayFromSheet(excelData, sheetName, 'name',
+                sheetData = ExcelTool.getNpArrayFromSheet(excelData, sheetName, 'name',
                                                         row=countryNum,column=2*provinceNum)  # 获取某年（某sheet）的数据
                 if(sheetData.shape[1]!=62 or sheetData.shape[0]!=189):
                     #跳过这个sheet
@@ -143,11 +142,12 @@ def getTableData():
             result['title'] = title # 标题
             result['proInfoList'] = proInfoList  # 省份的经纬度信息
             resultList.append(result)
+            print(file + " end")
         except BaseException :
-            print "Error: 文件有问题: " + file
-            print BaseException
-            errMsg += file + "<br/>"
+            print ("Error: 文件有问题: " + file)
+            import traceback
+            traceback.print_exc()
 
     resultListJson = json.dumps(resultList)
-    print "Map7返回值 resultListJson :"
+    print ("Map7返回值 resultListJson :")
     return resultListJson

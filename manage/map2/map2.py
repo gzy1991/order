@@ -19,7 +19,7 @@ def getTableData():
     print(os.path.join(Setting.FILR_DIR["COMMON_DIR"]))
     provincesInfo =ExcelTool.getArrayBySheetName(os.path.join(Setting.FILR_DIR["COMMON_DIR"],"Province.xlsx"),"province")#获取省份名列表，包括 ： 中文名、英文名、纬度、经度
     files = ExcelTool.listExcelFile(Setting.FILR_DIR["MAP2_DIR"])
-    print files  # .xlsx结果文件列表
+    print(files)   # .xlsx结果文件列表
     resultList = []
     errMsg = "";
 
@@ -31,17 +31,17 @@ def getTableData():
             result['exportProvinceNum']=proShowNum
             result["fullFileName"] = fullFileName   # 文件全名 （带后缀）
             result["fileName"] = fullFileName.split(".")[0]   # 文件全名 （不带后缀）
-            print file + " start"
+            print( file + " start")
             excelData = xlrd.open_workbook(file, "rb")
 
             # 从excel获取sheet， 转化成numpy.array
-            Tra = ExcelTool.getArrayFromSheet(excelData, u'Tra','name')
-            Tot = ExcelTool.getArrayFromSheet(excelData, u'Tot','name')
+            Tra = ExcelTool.getNpArrayFromSheet(excelData, u'Tra','name')
+            Tot = ExcelTool.getNpArrayFromSheet(excelData, u'Tot','name')
 
             unit = ''  # 单位
             try:
                 unit = excelData.sheet_by_name("Unit").cell_value(0, 0)
-            except Exception, e:
+            except Exception as e:
                 if (e.message.find("No sheet named") == -1):
                     unit = '未定义'  # 单位未定义
             result['unit'] = unit  # 单位
@@ -69,15 +69,17 @@ def getTableData():
 
                 result[provincesInfo[i][2]]=provinceResult  #该省信息
             resultList.append(result)
+            print(file + " end")
             #一个文件计算完毕
         except BaseException:
-            print "Error: 文件有问题," + file
-            print BaseException
+            print( "Error: 文件有问题," + file)
+            import traceback
+            traceback.print_exc()
             errMsg += file + "<br/>"
 
     resultListJson=json.dumps(resultList)
-    print "Map2返回值 resultListJson :"
-    print   resultListJson
+    print ("Map2返回值 resultListJson :")
+    print( resultListJson)
     return  resultListJson
 
 #获取该省出口数据

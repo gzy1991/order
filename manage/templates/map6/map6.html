@@ -12,10 +12,10 @@
   <link href="/static/js/popup.css" rel="stylesheet" />
     <link href="/static/resource/bootstrap-fileinput/fileinput.min.css" rel="stylesheet" />
 <style>
-
+/*
 {#  td{#}
 {#    white-space:nowrap;text-overflow:ellipsis;#}
-{#  }#}
+{#  }#}*/
 
 </style>
 
@@ -119,7 +119,7 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h4 class="modal-title" id="myModalLabel">提示</h4>
+             --><h4 class="modal-title" id="myModalLabel2">提示</h4>
           </div>
           <div class="modal-body">
             正在刷新数据，请稍候。。。
@@ -152,9 +152,9 @@
  <script type="text/javascript" src="/static/js/echart4/echarts.min.js"></script>
   <script type="text/javascript" src="/static/resource/echart/ecStat.min.js"></script>
   <script type="text/javascript" src="/static/resource/echart/dataTool.min.js"></script>
-{% comment %}
+<!--
     <script type="text/javascript" src="/static/resource/echart/china.js"></script>
-{% endcomment %}
+ -->
     <script type="text/javascript" src="/static/resource/echart/world.js"></script>
   <script type="text/javascript" src="/static/resource/jquery/jquery.min.js"></script>
   <script type="text/javascript" src="/static/resource/bootstrap/js/bootstrap.js"></script>
@@ -176,7 +176,7 @@
             $(document).ready(function(){
                 $("#headerContainer").load("/static/common/html/header.html");
                 //初始化上传组件
-                initUpload("excelFile","/uploadExcelInMap6");
+                initUpload("excelFile","/uploadExcelInMap6/","",refBtnFn);
                 initEvent();//初始化事件绑定,缩进/展开功能
                 initEventHandler("h-handler"); //绑定缩放功能
                 initPageData();  //   调用初始化页面

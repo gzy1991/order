@@ -164,7 +164,7 @@ var initEchart = function(row){
             },
             emphasis:{      //选中国家的颜色
                 label:{
-                    fontStyle :"Times New Roman",//字体
+                    fontFamily :"Times New Roman",//字体
                     show:true
                 },
                 itemStyle:{

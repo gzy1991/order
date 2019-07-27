@@ -5,7 +5,7 @@ function(t, e) {
 function(t) {
 	"use strict";
 	function e(t, e) {
-		"createCanvas" === t && (Ox = null),
+		"createCanvas" === techarts.min.js && (Ox = null),
 		kx[t] = e
 	}
 	function i(t) {

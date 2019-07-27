@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>map8-test2</title>
+</head>
+<body>
+<div id="mapContainer" style="height: 500px;weight:800px;">
+              </div>
+
+    <script type="text/javascript" src="/static/js/echarts2.2.7/echarts-all.js"></script>
+    <script type="text/javascript" src="/static/resource/jquery/jquery.min.js"></script>
+<!--theme-->
+    <script type="text/javascript" src="/static/resource/echarts2/theme/blue.js"></script>
+    <script type="text/javascript" src="/static/resource/echarts2/theme/green.js"></script>
+<!--layui-->
+ <script type="text/javascript" src="/static/layui2.5.4/layui.all.min.js"></script>
+    <link href="/static/layui2.5.4/css/layui.css" rel="stylesheet" />
+
+<!--获取json-->
+ <script type="text/javascript" src="/static/app/map8/data.js"></script>
+<script>
+   /* var colors=[
+    "#da70d6",
+    "#32cd32",
+    "#6495ed",
+    "#ff69b4",
+    "#ba55d3",
+    "#cd5c5c",
+    "#ffa500",
+    "#40e0d0",
+    "#1e90ff",
+    "#ff6347",
+    "#7b68ee",
+    "#00fa9a",
+    "#ffd700",
+    "#6699FF",
+    "#ff6666",
+    "#3cb371",
+    "#b8860b",
+    "#30e0e0"
+];*/
+     colors=
+    [   '#c23531',
+        '#d24541',
+        '#e25551',
+        '#2f4554',
+        '#61a0a8',
+        '#d48265',
+        '#91c7ae',
+        '#749f83',
+        '#ca8622',
+        '#bda29a',
+        '#6e7074',
+        '#546570',
+        '#c4ccd3'];
+var option ;
+option = {
+
+    timeline:{
+        data:[
+            '2002','2003','2004','2005'
+        ],
+        label : {
+            formatter : function(s) {
+                return s.slice(0, 4);
+            },
+            textStyle:{
+                fontSize:15,
+                fontFamily:"Times New Roman"//字体
+            }
+        },
+        autoPlay : true,
+        playInterval : 2000
+    },
+    options:[
+        {
+            color:colors,
+            title : {
+                text:'2002 测试数据1',
+                subtext:'单位:百万',
+                textStyle:{
+                    fontFamily:"Times New Roman"//字体
+                },
+                subtextStyle:{
+                    fontFamily:"Times New Roman"//字体
+                },
+                x:'50',
+                y:'50'
+            },
+            tooltip : {
+                trigger: 'item',
+                formatter: function (params) {
+                    console.log(JSON.stringify(params))
+                    if (params.indicator2) { // is edge
+                        return params.name+":"+params.value.weight;
+                    } else {// is node
+                        return params.name
+                    }
+                }
+            },
+            legend: {
+                x: '50',
+                y:'150',
+                orient:'vertical',
+                data:['city1','city2','city3','city4'],
+                textStyle:{
+                    color:"auto",
+                    fontSize:15,
+                    fontFamily:"Times New Roman"//字体
+                }
+            },
+            series : [
+                {
+                    type:'chord',
+                    sortSub : 'ascending',
+                    top:20,
+                    symbolSize:10,
+                    nodes : [
+                        {name : 'city1'},
+                        {name : 'city2'},
+                        {name : 'city3'},
+                        {name : 'city4'}
+                    ],
+                    itemStyle : {
+                        normal : {
+                            label : {
+                                show : true,
+                                textStyle:{
+                                    fontFamily:"Times New Roman",//字体
+                                    //color:"red",
+                                    fontSize:20
+                                }
+                            }
+                        }
+                    }
+                    ,matrix : [
+                        [11975,  5871, 8916, 2868],
+                        [ 1951, 10048, 2060, 6171],
+                        [ 8010, 16145, 8090, 8045],
+                        [ 1013,   990,  940, 6907]
+                    ]
+                }
+            ]
+        },
+        // {
+        //     title : {'text':'2002 测试数据1'},
+        //     series : [
+        //         {'matrix': [
+        //                 [11975,  5871, 8916, 2868],
+        //                 [ 1951, 10048, 2060, 6171],
+        //                 [ 8010, 16145, 8090, 8045],
+        //                 [ 1013,   990,  940, 6907]
+        //             ]}
+        //     ]
+        // },
+        {
+            title : {'text':'2003 测试数据1'},
+            series : [
+                {'matrix': [
+                        [11975,  5871, 8916, 2868],
+                        [ 3951, 10048, 2060, 6171],
+                        [ 3010, 16145, 8090, 8045],
+                        [ 3013,   990,  940, 6907]
+                    ]}
+            ]
+        },
+        {
+            title : {'text':'2004 测试数据1'},
+            series : [
+                {'matrix': [
+                        [11975,  5871, 8916, 2868],
+                        [ 1951, 4048, 2060, 6171],
+                        [ 8010, 46145, 8090, 8045],
+                        [ 1013,   4490,  940, 6907]
+                    ]}
+            ]
+        },
+        {
+            title : {'text':'2005 测试数据1'},
+            series : [
+                {'matrix': [
+                        [11975,  5871, 8916, 2868],
+                        [ 1951, 10048, 460, 6171],
+                        [ 8010, 16145, 4090, 8045],
+                        [ 1013,   990,  4440, 6907]
+                    ]}
+            ]
+        }
+    ]
+};
+
+/*
+var theme = {
+    // 默认色板
+    background:"#408829",
+    color: [
+        '#408829','#68a54a','#a9cba2','#86b379',
+        '#397b29','#8abb6f','#759c6a','#bfd3b7'
+    ],
+
+    // 图表标题
+    title: {
+        textStyle: {
+            fontWeight: 'normal',
+            color: '#408829'
+        }
+    },
+
+    // 值域
+    dataRange: {
+        color:['#1f610a','#97b58d']
+    },
+
+    // 工具箱
+    toolbox: {
+        color : ['#408829','#408829','#408829','#408829']
+    },
+
+    // 提示框
+    tooltip: {
+        backgroundColor: 'rgba(0,0,0,0.5)',
+        axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+            type : 'line',         // 默认为直线，可选为：'line' | 'shadow'
+            lineStyle : {          // 直线指示器样式设置
+                color: '#408829',
+                type: 'dashed'
+            },
+            crossStyle: {
+                color: '#408829'
+            },
+            shadowStyle : {                     // 阴影指示器样式设置
+                color: 'rgba(200,200,200,0.3)'
+            }
+        }
+    },
+
+    // 区域缩放控制器
+    dataZoom: {
+        dataBackgroundColor: '#eee',            // 数据背景颜色
+        fillerColor: 'rgba(64,136,41,0.2)',   // 填充颜色
+        handleColor: '#408829'     // 手柄颜色
+    },
+
+    // 网格
+    grid: {
+        borderWidth: 0
+    },
+
+    // 类目轴
+    categoryAxis: {
+        axisLine: {            // 坐标轴线
+            lineStyle: {       // 属性lineStyle控制线条样式
+                color: '#408829'
+            }
+        },
+        splitLine: {           // 分隔线
+            lineStyle: {       // 属性lineStyle（详见lineStyle）控制线条样式
+                color: ['#eee']
+            }
+        }
+    },
+
+    // 数值型坐标轴默认参数
+    valueAxis: {
+        axisLine: {            // 坐标轴线
+            lineStyle: {       // 属性lineStyle控制线条样式
+                color: '#408829'
+            }
+        },
+        splitArea : {
+            show : true,
+            areaStyle : {
+                color: ['rgba(250,250,250,0.1)','rgba(200,200,200,0.1)']
+            }
+        },
+        splitLine: {           // 分隔线
+            lineStyle: {       // 属性lineStyle（详见lineStyle）控制线条样式
+                color: ['#eee']
+            }
+        }
+    },
+
+    timeline : {
+        lineStyle : {
+            color : '#408829'
+        },
+        controlStyle : {
+            normal : { color : '#408829'},
+            emphasis : { color : '#408829'}
+        }
+    },
+
+    // K线图默认参数
+    k: {
+        itemStyle: {
+            normal: {
+                color: '#68a54a',          // 阳线填充颜色
+                color0: '#a9cba2',      // 阴线填充颜色
+                lineStyle: {
+                    width: 1,
+                    color: '#408829',   // 阳线边框颜色
+                    color0: '#86b379'   // 阴线边框颜色
+                }
+            }
+        }
+    },
+
+    map: {
+        itemStyle: {
+            normal: {
+                areaStyle: {
+                    color: '#ddd'
+                },
+                label: {
+                    textStyle: {
+                        color: '#c12e34'
+                    }
+                }
+            },
+            emphasis: {                 // 也是选中样式
+                areaStyle: {
+                    color: '#99d2dd'
+                },
+                label: {
+                    textStyle: {
+                        color: '#c12e34'
+                    }
+                }
+            }
+        }
+    },
+
+    force : {
+        itemStyle: {
+            normal: {
+                linkStyle : {
+                    color : '#408829'
+                }
+            }
+        }
+    },
+
+    chord : {
+        padding : 4,
+        itemStyle : {
+            normal : {
+                borderWidth: 1,
+                borderColor: 'rgba(128, 128, 128, 0.5)',
+                chordStyle : {
+                    lineStyle : {
+                        color : 'rgba(128, 128, 128, 0.5)'
+                    }
+                }
+            },
+            emphasis : {
+                borderWidth: 1,
+                borderColor: 'rgba(128, 128, 128, 0.5)',
+                chordStyle : {
+                    lineStyle : {
+                        color : 'rgba(128, 128, 128, 0.5)'
+                    }
+                }
+            }
+        }
+    },
+
+    gauge : {
+        axisLine: {            // 坐标轴线
+            show: true,        // 默认显示，属性show控制显示与否
+            lineStyle: {       // 属性lineStyle控制线条样式
+                color: [[0.2, '#86b379'],[0.8, '#68a54a'],[1, '#408829']],
+                width: 8
+            }
+        },
+        axisTick: {            // 坐标轴小标记
+            splitNumber: 10,   // 每份split细分多少段
+            length :12,        // 属性length控制线长
+            lineStyle: {       // 属性lineStyle控制线条样式
+                color: 'auto'
+            }
+        },
+        axisLabel: {           // 坐标轴文本标签，详见axis.axisLabel
+            textStyle: {       // 其余属性默认使用全局文本样式，详见TEXTSTYLE
+                color: 'auto'
+            }
+        },
+        splitLine: {           // 分隔线
+            length : 18,         // 属性length控制线长
+            lineStyle: {       // 属性lineStyle（详见lineStyle）控制线条样式
+                color: 'auto'
+            }
+        },
+        pointer : {
+            length : '90%',
+            color : 'auto'
+        },
+        title : {
+            textStyle: {       // 其余属性默认使用全局文本样式，详见TEXTSTYLE
+                color: '#333'
+            }
+        },
+        detail : {
+            textStyle: {       // 其余属性默认使用全局文本样式，详见TEXTSTYLE
+                color: 'auto'
+            }
+        }
+    },
+
+    textStyle: {
+        fontFamily: '微软雅黑, Arial, Verdana, sans-serif'
+    }
+};
+*/
+
+var dom = document.getElementById("mapContainer");
+// var myChart = echarts.init(dom,theme);;
+var myChart = echarts.init(dom,theme);;
+myChart.setOption(option);
+// myChart.setTheme("macarons");
+// myChart.setTheme("infographic");
+// myChart.setTheme("green");
+
+
+</script>
+</body>
+</html>

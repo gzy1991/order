@@ -1,7 +1,7 @@
 #coding:utf-8
 from django.shortcuts import render,render_to_response
 from django.http import HttpResponse,JsonResponse
-import map2
+import manage.map2.map2 as map2
 import Tool.ExcelTool as ExcelTool
 import order.settings as Setting
 import os

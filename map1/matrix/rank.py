@@ -23,7 +23,7 @@ def rank_result():
     print(os.getcwd())
     #获取结果excel 地址列表  ，只获取xls和xlsx文件
     files = ExcelTool.listExcelFile(Setting.FILR_DIR["MAP1_DIR"])
-    print files  # .xlsx结果文件列表
+    print (files)  # .xlsx结果文件列表
     result_list=[]
     errMsg="";
 
@@ -35,22 +35,23 @@ def rank_result():
             result['importCountryNum'] = country_num
             result['exportCountryNum'] = country_num
             result["fileName"]=file_name
-            print file+" start"
+            print (file+" start")
             excelData = xlrd.open_workbook(file,"rb")
 
             #从excel获取sheet， 转化成numpy.array
-            Tot = ExcelTool.getArrayFromSheet(excelData, u'Tot','name')
-            FD_ = ExcelTool.getArrayFromSheet(excelData, u'FD_S','name')
-            Tra = ExcelTool.getArrayFromSheet(excelData, u'Tra','name')
-            FD4 = ExcelTool.getArrayFromSheet(excelData, u'FD4','name')
-            T4 = ExcelTool.getArrayFromSheet(excelData, u'T4','name')
+            Tot = ExcelTool.getNpArrayFromSheet(excelData, u'Tot','name')
+            FD_ = ExcelTool.getNpArrayFromSheet(excelData, u'FD_S','name')
+            Tra = ExcelTool.getNpArrayFromSheet(excelData, u'Tra','name')
+            FD4 = ExcelTool.getNpArrayFromSheet(excelData, u'FD4','name')
+            T4 = ExcelTool.getNpArrayFromSheet(excelData, u'T4','name')
 
             unit=''  #单位
             try:
                 unit = excelData.sheet_by_name("Unit").cell_value(0, 0)
-            except Exception, e:
-                if (e.message.find("No sheet named") ==-1 ):
-                    unit='未定义'           #单位未定义
+            except Exception as e:
+                unit = '未定义'  # 单位未定义
+                # if (e.message.find("No sheet named") ==-1 ):
+                #     unit='未定义'           #单位未定义
             result['unit'] = unit  # 单位
             for i in range(0,len(Tot[0])-1):# 对Tot做处理，把对角线数据设为0
                 Tot[i,i]=0
@@ -69,18 +70,20 @@ def rank_result():
             result["exportData"]=export_data
             result["importData"]=import_data
 
-            print file + " end"
+            print (file + " end")
             result_list.append(result)
             #一个文件计算完毕
         except BaseException:
-            print "Error: 文件有问题,"+file
+            print ("Error: 文件有问题,"+file)
+            import traceback
+            traceback.print_exc()
             errMsg+=file+"<br/>"
     # if len(errMsg)!= 0:
     #     result_list
     result_list_json=json.dumps(result_list)
-    print "返回值 result_list_json :"
-    print   result_list_json
-    return  result_list_json
+    print ("返回值 result_list_json :")
+    print   (result_list_json)
+    return  (result_list_json)
 
 
 #  ， 获取某个国家的进口 排序数据
@@ -88,7 +91,7 @@ def getImportData(country_name,Tra,Tot,index_im,country_num,index_ex):
     importData_list=[]
     for i in range(0,country_num):
         importData={}
-        name = country_name[index_im[i]][0].encode("utf-8")
+        name = country_name[index_im[i]][0]
         sum = Tra[index_im[i], 1]
         importData["name"] = name
         importData["sum"] = round(sum,2)
@@ -101,7 +104,7 @@ def getImportData(country_name,Tra,Tot,index_im,country_num,index_ex):
         _list = []
         for j in range(0,country_num):
             _data = {}
-            _name = country_name[_index[j]][0].encode("utf-8")
+            _name = country_name[_index[j]][0]
             _data["name"] = _name
             _data["sort"] = j + 1
             _data["value"] = round(Tot[_index[j] ,index_im[i]],2)
@@ -116,7 +119,7 @@ def getExportData(country_name,Tra,Tot,index_ex,country_num,index_im):
     exportData_list=[]
     for i in  range (0,country_num):
         exportData={}
-        name=country_name[index_ex[i]][0].encode("utf-8")
+        name=country_name[index_ex[i]][0]
         sum=Tra[index_ex[i], 0]
         exportData["name"]=name
         exportData["sum"] = round(sum,2)
@@ -129,7 +132,7 @@ def getExportData(country_name,Tra,Tot,index_ex,country_num,index_im):
         _list=[]                                   #
         for j in range(0,country_num):
             _data={}
-            _name=country_name[_index[j]][0].encode("utf-8")
+            _name=country_name[_index[j]][0]
             _data["name"]= _name
             _data["sort"]= j+1
             _data["value"]= round(Tot[index_ex[i],_index[j]],2)

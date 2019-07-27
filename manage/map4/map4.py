@@ -35,13 +35,14 @@ def getTableData():
     countrySwitch=CountrySwitchName.getcountrySwitch()
     # 替换一些国家的名字
     for i in range(countryNum):
-        countryName=country_name[i, 0].encode("utf-8")
-        if(countrySwitch.has_key(countryName) and  countrySwitch[countryName]!=""):
+        countryName=country_name[i, 0]
+        # if(countrySwitch.has_key(countryName) and  countrySwitch[countryName]!=""):
+        if( countryName in countrySwitch and  countrySwitch[countryName]!=""):
             countryList.append(countrySwitch[countryName])
         else:
             countryList.append(countryName)
     files = ExcelTool.listExcelFile(Setting.FILR_DIR["MAP4_DIR"])
-    print files  # .xlsx结果文件列表
+    print(files)   # .xlsx结果文件列表
     resultList = []  # 全部excel文件处理后的结果，容器
     errMsg = ""  # 错误信息
     unit='%'            # 单位 默认undefined
@@ -52,7 +53,7 @@ def getTableData():
             fullFileName = file.split("\\")[len(file.split("\\")) - 1]
             result["fullFileName"] = fullFileName  # 文件全名 （带后缀）
             result["fileName"] = fullFileName.split(".")[0]  # 文件全名 （不带后缀）
-            print file + " start"
+            print( file + " start")
 
             excelData = xlrd.open_workbook(file, "rb")
             emptySheets = []  # 空数据的sheet
@@ -70,10 +71,10 @@ def getTableData():
             for sheetName in sheetNameList:  # 遍历所有sheet
                 #处理某个sheet
                 sheetMaxMin = []  # 记录下每个sheet，每列的最大值，最小值
-                sheetName = sheetName.encode("utf-8")  # sheet名转码
+                #sheetName = sheetName  # sheet名转码
                  #处理（某sheet）的数据
                 timeline.append(sheetName)  # 年份加入timeline中,转为int
-                sheetData = ExcelTool.getArrayFromSheet(excelData, sheetName, 'name',
+                sheetData = ExcelTool.getNpArrayFromSheet(excelData, sheetName, 'name',
                                                         row=countryNum,column=provinceNum)  # 获取某年（某sheet）的数据
                 #sheetData.sum()/(countryNum*provinceNum)
                 # 先处理空sheet
@@ -161,14 +162,16 @@ def getTableData():
             result['maxMin'] = maxMin                   # 每个sheet的最大最小值
 
             resultList.append(result)
+            print(file + " end")
         except BaseException:
-            print "Error: 文件有问题: " + file
-            print BaseException
+            print ("Error: 文件有问题: " + file)
+            import traceback
+            traceback.print_exc()
             errMsg += file + "<br/>"
 
     resultListJson = json.dumps(resultList)
-    print "Map4返回值 resultListJson :"
-    #print   resultListJson
+    print ("Map4返回值 resultListJson :")
+    #print( resultListJson)
     return  resultListJson
 
 
